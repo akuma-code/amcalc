@@ -1,5 +1,21 @@
-export type MathActionNames = 'plus' | 'minus' | 'multi' | 'devide' | 'sum'
+export type MathActionNames = 'plus' | 'minus' | 'multi' | 'devide'
 export type ISimpleMathFunc = (a: number, b: number) => number
+export type IActionData = {
+    actionId: string
+    cb: (...args: number[]) => number
+    initValue?: number
+
+}
+
+
+function CreateSimpleAction(actionType: MathActionNames, ...args: number[]) {
+    const actionList: Record<MathActionNames, ISimpleMathFunc> = {
+        plus: (a, b) => a + b,
+        minus: (a, b) => a - b,
+        devide: (a, b) => a / b,
+        multi(a, b) { return a * b },
+    }
+}
 
 interface IMathFunc {
     plus(a: number, b: number): number

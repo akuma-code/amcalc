@@ -37,7 +37,8 @@ const InpStyles = {
             focus:border-transparent`
 }
 type Props = {}
-
+const tan = (Math.atan(1500 - 1250) / 1500 * 180 / Math.PI)
+_log(tan)
 const Homepage = (props: Props) => {
     const [inputX, setInputX] = useState<string | number>("")
     const [res, setRes] = useState<number | null>(null)

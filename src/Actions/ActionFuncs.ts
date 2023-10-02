@@ -1,3 +1,4 @@
+import { _log } from "../Helpers/HelpersFns"
 import { ISimpleMathFunc, MathActionNames } from "../Interfaces/MathActionsTypes"
 
 

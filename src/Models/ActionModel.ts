@@ -25,8 +25,8 @@ export class ActionDataNode implements IActionDataNode {
 }
 
 const vars = ['width']
-const cb = <T extends number>(n: T) => n * 5
-const descr = "test"
+const cb = (n: number) => n * 5
+const descr = "multi x5"
 
 
 

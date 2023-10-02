@@ -2,6 +2,7 @@ import React, { HTMLAttributes, useState } from 'react'
 import { MathFunc, cc } from '../../Actions/ActionFuncs'
 import { _log, _styleSet } from '../../Helpers/HelpersFns'
 import Icons from '../Icons/SvgIcons'
+import { ActionDataNode } from '../../Models/ActionModel'
 
 const InpStyles = {
     spanStyle: `rounded-l-md 
@@ -38,6 +39,7 @@ const InpStyles = {
 }
 type Props = {}
 const tan = (Math.atan(1500 - 1250) / 1500 * 180 / Math.PI)
+
 _log(tan)
 const Homepage = (props: Props) => {
     const [inputX, setInputX] = useState<string | number>("")

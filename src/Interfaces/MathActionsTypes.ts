@@ -9,6 +9,14 @@ export type IActionData<T> = {
     description?: string
 }
 
+export interface IActionCore<T> {
+    callback: (data: T) => any
+    vars: {
+        key: string
+        initValue?: number
+    }[]
+}
+
 export type IActionDataNode = {
     vars: string[]
     actionCb: <T>(...args: T[]) => any

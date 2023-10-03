@@ -1,6 +1,6 @@
 import { IActionData, IActionDataNode } from "../Interfaces/MathActionsTypes";
 
-export class ActionDataNode<R> implements IActionDataNode<R> {
+export class ActionDataNode<R>  {
     vars: string[];
     actionCb: <T>(...args: T[]) => R;
     desc?: string;
@@ -47,7 +47,7 @@ export class ActionData<T> implements IActionData<T>{
     }
 
     use(...args: T[]) {
-        return
+        return this.callback!(...args) || ""
     }
 }
 

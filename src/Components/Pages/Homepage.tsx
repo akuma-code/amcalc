@@ -3,6 +3,10 @@ import { MathFunc, cc } from '../../Actions/ActionFuncs'
 import { _log, _styleSet } from '../../Helpers/HelpersFns'
 import Icons from '../Icons/SvgIcons'
 import { ActionDataNode } from '../../Models/ActionModel'
+import { IActionDataNumber } from '../../mobXStore/ActionStore'
+import { observer } from 'mobx-react-lite'
+import { RootStore } from '../../Context/RootStore'
+import { IActionDataNode } from '../../Interfaces/MathActionsTypes'
 
 const InpStyles = {
     spanStyle: `rounded-l-md 
@@ -38,12 +42,15 @@ const InpStyles = {
             focus:border-transparent`
 }
 type Props = {}
-const tan = (Math.atan(1500 - 1250) / 1500 * 180 / Math.PI)
+const testdata: IActionDataNumber = {
+    callback: (a: number) => a * 5,
+    vars: [{ key: 'number', initValue: 0 }]
+}
 
-_log(tan)
-const Homepage = (props: Props) => {
+const Homepage = observer((props: Props) => {
     const [inputX, setInputX] = useState<string | number>("")
     const [res, setRes] = useState<number | null>(null)
+    // const [store, setStore] = useState(new RootStore())
     const changeFn = (value: string | number) => {
         if (typeof value === 'string') return setInputX(prev => +value)
         else setInputX(prev => value)
@@ -51,6 +58,8 @@ const Homepage = (props: Props) => {
     const btnFn = (cb: (n: number) => number) => {
         const x = typeof inputX === 'string' ? +inputX : inputX
         setRes(prev => cb(x))
+
+
     }
     const newDesc = (text: string | number | null) => {
         if (!text) return null
@@ -61,6 +70,9 @@ const Homepage = (props: Props) => {
         setRes(prev => null)
         setInputX("")
     }
+
+
+
     return (
         <div className='bg-slate-500 w-auto h-auto flex p-2'>
 
@@ -74,7 +86,7 @@ const Homepage = (props: Props) => {
             <IconButton
                 svg_icon={Icons.PaperAirplane}
                 desc={newDesc(res) || 'Calculate'}
-                onClickFn={() => btnFn(n => n * 5)}
+                onClickFn={btnFn}
             />
 
             <IconButton
@@ -84,7 +96,7 @@ const Homepage = (props: Props) => {
             />
         </div>
     )
-}
+})
 
 export default Homepage
 type InputProps = {

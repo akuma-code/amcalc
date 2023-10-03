@@ -17,9 +17,9 @@ export interface IActionCore<T> {
     }[]
 }
 
-export type IActionDataNode = {
+export type IActionDataNode<R> = {
     vars: string[]
-    actionCb: <T>(...args: T[]) => any
+    actionCb: <T>(...args: T[]) => R
     output?: (...args: any[]) => string
     desc?: string
 }

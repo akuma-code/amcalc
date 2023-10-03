@@ -1,11 +1,11 @@
 import { IActionData, IActionDataNode } from "../Interfaces/MathActionsTypes";
 
-export class ActionDataNode implements IActionDataNode {
+export class ActionDataNode<R> implements IActionDataNode<R> {
     vars: string[];
-    actionCb: <T>(...args: T[]) => any;
+    actionCb: <T>(...args: T[]) => R;
     desc?: string;
     output!: <T>(...args: T[]) => string;
-    constructor(actionNode: IActionDataNode) {
+    constructor(actionNode: IActionDataNode<R>) {
         this.vars = actionNode.vars
         this.actionCb = actionNode.actionCb
         this.desc = actionNode.desc

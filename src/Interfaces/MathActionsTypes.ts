@@ -12,7 +12,7 @@ export type IActionData<T> = {
 export interface IActionCore<T> {
     callback: (data: T) => any
     vars: {
-        key: string
+        keys: string
         initValue?: number
     }[]
 }

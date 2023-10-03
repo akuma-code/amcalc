@@ -21,8 +21,9 @@ export class ActionsStore {
             actionId: actionId,
             desc: 'new node'
         }
+        const checkId = (id: string) => this.nodes.map(n => n.actionId).includes(id)
 
-        this.nodes.push(node)
+        !checkId(actionId) ? this.nodes.push(node) : _log("ID already exist!")
         console.log('added node: ', data)
 
     }
@@ -32,3 +33,15 @@ export class ActionsStore {
     }
 }
 
+
+export class StoreActions {
+    public _actions: v1DataNode[]
+    constructor() {
+        this._actions = []
+        makeAutoObservable(this)
+    }
+
+
+
+
+}

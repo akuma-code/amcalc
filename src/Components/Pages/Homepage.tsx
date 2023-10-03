@@ -44,7 +44,7 @@ const InpStyles = {
 type Props = {}
 const testdata: IActionDataNumber = {
     callback: (a: number) => a * 5,
-    vars: [{ key: 'number', initValue: 0 }]
+    vars: [{ keys: 'number', initValue: 0 }]
 }
 
 const Homepage = observer((props: Props) => {

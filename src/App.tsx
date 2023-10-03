@@ -3,12 +3,13 @@ import './input.css'
 import Homepage from './Components/Pages/Homepage';
 import React, { useContext } from 'react'
 import { StoresContext } from './Context/ActionsContext';
-import { useStoresContext } from './Components/Hooks/useContext';
-import { ActionsStore } from './mobXStore/ActionStore';
+
+import { ActionsStore, StoreActions } from './mobXStore/ActionStore';
 
 
 const Stores = {
-  actionStore: new ActionsStore()
+  ActionsStore: new ActionsStore(),
+  storeActions: new StoreActions()
 }
 
 function App() {

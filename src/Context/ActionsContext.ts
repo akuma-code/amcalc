@@ -1,8 +1,9 @@
 import { createContext } from 'react'
-import { ActionsStore, v1DataNode } from '../mobXStore/ActionStore'
+import { ActionsStore, StoreV2DataNodes, v1DataNode } from '../mobXStore/ActionStore'
 
 export interface IStoresContext {
     ActionsStore: ActionsStore
+    StoreV2Nodes: StoreV2DataNodes
 }
 
 

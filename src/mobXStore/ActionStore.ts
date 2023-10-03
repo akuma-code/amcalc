@@ -7,8 +7,20 @@ export type v1DataNode = {
     data: IActionDataNumber
     desc?: string
     actionId?: string
+}
+
+
+
+export type Iv2DataNode = {
+    data: {
+        action: (...args: number[]) => number
+        variables: string[]
+    }
+    actionId?: string
+    desc?: string
 
 }
+type Iv2Data = Iv2DataNode['data']
 export class ActionsStore {
     nodes: v1DataNode[] = []
     constructor() {
@@ -33,15 +45,50 @@ export class ActionsStore {
     }
 }
 
+export class v2DataNode implements Iv2DataNode {
+    actionId?: string | undefined = "unnamed_action"
+    desc?: string | undefined = ""
+    constructor(public data: Iv2Data) {
+        this.data = data
+    }
+    setID(id: string) {
+        this.actionId = id
+    }
+    setDesc(desc: string) {
+        this.desc = desc
+    }
+    use(...args: number[]) {
+        const res = this.data.action(...args)
+        console.log('action result: ', res)
+        return res
+    }
 
-export class StoreActions {
-    public _actions: v1DataNode[]
+}
+
+export class StoreV2DataNodes {
+    store: v2DataNode[] = []
     constructor() {
-        this._actions = []
-        makeAutoObservable(this)
+        this.store = []
+    }
+
+    add(node: v2DataNode) {
+        const idCheck = (id: string) => this.store.map(n => n.actionId).includes(id)
+        if (!node.actionId) node.actionId = 'unnamed_action'
+
+        if (idCheck(node.actionId)) {
+            _log("Action with same id exist!")
+            return
+        }
+        this.store = [...this.store, node]
+        return
+    }
+    deleteNode(nodeId: string) {
+        this.store = [...this.store].filter(n => n.actionId !== nodeId)
     }
 
 
-
-
+    list() {
+        _log("CURRENT STORE: ")
+        return this.store.forEach(_log)
+    }
 }

@@ -2,14 +2,15 @@ import './App.css';
 import './input.css'
 import Homepage from './Components/Pages/Homepage';
 import React, { useContext } from 'react'
-import { StoresContext } from './Context/ActionsContext';
+import { IStoresContext, StoresContext } from './Context/ActionsContext';
 
-import { ActionsStore, StoreActions } from './mobXStore/ActionStore';
+import { ActionsStore, StoreV2DataNodes } from './mobXStore/ActionStore';
 
 
-const Stores = {
+const Stores: IStoresContext = {
   ActionsStore: new ActionsStore(),
-  storeActions: new StoreActions()
+  StoreV2Nodes: new StoreV2DataNodes()
+
 }
 
 function App() {

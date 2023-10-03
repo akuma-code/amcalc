@@ -1,12 +1,13 @@
-import React, { HTMLAttributes, useState } from 'react'
+import React, { HTMLAttributes, useState, useContext } from 'react'
 import { MathFunc, cc } from '../../Actions/ActionFuncs'
-import { _log, _styleSet } from '../../Helpers/HelpersFns'
+import { _log, _promptVar, _styleSet } from '../../Helpers/HelpersFns'
 import Icons from '../Icons/SvgIcons'
 import { ActionDataNode } from '../../Models/ActionModel'
-import { IActionDataNumber } from '../../mobXStore/ActionStore'
+import { IActionDataNumber, v2DataNode } from '../../mobXStore/ActionStore'
 import { observer } from 'mobx-react-lite'
 import { RootStore } from '../../Context/RootStore'
 import { IActionDataNode } from '../../Interfaces/MathActionsTypes'
+import { StoresContext } from '../../Context/ActionsContext'
 
 const InpStyles = {
     spanStyle: `rounded-l-md 
@@ -42,12 +43,12 @@ const InpStyles = {
             focus:border-transparent`
 }
 type Props = {}
-const testdata: IActionDataNumber = {
-    callback: (a: number) => a * 5,
-    vars: [{ keys: 'number', initValue: 0 }]
-}
+const fn = (x: number) => x * 5
 
-const Homepage = observer((props: Props) => {
+const Homepage = observer(() => {
+
+    const store = useContext(StoresContext)
+
     const [inputX, setInputX] = useState<string | number>("")
     const [res, setRes] = useState<number | null>(null)
     // const [store, setStore] = useState(new RootStore())
@@ -71,7 +72,17 @@ const Homepage = observer((props: Props) => {
         setInputX("")
     }
 
-
+    function addAction() {
+        if (!store) return
+        const { StoreV2Nodes } = store
+        const node = new v2DataNode({
+            action: fn,
+            variables: ['x']
+        })
+        StoreV2Nodes.add(node)
+        // _log(StoreV2Nodes)
+        StoreV2Nodes.list()
+    }
 
     return (
         <div className='bg-slate-500 w-auto h-auto flex p-2'>
@@ -86,7 +97,7 @@ const Homepage = observer((props: Props) => {
             <IconButton
                 svg_icon={Icons.PaperAirplane}
                 desc={newDesc(res) || 'Calculate'}
-                onClickFn={btnFn}
+                onClickFn={addAction}
             />
 
             <IconButton

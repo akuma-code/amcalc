@@ -1,57 +1,23 @@
-import React, { HTMLAttributes, useState, useContext } from 'react'
-import { MathFunc, cc } from '../../Actions/ActionFuncs'
-import { _log, _promptVar, _styleSet } from '../../Helpers/HelpersFns'
+import React, { useState, useContext } from 'react'
+import { _log, _promptVar } from '../../Helpers/HelpersFns'
 import Icons from '../Icons/SvgIcons'
-import { ActionDataNode } from '../../Models/ActionModel'
-import { IActionDataNumber, v2DataNode } from '../../mobXStore/ActionStore'
+import { v2DataNode } from '../../mobXStore/ActionStore'
 import { observer } from 'mobx-react-lite'
-import { RootStore } from '../../Context/RootStore'
-import { IActionDataNode } from '../../Interfaces/MathActionsTypes'
-import { StoresContext } from '../../Context/ActionsContext'
+import { StoresContext, useStoresContext } from '../Hooks/useStoresContext'
+import { IDTO_SimpleAction_v1, mbxDataNode } from '../../mobXStore/Stores'
+import ActionTemplates from '../Templates/ActionTemplates'
+import { InputWHelper } from '../UI/InputWHelper'
+import { IconButton } from '../UI/IconButton'
 
-const InpStyles = {
-    spanStyle: `rounded-l-md 
-            inline-flex  
-            items-center 
-            px-3 
-            border-t
-            bg-white 
-            border-l 
-            border-b 
-            border-gray-300
-            text-gray-500
-            shadow-sm 
-            text-sm`,
-    inputStyle: `rounded-r-lg 
-            flex-1 
-            appearance-none 
-            border 
-            border-gray-300 
-            w-full 
-            py-2 
-            px-4
-            bg-white
-            text-gray-700 
-            placeholder-gray-400
-            shadow-sm 
-            text-base
-                       `,
-    focusStyle: ` 
-            focus:outline-none 
-            focus:ring-2 
-            focus:ring-purple-600 
-            focus:border-transparent`
-}
+
+
 type Props = {}
-const fn = (x: number) => x * 5
 
 const Homepage = observer(() => {
-
-    const store = useContext(StoresContext)
+    const { mbxStore } = useStoresContext()
 
     const [inputX, setInputX] = useState<string | number>("")
     const [res, setRes] = useState<number | null>(null)
-    // const [store, setStore] = useState(new RootStore())
     const changeFn = (value: string | number) => {
         if (typeof value === 'string') return setInputX(prev => +value)
         else setInputX(prev => value)
@@ -73,15 +39,16 @@ const Homepage = observer(() => {
     }
 
     function addAction() {
-        if (!store) return
-        const { StoreV2Nodes } = store
-        const node = new v2DataNode({
-            action: fn,
-            variables: ['x']
-        })
-        StoreV2Nodes.add(node)
-        // _log(StoreV2Nodes)
-        StoreV2Nodes.list()
+
+        const fnScale = _promptVar("input scale rate")
+        const [a, b] = fnScale.split(' ')
+        const multiAction = ActionTemplates.multiple
+        const res = multiAction.callback(+a, +b)
+        _log(res)
+
+        const node = new mbxDataNode(multiAction)
+        mbxStore.store.push(node)
+
     }
 
     return (
@@ -93,7 +60,11 @@ const Homepage = observer(() => {
                 placeholder='input Number'
                 value={inputX.toString()}
             />
-
+            <IconButton
+                // svg_icon={Icons.BadgeCheck}
+                desc={'Add func to store'}
+                onClickFn={addAction}
+            />
             <IconButton
                 svg_icon={Icons.PaperAirplane}
                 desc={newDesc(res) || 'Calculate'}
@@ -105,57 +76,11 @@ const Homepage = observer(() => {
                 desc={'reset'}
                 onClickFn={reset}
             />
+
+
         </div>
     )
 })
 
 export default Homepage
-type InputProps = {
-    onChangeFn: (v: string) => void,
-    value?: string,
-    descriprion: string,
-    placeholder?: string
-}
-
-const InputWHelper: React.FC<InputProps> = ({ onChangeFn, descriprion, value = "", placeholder }) => {
-
-    return (
-        <div className="flex relative w-fit">
-            <span className={_styleSet(InpStyles.spanStyle)}>
-                {descriprion}
-            </span>
-            <input
-                placeholder={placeholder || descriprion}
-                type="text"
-                id="with-email"
-                onChange={(e) => onChangeFn(e.target.value)} value={value || ""}
-                name="url"
-                className={_styleSet(InpStyles.inputStyle, InpStyles.focusStyle)}
-            />
-        </div>
-    )
-}
-type IconButtonProps = {
-    desc: string
-    svg_icon?: JSX.Element
-    onClickFn: (...args: any[]) => void
-}
-const IconButton: React.FC<IconButtonProps> = (props) => {
-    const { desc, onClickFn, svg_icon } = props
-    const defaultIcon = <svg width="20" height="20" fill="currentColor" viewBox="0 0 2304 1792" className="mr-4" xmlns="http://www.w3.org/2000/svg">
-        <path d="M1728 448l-384 704h768zm-1280 0l-384 704h768zm821-192q-14 40-45.5 71.5t-71.5 45.5v1291h608q14 0 23 9t9 23v64q0 14-9 23t-23 9h-1344q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h608v-1291q-40-14-71.5-45.5t-45.5-71.5h-491q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h491q21-57 70-92.5t111-35.5 111 35.5 70 92.5h491q14 0 23 9t9 23v64q0 14-9 23t-23 9h-491zm-181 16q33 0 56.5-23.5t23.5-56.5-23.5-56.5-56.5-23.5-56.5 23.5-23.5 56.5 23.5 56.5 56.5 23.5zm1088 880q0 73-46.5 131t-117.5 91-144.5 49.5-139.5 16.5-139.5-16.5-144.5-49.5-117.5-91-46.5-131q0-11 35-81t92-174.5 107-195.5 102-184 56-100q18-33 56-33t56 33q4 7 56 100t102 184 107 195.5 92 174.5 35 81zm-1280 0q0 73-46.5 131t-117.5 91-144.5 49.5-139.5 16.5-139.5-16.5-144.5-49.5-117.5-91-46.5-131q0-11 35-81t92-174.5 107-195.5 102-184 56-100q18-33 56-33t56 33q4 7 56 100t102 184 107 195.5 92 174.5 35 81z">
-        </path>
-    </svg>
-    return (
-
-        <button className="flex mx-2 items-center px-6 py-2  transition ease-in duration-200 uppercase rounded-full hover:bg-gray-800 hover:text-white border-2 border-gray-900 focus:outline-none"
-            onClick={onClickFn}
-        >
-            {svg_icon ?? defaultIcon}
-            {desc}
-        </button>
-
-    )
-}
-
 

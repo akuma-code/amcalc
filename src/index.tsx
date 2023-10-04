@@ -3,13 +3,30 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { IStoresContext, StoresContext } from './Components/Hooks/useStoresContext';
+import { ActionsStore, StoreV2DataNodes } from './mobXStore/ActionStore';
+import mbxActionStore from './mobXStore/Stores';
+const Stores: IStoresContext = {
+  // ActionsStore: new ActionsStore(),
+  // StoreV2Nodes: new StoreV2DataNodes(),
+  mbxStore: new mbxActionStore()
 
+}
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <StoresContext.Provider
+      value={{
+        ...Stores
+      }}
+      key={'Store Provider'}
+    >
+
+      <App />
+    </StoresContext.Provider>
+
   </React.StrictMode>
 );
 

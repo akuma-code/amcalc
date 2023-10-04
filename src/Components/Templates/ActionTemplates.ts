@@ -1,4 +1,4 @@
-import { GetCallBackType } from "../../Interfaces/MathActionsTypes"
+import { DTO_FunctionType, GetCallBackType } from "../../Interfaces/MathActionsTypes"
 import { IDTO_SimpleAction_v1 } from "../../mobXStore/Stores"
 
 
@@ -13,11 +13,11 @@ const simplaAction = {
 
 function getHyp(a: number, b: number) {
     const hyp = Math.sqrt(a ^ 2 + b ^ 2)
-    return { hypotenuse: hyp }
+    return { hyp }
 }
 function getSum(...args: number[]) { return args.reduce((sum, c) => sum += c, 0) }
-type GetHypType = GetCallBackType<typeof getHyp>
-type GetSumType = GetCallBackType<typeof getSum>
+type GetHypType = DTO_FunctionType<typeof getHyp>
+type GetSumType = DTO_FunctionType<typeof getSum>
 
 type ActionTypesList =
     | GetHypType

@@ -1,28 +1,28 @@
 import { IActionData, IActionDataNode } from "../Interfaces/MathActionsTypes";
 
-export class ActionDataNode<R>  {
-    vars: string[];
-    actionCb: <T>(...args: T[]) => R;
-    desc?: string;
-    output!: <T>(...args: T[]) => string;
-    constructor(actionNode: IActionDataNode<R>) {
-        this.vars = actionNode.vars
-        this.actionCb = actionNode.actionCb
-        this.desc = actionNode.desc
+// export class ActionDataNode<R>  {
+//     vars: string[];
+//     actionCb: <T>(...args: T[]) => R;
+//     desc?: string;
+//     output!: <T>(...args: T[]) => string;
+//     constructor(actionNode: IActionDataNode<R>) {
+//         this.vars = actionNode.vars
+//         this.actionCb = actionNode.actionCb
+//         this.desc = actionNode.desc
 
-    }
+//     }
 
-    setOutput<T>(...args: T[]) {
+//     setOutput<T>(...args: T[]) {
 
-        const varSetup = !Array.isArray(this.vars) ? [{ id: this.vars, value: args[0] }] : this.vars.map((v, idx) => ({ id: v, value: args[idx] }))
-        const res = this.actionCb(...args)
-        console.log('varSetup: ', varSetup)
-        this.output = (result) => `Calculation result: ${result}`
+//         const varSetup = !Array.isArray(this.vars) ? [{ id: this.vars, value: args[0] }] : this.vars.map((v, idx) => ({ id: v, value: args[idx] }))
+//         const res = this.actionCb(...args)
+//         console.log('varSetup: ', varSetup)
+//         this.output = (result) => `Calculation result: ${result}`
 
-        return this.output(res)
-    }
+//         return this.output(res)
+//     }
 
-}
+// }
 
 const vars = ['width']
 const cb = (n: number) => n * 5

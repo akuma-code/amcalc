@@ -1,3 +1,5 @@
+import { DTO_FunctionType } from "../../Interfaces/MathActionsTypes"
+
 export type ICalcTemplate = {
     inputs: string[]
     callback: (...args: any[]) => {}
@@ -20,3 +22,19 @@ export const SumCalcTemplate: ICalcTemplate = {
     output: (a: number, b: number, sum: number,) => `Вычисленная сумма чисел ${a} и ${b} = ${sum}`
 }
 
+export function getNetSize(width: number, height: number) {
+
+    const net = {
+        w: width + 24,
+        h: height + 45
+    }
+
+    const scf = {
+        w: width - 45,
+        h: height - 47
+    }
+
+    return { net, scf }
+}
+
+export type DTO_GetNetSize = DTO_FunctionType<typeof getNetSize>

@@ -1,26 +1,30 @@
 import { IDTO_SimpleAction_v1 } from "../../mobXStore/Stores"
+const simplaAction = {
 
-const multiple = (a: number, b: number) => a * b
-const plus = (a: number, b: number) => a + b
-const minus = (a: number, b: number) => a - b
-const devide = (a: number, b: number) => a / b
+    multiple: (a: number, b: number) => a * b,
+    plus: (a: number, b: number) => a + b,
+    minus: (a: number, b: number) => a - b,
+    devide: (a: number, b: number) => a / b,
 
-const ActionTemplates: Record<string, IDTO_SimpleAction_v1> = {
+}
+
+
+const ActionTemplates: Record<keyof typeof simplaAction & string, IDTO_SimpleAction_v1> = {
     'multiple': {
         args_list: ['a', 'b'],
-        callback: multiple
+        callback: simplaAction.multiple
     },
     'plus': {
         args_list: ['a', 'b'],
-        callback: plus
+        callback: simplaAction.plus
     },
     'minus': {
         args_list: ['a', 'b'],
-        callback: minus
+        callback: simplaAction.minus
     },
     'devide': {
         args_list: ['a', 'b'],
-        callback: devide
+        callback: simplaAction.devide
     },
 }
 

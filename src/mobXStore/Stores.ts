@@ -37,6 +37,13 @@ export default class mbxActionStore<T>{
     }
 
     clear() {
+        _log("Store cleared!")
         return this.store = []
+    }
+
+    list() {
+        // _log("CURRENT STORE: ")
+        // this.store.forEach((n, idx) => _log(`idx:`, idx, n,))
+        return this.store.map(n => n)
     }
 }

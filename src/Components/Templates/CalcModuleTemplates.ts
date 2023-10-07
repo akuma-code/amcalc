@@ -1,4 +1,5 @@
 import { DTO_FunctionType } from "../../Interfaces/MathActionsTypes"
+import { mbxDataNode } from "../../mobXStore/Stores"
 
 export type ICalcTemplate = {
     inputs: string[]
@@ -34,7 +35,14 @@ export function getNetSize(width: number, height: number) {
         h: height - 47
     }
 
-    return { net, scf }
+    return { net, scf } as const
 }
-
+type IActionRad2Deg = (rad: number) => { deg: number }
 export type DTO_GetNetSize = DTO_FunctionType<typeof getNetSize>
+export type DTO_R2D = DTO_FunctionType<IActionRad2Deg>
+
+
+
+
+
+

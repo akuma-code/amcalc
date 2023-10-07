@@ -4,7 +4,7 @@ export type ISimpleMathFunc = (a: number, b: number) => number
 
 export type IActionData<T> = {
     args: T | T[]
-    callback?: (...args: T[]) => unknown | null
+    callback?: (...args: T[]) => {}
     output?: (...args: any[]) => string | string
     description?: string
 }
@@ -31,9 +31,15 @@ export type GetCallBackType<T> = T extends (...args: any[]) => infer R ?
         output: R
     }
     : never
+
+
 export type DTO_FunctionType<T> = T extends (...args: any[]) => {} ? {
     args: Parameters<T>
     fn: T
 } : never
 
-export type DTO_FnReturnType<T> = T extends (...args: any[]) => infer R ? R : never
+export type DTO_TemplateObj<T extends (...args: any[]) => {}> = {
+    fn: T
+    args: Parameters<T>
+    output: ReturnType<T>
+}

@@ -33,7 +33,7 @@ export type GetCallBackType<T> = T extends (...args: any[]) => infer R ?
     : never
 
 
-export type DTO_FunctionType<T> = T extends (...args: any[]) => {} ? {
+export type DTO_FunctionType<T> = T extends (...args: any[]) => any ? {
     args: Parameters<T>
     fn: T
 } : never

@@ -8,6 +8,8 @@ import ActionTemplates from '../Templates/ActionTemplates'
 import { InputWHelper } from '../UI/InputWHelper'
 import { IconButton } from '../UI/IconButton'
 import useInput from '../Hooks/useInput'
+import CalcOffset5 from '../Templates/CalcOffset5'
+import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
 
 
 
@@ -15,19 +17,9 @@ type Props = {}
 
 const Homepage = observer(() => {
     const { mbxStore } = useStoresContext()
-    const [inpX, onChangeX] = useInput(`26`)
-    // const [inputX, setInputX] = useState<string | number>("")
+    const [inpX, onChangeX] = useInput(``)
     const [res, setRes] = useState<number | null>(null)
-    // const changeFn = (value: string | number) => {
-    //     if (typeof value === 'string') return setInputX(prev => +value)
-    //     else setInputX(prev => value)
-    // }
-    // const btnFn = (cb: (n: number) => number) => {
-    //     const x = typeof inputX === 'string' ? +inputX : inputX
-    //     setRes(prev => cb(x))
 
-
-    // }
     const newDesc = (text: string | number | null) => {
         if (!text) return null
         const res = typeof text === 'string' ? text : `${text}`
@@ -54,8 +46,9 @@ const Homepage = observer(() => {
     }
 
     return (
-        <div className='bg-slate-500 w-auto h-auto flex p-2' key={'HomePage'}>
 
+        <div className='bg-slate-500 w-auto h-auto flex p-2' key={'HomePage'}>
+            {/* 
             <InputWHelper
                 // onChangeFn={()=>onChangeX(inpX)}
                 hookChange={onChangeX}
@@ -78,9 +71,12 @@ const Homepage = observer(() => {
                 svg_icon={Icons.RoundedArrows}
                 desc={'reset'}
                 onClickFn={reset}
+            /> */}
+
+            <CalcOffset5
+                action={CalcOffsetType5}
+                args={[1000, 2000, 1500, 20, 20]}
             />
-
-
         </div>
     )
 })

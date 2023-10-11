@@ -46,7 +46,10 @@ const Homepage = observer(() => {
 
     return (
 
-        <div className='bg-slate-500 w-auto h-auto flex p-2' key={'HomePage'}>
+        <div >
+            <div className='bg-slate-500 w-auto h-auto flex p-2' key={'HomePage'}>
+
+            </div>
             {/* <IconButton
                 // svg_icon={Icons.BadgeCheck}
                 desc={'Add func to store'}
@@ -81,7 +84,17 @@ const Homepage = observer(() => {
                 }}
                 fn={CalcOffsetType5}
             /> */}
-
+            <div className='border-red-950 border-2 p-2 mt-2'>
+                <CalcOffset5Component
+                    fields={{
+                        W: "",
+                        da: "",
+                        db: "",
+                        H: "",
+                        h: "",
+                    }}
+                />
+            </div>
         </div>
     )
 })

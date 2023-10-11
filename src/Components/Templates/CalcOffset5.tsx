@@ -24,9 +24,9 @@ const initState = {
 
 type InputState = { [K in keyof typeof initState['fields']]: number }
 
-const CalcOffset5 = ({ fields, fn }: typeof initState) => {
+const CalcOffset5 = ({ fields, fn }: Partial<typeof initState>) => {
 
-    const [inputs, setInputs] = useState<Record<keyof InputState, number | string>>(fields)
+    const [inputs, setInputs] = useState<Record<keyof InputState, number | string>>(fields!)
     const changeFn = (key: keyof InputState, value: number) => setInputs(prev => ({ ...prev, [key]: value }))
     const onSubmitFn = (e: React.FormEvent) => {
 

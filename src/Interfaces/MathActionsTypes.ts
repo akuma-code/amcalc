@@ -28,7 +28,7 @@ export type GetCallBackType<T> = T extends (...args: any[]) => infer R ?
     {
         args: Parameters<T>
         fn: T
-        output: R
+
     }
     : never
 

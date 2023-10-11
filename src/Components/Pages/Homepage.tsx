@@ -8,7 +8,7 @@ import ActionTemplates from '../Templates/ActionTemplates'
 import { InputWHelper } from '../UI/InputWHelper'
 import { IconButton } from '../UI/IconButton'
 import useInput from '../Hooks/useInput'
-import CalcOffset5 from '../Templates/CalcOffset5'
+import CalcOffset5Component from '../Templates/CalcOffset5'
 import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
 
 
@@ -73,10 +73,7 @@ const Homepage = observer(() => {
                 onClickFn={reset}
             /> */}
 
-            <CalcOffset5
-                action={CalcOffsetType5}
-                args={[1000, 2000, 1500, 20, 20]}
-            />
+
         </div>
     )
 })

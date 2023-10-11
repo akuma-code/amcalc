@@ -2,28 +2,28 @@ import React from 'react';
 import { _styleSet } from '../../Helpers/HelpersFns';
 
 type InputProps = {
-    onChangeFn?: (v: string) => void;
-    hookChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+    // onChangeFn?: (v: string) => void;
+    onChangeFn?: (e: React.ChangeEvent<HTMLInputElement>) => void
     value?: string;
-    descriprion: string;
+    description: string;
     placeholder?: string;
 };
 
 
 
-export const InputWHelper: React.FC<InputProps> = ({ onChangeFn, descriprion, value = "", placeholder, hookChange }) => {
+export const InputWHelper: React.FC<InputProps> = ({ description, value, placeholder, onChangeFn }) => {
 
     return (
-        <div className="flex relative w-fit">
-            <span className={_styleSet(InpStyles.spanStyle)}>
-                {descriprion}
+        <div className="flex relative w-fit m-1">
+            <span className={_styleSet(InpStyles.spanStyle, "w-fit min-w-[25%]")}>
+                {description}
             </span>
             <input
-                placeholder={placeholder || descriprion}
+                placeholder={placeholder}
                 type="text"
-                id="with-email"
-                onChange={hookChange}
-                // onChange={(e) => onChangeFn(e.target.value)} 
+                id="with-helper"
+                onChange={onChangeFn}
+
                 value={value || ""}
                 name="url"
                 className={_styleSet(InpStyles.inputStyle, InpStyles.focusStyle)} />

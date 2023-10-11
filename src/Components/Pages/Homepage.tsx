@@ -33,7 +33,6 @@ const Homepage = observer(() => {
     }
 
     function addAction() {
-        _log(Math.tan(_deg2rad(75)))
         // const fnScale = _promptVar("input scale rate")
         // const [a, b] = fnScale.split(' ')
         // const multiAction = ActionTemplates.multiple
@@ -48,11 +47,11 @@ const Homepage = observer(() => {
     return (
 
         <div className='bg-slate-500 w-auto h-auto flex p-2' key={'HomePage'}>
-            <IconButton
+            {/* <IconButton
                 // svg_icon={Icons.BadgeCheck}
                 desc={'Add func to store'}
                 onClickFn={addAction}
-            />
+            /> */}
             {/* 
             <InputWHelper
                 // onChangeFn={()=>onChangeX(inpX)}
@@ -72,11 +71,17 @@ const Homepage = observer(() => {
                 desc={'reset'}
                 onClickFn={reset}
             /> */}
-
             <CalcOffset5
-                action={CalcOffsetType5}
-                args={[1000, 1260, 1000, 20, 20]}
+                fields={{
+                    W: 'Width',
+                    h: 'HeightMin',
+                    H: 'Height',
+                    da: 'da',
+                    db: 'db',
+                }}
+                fn={CalcOffsetType5}
             />
+
         </div>
     )
 })

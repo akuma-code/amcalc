@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { _log, _promptVar } from '../../Helpers/HelpersFns'
+import { _deg2rad, _log, _promptVar } from '../../Helpers/HelpersFns'
 import Icons from '../Icons/SvgIcons'
 import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../Hooks/useStoresContext'
@@ -33,7 +33,6 @@ const Homepage = observer(() => {
     }
 
     function addAction() {
-
         // const fnScale = _promptVar("input scale rate")
         // const [a, b] = fnScale.split(' ')
         // const multiAction = ActionTemplates.multiple
@@ -48,6 +47,11 @@ const Homepage = observer(() => {
     return (
 
         <div className='bg-slate-500 w-auto h-auto flex p-2' key={'HomePage'}>
+            {/* <IconButton
+                // svg_icon={Icons.BadgeCheck}
+                desc={'Add func to store'}
+                onClickFn={addAction}
+            /> */}
             {/* 
             <InputWHelper
                 // onChangeFn={()=>onChangeX(inpX)}
@@ -55,11 +59,6 @@ const Homepage = observer(() => {
                 descriprion='number'
                 placeholder='input Number'
                 value={inpX}
-            />
-            <IconButton
-                // svg_icon={Icons.BadgeCheck}
-                desc={'Add func to store'}
-                onClickFn={addAction}
             />
             <IconButton
                 svg_icon={Icons.PaperAirplane}
@@ -72,7 +71,16 @@ const Homepage = observer(() => {
                 desc={'reset'}
                 onClickFn={reset}
             /> */}
-
+            {/* <CalcOffset5
+                fields={{
+                    W: 'Width',
+                    h: 'HeightMin',
+                    H: 'Height',
+                    da: 'da',
+                    db: 'db',
+                }}
+                fn={CalcOffsetType5}
+            /> */}
 
         </div>
     )

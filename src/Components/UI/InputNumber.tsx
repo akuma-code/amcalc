@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { HTMLAttributes } from 'react'
 import { _styleSet } from '../../Helpers/HelpersFns'
 
 const InpStyles = {
@@ -36,22 +36,23 @@ const InpStyles = {
 }
 
 type InputNumberProps = {
-    onChangeFn: (e: React.ChangeEvent<HTMLInputElement>) => void
-    value: number
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    value?: number | string
     desc?: string
-}
 
-const InputNumber: React.FC<InputNumberProps> = ({ onChangeFn, value, desc }) => {
+} & HTMLAttributes<HTMLInputElement>
+
+const InputNumber: React.FC<InputNumberProps> = ({ onChange, desc, value }) => {
 
 
     return (
-        <div className="flex relative w-fit m-1">
+        <div className="flex relative w-fit m-1 ">
             <span className={_styleSet(InpStyles.spanStyle, "w-fit min-w-[25%]")}>
                 {desc}
             </span>
             <input
                 type="number"
-                onChange={onChangeFn}
+                onChange={onChange}
                 value={value}
                 className={_styleSet(InpStyles.inputStyle, InpStyles.focusStyle)} />
         </div>
@@ -59,5 +60,6 @@ const InputNumber: React.FC<InputNumberProps> = ({ onChangeFn, value, desc }) =>
 }
 
 
-
+export const RefInput = React.forwardRef((props: InputNumberProps, ref) => <InputNumber {...props} />)
 export default InputNumber
+

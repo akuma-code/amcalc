@@ -1,10 +1,12 @@
-import { _deg2rad, _rad2deg } from "../Helpers/HelpersFns";
+import { _rad2deg } from "../Helpers/HelpersFns";
 import { DTO_FunctionType, GetCallBackType } from "../Interfaces/MathActionsTypes";
 
+type IFuncArgs = {
+    W: number, H: number, h: number, da: number, db: number
+}
+export function CalcOffsetType5(args: IFuncArgs) {
+    const { H, W, da, db, h } = args
 
-export function CalcOffsetType5(W: number, H: number, h: number, da: number, db: number) {
-
-    if (!W || !H || !h || !da || !db) return
 
     let x: number, y: number;
     const dh = H - h
@@ -12,24 +14,18 @@ export function CalcOffsetType5(W: number, H: number, h: number, da: number, db:
     const A = +_rad2deg(Math.atan(tgA)).toFixed(2)
     x = +(da / tgA).toFixed(2)
     y = +(db / Math.cos(A)).toFixed(2)
-    const inputs = {
-        Width: W,
-        MaxHeight: H,
-        MinHeight: h,
-        da,
-        db,
-    }
+
     const calc = {
+        angle: A,
+        sumXY: +(x + y).toFixed(2),
         deltaH: dh,
         tgA,
-        angle: A,
         x,
         y,
-        sumXY: x + y
 
     }
 
-    return { inputs, calc }
+    return { ...calc }
 
 }
 

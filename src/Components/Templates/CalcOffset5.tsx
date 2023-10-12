@@ -40,21 +40,22 @@ const CalcOffset5 = ({ fields, fn }: Partial<typeof initState>) => {
         <div>
             <form onSubmit={onSubmitFn}>
                 {
-                    Object.entries(inputs).map(([key, v]) =>
-                        // <InputWHelper
-                        //     placeholder={fields[key as keyof typeof fields]}
-                        //     onChangeFn={(e) => changeFn(key as keyof typeof fields, +e.target.value)}
-                        //     description={key}
-                        //     key={key}
-                        //     value={v?.toString()}
-                        // />
-                        <InputNumber
-                            onChangeFn={(e) => changeFn(key as keyof typeof fields, +e.target.value)}
-                            value={+inputs[key as keyof typeof inputs]}
-                            desc={key}
-                            key={key}
-                        />
-                    )
+                    // Object.entries(inputs).map(([key, v]) =>
+                    // <InputWHelper
+                    //     placeholder={fields[key as keyof typeof fields]}
+                    //     onChangeFn={(e) => changeFn(key as keyof typeof fields, +e.target.value)}
+                    //     description={key}
+                    //     key={key}
+                    //     value={v?.toString()}
+                    // />
+                    // <InputNumber
+                    //     onChange={(e) => changeFn(key as keyof typeof fields, +e.target.value)}
+                    //     value={+inputs[key as keyof typeof inputs]}
+                    //     desc={key}
+                    //     key={key}
+                    // />
+
+                    // )
                 }
                 <IconButton type='submit'
                     desc='Submit'

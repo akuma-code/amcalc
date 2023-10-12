@@ -10,6 +10,7 @@ import { IconButton } from '../UI/IconButton'
 import useInput from '../Hooks/useInput'
 import CalcOffset5Component from '../Templates/CalcOffset5'
 import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
+import { FlexForm } from '../FlexForm/FlexForm'
 
 
 
@@ -50,41 +51,8 @@ const Homepage = observer(() => {
             <div className='bg-slate-500 w-auto h-auto flex p-2' key={'HomePage'}>
 
             </div>
-            {/* <IconButton
-                // svg_icon={Icons.BadgeCheck}
-                desc={'Add func to store'}
-                onClickFn={addAction}
-            /> */}
-            {/* 
-            <InputWHelper
-                // onChangeFn={()=>onChangeX(inpX)}
-                hookChange={onChangeX}
-                descriprion='number'
-                placeholder='input Number'
-                value={inpX}
-            />
-            <IconButton
-                svg_icon={Icons.PaperAirplane}
-                desc={newDesc(res) || 'Calculate'}
-                onClickFn={() => { }}
-            />
 
-            <IconButton
-                svg_icon={Icons.RoundedArrows}
-                desc={'reset'}
-                onClickFn={reset}
-            /> */}
-            {/* <CalcOffset5
-                fields={{
-                    W: 'Width',
-                    h: 'HeightMin',
-                    H: 'Height',
-                    da: 'da',
-                    db: 'db',
-                }}
-                fn={CalcOffsetType5}
-            /> */}
-            <div className='border-red-950 border-2 p-2 mt-2'>
+            {/* <div className='border-red-950 border-2 p-2 mt-2'>
                 <CalcOffset5Component
                     fields={{
                         W: "",
@@ -94,7 +62,19 @@ const Homepage = observer(() => {
                         h: "",
                     }}
                 />
-            </div>
+            </div> */}
+
+            <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
+                submitFn={CalcOffsetType5}
+                defaultState={{
+                    // W: 1000,
+                    // H: 1500,
+                    // h: 850,
+                    // da: 25,
+                    // db: 25,
+                }}
+            />
+
         </div>
     )
 })

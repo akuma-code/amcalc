@@ -24,25 +24,25 @@ type ActionTypesList =
     | GetSumType
 
 
-const ActionTemplates: Record<keyof typeof simplaAction & string, IDTO_SimpleAction_v1> = {
-    'multiple': {
-        args_list: ['a', 'b'],
-        callback: simplaAction.multiple
-    },
-    'plus': {
-        args_list: ['a', 'b'],
-        callback: simplaAction.plus
-    },
-    'minus': {
-        args_list: ['a', 'b'],
-        callback: simplaAction.minus
-    },
-    'devide': {
-        args_list: ['a', 'b'],
-        callback: simplaAction.devide
-    },
-}
+// const ActionTemplates: Record<keyof typeof simplaAction & string, IDTO_SimpleAction_v1> = {
+//     'multiple': {
+//         args_list: ['a', 'b'],
+//         callback: simplaAction.multiple
+//     },
+//     'plus': {
+//         args_list: ['a', 'b'],
+//         callback: simplaAction.plus
+//     },
+//     'minus': {
+//         args_list: ['a', 'b'],
+//         callback: simplaAction.minus
+//     },
+//     'devide': {
+//         args_list: ['a', 'b'],
+//         callback: simplaAction.devide
+//     },
+// }
 
 
 
-export default ActionTemplates
+// export default ActionTemplates

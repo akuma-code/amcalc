@@ -5,6 +5,9 @@ import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
 import { _log } from '../../Helpers/HelpersFns'
 import Input from '@mui/material/Input'
 import { FormControl, InputLabel, TextField } from '@mui/material'
+import { useStoresContext } from '../Hooks/useStoresContext'
+import { DTO_StoreNode, mbxDataNode, mbxFnNode, mbxStoreNode } from '../../mobXStore/Stores'
+
 type FormProps = {
     W: number
     H: number
@@ -28,16 +31,17 @@ export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defau
     const { register, handleSubmit, watch, formState: { errors, submitCount }, setError } = useForm<FormProps>({
         defaultValues: defaultState ?? {}
     })
-
+    const { mbxStore } = useStoresContext()
 
     const onFinish: SubmitHandler<FormProps> = (formdata: FormProps) => {
         if (!submitFn) {
             _log("No submit Fn")
             return { formdata }
         }
-
         const res = submitFn(formdata)
-        _log("result: ", res)
+        const store_node = new mbxDataNode(formdata as FormProps)
+        // mbxStore.add(store_node)
+        _log(store_node)
         return res
     }
     const resetFn = () => {

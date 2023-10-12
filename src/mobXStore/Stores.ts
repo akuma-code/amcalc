@@ -3,8 +3,9 @@ import { _ID, _log } from "../Helpers/HelpersFns"
 import { DTO_FunctionType, DTO_TemplateObj } from "../Interfaces/MathActionsTypes"
 
 export interface IDTO_SimpleAction_v1 {
-    callback: (...args: number[]) => number
-    args_list: string[]
+    initState: { [key: string]: number },
+    result: { [key: string]: number },
+
 }
 
 
@@ -24,7 +25,7 @@ export class mbxDataNode<T>{
 
 
 export default class mbxActionStore<T>{
-    store: T[] = []
+    store: T[] = [] as T[]
     constructor() {
         makeAutoObservable(this)
     }
@@ -50,32 +51,27 @@ export default class mbxActionStore<T>{
 }
 
 
-export class mbxFnNode<T extends (...args: any[]) => {}> {
-    fn: T
-    args?: Parameters<T>
-    constructor(public func: T, args?: Parameters<T>) {
-        this.fn = func
-        this.args = args
+export class mbxFnNode<T> {
+    fn!: (...args: T[]) => any
+    args?: T[]
+    constructor(fn: (...args: T[]) => any) {
+        this.fn = fn
+
     }
 
-    getDTO_Template(...args: typeof this.args[]) {
 
-        if (!args) return {
-            fn: this.fn
-        } as DTO_FunctionType<T>
-        const output = this.fn(...args)
-        return {
-            args, fn: this.fn, output
-        } as DTO_TemplateObj<T>
-    }
 }
+export type DTO_StoreNode<T> = {
+    initState?: T,
+    result?: { [field: string]: number },
+}
+export class mbxStoreNode<T extends DTO_StoreNode<T>>{
+    constructor(
+        public node: DTO_StoreNode<T>
+    ) {
 
-export class mbxFnStore<T>{
-
+    }
 }
 
 
 function multi5(a: number) { return a * 5 }
-const node = new mbxFnNode(multi5, [4])
-
-const t = node.getDTO_Template()

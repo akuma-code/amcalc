@@ -1,5 +1,6 @@
 import { _rad2deg } from "../Helpers/HelpersFns";
 import { DTO_FunctionType, GetCallBackType } from "../Interfaces/MathActionsTypes";
+import { mbxFnNode } from "../mobXStore/Stores";
 
 type IFuncArgs = {
     W: number, H: number, h: number, da: number, db: number
@@ -30,3 +31,5 @@ export function CalcOffsetType5(args: IFuncArgs) {
 }
 
 export type DTO_CalcOffset5 = GetCallBackType<typeof CalcOffsetType5>
+
+export const Offset5Node = new mbxFnNode<IFuncArgs>(CalcOffsetType5)

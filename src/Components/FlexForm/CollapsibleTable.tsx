@@ -49,14 +49,16 @@ function Row(props: { row: ReturnType<typeof createData> }) {
 
     return (
         <React.Fragment>
-            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+            <TableRow
+                sx={{ '& > *': { borderBottom: 'unset', borderTop: 'border' }, '&:hover': { backgroundColor: '#6f2d2d' } }}
+            >
                 <TableCell>
                     <IconButton
                         aria-label="expand row"
                         size="small"
-                        onClick={() => setOpen(!open)}
+                        onClick={() => setOpen(prev => !prev)}
                     >
-                        {open ? Icons.DoubleShevronDown : Icons.DoubleShevronUp}
+                        {open ? Icons.DoubleShevronUp : Icons.DoubleShevronDown}
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">

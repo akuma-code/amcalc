@@ -46,7 +46,7 @@ export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defau
     if (fields.length === 0) return <div>No inputs finded</div>
     return (
         <div className='m-1 p-2 border-slate-400 border-2 rounded-lg w-fit h-fit'>
-            <form name='flexform' id='flex_form' onSubmit={handleSubmit(onFinish)}>
+            <form name='flexform' id='flex_form' onSubmit={handleSubmit(onFinish)} >
                 <div className='flex flex-col gap-2 justify-items-center' >
                     {
 
@@ -61,6 +61,7 @@ export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defau
                                         size='small'
                                         error={errors[field as keyof FormProps] ? true : false}
                                         label={field}
+                                        autoComplete='true'
                                     />
                                     {
                                         errors[field as keyof FormProps]?.type === "required" && (

@@ -27,41 +27,10 @@ type InputState = { [K in keyof typeof initState['fields']]: number }
 const CalcOffset5 = ({ fields, fn }: Partial<typeof initState>) => {
 
     const [inputs, setInputs] = useState<Record<keyof InputState, number | string>>(fields!)
-    const changeFn = (key: keyof InputState, value: number) => setInputs(prev => ({ ...prev, [key]: value }))
-    const onSubmitFn = (e: React.FormEvent) => {
 
-        e.preventDefault()
-        const target = e.target as typeof e.target & InputState
-
-
-        _log(e)
-    }
     return (
         <div>
-            <form onSubmit={onSubmitFn}>
-                {
-                    // Object.entries(inputs).map(([key, v]) =>
-                    // <InputWHelper
-                    //     placeholder={fields[key as keyof typeof fields]}
-                    //     onChangeFn={(e) => changeFn(key as keyof typeof fields, +e.target.value)}
-                    //     description={key}
-                    //     key={key}
-                    //     value={v?.toString()}
-                    // />
-                    // <InputNumber
-                    //     onChange={(e) => changeFn(key as keyof typeof fields, +e.target.value)}
-                    //     value={+inputs[key as keyof typeof inputs]}
-                    //     desc={key}
-                    //     key={key}
-                    // />
 
-                    // )
-                }
-                <IconButton type='submit'
-                    desc='Submit'
-
-                />
-            </form>
         </div>
     )
 }

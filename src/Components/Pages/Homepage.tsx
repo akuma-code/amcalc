@@ -12,6 +12,8 @@ import CalcOffset5Component from '../Templates/CalcOffset5'
 import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
 import { FlexForm } from '../FlexForm/FlexForm'
 import CollapsibleTable from '../FlexForm/CollapsibleTable'
+import { OutputTable } from '../FlexForm/OutputTable'
+import { Box, Stack } from '@mui/material'
 
 
 
@@ -64,20 +66,28 @@ const Homepage = observer(() => {
                     }}
                 />
             </div> */}
-            <div>
+            <div key={'OffsetType5 Container'} >
+                <Box
 
-                <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
-                    submitFn={CalcOffsetType5}
-                    defaultState={{
-                        // W: 1000,
-                        // H: 1500,
-                        // h: 850,
-                        // da: 25,
-                        // db: 25,
-                    }}
-                />
+                >
+                    <Stack direction={'row'}>
+                        <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
+                            submitFn={CalcOffsetType5}
+                            defaultState={{
 
-                <CollapsibleTable />
+                                W: 1000,
+                                H: 1500,
+                                h: 850,
+                                da: 25,
+                                db: 25,
+                            }}
+                        />
+                        {/* <CollapsibleTable /> */}
+                        <OutputTable
+
+                        />
+                    </Stack>
+                </Box>
             </div>
 
         </div>

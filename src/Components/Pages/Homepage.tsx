@@ -11,6 +11,7 @@ import useInput from '../Hooks/useInput'
 import CalcOffset5Component from '../Templates/CalcOffset5'
 import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
 import { FlexForm } from '../FlexForm/FlexForm'
+import CollapsibleTable from '../FlexForm/CollapsibleTable'
 
 
 
@@ -63,17 +64,21 @@ const Homepage = observer(() => {
                     }}
                 />
             </div> */}
+            <div>
 
-            <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
-                submitFn={CalcOffsetType5}
-                defaultState={{
-                    // W: 1000,
-                    // H: 1500,
-                    // h: 850,
-                    // da: 25,
-                    // db: 25,
-                }}
-            />
+                <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
+                    submitFn={CalcOffsetType5}
+                    defaultState={{
+                        // W: 1000,
+                        // H: 1500,
+                        // h: 850,
+                        // da: 25,
+                        // db: 25,
+                    }}
+                />
+
+                <CollapsibleTable />
+            </div>
 
         </div>
     )

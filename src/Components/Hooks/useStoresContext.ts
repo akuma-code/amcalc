@@ -5,7 +5,7 @@ import { useContext } from 'react'
 export interface IStoresContext {
     ActionsStore?: ActionsStore
     StoreV2Nodes?: StoreV2DataNodes
-    mbxStore: mbxActionStore<mbxDataNode<IDTO_SimpleAction_v1>>
+    mbxStore: mbxActionStore<{ nodeId: string, data: any }>
 }
 
 

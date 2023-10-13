@@ -7,28 +7,44 @@ type OutputTableProps = {
     storedNodes?: ReturnType<typeof createOutputTableData>[]
 }
 type NodesRowProps = {
-    initState: { [field: string]: number },
+    args: { [field: string]: number },
     result: { [field: string]: number },
 }
-const NodesRow: React.FC<NodesRowProps> = ({ initState, result }) => {
+const NodesRow: React.FC<NodesRowProps> = ({ args, result }) => {
 
 
     return <TableRow
 
         sx={{
-            // display: 'flex',
-            // justifyContent: 'space-between',
-            alignItems: 'center'
+
         }}>
-        <TableCell sx={{ border: 2, borderTop: 0, borderLeft: 0, flexWrap: 'wrap', display: 'flex', borderRight: 0 }} align='right'>
-            {Object.entries(initState).map(([k, v]) =>
-                <li key={k} className='  p-1'>{k}:{v}</li>
-            )}
+        <TableCell sx={{
+            // border: 2,
+            borderTop: 0,
+            borderLeft: 0,
+            borderRight: 2,
+            // flexDirection: 'row',
+        }}
+        >
+            {
+                Object.entries(args).map(([k, v]) =>
+                    <li key={k} className='flex flex-row justify-between'><span>{k}: </span><b>{v}</b></li>
+                )
+            }
         </TableCell>
-        <TableCell sx={{ border: 2, borderRadius: '2em', borderTop: 0, borderRight: 0 }}>
-            {Object.entries(result).map(([k, v]) =>
-                <li key={k} className='flex flex-row justify-between'><span>{k}: </span><b>{v}</b></li>
-            )}
+        <TableCell sx={{
+            // border: 2,
+            borderTop: 0,
+            borderRight: 0,
+            borderLeft: 2
+        }}
+            scope='row'
+            component={'th'}>
+            {
+                Object.entries(result).map(([k, v]) =>
+                    <li key={k} className='flex flex-row justify-between'><span>{k}: </span><b>{v}</b></li>
+                )
+            }
         </TableCell>
     </TableRow>
 }
@@ -37,21 +53,31 @@ export const OutputTable: React.FC<OutputTableProps> = ({ storedNodes = stored }
     const nodes = storedNodes || []
 
     return (
-        <TableContainer sx={{ border: '2px solid', borderRadius: '2%', margin: '1em', maxWidth: 800 }}
-            component={Paper}  >
-            <Table>
+        <TableContainer sx={{
+            border: '2px solid',
+            borderRadius: '2%',
+            margin: '1em',
+            maxWidth: 300,
+            height: 'fit-content',
+            maxHeight: 600
+
+        }}
+            component={Paper}
+        >
+            <Table stickyHeader>
                 <TableHead >
                     <TableRow >
-                        <TableCell align='center' sx={{ border: 2, borderRadius: '2em', borderTop: 0 }}>Вводные</TableCell>
-                        <TableCell align='center' sx={{ border: 2, borderRadius: '2em', borderTop: 0 }}>Результат</TableCell>
+                        <TableCell align='center' sx={{ border: 2, borderTop: 0 }}>Вводные</TableCell>
+                        <TableCell align='center' sx={{ border: 2, borderTop: 0 }}>Результат</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody
+                    sx={{
+
+                    }} >
                     {
                         nodes.map((node, idx) =>
-
                             <NodesRow {...node as NodesRowProps} key={idx} />
-
                         )
                     }
 
@@ -65,11 +91,11 @@ export const OutputTable: React.FC<OutputTableProps> = ({ storedNodes = stored }
 }
 
 export function createOutputTableData(
-    initState: { [Key: string]: number },
+    args: { [Key: string]: number },
     result: { [Key: string]: number | string },
-    fn?: (...args: any[]) => any
+
 ) {
-    return { initState, result, fn } as const
+    return { args, result }
 }
 
 const stored = [
@@ -101,4 +127,4 @@ const stored = [
         da: 10,
         db: 10,
     },
-].map(n => createOutputTableData(n, CalcOffsetType5(n), CalcOffsetType5))
+].map(n => createOutputTableData(n, CalcOffsetType5(n)))

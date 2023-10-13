@@ -9,10 +9,10 @@ import { InputWHelper } from '../UI/InputWHelper'
 import { IconButton } from '../UI/IconButton'
 import useInput from '../Hooks/useInput'
 import CalcOffset5Component from '../Templates/CalcOffset5'
-import { CalcOffsetType5, Offset5Node } from '../../Actions/TestAction_Offset5'
+import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
 import { FlexForm } from '../FlexForm/FlexForm'
 import CollapsibleTable from '../FlexForm/CollapsibleTable'
-import { OutputTable } from '../FlexForm/OutputTable'
+import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
 
 
@@ -23,7 +23,7 @@ const Homepage = observer(() => {
     const { mbxStore } = useStoresContext()
     const [inpX, onChangeX] = useInput(``)
     const [res, setRes] = useState<number | null>(null)
-
+    const stored = mbxStore.store.map(n => createOutputTableData(n.data.initState, n.data.result))
     const newDesc = (text: string | number | null) => {
         if (!text) return null
         const res = typeof text === 'string' ? text : `${text}`
@@ -36,7 +36,7 @@ const Homepage = observer(() => {
         _log(mbxStore.list())
     }
 
-    _log(Offset5Node)
+    // _log(Offset5Node)
     function addAction() {
         // const fnScale = _promptVar("input scale rate")
         // const [a, b] = fnScale.split(' ')
@@ -83,9 +83,8 @@ const Homepage = observer(() => {
                                 db: 25,
                             }}
                         />
-                        {/* <CollapsibleTable /> */}
                         <OutputTable
-
+                            storedNodes={stored}
 
                         />
                     </Stack>

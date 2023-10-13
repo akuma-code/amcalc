@@ -1,33 +1,8 @@
 import { makeAutoObservable } from "mobx"
-import { _ID, _log } from "../Helpers/HelpersFns"
-import { DTO_FunctionType, DTO_StoreObj } from "../Interfaces/MathActionsTypes"
+import { _log } from "../Helpers/HelpersFns"
+import { FnStoreNode } from "../Models/ActionModel"
 
-export interface IDTO_SimpleAction_v1 {
-    initState: { [key: string]: number },
-    result: { [key: string]: number },
-
-}
-export interface ImbxDataNode<D> {
-    nodeId: string
-    data: D
-}
-
-export class mbxDataNode<D>{
-    nodeId: string
-
-    constructor(public data: D) {
-        this.nodeId = _ID()
-        this.data = data
-    }
-
-    set desc(msg: string) {
-        this.desc = msg
-    }
-
-}
-
-
-export default class mbxActionStore<T extends { nodeId?: string, data: any }>{
+export default class mbxFuncNodesStore<T extends { nodeId: string, saved: any[] }>{
     store: T[] = [] as T[]
     constructor() {
         makeAutoObservable(this)
@@ -54,4 +29,3 @@ export default class mbxActionStore<T extends { nodeId?: string, data: any }>{
         return this.store.map(n => n)
     }
 }
-

@@ -1,22 +1,37 @@
+
+import { CalcOffsetType5, IFuncArgs } from "../Actions/TestAction_Offset5";
+import { _ID } from "../Helpers/HelpersFns";
 import { IActionData, IActionDataNode } from "../Interfaces/MathActionsTypes";
 
 
 
 
-export class ActionData<T> implements IActionData<T>{
-    public args: T | T[] = [];
-    public callback?: ((...args: T[]) => {})
-    public output?: (...args: any[]) => string | string
-    public description?: string = ""
-
-    constructor(args: T | T[], cb: (...args: T[]) => {}, out: (...args: any[]) => string | string) {
-        this.args = args
-        this.callback = cb
-        this.output = out
+export class FnStoreNode<A, F extends (args: A) => any> {
+    nodeId: string
+    fn: F
+    saved: { args: A, result: ReturnType<F> }[] = []
+    constructor(
+        actionFn: F
+    ) {
+        this.nodeId = _ID()
+        this.fn = actionFn
     }
 
-    use(...args: T[]) {
-        return this.callback!(...args) || ""
+    saveInstance(args: A) {
+        const savenode = {
+            args: args,
+            result: this.fn(args)
+        }
+        this.saved.push(savenode)
+    }
+
+    clearSaved() {
+        this.saved = []
+    }
+    list() {
+        return this.saved
     }
 }
+
+
 

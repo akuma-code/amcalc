@@ -24,9 +24,9 @@ export type IActionDataNode<R> = {
     desc?: string
 }
 
-export type GetCallBackType<T> = T extends (...args: any[]) => infer R ?
+export type GetCallBackType<T> = T extends (...args: (infer A)[]) => any ?
     {
-        args: Parameters<T>
+        args: A
         fn: T
 
     }
@@ -38,8 +38,8 @@ export type DTO_FunctionType<T> = T extends (...args: any[]) => any ? {
     fn: T
 } : never
 
-export type DTO_TemplateObj<T extends (...args: any[]) => {}> = {
-    fn: T
-    args: Parameters<T>
-    output: ReturnType<T>
-}
+export type DTO_StoreObj<F> = F extends (...args: (infer A)[]) => infer R ? {
+    fn: F
+    args: A
+    result: R
+} : never

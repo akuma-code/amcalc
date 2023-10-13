@@ -6,46 +6,51 @@ import { _log } from '../../Helpers/HelpersFns'
 import Input from '@mui/material/Input'
 import { FormControl, InputLabel, TextField } from '@mui/material'
 import { useStoresContext } from '../Hooks/useStoresContext'
-import { DTO_StoreNode, mbxDataNode, mbxFnNode, mbxStoreNode } from '../../mobXStore/Stores'
+import { mbxDataNode } from '../../mobXStore/Stores'
 
-type FormProps = {
+type Offset5Args = {
     W: number
     H: number
     h: number
     da: number
     db: number
 }
-type FlexFormProps = {
-    fields: string[]
+type FlexFormProps<T> = {
+    fields: (keyof T)[]
     submitFn?: (...args: any) => any
     defaultState?: { [Key: string]: number }
 }
-const initFormState: FormProps = {
+const initFormState: Offset5Args = {
     W: 1000,
     H: 1500,
     h: 850,
     da: 25,
     db: 25,
 }
-export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defaultState }) => {
-    const { register, handleSubmit, watch, formState: { errors, submitCount }, setError } = useForm<FormProps>({
+export const FlexForm: React.FC<FlexFormProps<Offset5Args>> = ({ fields = [], submitFn, defaultState }) => {
+    const { register, handleSubmit, watch, formState: { errors, submitCount }, setError } = useForm<Offset5Args>({
         defaultValues: defaultState ?? {}
     })
     const { mbxStore } = useStoresContext()
 
-    const onFinish: SubmitHandler<FormProps> = (formdata: FormProps) => {
+    const onFinish: SubmitHandler<Offset5Args> = (args: Offset5Args) => {
         if (!submitFn) {
             _log("No submit Fn")
-            return { formdata }
+            return { formdata: args }
         }
-        const res = submitFn(formdata)
-        const store_node = new mbxDataNode(formdata as FormProps)
-        // mbxStore.add(store_node)
-        _log(store_node)
+        const res = submitFn(args)
+
+        const data = {
+            initState: args,
+            result: res
+        }
+        const data_node = new mbxDataNode(data)
+        mbxStore.add(data_node)
+        // _log("datanode: ", data_node)
         return res
     }
     const resetFn = () => {
-        setError('root', { message: "RESET" })
+        mbxStore.clear()
     }
     if (fields.length === 0) return <div>No inputs finded</div>
     return (
@@ -58,17 +63,17 @@ export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defau
                             <FormControl margin='dense' key={field}>
                                 <label htmlFor="flex_form" className='flex gap-1 flex-row justify-around align-baseline ' key={field}>
 
-                                    <TextField {...register(field as keyof FormProps, { required: true })}
+                                    <TextField {...register(field as keyof Offset5Args, { required: true })}
                                         color='primary'
                                         type='number'
                                         className='border-2 m-1 p-2 bg-slate-300 min-w-[7em]'
                                         size='small'
-                                        error={errors[field as keyof FormProps] ? true : false}
+                                        error={errors[field as keyof Offset5Args] ? true : false}
                                         label={field}
                                         autoComplete='true'
                                     />
                                     {
-                                        errors[field as keyof FormProps]?.type === "required" && (
+                                        errors[field as keyof Offset5Args]?.type === "required" && (
                                             <p role="alert" className='mt-2 bg-red-400 p-2'>field "{field}" is required</p>
                                         )
                                     }

@@ -39,7 +39,7 @@ export type DTO_FunctionType<T> = T extends (...args: any[]) => any ? {
 } : never
 
 export type DTO_StoreObj<F> = F extends (...args: (infer A)[]) => infer R ? {
-    fn: F
-    args: A
-    result: R
+    fn?: F
+    args?: A
+    result?: R
 } : never

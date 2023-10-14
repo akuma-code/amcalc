@@ -1,3 +1,4 @@
+import { CalcNetSize } from "../Actions/CalcNetSize"
 import { CalcOffsetType5 } from "../Actions/TestAction_Offset5"
 import { _log } from "../Helpers/HelpersFns"
 import { DTO_StoreObj } from "../Interfaces/MathActionsTypes"
@@ -26,7 +27,7 @@ type DTO_createModule<Args> = Args extends (args: Args) => infer R ? {
     }
 } : never
 
-export class ActionModule<F extends (args: any) => any> implements IFNModule<F> {
+export class bad_ActionModule<F extends (args: any) => any> implements IFNModule<F> {
     fn: F
     fields?: (keyof DTO_StoreObj<F>["args"])[] | undefined
     module_name?: string | undefined
@@ -50,16 +51,16 @@ export class ActionModule<F extends (args: any) => any> implements IFNModule<F> 
 }
 
 
-export class ActionArgs<A>{
+export class ActionArgs<A extends {}>{
     fn: (args: A) => unknown
 
     constructor(func: (args: A) => any) {
         this.fn = func
     }
 }
-
-const aa = new ActionArgs<number>((b: number) => b * 5)
+const bb = CalcNetSize({ width: 500, height: 800 })
+const aa = new ActionArgs<number>((b) => b * 5)
 _log(aa)
-export const Amodule = new ActionModule(CalcOffsetType5)
+export const Amodule = new bad_ActionModule(CalcOffsetType5)
 
 // _log(Amodule.runFn({ da: 1, db: 1, H: 2, h: 1, W: 2 }))

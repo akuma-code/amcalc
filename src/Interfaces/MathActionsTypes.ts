@@ -24,17 +24,16 @@ export type IActionDataNode<R> = {
     desc?: string
 }
 
-export type GetCallBackType<T> = T extends (...args: (infer A)[]) => any ?
+export type DTO_FnArgsExtract<Fn> = Fn extends (args: (infer A)) => infer R ?
     {
-        args: A
-        fn: T
-
+        args?: A
+        output?: R
     }
     : never
 
 
-export type DTO_FunctionType<T> = T extends (...args: any[]) => any ? {
-    args: Parameters<T>
+export type DTO_FunctionType<T> = T extends (...args: (infer Args)[]) => any ? {
+    args: Args
     fn: T
 } : never
 

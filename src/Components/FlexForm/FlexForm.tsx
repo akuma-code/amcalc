@@ -7,6 +7,7 @@ import Input from '@mui/material/Input'
 import { FormControl, InputLabel, TextField } from '@mui/material'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { mbxDataNode } from '../../mobXStore/Stores'
+import { save2, saveWrapper } from '../../Helpers/saveWrapper'
 
 type Offset5Args = {
     W: number
@@ -33,13 +34,15 @@ export const FlexForm: React.FC<FlexFormProps<Offset5Args>> = ({ fields = [], su
     })
     const { mbxStore } = useStoresContext()
 
+    const loggedSubmitFn = saveWrapper<Offset5Args>(submitFn!)
+    const savedFn = save2(submitFn!)
     const onFinish: SubmitHandler<Offset5Args> = (args: Offset5Args) => {
         if (!submitFn) {
             _log("No submit Fn")
             return { formdata: args }
         }
-        const res = submitFn(args)
-
+        const res = loggedSubmitFn(args)
+        const s = savedFn(args)
         const data = {
             initState: args,
             result: res

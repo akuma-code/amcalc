@@ -1,4 +1,4 @@
-import { DTO_FunctionType, GetCallBackType } from "../../Interfaces/MathActionsTypes"
+import { DTO_FunctionType, DTO_FnArgsExtract } from "../../Interfaces/MathActionsTypes"
 import { IDTO_SimpleAction_v1 } from "../../mobXStore/Stores"
 
 

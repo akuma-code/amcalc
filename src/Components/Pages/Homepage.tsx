@@ -19,7 +19,7 @@ import { Box, Stack } from '@mui/material'
 
 
 
-type Props = {}
+
 // NetFnItem.addArgs([{ width: 300, height: 500 }])
 // NetFnItem.addArgs([{ width: 600, height: 800 }])
 // _log(NetFnItem)

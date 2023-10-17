@@ -18,6 +18,7 @@ export const CalcNetSize: ICalcNets = ({ width, height }) => {
 
     return { simple, skf }
 }
+
 export type DTO_Fn_CalcNetSize = DTO_ExportFnType<typeof CalcNetSize>
 
 

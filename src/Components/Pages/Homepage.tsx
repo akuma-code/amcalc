@@ -14,9 +14,16 @@ import { FlexForm } from '../FlexForm/FlexForm'
 import CollapsibleTable from '../FlexForm/CollapsibleTable'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
+import { NetFnItem } from '../../Models/ActionModule'
+
+
+
 
 
 type Props = {}
+NetFnItem.addArgs([{ width: 300, height: 500 }])
+NetFnItem.addArgs([{ width: 600, height: 800 }])
+_log(NetFnItem)
 
 const Homepage = observer(() => {
     const { mbxStore } = useStoresContext()

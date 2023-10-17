@@ -1,6 +1,6 @@
 import { CalcNetSize } from "../Actions/CalcNetSize"
 import { CalcOffsetFn_Type5 } from "../Actions/TestAction_Offset5"
-import { _log } from "../Helpers/HelpersFns"
+import { _isArr, _log } from "../Helpers/HelpersFns"
 import { DTO_StoreObj } from "../Interfaces/MathActionsTypes"
 
 
@@ -27,13 +27,47 @@ type DTO_createModule<Args> = Args extends (args: Args) => infer R ? {
     }
 } : never
 
-export class ActionArgs<Args extends Object>{
+type AItemOptions = {
+    save: boolean
+}
+export class ActionItem<Fn extends (...args: any) => any, Args extends Parameters<Fn>>{
     fn: (args: Args) => any
-
-    constructor(func: (args: Args) => any) {
+    savedArgs: Args[] = []
+    constructor(func: Fn) {
         this.fn = func
     }
+
+    exec(args: Args, options?: AItemOptions): ReturnType<Fn> {
+        options?.save && this.savedArgs.push(args)
+        return this.fn(args)
+    }
+
+    addArgs(args: Args) {
+        _isArr(args) ?
+            this.savedArgs.push(...args)
+            :
+            this.savedArgs.push(args)
+    }
+
+    listArgs(asobj?: boolean) {
+        const list = this.savedArgs.map((arg, idx) => ({ [idx]: arg }))
+
+        const asObject = this.savedArgs.reduce((res, current, idx) => {
+            const elem = { [idx]: current }
+            res = { ...res, ...elem }
+            return res
+        }, {})
+        return asobj ? asObject : list
+    }
+
 }
+
+export const NetFnItem = new ActionItem(CalcNetSize)
+
+
+
+
+
 // export class ba1d_ActionModule<F extends (args: any) => any> implements IFNModule<F> {
 //     fn: F
 //     fields?: (keyof DTO_StoreObj<F>["args"])[] | undefined

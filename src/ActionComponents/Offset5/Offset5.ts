@@ -1,6 +1,6 @@
-import { _rad2deg } from "../Helpers/HelpersFns";
-import { DTO_StoreObj, DTO_ExportFnType } from "../Interfaces/MathActionsTypes";
-import { } from "../mobXStore/Stores";
+import { _rad2deg } from "../../Helpers/HelpersFns";
+import { DTO_StoreObj, DTO_ExportFnType } from "../../Interfaces/MathActionsTypes";
+import { } from "../../mobXStore/Stores";
 
 export type IFuncArgs = {
     W: number, H: number, h: number, da: number, db: number

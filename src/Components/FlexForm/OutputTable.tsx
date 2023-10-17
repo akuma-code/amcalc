@@ -1,6 +1,6 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material'
 import React from 'react'
-import { CalcOffsetFn_Type5 } from '../../ActionModels/Offset5'
+import { CalcOffsetFn_Type5 } from '../../ActionComponents/Offset5/Offset5'
 import { _log } from '../../Helpers/HelpersFns'
 
 type OutputTableProps = {

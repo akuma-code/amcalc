@@ -27,7 +27,7 @@ export type IActionDataNode<R> = {
 export type DTO_ExportFnType<Fn> = Fn extends (args: (infer ArgType)) => infer R ?
     {
         Fn: Fn
-        args?: ArgType
+        args: ArgType
         output?: R
     }
     : never

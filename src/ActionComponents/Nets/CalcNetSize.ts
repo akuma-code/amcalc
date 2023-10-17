@@ -1,10 +1,10 @@
-import { DTO_ExportFnType } from "../Interfaces/MathActionsTypes"
+import { DTO_ExportFnType } from "../../Interfaces/MathActionsTypes"
 type DTO_NetOutput = { [K in 'skf' | 'simple']: { w: number, h: number } }
 type DTO_NetArgs = { width: number, height: number }
 type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_NetOutput
 
 export const CalcNetSize: ICalcNets = ({ width, height }) => {
-
+    if (!width || !height) throw new Error("ARGS ERROR!")
     const simple = {
         w: width + 24,
         h: height + 45

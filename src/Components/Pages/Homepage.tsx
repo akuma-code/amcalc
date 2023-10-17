@@ -9,16 +9,18 @@ import { InputWHelper } from '../UI/InputWHelper'
 import { IconButton } from '../UI/IconButton'
 import useInput from '../Hooks/useInput'
 import CalcOffset5Component from '../Templates/CalcOffset5'
-import { CalcOffsetFn_Type5 } from '../../ActionModels/Offset5'
+import { CalcOffsetFn_Type5 } from '../../ActionComponents/Offset5/Offset5'
 import { FlexForm } from '../FlexForm/FlexForm'
 import CollapsibleTable from '../FlexForm/CollapsibleTable'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
+import ExportNode from '../../ActionComponents'
 
 
+_log(ExportNode.exec({ height: 500, width: 100 }, true))
+ExportNode.exec({ height: 30, width: 10 }, true)
 
-
-
+_log(ExportNode.list(true))
 
 // NetFnItem.addArgs([{ width: 300, height: 500 }])
 // NetFnItem.addArgs([{ width: 600, height: 800 }])

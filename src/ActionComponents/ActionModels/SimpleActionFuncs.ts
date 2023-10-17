@@ -1,5 +1,5 @@
-import { _log } from "../Helpers/HelpersFns"
-import { ISimpleMathFunc, MathActionNames } from "../Interfaces/MathActionsTypes"
+import { _log } from "../../Helpers/HelpersFns"
+import { ISimpleMathFunc, MathActionNames } from "../../Interfaces/MathActionsTypes"
 
 
 function CreateSimpleAction(actionType: MathActionNames) {

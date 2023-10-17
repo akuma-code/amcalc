@@ -28,10 +28,10 @@ export function saveWrapper<A>(f: (args: A) => any) {
 export const save2 = <F extends (...args: any) => any>(func: F) => {
     let calls: ISavedFields<F>[] = []
 
-    const saved = (...args: any) => {
+    const saved = (...args: any[]) => {
         calls.push({
             args: args,
-            output: func(args)
+            output: func(...args)
         })
         return func.call(args)
     }

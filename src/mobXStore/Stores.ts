@@ -1,6 +1,5 @@
 import { makeAutoObservable } from "mobx"
 import { _ID, _log } from "../Helpers/HelpersFns"
-import { DTO_FunctionType, DTO_StoreObj } from "../Interfaces/MathActionsTypes"
 
 export interface IDTO_SimpleAction_v1 {
     initState: { [key: string]: number },

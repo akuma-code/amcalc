@@ -44,7 +44,7 @@ export type DTO_StoreObj<F> = F extends (...args: (infer A)[]) => infer R ? {
     result?: R
 } : never
 
-export type DTO_ActionItem<Fn extends (...args: any) => any> = Fn extends (...args: infer Args) => infer R ? {
-    args: Args
-    output: R
-} : never
+// export type DTO_ActionItem<Fn extends (...args: any) => any> = Fn extends (...args: infer Args) => infer R ? {
+//     args: Args
+//     output: R
+// } : never

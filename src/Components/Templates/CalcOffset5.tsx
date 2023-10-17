@@ -5,10 +5,6 @@ import { IconButton } from '../UI/IconButton'
 import { _log } from '../../Helpers/HelpersFns'
 import InputNumber from '../UI/InputNumber'
 
-type CalcOffset5Props = {
-    args: DTO_CalcOffset5['fn']
-    fn: DTO_CalcOffset5['args']
-}
 
 const initState = {
     fields: {

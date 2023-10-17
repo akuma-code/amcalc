@@ -27,40 +27,38 @@ type DTO_createModule<Args> = Args extends (args: Args) => infer R ? {
     }
 } : never
 
-export class bad_ActionModule<F extends (args: any) => any> implements IFNModule<F> {
-    fn: F
-    fields?: (keyof DTO_StoreObj<F>["args"])[] | undefined
-    module_name?: string | undefined
-    output?: { args: [], result: {} }
-    saved_data?: DTO_StoreObj<F>[] | undefined
-    dto?: DTO_StoreObj<F> | undefined
+export class ActionArgs<Args extends Object>{
+    fn: (args: Args) => any
 
-    constructor(func: F) {
-        this.fn = func
-    }
-
-    runFn(args: DTO_StoreObj<F>['args']): DTO_StoreObj<F>['result'] {
-        const res = this.fn(args)
-        return res
-    }
-
-    get args() {
-        const args = this.fn.arguments
-        return args
-    }
-}
-
-
-export class ActionArgs<A extends {}>{
-    fn: (args: A) => unknown
-
-    constructor(func: (args: A) => any) {
+    constructor(func: (args: Args) => any) {
         this.fn = func
     }
 }
+// export class ba1d_ActionModule<F extends (args: any) => any> implements IFNModule<F> {
+//     fn: F
+//     fields?: (keyof DTO_StoreObj<F>["args"])[] | undefined
+//     module_name?: string | undefined
+//     output?: { args: [], result: {} }
+//     saved_data?: DTO_StoreObj<F>[] | undefined
+//     dto?: DTO_StoreObj<F> | undefined
+
+//     constructor(func: F) {
+//         this.fn = func
+//     }
+
+//     runFn(args: DTO_StoreObj<F>['args']): DTO_StoreObj<F>['result'] {
+//         const res = this.fn(args)
+//         return res
+//     }
+
+//     get args() {
+//         const args = this.fn.arguments
+//         return args
+//     }
+// }
+
+
 const bb = CalcNetSize({ width: 500, height: 800 })
-const aa = new ActionArgs<number>((b) => b * 5)
-_log(aa)
-export const Amodule = new bad_ActionModule(CalcOffsetType5)
+
 
 // _log(Amodule.runFn({ da: 1, db: 1, H: 2, h: 1, W: 2 }))

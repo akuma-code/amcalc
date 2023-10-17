@@ -9,7 +9,7 @@ import { InputWHelper } from '../UI/InputWHelper'
 import { IconButton } from '../UI/IconButton'
 import useInput from '../Hooks/useInput'
 import CalcOffset5Component from '../Templates/CalcOffset5'
-import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
+import { CalcOffsetFn_Type5 } from '../../Actions/TestAction_Offset5'
 import { FlexForm } from '../FlexForm/FlexForm'
 import CollapsibleTable from '../FlexForm/CollapsibleTable'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
@@ -72,7 +72,7 @@ const Homepage = observer(() => {
                 >
                     <Stack direction={'row'}>
                         <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
-                            submitFn={CalcOffsetType5}
+                            submitFn={CalcOffsetFn_Type5}
                             defaultState={{
 
                                 W: 1000,

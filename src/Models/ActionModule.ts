@@ -1,5 +1,5 @@
 import { CalcNetSize } from "../Actions/CalcNetSize"
-import { CalcOffsetType5 } from "../Actions/TestAction_Offset5"
+import { CalcOffsetFn_Type5 } from "../Actions/TestAction_Offset5"
 import { _log } from "../Helpers/HelpersFns"
 import { DTO_StoreObj } from "../Interfaces/MathActionsTypes"
 

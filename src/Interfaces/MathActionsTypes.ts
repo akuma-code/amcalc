@@ -42,3 +42,8 @@ export type DTO_StoreObj<F> = F extends (...args: (infer A)[]) => infer R ? {
     args?: A
     result?: R
 } : never
+
+export type DTO_FnArgs<Fn extends (...args: any) => any> = Fn extends (...args: (infer A)[]) => any ? A : Parameters<Fn>
+
+type TT = (a: number, b: number) => number
+type AT = DTO_FnArgs<TT>

@@ -1,7 +1,8 @@
 import { CalcNetSize } from "../Actions/CalcNetSize"
 import { CalcOffsetType5 } from "../Actions/TestAction_Offset5"
-import { _log } from "../Helpers/HelpersFns"
-import { DTO_StoreObj } from "../Interfaces/MathActionsTypes"
+import { _log, isArray } from "../Helpers/HelpersFns"
+import { save2 } from "../Helpers/saveWrapper"
+import { DTO_FnArgs, DTO_StoreObj } from "../Interfaces/MathActionsTypes"
 
 
 
@@ -27,40 +28,61 @@ type DTO_createModule<Args> = Args extends (args: Args) => infer R ? {
     }
 } : never
 
-export class bad_ActionModule<F extends (args: any) => any> implements IFNModule<F> {
-    fn: F
-    fields?: (keyof DTO_StoreObj<F>["args"])[] | undefined
-    module_name?: string | undefined
-    output?: { args: [], result: {} }
-    saved_data?: DTO_StoreObj<F>[] | undefined
-    dto?: DTO_StoreObj<F> | undefined
+export class ActionNode<Fn extends (...args: any) => any>{
+    private fn: Fn
+    calls: { args: DTO_FnArgs<Fn>, output: ReturnType<Fn> }[] = []
 
-    constructor(func: F) {
+    constructor(func: Fn) {
         this.fn = func
     }
 
-    runFn(args: DTO_StoreObj<F>['args']): DTO_StoreObj<F>['result'] {
-        const res = this.fn(args)
-        return res
+    execFn(args: DTO_FnArgs<Fn>) {
+        const output = this.fn(args)
+        const save_node = {
+            args, output
+        }
+        this.calls.push(save_node)
+
+        return this.fn(args)
     }
 
-    get args() {
-        const args = this.fn.arguments
-        return args
-    }
+
+
 }
+export const Amodule = new ActionNode(CalcOffsetType5)
+// AA.execFn({ height: 500, width: 800 })
+// AA.execFn({ height: 100, width: 100 })
+
+// // const l = AA.dto_list
 
 
-export class ActionArgs<A extends {}>{
-    fn: (args: A) => unknown
+// Amodule.execFn({ da: 1, db: 1, H: 2, h: 1, W: 2 })
+// Amodule.execFn({ da: 2, db: 2, H: 4, h: 2, W: 3 })
 
-    constructor(func: (args: A) => any) {
-        this.fn = func
-    }
-}
-const bb = CalcNetSize({ width: 500, height: 800 })
-const aa = new ActionArgs<number>((b) => b * 5)
-_log(aa)
-export const Amodule = new bad_ActionModule(CalcOffsetType5)
+// _log(Amodule.calls)
 
-// _log(Amodule.runFn({ da: 1, db: 1, H: 2, h: 1, W: 2 }))
+
+
+// export class bad_ActionModule<F extends (args: any) => any> implements IFNModule<F> {
+//     fn: F
+//     fields?: (keyof DTO_StoreObj<F>["args"])[] | undefined
+//     module_name?: string | undefined
+//     output?: { args: [], result: {} }
+//     saved_data?: DTO_StoreObj<F>[] | undefined
+//     dto?: DTO_StoreObj<F> | undefined
+
+//     constructor(func: F) {
+//         this.fn = func
+//     }
+
+//     runFn(args: DTO_StoreObj<F>['args']): DTO_StoreObj<F>['result'] {
+//         const res = this.fn(args)
+//         return res
+//     }
+
+//     get args() {
+//         const args = this.fn.arguments
+//         return args
+//     }
+// }
+

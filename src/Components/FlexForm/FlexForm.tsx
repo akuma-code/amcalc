@@ -34,15 +34,13 @@ export const FlexForm: React.FC<FlexFormProps<Offset5Args>> = ({ fields = [], su
     })
     const { mbxStore } = useStoresContext()
 
-    const loggedSubmitFn = saveWrapper<Offset5Args>(submitFn!)
-    const savedFn = save2(submitFn!)
+
     const onFinish: SubmitHandler<Offset5Args> = (args: Offset5Args) => {
         if (!submitFn) {
             _log("No submit Fn")
             return { formdata: args }
         }
-        const res = loggedSubmitFn(args)
-        const s = savedFn(args)
+        const res = submitFn(args)
         const data = {
             initState: args,
             result: res

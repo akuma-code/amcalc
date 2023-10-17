@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { CalcOffsetFn_Type5, DTO_CalcOffset5 } from '../../Actions/TestAction_Offset5'
+import { CalcOffsetFn_Type5, DTO_CalcOffset5 } from '../../ActionModels/Offset5'
 import { InputWHelper } from '../UI/InputWHelper'
 import { IconButton } from '../UI/IconButton'
 import { _log } from '../../Helpers/HelpersFns'

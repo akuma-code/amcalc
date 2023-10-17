@@ -1,5 +1,4 @@
 import { DTO_ExportFnType } from "../Interfaces/MathActionsTypes"
-import { saveWrapper } from "../Helpers/saveWrapper"
 type DTO_NetOutput = { [K in 'skf' | 'simple']: { w: number, h: number } }
 type DTO_NetArgs = { width: number, height: number }
 type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_NetOutput

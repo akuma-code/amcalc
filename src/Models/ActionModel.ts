@@ -1,5 +1,5 @@
 
-import { CalcOffsetFn_Type5, IFuncArgs } from "../Actions/TestAction_Offset5";
+import { CalcOffsetFn_Type5, IFuncArgs } from "../ActionModels/Offset5";
 import { _ID } from "../Helpers/HelpersFns";
 import { IActionData, IActionDataNode } from "../Interfaces/MathActionsTypes";
 

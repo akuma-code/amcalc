@@ -38,16 +38,16 @@ export type DTO_FunctionType<T> = T extends (...args: (infer Args)[]) => any ? {
     fn: T
 } : never
 
-export type DTO_StoreObj<F> = F extends (...args: (infer A)[]) => infer R ? {
-    fn?: F
-    args?: A
-    result?: R
-} : never
+export type DTO_StoreObj<F> = Partial<DTO_ExportFnType<F>>
+// F extends (...args: (infer A)[]) => infer R ? {
+//     fn?: F
+//     args?: A
+//     result?: R
+// } : never
 
 export type DTO_FnArgs<Fn extends (...args: any) => any> = Fn extends (...args: (infer A)[]) => any ? A : Parameters<Fn>
 
-type TT = (a: number, b: number) => number
-type AT = DTO_FnArgs<TT>
+
 
 // export type DTO_ActionItem<Fn extends (...args: any) => any> = Fn extends (...args: infer Args) => infer R ? {
 //     args: Args

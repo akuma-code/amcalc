@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
-import { CalcOffsetType5, DTO_CalcOffset5 } from '../../Actions/TestAction_Offset5'
+import { CalcOffsetFn_Type5, DTO_CalcOffset5 } from '../../Actions/TestAction_Offset5'
 import { InputWHelper } from '../UI/InputWHelper'
 import { IconButton } from '../UI/IconButton'
 import { _log } from '../../Helpers/HelpersFns'
 import InputNumber from '../UI/InputNumber'
 
-type CalcOffset5Props = {
-    args: DTO_CalcOffset5['fn']
-    fn: DTO_CalcOffset5['args']
-}
 
 const initState = {
     fields: {
@@ -18,7 +14,7 @@ const initState = {
         da: '',
         db: '',
     },
-    fn: CalcOffsetType5
+    fn: CalcOffsetFn_Type5
 
 }
 

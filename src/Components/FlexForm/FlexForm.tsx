@@ -1,13 +1,12 @@
 import React, { FormEvent } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import InputNumber, { RefInput } from '../UI/InputNumber'
-import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
+import { CalcOffsetFn_Type5 } from '../../Actions/TestAction_Offset5'
 import { _log } from '../../Helpers/HelpersFns'
 import Input from '@mui/material/Input'
 import { FormControl, InputLabel, TextField } from '@mui/material'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { mbxDataNode } from '../../mobXStore/Stores'
-import { save2, saveWrapper } from '../../Helpers/saveWrapper'
 
 type Offset5Args = {
     W: number
@@ -34,21 +33,21 @@ export const FlexForm: React.FC<FlexFormProps<Offset5Args>> = ({ fields = [], su
     })
     const { mbxStore } = useStoresContext()
 
-
+    // const savedFn = save2(submitFn!)
     const onFinish: SubmitHandler<Offset5Args> = (args: Offset5Args) => {
         if (!submitFn) {
             _log("No submit Fn")
             return { formdata: args }
         }
-        const res = submitFn(args)
+        // const s = savedFn(args)
         const data = {
             initState: args,
-            result: res
+            result: submitFn(args)
         }
         const data_node = new mbxDataNode(data)
         mbxStore.add(data_node)
         // _log("datanode: ", data_node)
-        return res
+        return submitFn(args)
     }
     const resetFn = () => {
         mbxStore.clear()

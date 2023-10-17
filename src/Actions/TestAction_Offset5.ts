@@ -1,12 +1,11 @@
 import { _rad2deg } from "../Helpers/HelpersFns";
-import { save2 } from "../Helpers/saveWrapper";
-import { DTO_FunctionType, DTO_StoreObj, DTO_FnArgsExtract } from "../Interfaces/MathActionsTypes";
+import { DTO_StoreObj, DTO_ExportFnType } from "../Interfaces/MathActionsTypes";
 import { } from "../mobXStore/Stores";
 
 export type IFuncArgs = {
     W: number, H: number, h: number, da: number, db: number
 }
-export function CalcOffsetType5(args: IFuncArgs) {
+export function CalcOffsetFn_Type5(args: IFuncArgs) {
     const { H, W, da, db, h } = args
 
 
@@ -32,6 +31,6 @@ export function CalcOffsetType5(args: IFuncArgs) {
 }
 
 
-export type DTO_CalcOffset5 = DTO_FunctionType<typeof CalcOffsetType5>
-export type DTO_StoreOffset5 = DTO_StoreObj<typeof CalcOffsetType5>
+export type DTO_CalcOffset5 = DTO_ExportFnType<typeof CalcOffsetFn_Type5>
+export type DTO_StoreOffset5 = DTO_StoreObj<typeof CalcOffsetFn_Type5>
 

@@ -1,6 +1,6 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material'
 import React from 'react'
-import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
+import { CalcOffsetFn_Type5 } from '../../Actions/TestAction_Offset5'
 import { _log } from '../../Helpers/HelpersFns'
 
 type OutputTableProps = {
@@ -127,4 +127,4 @@ const stored = [
         da: 10,
         db: 10,
     },
-].map(n => createOutputTableData(n, CalcOffsetType5(n)))
+].map(n => createOutputTableData(n, CalcOffsetFn_Type5(n)))

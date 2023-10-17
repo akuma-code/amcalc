@@ -24,9 +24,10 @@ export type IActionDataNode<R> = {
     desc?: string
 }
 
-export type DTO_FnArgsExtract<Fn> = Fn extends (args: (infer A)) => infer R ?
+export type DTO_ExportFnType<Fn> = Fn extends (args: (infer ArgType)) => infer R ?
     {
-        args?: A
+        Fn: Fn
+        args?: ArgType
         output?: R
     }
     : never
@@ -47,3 +48,8 @@ export type DTO_FnArgs<Fn extends (...args: any) => any> = Fn extends (...args: 
 
 type TT = (a: number, b: number) => number
 type AT = DTO_FnArgs<TT>
+
+// export type DTO_ActionItem<Fn extends (...args: any) => any> = Fn extends (...args: infer Args) => infer R ? {
+//     args: Args
+//     output: R
+// } : never

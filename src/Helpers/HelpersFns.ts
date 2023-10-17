@@ -15,4 +15,4 @@ export const _deg2rad = (deg: number) => (deg * Math.PI) / 180.0
 
 export const _rad2deg = (rad: number) => (rad * 180) / Math.PI
 
-export const isArray = (obj: any) => Array.isArray(obj)
+export const _isArr = (obj: any) => Array.isArray(obj)

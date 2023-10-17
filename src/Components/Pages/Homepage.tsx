@@ -9,16 +9,20 @@ import { InputWHelper } from '../UI/InputWHelper'
 import { IconButton } from '../UI/IconButton'
 import useInput from '../Hooks/useInput'
 import CalcOffset5Component from '../Templates/CalcOffset5'
-import { CalcOffsetType5 } from '../../Actions/TestAction_Offset5'
+import { CalcOffsetFn_Type5 } from '../../Actions/TestAction_Offset5'
 import { FlexForm } from '../FlexForm/FlexForm'
 import CollapsibleTable from '../FlexForm/CollapsibleTable'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
-import { Amodule } from '../../Models/ActionModule'
 
-const a = Amodule
+
+
+
 
 type Props = {}
+// NetFnItem.addArgs([{ width: 300, height: 500 }])
+// NetFnItem.addArgs([{ width: 600, height: 800 }])
+// _log(NetFnItem)
 
 const Homepage = observer(() => {
     const { mbxStore } = useStoresContext()
@@ -74,7 +78,7 @@ const Homepage = observer(() => {
                 >
                     <Stack direction={'row'}>
                         <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
-                            submitFn={CalcOffsetType5}
+                            submitFn={CalcOffsetFn_Type5}
                             defaultState={{
 
                                 W: 1000,

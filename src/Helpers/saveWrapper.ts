@@ -1,8 +1,8 @@
 import { _log } from "./HelpersFns";
-import { DTO_FnArgsExtract } from "../Interfaces/MathActionsTypes";
+import { DTO_ExportFnType } from "../Interfaces/MathActionsTypes";
 
 type ISavedFields<F extends (args: any) => any> = {
-    args: DTO_FnArgsExtract<F>['args'];
+    args: DTO_ExportFnType<F>['args'];
     output: ReturnType<F>;
 };
 export function saveWrapper<A>(f: (args: A) => any) {
@@ -38,3 +38,5 @@ export const save2 = <F extends (...args: any) => any>(func: F) => {
     console.log('saved: ', calls)
     return saved as (...args: Parameters<F>) => ReturnType<F>
 }
+
+

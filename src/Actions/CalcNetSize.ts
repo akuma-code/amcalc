@@ -1,8 +1,8 @@
-import { DTO_FnArgsExtract, DTO_FunctionType } from "../Interfaces/MathActionsTypes"
+import { DTO_ActionItem, DTO_ExportFnType, DTO_FunctionType } from "../Interfaces/MathActionsTypes"
 import { saveWrapper } from "../Helpers/saveWrapper"
-type DTO_Net = { [K in 'skf' | 'simple']: { w: number, h: number } }
+type DTO_NetOutput = { [K in 'skf' | 'simple']: { w: number, h: number } }
 type DTO_NetArgs = { width: number, height: number }
-type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_Net
+type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_NetOutput
 
 export const CalcNetSize: ICalcNets = ({ width, height }) => {
 
@@ -18,7 +18,6 @@ export const CalcNetSize: ICalcNets = ({ width, height }) => {
 
     return { simple, skf }
 }
-export type DTO_GetNetSize = DTO_FnArgsExtract<typeof CalcNetSize>
-const savedNet = saveWrapper(CalcNetSize)
+export type DTO_GetNetSize = DTO_ExportFnType<typeof CalcNetSize>
 
-savedNet({ height: 500, width: 300 })
+export type IDTO_NetSizeFn = DTO_ActionItem<typeof CalcNetSize>

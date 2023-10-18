@@ -61,7 +61,7 @@ export const FlexForm: React.FC<FlexFormProps<Offset5Args>> = ({ fields = [], su
 
                         fields.map((field) =>
                             <FormControl margin='dense' key={field}>
-                                <label htmlFor="flex_form" className='flex gap-1 flex-row justify-around align-baseline ' key={field}>
+                                <label className='flex gap-1 flex-row justify-around align-baseline ' key={field}>
 
                                     <TextField {...register(field as keyof Offset5Args, { required: true })}
                                         color='primary'

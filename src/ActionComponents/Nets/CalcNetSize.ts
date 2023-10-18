@@ -1,5 +1,7 @@
-import { DTO_ExportFnType } from "../../Interfaces/MathActionsTypes"
+import { DTO_ExportFnType, DTO_FuncActionType } from "../../Interfaces/MathActionsTypes"
 import { ActionFnNode } from "../ActionModels/v1FnNode"
+
+
 type DTO_NetOutput = { [K in 'skf' | 'simple']: { w: number, h: number } }
 type DTO_NetArgs = { width: number, height: number }
 type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_NetOutput
@@ -38,5 +40,5 @@ export type INetsNode_DTO = {
     args: DTO_NetArgs
     fn: ICalcNets
 }
-
+export type DTO_ActionCalcNet = DTO_FuncActionType<typeof CalcNetSize, 'nets'>
 export default CalcNetSizeNode

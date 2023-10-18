@@ -1,6 +1,8 @@
+import { FnDtoNames } from "../ActionComponents"
+
 export type MathActionNames = 'plus' | 'minus' | 'multi' | 'devide'
 export type ISimpleMathFunc = (a: number, b: number) => number
-export type AnyFN = (...args: any) => any
+export type ANYfn = (...args: any) => any
 
 export type IActionData<T> = {
     args: T | T[]
@@ -50,7 +52,7 @@ export type DTO_FnArgs<Fn extends (...args: any) => any> = Fn extends (...args: 
 export type DTO_ArrayType<T> = T extends (infer A)[] ? A : never
 
 
-export type DTO_ActionItem<Fn extends AnyFN> = Fn extends infer F ?
+export type DTO_ActionItem<Fn extends ANYfn> = Fn extends infer F ?
     F extends (...args: infer Args) => infer R ?
     {
         fn: F
@@ -59,12 +61,10 @@ export type DTO_ActionItem<Fn extends AnyFN> = Fn extends infer F ?
     }
     : never
     : never
-
-const aa = (dd: { a: number, b: string, aaaa: string }) => 3
-
-type dto = DTO_ActionItem<typeof aa>
-const aaa: dto = {
-    fn: aa,
-    args: [{ a: 2, aaaa: '23', b: '23' }],
-    output: 3
-}
+export type DTO_FuncActionType<Fn extends ANYfn, T extends FnDtoNames> = Fn extends (arg: infer Arg) => any ?
+    {
+        fn: Fn
+        type: T,
+        payload: Arg
+    }
+    : never

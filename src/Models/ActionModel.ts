@@ -1,5 +1,5 @@
 
-import { CalcOffsetFn_Type5, IFuncArgs } from "../ActionComponents/Offset5/Offset5";
+import { CalcOffsetFn_Type5 } from "../ActionComponents/Offset5/Offset5";
 import { _ID } from "../Helpers/HelpersFns";
 import { IActionData, IActionDataNode } from "../Interfaces/MathActionsTypes";
 

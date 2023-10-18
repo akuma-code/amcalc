@@ -1,6 +1,6 @@
 export type MathActionNames = 'plus' | 'minus' | 'multi' | 'devide'
 export type ISimpleMathFunc = (a: number, b: number) => number
-
+export type AnyFN = (...args: any) => any
 
 export type IActionData<T> = {
     args: T | T[]
@@ -29,6 +29,7 @@ export type DTO_ExportFnType<Fn> = Fn extends (args: (infer ArgType)) => infer R
         Fn: Fn
         args: ArgType
         output?: R
+
     }
     : never
 
@@ -49,7 +50,7 @@ export type DTO_FnArgs<Fn extends (...args: any) => any> = Fn extends (...args: 
 export type DTO_ArrayType<T> = T extends (infer A)[] ? A : never
 
 
-export type DTO_ActionItem<Fn extends (...args: any) => any> = Fn extends infer F ?
+export type DTO_ActionItem<Fn extends AnyFN> = Fn extends infer F ?
     F extends (...args: infer Args) => infer R ?
     {
         fn: F

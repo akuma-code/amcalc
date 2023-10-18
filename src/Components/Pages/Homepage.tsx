@@ -14,13 +14,9 @@ import { FlexForm } from '../FlexForm/FlexForm'
 import CollapsibleTable from '../FlexForm/CollapsibleTable'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
-import ExportNode from '../../ActionComponents'
+import dto_Store from '../../ActionComponents'
 
-
-_log(ExportNode.exec({ height: 500, width: 100 }, true))
-ExportNode.exec({ height: 30, width: 10 }, true)
-
-_log(ExportNode.list(true))
+_log(dto_Store)
 
 // NetFnItem.addArgs([{ width: 300, height: 500 }])
 // NetFnItem.addArgs([{ width: 600, height: 800 }])

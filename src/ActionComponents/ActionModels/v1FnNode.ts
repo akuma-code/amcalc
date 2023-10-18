@@ -10,9 +10,9 @@ export class ActionFnNode<Fn extends (...args: any) => any>  {
     }
     validate(...args: unknown[]) {
         try {
-            this.fn(...args)
+            const res = !!this.fn(...args)
 
-            _log("args valid! ", ...args)
+            res && _log("args valid! ", ...args)
         } catch (error) {
             _log(`Invalid Args!!`, ...args)
         }

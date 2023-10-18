@@ -1,13 +1,20 @@
 import { _rad2deg } from "../../Helpers/HelpersFns";
-import { DTO_StoreObj, DTO_ExportFnType, DTO_FuncActionType } from "../../Interfaces/MathActionsTypes";
+import { DTO_StoreObj, DTO_ExportFnType, DTO_FuncActionType, ExportFnInterface } from "../../Interfaces/MathActionsTypes";
 import { } from "../../mobXStore/Stores";
 import { ActionFnNode } from "../ActionModels/v1FnNode";
 import { DTO_Fn_CalcNetSize } from "../Nets/CalcNetSize";
-
 export type IOffset5Arg = {
     W: number, H: number, h: number, da: number, db: number
 }
-export function CalcOffsetFn_Type5(args: IOffset5Arg) {
+type IcalcOffset5 = (arg: IOffset5Arg) => {
+    angle: number;
+    sumXY: number;
+    deltaH: number;
+    tgA: number;
+    x: number;
+    y: number;
+}
+export const CalcOffsetFn_Type5: IcalcOffset5 = (args) => {
     const { H, W, da, db, h } = args
 
 
@@ -48,4 +55,4 @@ export const Offset5FnNode = new Offset5Node(CalcOffsetFn_Type5)
 export type DTO_CalcOffset5 = DTO_ExportFnType<typeof CalcOffsetFn_Type5>
 export type DTO_StoreOffset5 = DTO_StoreObj<typeof CalcOffsetFn_Type5>
 
-export type DTO_ActionOffset5 = DTO_FuncActionType<typeof CalcOffsetFn_Type5, 'offset5'>
+export type DTO_ActionOffset5 = ExportFnInterface<typeof CalcOffsetFn_Type5, 'offset5'>

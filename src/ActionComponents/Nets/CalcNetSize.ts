@@ -1,4 +1,4 @@
-import { DTO_ExportFnType, DTO_FuncActionType } from "../../Interfaces/MathActionsTypes"
+import { DTO_ExportFnType, DTO_FuncActionType, ExportFnInterface } from "../../Interfaces/MathActionsTypes"
 import { ActionFnNode } from "../ActionModels/v1FnNode"
 
 
@@ -40,5 +40,7 @@ export type INetsNode_DTO = {
     args: DTO_NetArgs
     fn: ICalcNets
 }
-export type DTO_ActionCalcNet = DTO_FuncActionType<typeof CalcNetSize, 'nets'>
+export type DTO_ActionCalcNet = ExportFnInterface<typeof CalcNetSize, 'nets'>
+
+export type DTO_CalcFnExport = ExportFnInterface<typeof CalcNetSize, 'nets'>
 export default CalcNetSizeNode

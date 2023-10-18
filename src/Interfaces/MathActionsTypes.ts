@@ -68,3 +68,9 @@ export type DTO_FuncActionType<Fn extends ANYfn, T extends FnDtoNames> = Fn exte
         payload: Arg
     }
     : never
+
+export type ExportFnInterface<Fn extends ANYfn, fn_type extends string> = {
+    type: fn_type
+    fn: Fn
+    payload?: DTO_FnArgs<Fn>
+}

@@ -21,10 +21,10 @@ export const Funcs = {
 export function FuncsReducer(action: FnDtoActions) {
     switch (action.type) {
         case 'nets': {
-            return CalcNetSize(action.payload)
+            return
         }
         case 'offset5': {
-            return CalcOffsetFn_Type5(action.payload)
+            return
         }
 
         default: throw new Error("Unknown action type")

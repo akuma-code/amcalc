@@ -46,10 +46,24 @@ export type DTO_StoreObj<F> = Partial<DTO_ExportFnType<F>>
 // } : never
 
 export type DTO_FnArgs<Fn extends (...args: any) => any> = Fn extends (...args: (infer A)[]) => any ? A : Parameters<Fn>
+export type DTO_ArrayType<T> = T extends (infer A)[] ? A : never
 
 
+export type DTO_ActionItem<Fn extends (...args: any) => any> = Fn extends infer F ?
+    F extends (...args: infer Args) => infer R ?
+    {
+        fn: F
+        args: DTO_ArrayType<Args>[]
+        output: R
+    }
+    : never
+    : never
 
-// export type DTO_ActionItem<Fn extends (...args: any) => any> = Fn extends (...args: infer Args) => infer R ? {
-//     args: Args
-//     output: R
-// } : never
+const aa = (a: number, b: number) => 3
+
+type dto = DTO_ActionItem<typeof aa>
+const aaa: dto = {
+    fn: aa,
+    args: [],
+    output: 3
+}

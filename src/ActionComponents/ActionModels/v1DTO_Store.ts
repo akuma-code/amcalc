@@ -1,7 +1,7 @@
 import { _ID, _log } from '../../Helpers/HelpersFns';
 import { ANYfn } from '../../Interfaces/MathActionsTypes';
 import { ActionFnNode } from './v1FnNode';
-import CalcNetSizeNode from '../Nets/CalcNetSize';
+// import CalcNetSizeNode from '../Nets/CalcNetSize';
 import { Offset5FnNode } from '../Offset5/Offset5';
 import { DTO_IStore, FnDtoNames } from '..';
 
@@ -33,7 +33,6 @@ class v1DTO_Store {
 
 
 }
-const dto_Store = new v1DTO_Store();
-dto_Store.register(CalcNetSizeNode, 'nets');
-dto_Store.register(Offset5FnNode, 'offset5');
-export { dto_Store }
+// dto_Store.register(CalcNetSizeNode, 'nets');
+// dto_Store.register(Offset5FnNode, 'offset5');
+// export { dto_Store }

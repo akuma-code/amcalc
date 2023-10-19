@@ -6,7 +6,7 @@ import { DTO_Fn_CalcNetSize } from "../Nets/CalcNetSize";
 export type IOffset5Arg = {
     W: number, H: number, h: number, da: number, db: number
 }
-type IcalcOffset5 = (arg: IOffset5Arg) => {
+export type IOffset5_Output = {
     angle: number;
     sumXY: number;
     deltaH: number;
@@ -14,7 +14,8 @@ type IcalcOffset5 = (arg: IOffset5Arg) => {
     x: number;
     y: number;
 }
-export const CalcOffsetFn_Type5: IcalcOffset5 = (args) => {
+type ICalcOffset5 = (arg: IOffset5Arg) => IOffset5_Output
+export const CalcOffsetFn_Type5: ICalcOffset5 = (args) => {
     const { H, W, da, db, h } = args
 
 

@@ -8,24 +8,18 @@ import { CalcOffsetFn_Type5 } from '../../ActionComponents/Offset5/Offset5'
 import { FlexForm } from '../FlexForm/FlexForm'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
+import { nodes } from '../../ActionComponents'
 
-import dto_astore from '../../ActionComponents/ActionModels/DTO_Store'
-_log(dto_astore)
 
-// NetFnItem.addArgs([{ width: 300, height: 500 }])
-// NetFnItem.addArgs([{ width: 600, height: 800 }])
-// _log(NetFnItem)
+
 
 const Homepage = observer(() => {
+
     const { mbxStore } = useStoresContext()
-    const [inpX, onChangeX] = useInput(``)
+
     const [res, setRes] = useState<number | null>(null)
     const stored = mbxStore.store.map(n => createOutputTableData(n.data.initState, n.data.result))
-    const newDesc = (text: string | number | null) => {
-        if (!text) return null
-        const res = typeof text === 'string' ? text : `${text}`
-        return res
-    }
+
     const reset = () => {
         setRes(prev => null)
         // setInputX("")
@@ -34,17 +28,6 @@ const Homepage = observer(() => {
     }
 
     // _log(Offset5Node)
-    function addAction() {
-        // const fnScale = _promptVar("input scale rate")
-        // const [a, b] = fnScale.split(' ')
-        // const multiAction = ActionTemplates.multiple
-
-
-        // const node = new mbxDataNode(multiAction)
-        // mbxStore.store.push(node)
-        // const r = mbxStore.list()
-        // _log(r)
-    }
 
     return (
 

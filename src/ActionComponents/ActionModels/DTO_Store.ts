@@ -1,12 +1,12 @@
 export class DTO_Store {
-
+    _store: any[] = []
 
 
     set store(st: any) {
-        this.store = st
+        this._store = st
     }
 
     get store() {
-        return this.store
+        return this._store
     }
 }

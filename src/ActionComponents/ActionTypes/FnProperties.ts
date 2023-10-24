@@ -1,11 +1,7 @@
-export type FunctionPropertyNames<T> = {
-    [K in keyof T]: T[K] extends Function ? K : never;
-}[keyof T];
+export type FnPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T]
 
-export type FunctionProperties<T> = Pick<T, FunctionPropertyNames<T>>;
+export type FnProperties<T> = Pick<T, FnPropertyNames<T>>;
 
-export type NonFunctionPropertyNames<T> = {
-    [K in keyof T]: T[K] extends Function ? never : K;
-}[keyof T];
+export type NonFnPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? never : K }[keyof T];
 
-export type NonFunctionProperties<T> = Pick<T, NonFunctionPropertyNames<T>>;
+export type NonFnProperties<T> = Pick<T, NonFnPropertyNames<T>>;

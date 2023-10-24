@@ -11,8 +11,8 @@ import { Box, Stack } from '@mui/material'
 // import { nodes } from '../../ActionComponents'
 
 
-
-
+import { dto_test } from '../../ActionComponents/ActionModels/DTO_Store'
+dto_test()
 const Homepage = observer(() => {
 
     const { mbxStore } = useStoresContext()

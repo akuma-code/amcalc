@@ -1,8 +1,7 @@
-import { DTO_ExportFnType, DTO_FuncActionType, ExportFnInterface } from "../../Interfaces/MathActionsTypes"
-import { DTO_NodeFn, } from "../ActionModels/DTO_NodeFn"
+import { DTO_ExportFnType } from "../../Interfaces/MathActionsTypes"
+
 import { ActionFnNode } from "../ActionModels/v1FnNode"
-import { FunctionProperties, FunctionPropertyNames, NonFunctionProperties, NonFunctionPropertyNames } from "../ActionTypes/FnProperties"
-import { Enum_NodesAction } from "../ActionTypes/Types"
+
 
 
 type DTO_NetOutput = { [K in 'skf' | 'simple']: { w: number, h: number } }
@@ -35,7 +34,6 @@ class NetFnNode extends ActionFnNode<typeof CalcNetSize>{
     }
 
 }
-
 
 
 // const CalcNetSizeNode = new NetFnNode(CalcNetSize)

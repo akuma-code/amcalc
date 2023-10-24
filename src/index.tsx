@@ -6,10 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import { IStoresContext, StoresContext } from './Components/Hooks/useStoresContext';
 import { ActionsStore, StoreV2DataNodes } from './mobXStore/ActionStore';
 import mbxActionStore from './mobXStore/Stores';
+import mbxStoreLL from './mobXStore/mbxStore';
 const Stores: IStoresContext = {
   // ActionsStore: new ActionsStore(),
   // StoreV2Nodes: new StoreV2DataNodes(),
-  mbxStore: new mbxActionStore()
+  mbxStore: new mbxActionStore(),
+  mbxLinkedStore: new mbxStoreLL()
 
 }
 const root = ReactDOM.createRoot(

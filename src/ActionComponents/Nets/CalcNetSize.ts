@@ -1,6 +1,7 @@
 import { DTO_ExportFnType, DTO_FuncActionType, ExportFnInterface } from "../../Interfaces/MathActionsTypes"
 import { DTO_NodeFn, } from "../ActionModels/DTO_NodeFn"
 import { ActionFnNode } from "../ActionModels/v1FnNode"
+import { FunctionProperties, FunctionPropertyNames, NonFunctionProperties, NonFunctionPropertyNames } from "../ActionTypes/FnProperties"
 import { Enum_NodesAction } from "../ActionTypes/Types"
 
 
@@ -38,9 +39,9 @@ class NetFnNode extends ActionFnNode<typeof CalcNetSize>{
 
 
 // const CalcNetSizeNode = new NetFnNode(CalcNetSize)
-export type DTO_ActionCalcNet = ExportFnInterface<typeof CalcNetSize, 'nets'>
+// export type DTO_ActionCalcNet = ExportFnInterface<typeof CalcNetSize, 'nets'>
 
-export type DTO_CalcFnExport = ExportFnInterface<typeof CalcNetSize, 'nets'>
+// export type DTO_CalcFnExport = ExportFnInterface<typeof CalcNetSize, 'nets'>
 
 
 

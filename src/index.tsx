@@ -7,11 +7,12 @@ import { IStoresContext, StoresContext } from './Components/Hooks/useStoresConte
 import { ActionsStore, StoreV2DataNodes } from './mobXStore/ActionStore';
 import mbxActionStore from './mobXStore/Stores';
 import mbxStoreLL from './mobXStore/mbxStore';
+import dto_Store from './ActionComponents/ActionModels/DTO_Store';
 const Stores: IStoresContext = {
   // ActionsStore: new ActionsStore(),
   // StoreV2Nodes: new StoreV2DataNodes(),
   mbxStore: new mbxActionStore(),
-  mbxLinkedStore: new mbxStoreLL()
+  mbxLinkedStore: dto_Store
 
 }
 const root = ReactDOM.createRoot(

@@ -8,15 +8,16 @@ import { DTO_Node } from "../../Models/LinkedList";
 
 const dto_Store = new FnLinkedList<DTO_Node<DTO_Nodes_list['fn']>>()
 
-// dto_Store.insertInBegin({ type: 'offset5', fn: CalcOffsetFn_Type5 })
-// dto_Store.insertInBegin({ type: 'nets', fn: CalcNetSize })
+dto_Store.add(new DTO_Node(CalcOffsetFn_Type5, Enum_NodesAction.offset5))
+dto_Store.add(new DTO_Node(CalcNetSize, Enum_NodesAction.nets))
+
 export function dto_test() {
 
     // const node = <F extends ANYfn>(fn: F, type: Enum_NodesAction): DTO_Node<F> => new DTO_Node(fn, type)
 
-    dto_Store.add(new DTO_Node(CalcOffsetFn_Type5, Enum_NodesAction.offset5))
-    dto_Store.add(new DTO_Node(CalcNetSize, Enum_NodesAction.nets))
-    _log(...dto_Store.traverse())
+    // dto_Store.add(new DTO_Node(CalcOffsetFn_Type5, Enum_NodesAction.offset5))
+    // dto_Store.add(new DTO_Node(CalcNetSize, Enum_NodesAction.nets))
+    // _log(...dto_Store.traverse())
     // const ttt = { width: 100, height: 100 }
 
     // const fn = dto_Store.fnSearch(d => d.type === 'nets')
@@ -25,3 +26,5 @@ export function dto_test() {
     // _log(dto_Store.search((data) => data.type === 'nets')?.data)
 
 }
+
+export default dto_Store

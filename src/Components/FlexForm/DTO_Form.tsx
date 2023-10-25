@@ -7,10 +7,10 @@ import { _log } from '../../Helpers/HelpersFns'
 
 type FormProps = {
     dto: IDataTransferObject
-
+    fields?: string[]
 }
 
-const DTOForm: React.FC<FormProps> = ({ dto }) => {
+const DTOForm: React.FC<FormProps> = ({ dto, }) => {
     const { fields, type, initState } = dto
     const { register, handleSubmit, formState: { errors, submitCount }, setError } = useForm<typeof initState>({ defaultValues: initState })
     if (!fields) return FieldsError

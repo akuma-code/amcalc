@@ -1,7 +1,7 @@
 import React, { FormEvent } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import InputNumber, { RefInput } from '../UI/InputNumber'
-import { CalcOffsetFn_Type5 } from '../../ActionComponents/Offset5/Offset5'
+import CalcOffsetFn_Type5 from '../../ActionComponents/Offset5/Offset5'
 import { _log } from '../../Helpers/HelpersFns'
 import Input from '@mui/material/Input'
 import { FormControl, InputLabel, TextField } from '@mui/material'

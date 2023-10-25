@@ -1,9 +1,7 @@
-import { ANYfn } from "../../Interfaces/MathActionsTypes"
 import { CLS_NetFnCalc } from "../Nets/CalcNetNode"
-import { IOffset5Arg } from "../Offset5/Offset5"
+
 import { CLS_Offset5FnCalc } from "../Offset5/Offset5Node"
-import { FnProperties } from "./FnProperties"
-import { Enum_NodesAction, Fn_NetArgs } from "./Types"
+import { Enum_NodesAction, Fn_Args_nets, Fn_Args_offset5 } from "./Types"
 
 export type ICalculatoreStore = {
 
@@ -12,14 +10,14 @@ export type ICalculatoreStore = {
 
 export type INetsNode_CLS = {
     fn: CLS_NetFnCalc
-    args: Fn_NetArgs
+    args: Fn_Args_nets
     type: Enum_NodesAction.nets
 }
 
 
 export type IOffset5Node_CLS = {
     fn: CLS_Offset5FnCalc
-    args: IOffset5Arg
+    args: Fn_Args_offset5
     type: Enum_NodesAction.offset5
 
 }

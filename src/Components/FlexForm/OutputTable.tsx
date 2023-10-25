@@ -1,16 +1,33 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material'
 import React from 'react'
-import { CalcOffsetFn_Type5 } from '../../ActionComponents/Offset5/Offset5'
 import { _log } from '../../Helpers/HelpersFns'
+import { ArgsList, Enum_NodesAction, FuncsList } from '../../ActionComponents/ActionTypes/Types'
+import { ANYobj } from '../../Interfaces/MathActionsTypes'
+
+
+
+
+export function createOutputTableData<K extends keyof typeof Enum_NodesAction>(
+    args: ArgsList[K],
+    output: ReturnType<FuncsList[K]>,
+) {
+    return { args, output }
+}
+
+type IOutputProps = ReturnType<typeof createOutputTableData<Enum_NodesAction>>
+
 
 type OutputTableProps = {
-    storedNodes?: ReturnType<typeof createOutputTableData>[]
+    output?: ReturnType<typeof createOutputTableData>[]
 }
 type NodesRowProps = {
-    args: { [field: string]: number },
-    result: { [field: string]: number },
+    args: IOutputProps['args'],
+    output: IOutputProps['output'],
 }
-const NodesRow: React.FC<NodesRowProps> = ({ args, result }) => {
+
+//! ****************************************************
+//* <<<<<<<<<<<<<<<<<<<< TABLE ROW >>>>>>>>>>>>>>>>>>>>>
+const NodesRow: React.FC<NodesRowProps> = ({ args, output }) => {
 
 
     return <TableRow
@@ -41,16 +58,18 @@ const NodesRow: React.FC<NodesRowProps> = ({ args, result }) => {
             scope='row'
             component={'th'}>
             {
-                Object.entries(result).map(([k, v]) =>
+                Object.entries(output).map(([k, v]) =>
                     <li key={k} className='flex flex-row justify-between'><span>{k}: </span><b>{v}</b></li>
                 )
             }
         </TableCell>
     </TableRow>
 }
-export const OutputTable: React.FC<OutputTableProps> = ({ storedNodes = stored }) => {
+//! ****************************************************
+//* <<<<<<<<<<<<<<<<<<<< TABLE Main >>>>>>>>>>>>>>>>>>>>>
+export const OutputTable: React.FC<OutputTableProps> = ({ output }) => {
 
-    const nodes = storedNodes || []
+    const rows = output || []
 
     return (
         <TableContainer sx={{
@@ -76,7 +95,7 @@ export const OutputTable: React.FC<OutputTableProps> = ({ storedNodes = stored }
 
                     }} >
                     {
-                        nodes.map((node, idx) =>
+                        rows.map((node, idx) =>
                             <NodesRow {...node as NodesRowProps} key={idx} />
                         )
                     }
@@ -90,41 +109,5 @@ export const OutputTable: React.FC<OutputTableProps> = ({ storedNodes = stored }
     )
 }
 
-export function createOutputTableData(
-    args: { [Key: string]: number },
-    result: { [Key: string]: number | string },
 
-) {
-    return { args, result }
-}
 
-const stored = [
-    {
-        W: 1000,
-        H: 1500,
-        h: 850,
-        da: 25,
-        db: 25,
-    },
-    {
-        W: 1300,
-        H: 1000,
-        h: 850,
-        da: 25,
-        db: 25,
-    },
-    {
-        W: 800,
-        H: 1100,
-        h: 850,
-        da: 20,
-        db: 20,
-    },
-    {
-        W: 1000,
-        H: 1500,
-        h: 850,
-        da: 10,
-        db: 10,
-    },
-].map(n => createOutputTableData(n, CalcOffsetFn_Type5(n)))

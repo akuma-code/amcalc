@@ -1,9 +1,9 @@
 import { _ID, _log } from "../../Helpers/HelpersFns";
 import { ANYfn } from "../../Interfaces/MathActionsTypes";
 import { Enum_NodesAction } from "../ActionTypes/Types";
-import { CalcNetSize } from "../Nets/CalcNetSize";
+import CalcNetSize from "../Nets/CalcNetSize";
 import { DTO_Nodes_list } from "../ActionTypes/Types";
-import { CalcOffsetFn_Type5 } from "../Offset5/Offset5";
+import CalcOffsetFn_Type5 from "../Offset5/Offset5";
 import { CLS_NetFnCalc } from "../Nets/CalcNetNode";
 import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
 

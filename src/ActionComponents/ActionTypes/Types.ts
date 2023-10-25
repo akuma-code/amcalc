@@ -1,35 +1,74 @@
-import { FnDtoNames } from "..";
+import { _log } from "../../Helpers/HelpersFns";
 import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
-import { ANYfn } from "../../Interfaces/MathActionsTypes";
-import { CLS_NetFnCalc } from "../Nets/CalcNetNode";
-import { IOffset5Arg, IOffset5_Output } from "../Offset5/Offset5";
-import { CLS_Offset5FnCalc } from "../Offset5/Offset5Node";
+import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes";
+import { FnProperties, FnPropertyNames } from "./FnProperties";
 
 
-export type Fn_NetArgs = ISizeFull
-export type Fn_NetOutput = { [K in 'skf' | 'simple']: ISize }
 
-export type ICalcNetsFn = ({ width, height }: Fn_NetArgs) => Fn_NetOutput
-export type IOffset5Fn = (arg: IOffset5Arg) => IOffset5_Output
+export type Fn_Args_offset5 = {
+    W: number,
+    H: number,
+    h: number,
+    da: number,
+    db: number
+}
+
+
+export type Fn_Output_offset5 = {
+    angle: number;
+    sumXY: number;
+    deltaH: number;
+    tgA: number;
+    x: number;
+    y: number;
+}
+export type Fn_offset5 = (arg: Fn_Args_offset5) => Fn_Output_offset5
+
+type INetSKF = { skf: ISize }
+type INetSimple = { simple: ISize }
+
+export type Fn_Args_nets = { [K in keyof ISizeFull]: number }
+export type Fn_Output_nets = INetSKF & INetSimple
+export type Fn_nets = ({ width, height }: Fn_Args_nets) => Fn_Output_nets
+
+
+export type getInit<A extends ANYobj> = (obj: A) => { [K in keyof A]: A[K] extends number ? 0 : A[K] extends string ? "" : never }
+
 
 export enum Enum_NodesAction {
     nets = 'nets',
     offset5 = 'offset5'
 }
-export interface DTO {
-    fn: unknown
-    args: unknown
-    type: unknown
+
+type FnKeys = keyof typeof Enum_NodesAction
+export interface ArgsList {
+    nets: Fn_Args_nets
+    offset5: Fn_Args_offset5
 }
+
+export interface FuncsList {
+    nets: Fn_nets
+    offset5: Fn_offset5
+}
+export type IFuncArgs = ArgsList[Enum_NodesAction]
+
+export type IGetFields<Arg extends IFuncArgs> = (args: Arg) => (keyof Arg)[]
+
+export type DTO_EXPORT = {
+    fields: string[]
+    fn: FuncsList[Enum_NodesAction]
+}
+
+
 export type INetsNode_DTO = {
-    fn: ICalcNetsFn
-    payload: Fn_NetArgs
+    fn: Fn_nets
+    payload: Fn_Args_nets
     type: Enum_NodesAction.nets
 }
 
 export type IOffset5Node_DTO = {
-    fn: IOffset5Fn
-    payload: IOffset5Arg
+    fn: Fn_offset5
+    payload: Fn_Args_offset5
     type: Enum_NodesAction.offset5
 
 }

@@ -4,15 +4,13 @@ import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../Hooks/useStoresContext'
 // import ActionTemplates from '../Templates/ActionTemplates'
 import useInput from '../Hooks/useInput'
-import { CalcOffsetFn_Type5 } from '../../ActionComponents/Offset5/Offset5'
+import CalcOffsetFn_Type5 from '../../ActionComponents/Offset5/Offset5'
 import { FlexForm } from '../FlexForm/FlexForm'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
 // import { nodes } from '../../ActionComponents'
 
 
-import { dto_test } from '../../ActionComponents/ActionModels/DTO_Store'
-dto_test()
 const Homepage = observer(() => {
 
     const { mbxStore } = useStoresContext()
@@ -53,7 +51,7 @@ const Homepage = observer(() => {
                 >
                     <Stack direction={'row'}>
                         <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
-                            submitFn={CalcOffsetFn_Type5}
+                            submitFn={CalcOffsetFn_Type5.fn}
                             defaultState={{
 
                                 W: 1000,
@@ -64,7 +62,7 @@ const Homepage = observer(() => {
                             }}
                         />
                         <OutputTable
-                            storedNodes={stored}
+                            output={stored}
 
                         />
                     </Stack>

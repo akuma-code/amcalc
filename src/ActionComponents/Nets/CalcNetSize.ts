@@ -1,6 +1,6 @@
 import { DTO_ExportFnType } from "../../Interfaces/MathActionsTypes"
+import { DTO_EXPORT } from "../ActionTypes/Types"
 
-import { ActionFnNode } from "../ActionModels/v1FnNode"
 
 
 
@@ -8,7 +8,8 @@ type DTO_NetOutput = { [K in 'skf' | 'simple']: { w: number, h: number } }
 type DTO_NetArgs = { width: number, height: number }
 type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_NetOutput
 
-export const CalcNetSize: ICalcNets = ({ width, height }) => {
+const CalcNetSize: ICalcNets = ({ width, height }) => {
+
     if (!width || !height) throw new Error("ARGS ERROR!")
     const simple = {
         w: width + 24,
@@ -24,17 +25,23 @@ export const CalcNetSize: ICalcNets = ({ width, height }) => {
 }
 
 export type DTO_Fn_CalcNetSize = DTO_ExportFnType<typeof CalcNetSize>
-class NetFnNode extends ActionFnNode<typeof CalcNetSize>{
+// export class CalcNetsNode {
 
-    exec(args: DTO_Fn_CalcNetSize['args'], save_args: boolean = false) {
+//     fields = ['width', 'height']
+//     skf!: ISize
+//     simple!: ISize
+//     constructor(props: Fn_Args_nets) {
+//         this.init(props)
+//     }
+//     private init(props: Fn_Args_nets) {
+//         const { skf, simple } = CalcNetSize(props)
+//         this.skf = skf
+//         this.simple = simple
+//     }
+// }
 
-        save_args && this.saved.push(args)
-
-        return this.fn(args)
-    }
-
-}
-
+const CalcNet_DTO: DTO_EXPORT = { fn: CalcNetSize, fields: ['width', 'height'] }
+export default CalcNet_DTO
 
 // const CalcNetSizeNode = new NetFnNode(CalcNetSize)
 // export type DTO_ActionCalcNet = ExportFnInterface<typeof CalcNetSize, 'nets'>

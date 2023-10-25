@@ -1,24 +1,9 @@
 import { _log, _rad2deg } from "../../Helpers/HelpersFns";
-import { ISizeFull } from "../../Interfaces/CommonTypes";
-import { DTO_StoreObj, DTO_ExportFnType, DTO_FuncActionType, ExportFnInterface } from "../../Interfaces/MathActionsTypes";
+import { DTO_StoreObj, DTO_ExportFnType, ExportFnInterface } from "../../Interfaces/MathActionsTypes";
 import { } from "../../mobXStore/Stores";
-import { ActionFnNode } from "../ActionModels/v1FnNode";
-import { DTO_Fn_CalcNetSize } from "../Nets/CalcNetSize";
-export type IOffset5Arg = {
-    W: number, H: number, h: number, da: number, db: number
-}
+import { DTO_EXPORT, Fn_offset5 } from "../ActionTypes/Types";
 
-
-export type IOffset5_Output = {
-    angle: number;
-    sumXY: number;
-    deltaH: number;
-    tgA: number;
-    x: number;
-    y: number;
-}
-type ICalcOffset5 = (arg: IOffset5Arg) => IOffset5_Output
-export const CalcOffsetFn_Type5: ICalcOffset5 = (args) => {
+const CalcOffsetFn_Type5: Fn_offset5 = (args) => {
     const { H, W, da, db, h } = args
 
 
@@ -43,9 +28,12 @@ export const CalcOffsetFn_Type5: ICalcOffset5 = (args) => {
 
 }
 
+const Offset5: DTO_EXPORT = {
+    fn: CalcOffsetFn_Type5,
+    fields: ['H', 'W', 'da', 'db', 'h']
+}
 
-
-
+export default Offset5
 // class Offset5Node extends ActionFnNode<typeof CalcOffsetFn_Type5>{
 
 //     exec(args: DTO_CalcOffset5['args'], save_args: boolean = false) {

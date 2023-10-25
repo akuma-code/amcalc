@@ -1,14 +1,17 @@
-import { DTO_ExportFnType, DTO_FuncActionType, ExportFnInterface } from "../../Interfaces/MathActionsTypes"
-import { DTO_NodeFn, } from "../ActionModels/DTO_NodeFn"
-import { ActionFnNode } from "../ActionModels/v1FnNode"
-import { Enum_NodesAction } from "../ActionTypes/Types"
+import { dto_Export } from "../../Helpers/HelpersFns"
+import { ISize, ISizeFull } from "../../Interfaces/CommonTypes"
+import { DTO_ExportFnType } from "../../Interfaces/MathActionsTypes"
+import { DTO_EXPORT } from "../ActionTypes/Types"
 
 
-type DTO_NetOutput = { [K in 'skf' | 'simple']: { w: number, h: number } }
-type DTO_NetArgs = { width: number, height: number }
+
+
+type DTO_NetOutput = { [K in 'skf' | 'simple']: ISize }
+type DTO_NetArgs = ISizeFull
 type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_NetOutput
 
-export const CalcNetSize: ICalcNets = ({ width, height }) => {
+const CalcNetSize: ICalcNets = ({ width, height }) => {
+
     if (!width || !height) throw new Error("ARGS ERROR!")
     const simple = {
         w: width + 24,
@@ -22,27 +25,36 @@ export const CalcNetSize: ICalcNets = ({ width, height }) => {
 
     return { simple, skf }
 }
-
-export type DTO_Fn_CalcNetSize = DTO_ExportFnType<typeof CalcNetSize>
-class NetFnNode extends ActionFnNode<typeof CalcNetSize>{
-
-    exec(args: DTO_Fn_CalcNetSize['args'], save_args: boolean = false) {
-
-        save_args && this.saved.push(args)
-
-        return this.fn(args)
-    }
-
+const initstate: DTO_NetArgs = {
+    width: 0,
+    height: 0
 }
 
+const CalcNet_DTO: DTO_EXPORT = dto_Export(CalcNetSize, initstate)
+//  { fn: CalcNetSize, fields: ['width', 'height'] }
 
+
+export default CalcNet_DTO
 
 // const CalcNetSizeNode = new NetFnNode(CalcNetSize)
-export type DTO_ActionCalcNet = ExportFnInterface<typeof CalcNetSize, 'nets'>
+// export type DTO_ActionCalcNet = ExportFnInterface<typeof CalcNetSize, 'nets'>
 
-export type DTO_CalcFnExport = ExportFnInterface<typeof CalcNetSize, 'nets'>
-
-
+// export type DTO_CalcFnExport = ExportFnInterface<typeof CalcNetSize, 'nets'>
 
 
+
+// export class CalcNetsNode {
+
+//     fields = ['width', 'height']
+//     skf!: ISize
+//     simple!: ISize
+//     constructor(props: Fn_Args_nets) {
+//         this.init(props)
+//     }
+//     private init(props: Fn_Args_nets) {
+//         const { skf, simple } = CalcNetSize(props)
+//         this.skf = skf
+//         this.simple = simple
+//     }
+// }
 // export default CalcNetSizeNode

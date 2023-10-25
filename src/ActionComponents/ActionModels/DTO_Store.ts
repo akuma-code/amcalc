@@ -1,12 +1,14 @@
-export class DTO_Store {
-    _store: any[] = []
+import { _log } from "../../Helpers/HelpersFns";
+import { ANYfn } from "../../Interfaces/MathActionsTypes";
+import FnLinkedList, { DTO_Node, IDataTransferObject } from "../../Models/DTO_ChainStore";
+import { DTO_Nodes_list, Enum_NodesAction } from "../ActionTypes/Types";
+import CalcNetSize from "../Nets/CalcNetSize";
+import CalcOffsetFn_Type5 from "../Offset5/Offset5";
 
 
-    set store(st: any) {
-        this._store = st
-    }
+const dto_Store = new FnLinkedList<IDataTransferObject>()
 
-    get store() {
-        return this._store
-    }
-}
+dto_Store.add(new DTO_Node(CalcOffsetFn_Type5, Enum_NodesAction.offset5))
+dto_Store.add(new DTO_Node(CalcNetSize, Enum_NodesAction.nets))
+
+export default dto_Store

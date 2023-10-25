@@ -1,8 +1,6 @@
 import { _ID, _log } from '../../Helpers/HelpersFns';
 import { ANYfn } from '../../Interfaces/MathActionsTypes';
 import { ActionFnNode } from './v1FnNode';
-// import CalcNetSizeNode from '../Nets/CalcNetSize';
-import { Offset5FnNode } from '../Offset5/Offset5';
 import { DTO_IStore, FnDtoNames } from '..';
 
 class v1DTO_Store {

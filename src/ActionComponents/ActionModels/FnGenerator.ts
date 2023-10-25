@@ -1,9 +1,8 @@
-import { ICalcNetsFn } from "../ActionTypes/Types";
-import { DTO_Fn_CalcNetSize } from "../Nets/CalcNetSize";
+import { Fn_nets } from "../ActionTypes/Types";
 
-type IGenNetCalc = Generator<DTO_Fn_CalcNetSize['args'], DTO_Fn_CalcNetSize['output']>
+
 
 function* NetGenerator() {
 
-    return { height: 5, width: 4 }
+
 }

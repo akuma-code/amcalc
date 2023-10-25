@@ -3,6 +3,7 @@ import { FnDtoNames } from "../ActionComponents"
 export type MathActionNames = 'plus' | 'minus' | 'multi' | 'devide'
 export type ISimpleMathFunc = (a: number, b: number) => number
 export type ANYfn = (...args: any) => any
+export type ANYobj = { [key: string]: any }
 
 export type IActionData<T> = {
     args: T | T[]

@@ -1,6 +1,5 @@
 import { _log } from "../../Helpers/HelpersFns"
 import { DTO_ExportFnType } from "../../Interfaces/MathActionsTypes"
-import { DTO_Fn_CalcNetSize } from "../Nets/CalcNetSize"
 
 export class ActionFnNode<Fn extends (...args: any) => any>  {
     public fn: Fn

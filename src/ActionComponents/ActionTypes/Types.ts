@@ -2,7 +2,15 @@ import { FnDtoNames } from "..";
 import { ANYfn } from "../../Interfaces/MathActionsTypes";
 import { IOffset5Arg, IOffset5_Output } from "../Offset5/Offset5";
 
+export interface ISizeFull {
+    width: number
+    height: number
+}
 
+export interface ISize {
+    w: number
+    h: number
+}
 type Fn_NetArgs = { width: number, height: number }
 type Fn_NetOutput = { [K in 'skf' | 'simple']: { w: number, h: number } }
 

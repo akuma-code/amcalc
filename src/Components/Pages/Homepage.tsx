@@ -9,12 +9,14 @@ import { FlexForm } from '../FlexForm/FlexForm'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
 import { nodes } from '../../ActionComponents'
+import PatchBox from '../PatchBox/PatchBox'
+import { Testing_CalcnetModel } from '../../ActionComponents/Nets/CalcNetModel'
 
 
 
 
+Testing_CalcnetModel()
 const Homepage = observer(() => {
-
     const { mbxStore } = useStoresContext()
 
     const [res, setRes] = useState<number | null>(null)
@@ -34,8 +36,16 @@ const Homepage = observer(() => {
         <div >
             <div className='bg-slate-500 w-auto h-auto flex p-2' key={'HomePage'}>
 
-            </div>
+                <PatchBox
+                    view_mode='inline'
+                    // bg_color='#0936ca'
+                    width={300}
+                    height={100}
+                    rows={1}
 
+
+                />
+            </div>
             {/* <div className='border-red-950 border-2 p-2 mt-2'>
                 <CalcOffset5Component
                     fields={{

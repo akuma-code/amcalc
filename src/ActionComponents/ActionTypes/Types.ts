@@ -51,6 +51,14 @@ interface IFunctions {
 export type IFuncArgs = ArgsList[FnKeys]
 export type IFuncsList = IFunctions[FnKeys]
 
+export type TypeSelector<T extends FnKeys> = {
+    args: ArgsList[T]
+    fn: IFunctions[T]
+    output: ReturnType<IFunctions[T]>
+    fields: (keyof ArgsList[T])[]
+}
+
+
 
 export type IGetFields<Arg extends IFuncArgs> = (args: Arg) => (keyof Arg)[]
 

@@ -1,5 +1,6 @@
 import { _log } from "../../Helpers/HelpersFns";
-import { ISize, ISizeFull } from "../ActionTypes/Types";
+import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
+
 
 export class CalcNet {
     skf: ISize

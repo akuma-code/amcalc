@@ -1,7 +1,7 @@
-import { _log, _rad2deg } from "../../Helpers/HelpersFns";
+import { _log, _rad2deg, dto_Export } from "../../Helpers/HelpersFns";
 import { DTO_StoreObj, DTO_ExportFnType, ExportFnInterface } from "../../Interfaces/MathActionsTypes";
 import { } from "../../mobXStore/Stores";
-import { DTO_EXPORT, Fn_offset5 } from "../ActionTypes/Types";
+import { DTO_EXPORT, Fn_Args_offset5, Fn_offset5 } from "../ActionTypes/Types";
 
 const CalcOffsetFn_Type5: Fn_offset5 = (args) => {
     const { H, W, da, db, h } = args
@@ -27,11 +27,14 @@ const CalcOffsetFn_Type5: Fn_offset5 = (args) => {
     return { ...calc }
 
 }
-
-const Offset5: DTO_EXPORT = {
-    fn: CalcOffsetFn_Type5,
-    fields: ['H', 'W', 'da', 'db', 'h']
+const initOffset5State: Fn_Args_offset5 = {
+    W: 0,
+    H: 0,
+    h: 0,
+    da: 0,
+    db: 0,
 }
+const Offset5: DTO_EXPORT = dto_Export(CalcOffsetFn_Type5, initOffset5State)
 
 export default Offset5
 // class Offset5Node extends ActionFnNode<typeof CalcOffsetFn_Type5>{

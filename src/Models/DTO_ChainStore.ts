@@ -7,6 +7,7 @@ export interface IDataTransferObject {
     fn: ANYfn
     type: Enum_NodesAction
     fields?: string[]
+    initState: IFuncArgs
 }
 
 
@@ -15,6 +16,7 @@ export class DTO_Node implements IDataTransferObject {
     public fn: ANYfn
     public type: Enum_NodesAction
     public fields: string[] = []
+    public initState: IFuncArgs
     constructor(
         dto: DTO_EXPORT,
         fn_type: Enum_NodesAction
@@ -22,6 +24,7 @@ export class DTO_Node implements IDataTransferObject {
         this.fn = dto.fn
         this.type = fn_type
         this.fields = dto.fields
+        this.initState = dto.initState
     }
 
     exec(args: IFuncArgs) {
@@ -41,6 +44,8 @@ export class DTO_Node implements IDataTransferObject {
 }
 class FnLinkedList<Data extends IDataTransferObject> extends LinkedList<Data> {
     head: DataNode<Data> | null = null;
+
+
     fnSearch(comparator: (data: Data) => boolean) {
         const checkNext = (node: DataNode<Data>): Data['fn'] | null => {
             if (comparator(node.data)) {

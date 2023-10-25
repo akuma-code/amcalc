@@ -1,5 +1,5 @@
 import { v4 } from 'uuid'
-import { IFuncArgs } from '../ActionComponents/ActionTypes/Types'
+import { DTO_EXPORT, IFuncArgs, IFuncsList } from '../ActionComponents/ActionTypes/Types'
 
 
 export const _log = console.log
@@ -21,4 +21,15 @@ export const _isArr = (obj: any) => Array.isArray(obj)
 export const getFormFields = <Args extends IFuncArgs>(args: Args) => {
     const keys = Object.keys(args) as (keyof typeof args)[]
     return { fields: keys }
+}
+
+export const dto_Export = (fn: IFuncsList, initState: IFuncArgs): DTO_EXPORT => {
+
+    const { fields } = getFormFields(initState)
+    const dto: DTO_EXPORT = {
+        fn: fn,
+        fields,
+        initState
+    }
+    return dto
 }

@@ -1,7 +1,7 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material'
 import React from 'react'
 import { _log } from '../../Helpers/HelpersFns'
-import { ArgsList, Enum_NodesAction, FuncsList } from '../../ActionComponents/ActionTypes/Types'
+import { ArgsList, Enum_NodesAction, IFuncsList } from '../../ActionComponents/ActionTypes/Types'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
 
 
@@ -9,7 +9,7 @@ import { ANYobj } from '../../Interfaces/MathActionsTypes'
 
 export function createOutputTableData<K extends keyof typeof Enum_NodesAction>(
     args: ArgsList[K],
-    output: ReturnType<FuncsList[K]>,
+    output: ReturnType<IFuncsList>,
 ) {
     return { args, output }
 }
@@ -18,7 +18,7 @@ type IOutputProps = ReturnType<typeof createOutputTableData<Enum_NodesAction>>
 
 
 type OutputTableProps = {
-    output?: ReturnType<typeof createOutputTableData>[]
+    output?: IOutputProps[]
 }
 type NodesRowProps = {
     args: IOutputProps['args'],

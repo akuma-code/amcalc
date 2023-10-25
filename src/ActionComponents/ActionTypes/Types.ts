@@ -40,23 +40,26 @@ export enum Enum_NodesAction {
     offset5 = 'offset5'
 }
 
-type FnKeys = keyof typeof Enum_NodesAction
+export type FnKeys = keyof typeof Enum_NodesAction
 export interface ArgsList {
     nets: Fn_Args_nets
     offset5: Fn_Args_offset5
 }
 
-export interface FuncsList {
+interface IFunctions {
     nets: Fn_nets
     offset5: Fn_offset5
 }
-export type IFuncArgs = ArgsList[Enum_NodesAction]
+export type IFuncArgs = ArgsList[FnKeys]
+export type IFuncsList = IFunctions[FnKeys]
+
 
 export type IGetFields<Arg extends IFuncArgs> = (args: Arg) => (keyof Arg)[]
 
 export type DTO_EXPORT = {
+    fn: IFuncsList
     fields: string[]
-    fn: FuncsList[Enum_NodesAction]
+    initState: IFuncArgs
 }
 
 

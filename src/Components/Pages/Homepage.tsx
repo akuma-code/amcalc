@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { _deg2rad, _log, _promptVar } from '../../Helpers/HelpersFns'
+import { _deg2rad, _log, _promptVar, dto_Export } from '../../Helpers/HelpersFns'
 import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../Hooks/useStoresContext'
 // import ActionTemplates from '../Templates/ActionTemplates'
@@ -8,12 +8,14 @@ import CalcOffsetFn_Type5 from '../../ActionComponents/Offset5/Offset5'
 import { FlexForm } from '../FlexForm/FlexForm'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
+import DTOForm from '../FlexForm/DTO_Form'
 // import { nodes } from '../../ActionComponents'
 
 
 const Homepage = observer(() => {
 
-    const { mbxStore } = useStoresContext()
+    const { mbxStore, dto_Store } = useStoresContext()
+    const dtos = dto_Store.traverse()
 
     const [res, setRes] = useState<number | null>(null)
     const stored = mbxStore.store.map(n => createOutputTableData(n.data.initState, n.data.result))
@@ -50,7 +52,7 @@ const Homepage = observer(() => {
 
                 >
                     <Stack direction={'row'}>
-                        <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
+                        {/* <FlexForm fields={['W', 'H', 'h', 'da', 'db']}
                             submitFn={CalcOffsetFn_Type5.fn}
                             defaultState={{
 
@@ -60,7 +62,9 @@ const Homepage = observer(() => {
                                 da: 25,
                                 db: 25,
                             }}
-                        />
+                    /> */}
+                        {dtos.map(dto =>
+                            <DTOForm dto={dto} key={dto.type} />)}
                         <OutputTable
                             output={stored}
 

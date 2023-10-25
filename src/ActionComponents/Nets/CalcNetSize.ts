@@ -1,11 +1,13 @@
+import { dto_Export } from "../../Helpers/HelpersFns"
+import { ISize, ISizeFull } from "../../Interfaces/CommonTypes"
 import { DTO_ExportFnType } from "../../Interfaces/MathActionsTypes"
 import { DTO_EXPORT } from "../ActionTypes/Types"
 
 
 
 
-type DTO_NetOutput = { [K in 'skf' | 'simple']: { w: number, h: number } }
-type DTO_NetArgs = { width: number, height: number }
+type DTO_NetOutput = { [K in 'skf' | 'simple']: ISize }
+type DTO_NetArgs = ISizeFull
 type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_NetOutput
 
 const CalcNetSize: ICalcNets = ({ width, height }) => {
@@ -23,8 +25,24 @@ const CalcNetSize: ICalcNets = ({ width, height }) => {
 
     return { simple, skf }
 }
+const initstate: DTO_NetArgs = {
+    width: 0,
+    height: 0
+}
 
-export type DTO_Fn_CalcNetSize = DTO_ExportFnType<typeof CalcNetSize>
+const CalcNet_DTO: DTO_EXPORT = dto_Export(CalcNetSize, initstate)
+//  { fn: CalcNetSize, fields: ['width', 'height'] }
+
+
+export default CalcNet_DTO
+
+// const CalcNetSizeNode = new NetFnNode(CalcNetSize)
+// export type DTO_ActionCalcNet = ExportFnInterface<typeof CalcNetSize, 'nets'>
+
+// export type DTO_CalcFnExport = ExportFnInterface<typeof CalcNetSize, 'nets'>
+
+
+
 // export class CalcNetsNode {
 
 //     fields = ['width', 'height']
@@ -39,16 +57,4 @@ export type DTO_Fn_CalcNetSize = DTO_ExportFnType<typeof CalcNetSize>
 //         this.simple = simple
 //     }
 // }
-
-const CalcNet_DTO: DTO_EXPORT = { fn: CalcNetSize, fields: ['width', 'height'] }
-export default CalcNet_DTO
-
-// const CalcNetSizeNode = new NetFnNode(CalcNetSize)
-// export type DTO_ActionCalcNet = ExportFnInterface<typeof CalcNetSize, 'nets'>
-
-// export type DTO_CalcFnExport = ExportFnInterface<typeof CalcNetSize, 'nets'>
-
-
-
-
 // export default CalcNetSizeNode

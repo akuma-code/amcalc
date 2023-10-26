@@ -12,12 +12,13 @@ import { _log } from '../../Helpers/HelpersFns'
 
 type CalcBoxProps = {
     type: Enum_NodesAction
+    init: TypeSelector<FnKeys>['arg']
 }
 
 const CalcBox = (props: CalcBoxProps) => {
 
     const { createOutput, formProps } = useDTO(props.type)
-    const { fields, initstate } = formProps({ height: 0, width: 0 })
+    const { fields, initstate } = formProps(props.init)
 
 
 

@@ -74,7 +74,7 @@ const Homepage = observer(() => {
                                 db: 25,
                             }}
                     /> */}
-                        <CalcBox type={Enum_NodesAction.nets} />
+                        <CalcBox type={Enum_NodesAction.nets} init={dto_Store.head?.next?.data.initState!} />
 
                         {/* {dtos.map(dto =>
                             <DTOForm

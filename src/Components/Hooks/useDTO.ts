@@ -1,5 +1,5 @@
 import { StringifyProps } from "../../ActionComponents/ActionTypes/FnProperties"
-import { ArgsList, Enum_NodesAction, FnKeys, Fn_Output_nets, IFuncArgs, IFuncsList, IFunctions, TypeSelector } from "../../ActionComponents/ActionTypes/Types"
+import { ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, Fn_Output_nets, IFuncArgs, IFuncsList, IFunctions, TypeSelector } from "../../ActionComponents/ActionTypes/Types"
 import { _log } from "../../Helpers/HelpersFns"
 type Output_v1<T extends FnKeys = 'nets'> = {
     args: ArgsList[T]
@@ -8,30 +8,24 @@ type Output_v1<T extends FnKeys = 'nets'> = {
 
 type Output_v2<T extends FnKeys> = Pick<TypeSelector<T>, 'arg' | 'output'>
 
-type Output_v3<T extends FnKeys> = Record<FnKeys, Output_v1<T>[]>
+type Output_v3<T extends FnKeys> = Record<FnKeys, Output_v1<T>>
 
 type FormProps<K extends FnKeys> = Pick<TypeSelector<K>, 'fields' | 'initstate' | 'arg'>
 
 
 
 export const useDTO = <FK extends FnKeys>(fn_type: Enum_NodesAction & string) => {
-    type FProps = FormProps<FK>
-    type OutPut<T extends FnKeys> = Output_v3<T>
-    type ArgType = FormProps<FK>['arg']
+
     const createOutput = (fn: IFunctions[FK], ...saved_args: FormProps<FK>['arg'][]) => {
-        const out = (arg: ArgType) => {
+        const out = (arg: FormProps<FK>['arg']) => {
             const res = {
-                arg: [arg],
-                output: []
+                args: arg,
+                output: fn(arg as Fn_Args_nets & Fn_Args_offset5)
             }
-
+            return res
         }
-        saved_args && saved_args.forEach((sa) => {
 
-            const current = { sa, output: [] }
-        })
-
-        return out
+        return saved_args.map(a => out(a))
     }
 
 
@@ -43,8 +37,6 @@ export const useDTO = <FK extends FnKeys>(fn_type: Enum_NodesAction & string) =>
             fields: f,
             initstate: initState as StringifyProps<ArgsList[FK]>,
             arg: initState
-
-
         }
     }
     return { createOutput, formProps }

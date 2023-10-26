@@ -9,6 +9,8 @@ import { FlexForm } from '../FlexForm/FlexForm'
 import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
 import DTOForm from '../FlexForm/DTO_Form'
+import CalcBox from '../../ActionComponents/Calculators/CalcBox'
+import { Enum_NodesAction } from '../../ActionComponents/ActionTypes/Types'
 // import { nodes } from '../../ActionComponents'
 
 
@@ -72,8 +74,13 @@ const Homepage = observer(() => {
                                 db: 25,
                             }}
                     /> */}
-                        {dtos.map(dto =>
-                            <DTOForm dto={dto} key={dto.type} />)}
+                        <CalcBox type={Enum_NodesAction.nets} />
+
+                        {/* {dtos.map(dto =>
+                            <DTOForm
+                                fields={['width'] as never[]}
+                                initState={{ width: ``, height: '' }}
+                            />)} */}
                         <OutputTable
                             output={stored}
 

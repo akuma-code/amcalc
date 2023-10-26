@@ -1,7 +1,7 @@
 import { _log } from "../../Helpers/HelpersFns";
 import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes";
-import { FnProperties, FnPropertyNames } from "./FnProperties";
+import { FnProperties, FnPropertyNames, StringifyProps } from "./FnProperties";
 
 export type Fn_Args_offset5 = {
     W: number,
@@ -30,7 +30,7 @@ export type Fn_Output_nets = INetSKF & INetSimple
 export type Fn_nets = ({ width, height }: Fn_Args_nets) => Fn_Output_nets
 
 
-export type getInit<A extends ANYobj> = (obj: A) => { [K in keyof A]: A[K] extends number ? 0 : A[K] extends string ? "" : never }
+
 
 
 export enum Enum_NodesAction {
@@ -44,7 +44,7 @@ export interface ArgsList {
     offset5: Fn_Args_offset5
 }
 
-interface IFunctions {
+export interface IFunctions {
     nets: Fn_nets
     offset5: Fn_offset5
 }
@@ -52,11 +52,18 @@ export type IFuncArgs = ArgsList[FnKeys]
 export type IFuncsList = IFunctions[FnKeys]
 
 export type TypeSelector<T extends FnKeys> = {
-    args: ArgsList[T]
+    type: T
+    fields: readonly (GetFieldsName<ArgsList[T]>)[]
+    initstate: StringifyProps<ArgsList[T]>
+    arg: ArgsList[T]
     fn: IFunctions[T]
     output: ReturnType<IFunctions[T]>
-    fields: (keyof ArgsList[T])[]
 }
+
+export type GetFieldsName<T extends ANYobj> = (keyof T) extends infer propName ? propName : null
+
+export type INETS = TypeSelector<Enum_NodesAction.nets>
+export type IOFFSET5 = TypeSelector<Enum_NodesAction.offset5>
 
 
 

@@ -8,7 +8,7 @@ import { ArgsList, FnKeys } from '../../ActionComponents/ActionTypes/Types'
 import { DTO_Node } from '../../Models/DTO_ChainStore'
 
 type FlexFormProps = {
-    fields: DTO_Node['fields']
+    fields: keyof ArgsList[FnKeys][]
     submitFn?: DTO_Node['fn']
     defaultState?: ArgsList[FnKeys]
 }
@@ -17,9 +17,9 @@ type FlexFormProps = {
 
 export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defaultState }) => {
     const init = defaultState ? defaultState : {} as ArgsList[FnKeys]
-    const { register, handleSubmit, watch, formState: { errors, submitCount }, setError } = useForm<ArgsList[FnKeys]>()
+    const { register, handleSubmit, watch, formState: { errors, submitCount }, setError } = useForm<ArgsList[FnKeys]>({ defaultValues: init })
     const { mbxStore } = useStoresContext()
-
+    const F = Object.keys(fields) as unknown as keyof ArgsList[FnKeys][] & string[]
     // const savedFn = save2(submitFn!)
     const onFinish = (args: any) => {
         if (!submitFn) {
@@ -39,14 +39,14 @@ export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defau
     const resetFn = () => {
         mbxStore.clear()
     }
-    if (fields.length === 0) return <div>No inputs finded</div>
+    if (F.length === 0) return <div>No inputs finded</div>
     return (
         <div className='m-1 p-2 border-slate-400 border-2 rounded-lg w-fit h-fit'>
             <form name='flexform' id='flex_form' onSubmit={handleSubmit(onFinish)} >
                 <div className='flex flex-col gap-2 justify-items-center' >
                     {
 
-                        fields.map((field) =>
+                        F.map((field) =>
                             <FormControl margin='dense' key={field}>
                                 <label className='flex gap-1 flex-row justify-around align-baseline ' key={field}>
 

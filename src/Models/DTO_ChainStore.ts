@@ -1,21 +1,19 @@
-import { IFuncArgs, Enum_NodesAction, DTO_EXPORT } from "../ActionComponents/ActionTypes/Types";
+import { IFuncArgs, Enum_NodesAction, DTO_EXPORT, IFunctions, FnKeys, IFuncsList, ArgsList, Fn_Output_nets, TypeSelector, IFuncsState } from "../ActionComponents/ActionTypes/Types";
 import { _log, getFormFields } from "../Helpers/HelpersFns";
 import { ANYfn } from "../Interfaces/MathActionsTypes";
 import { LinkedList, DataNode } from "./LinkedList";
 
 export interface IDataTransferObject {
-    fn: ANYfn
+    fn: IFunctions[FnKeys]
     type: Enum_NodesAction
-    fields?: string[]
+    fields: keyof IFuncArgs[]
     initState: IFuncArgs
 }
 
-
-
 export class DTO_Node implements IDataTransferObject {
-    public fn: ANYfn
+    public fn: IFunctions[FnKeys]
     public type: Enum_NodesAction
-    public fields: string[] = []
+    public fields: keyof IFuncArgs[]
     public initState: IFuncArgs
     constructor(
         dto: DTO_EXPORT,
@@ -27,11 +25,12 @@ export class DTO_Node implements IDataTransferObject {
         this.initState = dto.initState
     }
 
-    exec(args: IFuncArgs) {
+    exec<T extends ArgsList[typeof this.type]>(args: T) {
 
         try {
-            const out = this.fn(args)
-            return out
+
+            // const out = this.fn(args)
+            // return out
         } catch (error) {
             _log("Something gone wrong, check arguments!")
             return

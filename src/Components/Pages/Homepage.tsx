@@ -74,17 +74,12 @@ const Homepage = observer(() => {
                                 db: 25,
                             }}
                     /> */}
-                        <CalcBox type={Enum_NodesAction.nets} init={dto_Store.head?.next?.data.initState!} />
 
-                        {/* {dtos.map(dto =>
-                            <DTOForm
-                                fields={['width'] as never[]}
-                                initState={{ width: ``, height: '' }}
-                            />)} */}
-                        <OutputTable
-                            output={stored}
-
-                        />
+                        {dtos.map(dto =>
+                            <>
+                                <CalcBox type={dto.type} init={dto.initState} />
+                            </>
+                        )}
                     </Stack>
                 </Box>
             </div>
@@ -93,5 +88,6 @@ const Homepage = observer(() => {
     )
 })
 
+{/* <OutputTableoutput={ }/>                            </> */ }
 export default Homepage
 

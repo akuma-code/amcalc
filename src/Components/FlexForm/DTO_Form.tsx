@@ -4,6 +4,7 @@ import { Box, FormControl, FormHelperText, Input, InputLabel, TextField } from '
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ArgsList, Enum_NodesAction, FnKeys, IFuncArgs, TypeSelector } from '../../ActionComponents/ActionTypes/Types'
 import { _log } from '../../Helpers/HelpersFns'
+import { StringifyProps } from '../../ActionComponents/ActionTypes/FnProperties'
 
 type FormDTO = Pick<TypeSelector<FnKeys>, 'fields' | 'initstate'>
 
@@ -22,7 +23,7 @@ const DTOForm: React.FC<FormProps> = ({ fields, initState }) => {
     const regProps = (fieldName: keyof typeof initState) => register(fieldName)
     if (!fields) return FieldsError
 
-    function onFinish(args: IFuncArgs) {
+    function onFinish(args: StringifyProps<IFuncArgs>) {
         _log(args)
         return args
     }
@@ -33,7 +34,7 @@ const DTOForm: React.FC<FormProps> = ({ fields, initState }) => {
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
-
+            onSubmit={handleSubmit(data => onFinish(data), (er) => _log(er.root?.message))}
             autoComplete="on"
         >
             {fields && fields.map(f =>

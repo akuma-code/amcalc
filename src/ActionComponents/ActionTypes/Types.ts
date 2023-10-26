@@ -53,7 +53,7 @@ export type IFuncsList = IFunctions[FnKeys]
 
 export type TypeSelector<T extends FnKeys> = {
     type: T
-    fields: readonly (GetFieldsName<ArgsList[T]>)[]
+    fields: readonly GetFieldsName<ArgsList[T]>[]
     initstate: StringifyProps<ArgsList[T]>
     arg: ArgsList[T]
     fn: IFunctions[T]
@@ -64,14 +64,21 @@ export type GetFieldsName<T extends ANYobj> = (keyof T) extends infer propName ?
 
 export type INETS = TypeSelector<Enum_NodesAction.nets>
 export type IOFFSET5 = TypeSelector<Enum_NodesAction.offset5>
+export type IFuncsState =
+    | INETS
+    | IOFFSET5
 
+interface SelectorProps {
+    type: FnKeys
+    payload: unknown
+}
+// type _StateSelector = (action:SelectorProps)=>
 
-
-export type IGetFields<Arg extends IFuncArgs> = (args: Arg) => (keyof Arg)[]
+// export type IGetFields<Arg extends IFuncArgs> = (args: Arg) => (keyof Arg)[]
 
 export type DTO_EXPORT = {
     fn: IFuncsList
-    fields: string[]
+    fields: keyof IFuncArgs[]
     initState: IFuncArgs
 }
 

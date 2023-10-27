@@ -54,7 +54,7 @@ export type IFuncsList = IFunctions[FnKeys]
 export type TypeSelector<T extends FnKeys> = {
     type: T
     fields: readonly GetFieldsName<ArgsList[T]>[]
-    initstate: StringifyProps<ArgsList[T]>
+    initstate: ArgsList[T]
     arg: ArgsList[T]
     fn: IFunctions[T]
     output: ReturnType<IFunctions[T]>

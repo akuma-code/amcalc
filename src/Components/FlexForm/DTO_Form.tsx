@@ -3,56 +3,89 @@ import { IDataTransferObject } from '../../Models/DTO_ChainStore'
 import { Box, FormControl, FormHelperText, Input, InputLabel, TextField } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { ArgsList, Enum_NodesAction, FnKeys, IFuncArgs, TypeSelector } from '../../ActionComponents/ActionTypes/Types'
-import { _log } from '../../Helpers/HelpersFns'
+import { _ID, _log } from '../../Helpers/HelpersFns'
 import { StringifyProps } from '../../ActionComponents/ActionTypes/FnProperties'
+import { ANYobj } from '../../Interfaces/MathActionsTypes'
+import { Button } from '@mui/material'
 
 type FormDTO = Pick<TypeSelector<FnKeys>, 'fields' | 'initstate'>
-
+type FormOutput = {
+    [K in FnKeys]?: ArgsList[FnKeys][]
+}
 type FormProps = {
     fields: FormDTO['fields']
     initState: FormDTO['initstate']
+    submitFn?: (args: FormDTO['initstate']) => void
+}
+
+const getInitFields = (obj: FormProps['initState']) => {
+
+    const stringProps2 = Object.entries(obj).reduce((sum, [k, v]) => {
+
+        if (typeof v === 'number') sum = { ...sum, [k as keyof typeof sum]: "" }
+        else sum = { ...sum, [k]: v }
+        return sum
+    }, {} as StringifyProps<FormProps['initState']>)
+    return stringProps2
 
 }
 
-const DTOForm: React.FC<FormProps> = ({ fields, initState }) => {
 
-    const init = !!initState ? initState : {} as FormDTO['initstate']
 
-    const { register, handleSubmit, formState: { errors, submitCount }, setError } = useForm<typeof init>({ defaultValues: initState })
+const DTOForm: React.FC<FormProps> = ({ fields, initState, submitFn }) => {
+    const init = getInitFields(initState)
+
+    const {
+        register, handleSubmit,
+        formState: { errors, submitCount },
+        setError
+    } = useForm<StringifyProps<typeof initState>>({ defaultValues: init })
 
     const regProps = (fieldName: keyof typeof initState) => register(fieldName)
     if (!fields) return FieldsError
 
-    function onFinish(args: StringifyProps<IFuncArgs>) {
+    function onFinish(args: IFuncArgs) {
+        submitFn && submitFn(args)
         _log(args)
         return args
     }
-
+    const inputCounter = (c: number) => `component-helper-${c}`
+    const helperCounter = (c: number) => `component-helper-text-${c}`
     return (
         <Box
             component="form"
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
-            onSubmit={handleSubmit(data => onFinish(data), (er) => _log(er.root?.message))}
+            onSubmit={handleSubmit(data => onFinish(data as ArgsList[FnKeys]), (er) => _log(er.root?.message))}
             autoComplete="on"
+            id='dto_form'
+            display={'flex'}
+            flexDirection={'column'}
+            height={'fit-content'}
         >
-            {fields && fields.map(f =>
+            {
+                fields && fields.map((f, idx) =>
+                    <FormControl variant="standard" key={_ID()}>
+                        <InputLabel htmlFor={inputCounter(idx)}>{f}</InputLabel>
+                        <Input
+                            {...regProps(f)}
+                            id={inputCounter(idx)}
+                            defaultValue=''
+                            aria-describedby={helperCounter(idx)}
+                        />
+                        <FormHelperText id={helperCounter(idx)}>
+                            Введите размер
+                        </FormHelperText>
+                    </FormControl>
+                )
+            }
+            <Button type='submit'
+                form='dto_form'
+                variant='contained'
+                color='success'
 
-
-                <FormControl variant="standard" key={f}>
-                    <InputLabel htmlFor="component-helper">Name</InputLabel>
-                    <Input
-                        {...regProps(f)}
-                        id="component-helper"
-                        defaultValue={f}
-                        aria-describedby="component-helper-text"
-                    />
-                    <FormHelperText id="component-helper-text">
-                        {f}
-                    </FormHelperText>
-                </FormControl>
-            )}
+            >SUBMIT</Button>
 
         </Box>
     )
@@ -61,7 +94,6 @@ const DTOForm: React.FC<FormProps> = ({ fields, initState }) => {
 const FieldsError = <div>DTO fields not set!</div>
 
 export default DTOForm
-
 
 // const old = <div className='m-1 p-2 border-slate-400 border-2 rounded-lg w-fit h-fit'>
 //             <form name='flexform' id='flex_form'

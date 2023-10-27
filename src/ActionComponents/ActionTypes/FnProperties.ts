@@ -6,4 +6,4 @@ export type NonFnPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? ne
 
 export type NonFnProperties<T> = Pick<T, NonFnPropertyNames<T>>;
 
-export type StringifyProps<T> = { [K in keyof T]: T[K] extends string ? T : T[K] extends number ? "" : never }
+export type StringifyProps<T> = { [K in keyof T]: T[K] extends string ? T : T[K] extends number ? string | number : never }

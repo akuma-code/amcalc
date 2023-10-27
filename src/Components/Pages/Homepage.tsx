@@ -1,17 +1,10 @@
 import { useState } from 'react'
-import { _deg2rad, _log, _promptVar, dto_Export } from '../../Helpers/HelpersFns'
+import { _deg2rad, _log, _promptVar } from '../../Helpers/HelpersFns'
 import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../Hooks/useStoresContext'
-// import ActionTemplates from '../Templates/ActionTemplates'
-import useInput from '../Hooks/useInput'
-import CalcOffsetFn_Type5 from '../../ActionComponents/Offset5/Offset5'
-import { FlexForm } from '../FlexForm/FlexForm'
-import { OutputTable, createOutputTableData } from '../FlexForm/OutputTable'
+import { createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
-import DTOForm from '../FlexForm/DTO_Form'
 import CalcBox from '../../ActionComponents/Calculators/CalcBox'
-import { Enum_NodesAction } from '../../ActionComponents/ActionTypes/Types'
-// import { nodes } from '../../ActionComponents'
 
 
 
@@ -76,9 +69,9 @@ const Homepage = observer(() => {
                     /> */}
 
                         {dtos.map(dto =>
-                            <>
-                                <CalcBox type={dto.type} init={dto.initState} />
-                            </>
+
+                            <CalcBox type={dto.type} init={dto.initState} key={dto.type} />
+
                         )}
                     </Stack>
                 </Box>
@@ -88,6 +81,5 @@ const Homepage = observer(() => {
     )
 })
 
-{/* <OutputTableoutput={ }/>                            </> */ }
 export default Homepage
 

@@ -41,6 +41,7 @@ export class DTO_Node implements IDataTransferObject {
 
 
 }
+type StateSelector = (type: FnKeys) => {}
 class FnLinkedList<Data extends IDataTransferObject> extends LinkedList<Data> {
     head: DataNode<Data> | null = null;
 
@@ -67,6 +68,13 @@ class FnLinkedList<Data extends IDataTransferObject> extends LinkedList<Data> {
         }
         return node;
     }
+    public dataSelector(type: FnKeys): DataNode<Data>['data'] | null {
+        const node = this.search((data) => data.type === type)
+        // if (!node) return null
+
+        return node?.data ?? null
+    }
+
 }
 export default FnLinkedList;
 

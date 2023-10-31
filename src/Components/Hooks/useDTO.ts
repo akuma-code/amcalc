@@ -2,14 +2,8 @@ import { StringifyProps } from "../../ActionComponents/ActionTypes/FnProperties"
 import { ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, Fn_Output_nets, IFuncArgs, IFuncsList, IFunctions, TypeSelector } from "../../ActionComponents/ActionTypes/Types"
 import { _log } from "../../Helpers/HelpersFns"
 import { ANYobj } from "../../Interfaces/MathActionsTypes"
-type Output_v1<T extends FnKeys = 'nets'> = {
-    args: ArgsList[T]
-    output: ReturnType<IFunctions[T]>
-}
 
-type Output_v2<T extends FnKeys> = Pick<TypeSelector<T>, 'arg' | 'output'>
 
-type Output_v3<T extends FnKeys> = Record<FnKeys, Output_v1<T>>
 
 type FormProps<K extends FnKeys> = Pick<TypeSelector<K>, 'fields' | 'initstate' | 'arg'>
 

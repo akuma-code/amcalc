@@ -7,7 +7,7 @@ const BentoLayoutPage = (props: PageProps) => {
 
 
     return (
-        <Grid container spacing={1} width={'100vw'} sx={{ bgcolor: '#03575a' }}>
+        <Grid container spacing={2} width={'100vw'} sx={{ bgcolor: '#03575a' }}>
             <Grid container item spacing={2}>
                 <Grid item key={'info'} sx={{ bgcolor: '#3cdbe0' }}>INFO</Grid>
                 <Grid item key={'selector'} sx={{ bgcolor: '#86a4a5' }}>SELECTOR</Grid>

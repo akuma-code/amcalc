@@ -1,9 +1,7 @@
 import { Box, Stack, FormLabel } from '@mui/material'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import DTOForm from '../../Components/FlexForm/DTO_Form'
-import { OutputTable, createOutputTableData } from '../../Components/FlexForm/OutputTable'
-import { IDataTransferObject } from '../../Models/DTO_ChainStore'
-import { ArgsList, Enum_NodesAction, FnKeys, IFuncArgs, TypeSelector } from '../ActionTypes/Types'
+import { ArgsList, Enum_NodesAction, FnKeys, TypeSelector } from '../ActionTypes/Types'
 import { useDTO } from '../../Components/Hooks/useDTO'
 import { _log } from '../../Helpers/HelpersFns'
 import Divider from '@mui/material/Divider';
@@ -56,7 +54,7 @@ const CalcBox = (props: CalcBoxProps) => {
                     {props.type.toUpperCase()}
                 </FormLabel>
                 <DTOForm
-                    fields={fields}
+
                     initState={initstate}
                     submitFn={save}
                 />

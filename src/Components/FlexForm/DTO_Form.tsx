@@ -8,12 +8,10 @@ import { StringifyProps } from '../../ActionComponents/ActionTypes/FnProperties'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
 import { Button } from '@mui/material'
 
-type FormDTO = Pick<TypeSelector<FnKeys>, 'fields' | 'initstate'>
-type FormOutput = {
-    [K in FnKeys]?: ArgsList[FnKeys][]
-}
-type FormProps = {
-    fields: FormDTO['fields']
+type FormDTO = Pick<TypeSelector<Enum_NodesAction>, 'fields' | 'initstate'>
+
+export type FormProps = {
+
     initState: FormDTO['initstate']
     submitFn?: (args: FormDTO['initstate']) => void
 }
@@ -32,8 +30,9 @@ const getInitFields = (obj: FormProps['initState']) => {
 
 
 
-const DTOForm: React.FC<FormProps> = ({ fields, initState, submitFn }) => {
+const DTOForm: React.FC<FormProps> = ({ initState, submitFn }) => {
     const init = getInitFields(initState)
+    const fields = Object.keys(init)
 
     const {
         register, handleSubmit,
@@ -41,7 +40,7 @@ const DTOForm: React.FC<FormProps> = ({ fields, initState, submitFn }) => {
         setError
     } = useForm<StringifyProps<typeof initState>>({ defaultValues: init })
 
-    const regProps = (fieldName: keyof typeof initState) => register(fieldName)
+    const regProps = (fieldName: keyof typeof init) => register<keyof ArgsList[FnKeys]>(fieldName)
     if (!fields) return FieldsError
 
     function onFinish(args: IFuncArgs) {
@@ -69,7 +68,7 @@ const DTOForm: React.FC<FormProps> = ({ fields, initState, submitFn }) => {
                     <FormControl variant="standard" key={_ID()}>
                         <InputLabel htmlFor={inputCounter(idx)}>{f}</InputLabel>
                         <Input
-                            {...regProps(f)}
+                            {...regProps(f as never)}
                             id={inputCounter(idx)}
                             defaultValue=''
                             aria-describedby={helperCounter(idx)}

@@ -1,7 +1,7 @@
 import { Box, Stack, FormLabel } from '@mui/material'
 import { useState } from 'react'
 import DTOForm from '../../Components/FlexForm/DTO_Form'
-import { ArgsList, Enum_NodesAction, FnKeys, TypeSelector } from '../ActionTypes/Types'
+import { IC_ArgsList, Enum_NodesAction, FnKeys, TypeSelector } from '../ActionTypes/Types'
 import { useDTO } from '../../Components/Hooks/useDTO'
 import { _log } from '../../Helpers/HelpersFns'
 import Divider from '@mui/material/Divider';
@@ -16,12 +16,12 @@ type CalcBoxProps = {
 }
 
 const CalcBox = (props: CalcBoxProps) => {
-    const [saved_args, Save] = useState<Record<FnKeys, ArgsList[FnKeys][]> | {}>({})
+    const [saved_args, Save] = useState<Record<FnKeys, IC_ArgsList[FnKeys][]> | {}>({})
     const { createOutput, formProps } = useDTO(props.type)
     const { fields, initstate } = formProps(props.init)
 
 
-    const save = (arg: ArgsList[FnKeys]) => {
+    const save = (arg: IC_ArgsList[FnKeys]) => {
         Save(prev => ({ ...prev, [props.type]: [arg] }))
         _log(saved_args)
 

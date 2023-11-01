@@ -2,7 +2,7 @@ import React from 'react'
 import { IDataTransferObject } from '../../Models/DTO_ChainStore'
 import { Box, FormControl, FormHelperText, Input, InputLabel, TextField } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { ArgsList, Enum_NodesAction, FnKeys, IFuncArgs, TypeSelector } from '../../ActionComponents/ActionTypes/Types'
+import { IC_ArgsList, Enum_NodesAction, FnKeys, IC_FuncArgs, TypeSelector } from '../../ActionComponents/ActionTypes/Types'
 import { _ID, _log } from '../../Helpers/HelpersFns'
 import { StringifyProps } from '../../ActionComponents/ActionTypes/FnProperties'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
@@ -40,10 +40,10 @@ const DTOForm: React.FC<FormProps> = ({ initState, submitFn }) => {
         setError
     } = useForm<StringifyProps<typeof initState>>({ defaultValues: init })
 
-    const regProps = (fieldName: keyof typeof init) => register<keyof ArgsList[FnKeys]>(fieldName)
+    const regProps = (fieldName: keyof typeof init) => register<keyof IC_ArgsList[FnKeys]>(fieldName)
     if (!fields) return FieldsError
 
-    function onFinish(args: IFuncArgs) {
+    function onFinish(args: IC_FuncArgs) {
         submitFn && submitFn(args)
         _log(args)
         return args
@@ -56,7 +56,7 @@ const DTOForm: React.FC<FormProps> = ({ initState, submitFn }) => {
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
-            onSubmit={handleSubmit(data => onFinish(data as ArgsList[FnKeys]), (er) => _log(er.root?.message))}
+            onSubmit={handleSubmit(data => onFinish(data as IC_ArgsList[FnKeys]), (er) => _log(er.root?.message))}
             autoComplete="on"
             id='dto_form'
             display={'flex'}

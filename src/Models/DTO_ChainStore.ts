@@ -1,20 +1,20 @@
-import { IFuncArgs, Enum_NodesAction, DTO_EXPORT, IFunctions, FnKeys, IFuncsList, ArgsList, Fn_Output_nets, TypeSelector, IFuncsState } from "../ActionComponents/ActionTypes/Types";
+import { IC_FuncArgs, Enum_NodesAction, DTO_EXPORT, IC_Functions, FnKeys, IC_FuncsList, IC_ArgsList, Fn_Output_nets, TypeSelector, IFuncsState } from "../ActionComponents/ActionTypes/Types";
 import { _log, getFormFields } from "../Helpers/HelpersFns";
 import { ANYfn } from "../Interfaces/MathActionsTypes";
 import { LinkedList, DataNode } from "./LinkedList";
 
 export interface IDataTransferObject {
-    fn: IFunctions[FnKeys]
+    fn: IC_Functions[FnKeys]
     type: Enum_NodesAction
-    fields: keyof IFuncArgs[]
-    initState: IFuncArgs
+    fields: keyof IC_FuncArgs[]
+    initState: IC_FuncArgs
 }
 
 export class DTO_Node implements IDataTransferObject {
-    public fn: IFunctions[FnKeys]
+    public fn: IC_Functions[FnKeys]
     public type: Enum_NodesAction
-    public fields: keyof IFuncArgs[]
-    public initState: IFuncArgs
+    public fields: keyof IC_FuncArgs[]
+    public initState: IC_FuncArgs
     constructor(
         dto: DTO_EXPORT,
         fn_type: Enum_NodesAction
@@ -25,7 +25,7 @@ export class DTO_Node implements IDataTransferObject {
         this.initState = dto.initState
     }
 
-    exec<T extends ArgsList[typeof this.type]>(args: T) {
+    exec<T extends IC_ArgsList[typeof this.type]>(args: T) {
 
         try {
 

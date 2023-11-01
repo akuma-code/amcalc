@@ -1,5 +1,5 @@
 import { StringifyProps } from "../../ActionComponents/ActionTypes/FnProperties"
-import { ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, Fn_Output_nets, IFuncArgs, IFuncsList, IFunctions, TypeSelector } from "../../ActionComponents/ActionTypes/Types"
+import { IC_ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, Fn_Output_nets, IC_FuncArgs, IC_FuncsList, IC_Functions, TypeSelector } from "../../ActionComponents/ActionTypes/Types"
 import { _log } from "../../Helpers/HelpersFns"
 import { ANYobj } from "../../Interfaces/MathActionsTypes"
 
@@ -11,7 +11,7 @@ type FormProps<K extends FnKeys> = Pick<TypeSelector<K>, 'fields' | 'initstate' 
 
 export const useDTO = <FK extends FnKeys>(fn_type: Enum_NodesAction & string) => {
 
-    const createOutput = (fn: IFunctions[FK], ...saved_args: FormProps<FK>['arg'][]) => {
+    const createOutput = (fn: IC_Functions[FK], ...saved_args: FormProps<FK>['arg'][]) => {
         const out = (arg: FormProps<FK>['arg']) => {
             const res = {
                 args: arg,
@@ -26,7 +26,7 @@ export const useDTO = <FK extends FnKeys>(fn_type: Enum_NodesAction & string) =>
 
 
     const formProps = (initState: FormProps<FK>['arg']): FormProps<FK> => {
-        type StringInit = StringifyProps<ArgsList[typeof fn_type]>
+        type StringInit = StringifyProps<IC_ArgsList[typeof fn_type]>
 
         const f = Object.keys(initState) as (keyof StringInit)[]
         return {

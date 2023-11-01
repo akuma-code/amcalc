@@ -9,9 +9,10 @@ import { _log } from '../../Helpers/HelpersFns'
 import { FactoryDiv } from '../Templates/Factory'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { observer } from 'mobx-react-lite'
-import { ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, IFuncsList, IFunctions } from '../../ActionComponents/ActionTypes/Types'
+import { IC_ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, IC_FuncsList, IC_Functions } from '../../ActionComponents/ActionTypes/Types'
 import { IDataTransferObject } from '../../Models/DTO_ChainStore'
 import { DataNode } from '../../Models/LinkedList'
+import { MainStore } from '../../mobXStore/MainStore'
 
 
 type PageProps = {}
@@ -19,35 +20,43 @@ type PageProps = {}
 const test_div = (w: number, h: number, count?: number) => {
     return <div className={`w-[${w}em] h-[${h}em] bg-gray-500`}> |{count ?? 'BLANK'}| </div>
 }
-
+const M = new MainStore()
 const d = FactoryDiv
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { dto_Store } = useStoresContext()
 
-    const [action_type, setType] = useState(Enum_NodesAction.nets)
-    const [fs, setFs] = useState<IDataTransferObject | null>(null)
-    const [saved, setSaved] = useState<Record<FnKeys, ArgsList[FnKeys][]>>({ nets: [], offset5: [] })
-    const [out, setout] = useState<Record<FnKeys, ReturnType<IFunctions[FnKeys]>[]>>({ nets: [], offset5: [] })
-    const saveResult = (args: any) => {
-        setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
-    }
+    const [action_type, setType] = useState<Enum_NodesAction | null>(Enum_NodesAction.nets)
+    const [ST, setST] = useState(M.importNodes(dto_Store.traverse()))
+
+    // const [fs, setFs] = useState<IDataTransferObject | null>(null)
+    // const [saved, setSaved] = useState<Record<FnKeys, IC_ArgsList[FnKeys][]>>({ nets: [], offset5: [] })
+    // const [out, setout] = useState<Record<FnKeys, ReturnType<IC_Functions[FnKeys]>[]>>({ nets: [], offset5: [] })
+    // const saveResult = (args: any) => {
+    //     setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
+    // }
 
 
-    useEffect(() => {
-        const dd = dto_Store.search(n => n.type === action_type)?.data
-        if (!dd) return
-        setFs(dd)
-    }, [action_type, dto_Store])
+    // useEffect(() => {
+    //     const dd = dto_Store.search(n => n.type === action_type)?.data
+    //     if (!dd) return
+    //     setFs(dd)
+    // }, [action_type, dto_Store])
 
-    useEffect(() => {
-        if (!fs) return
-        const fn = dto_Store.fnSearch(d => d.type === action_type)!
-        if (action_type === Enum_NodesAction.nets) {
+    // useEffect(() => {
+    //     if (!fs) return
+    //     const fn = dto_Store.fnSearch(d => d.type === action_type)!
+    //     if (action_type === Enum_NodesAction.nets) {
 
-            setout(prev => ({ ...prev, nets: saved.nets.map(a => fn(a as any)) }))
-        }
-    }, [])
+    //         setout(prev => ({ ...prev, nets: saved.nets.map(a => fn(a as any)) }))
+    //     }
+    // }, [action_type, dto_Store, fs, saved.nets])
+
+    // useEffect(() => {
+    //     const node = dto_Store.search(n => n.type === action_type)
+    //     if (!node) return
+    //     M.importDTO(node.data)
+    // }, [action_type, dto_Store])
     return (
         <Grid container spacing={2} minHeight={160} maxWidth={'85vw'} key={'MainGridContainer'}
             sx={{
@@ -62,7 +71,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     border={'2px solid blue'} p={2}
                 >
 
-                    {d.div(action_type)}
+                    {d.div(action_type!)}
 
                 </Grid>
                 <Grid key={'selector'}
@@ -105,7 +114,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             <Grid container item spacing={2}>
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
                     {
-                        fs && <DTOForm initState={fs.initState} submitFn={saveResult} />
+                        // fs && <DTOForm initState={ST?.state[action_type]?.initState} submitFn={saveResult} />
                     }
 
                 </Grid>

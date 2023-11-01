@@ -39,27 +39,35 @@ export enum Enum_NodesAction {
 }
 
 export type FnKeys = keyof typeof Enum_NodesAction
-export interface ArgsList {
+export interface IC_ArgsList {
     nets: Fn_Args_nets
     offset5: Fn_Args_offset5
 }
 
-export interface IFunctions {
+export interface IC_Functions {
     nets: Fn_nets
     offset5: Fn_offset5
 }
-export type IFuncArgs = ArgsList[FnKeys]
-export type IFuncsList = IFunctions[FnKeys]
+export type IC_FuncArgs = IC_ArgsList[FnKeys]
+export type IC_FuncsList = IC_Functions[FnKeys]
 
 export type TypeSelector<T extends FnKeys> = {
     type: T
-    fields: Array<keyof ArgsList[T]>
-    initstate: ArgsList[T]
-    arg: ArgsList[T]
-    fn: IFunctions[T]
-    output: ReturnType<IFunctions[T]>
+    fields: Array<keyof IC_ArgsList[T]>
+    initstate: IC_ArgsList[T]
+    arg: IC_ArgsList[T]
+    fn: IC_Functions[T]
+    output: ReturnType<IC_Functions[T]>
 }
-
+export type IC_StateSelect<K extends FnKeys> = {
+    type: K
+    payload: {
+        initState: IC_ArgsList[K]
+        arg?: IC_ArgsList[K]
+        fn: IC_Functions[K]
+        output?: ReturnType<IC_Functions[K]>
+    }
+}
 export type GetFieldsName<T extends ANYobj> = (keyof T) extends infer propName ? propName : null
 
 export type INETS = TypeSelector<Enum_NodesAction.nets>
@@ -77,9 +85,9 @@ interface SelectorProps {
 // export type IGetFields<Arg extends IFuncArgs> = (args: Arg) => (keyof Arg)[]
 
 export type DTO_EXPORT = {
-    fn: IFuncsList
-    fields: keyof IFuncArgs[]
-    initState: IFuncArgs
+    fn: IC_FuncsList
+    fields: keyof IC_FuncArgs[]
+    initState: IC_FuncArgs
 }
 
 

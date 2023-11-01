@@ -1,15 +1,15 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from '@mui/material'
 import React from 'react'
 import { _log } from '../../Helpers/HelpersFns'
-import { ArgsList, Enum_NodesAction, IFuncsList, IFunctions } from '../../ActionComponents/ActionTypes/Types'
+import { IC_ArgsList, Enum_NodesAction, IC_FuncsList, IC_Functions } from '../../ActionComponents/ActionTypes/Types'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
 
 
 
 
 export function createOutputTableData<K extends keyof typeof Enum_NodesAction>(
-    args: ArgsList[K],
-    output: ReturnType<IFunctions[K]>,
+    args: IC_ArgsList[K],
+    output: ReturnType<IC_Functions[K]>,
 ) {
     return { args, output }
 }

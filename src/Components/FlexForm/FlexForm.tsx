@@ -4,22 +4,22 @@ import { _log } from '../../Helpers/HelpersFns'
 import { FormControl, TextField } from '@mui/material'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { mbxDataNode } from '../../mobXStore/Stores'
-import { ArgsList, FnKeys } from '../../ActionComponents/ActionTypes/Types'
+import { IC_ArgsList, FnKeys } from '../../ActionComponents/ActionTypes/Types'
 import { DTO_Node } from '../../Models/DTO_ChainStore'
 
 type FlexFormProps = {
-    fields: keyof ArgsList[FnKeys][]
+    fields: keyof IC_ArgsList[FnKeys][]
     submitFn?: DTO_Node['fn']
-    defaultState?: ArgsList[FnKeys]
+    defaultState?: IC_ArgsList[FnKeys]
 }
 
 
 
 export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defaultState }) => {
-    const init = defaultState ? defaultState : {} as ArgsList[FnKeys]
-    const { register, handleSubmit, watch, formState: { errors, submitCount }, setError } = useForm<ArgsList[FnKeys]>({ defaultValues: init })
+    const init = defaultState ? defaultState : {} as IC_ArgsList[FnKeys]
+    const { register, handleSubmit, watch, formState: { errors, submitCount }, setError } = useForm<IC_ArgsList[FnKeys]>({ defaultValues: init })
     const { mbxStore } = useStoresContext()
-    const F = Object.keys(fields) as unknown as keyof ArgsList[FnKeys][] & string[]
+    const F = Object.keys(fields) as unknown as keyof IC_ArgsList[FnKeys][] & string[]
     // const savedFn = save2(submitFn!)
     const onFinish = (args: any) => {
         if (!submitFn) {
@@ -50,12 +50,12 @@ export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defau
                             <FormControl margin='dense' key={field}>
                                 <label className='flex gap-1 flex-row justify-around align-baseline ' key={field}>
 
-                                    <TextField {...register(field as keyof ArgsList[FnKeys], { required: true })}
+                                    <TextField {...register(field as keyof IC_ArgsList[FnKeys], { required: true })}
                                         color='primary'
                                         type='number'
                                         className='border-2 m-1 p-2 bg-slate-300 min-w-[7em]'
                                         size='small'
-                                        error={errors[field as keyof ArgsList[FnKeys]] ? true : false}
+                                        error={errors[field as keyof IC_ArgsList[FnKeys]] ? true : false}
                                         label={field}
                                         autoComplete='true'
                                     />

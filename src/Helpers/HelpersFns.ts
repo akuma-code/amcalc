@@ -1,5 +1,5 @@
 import { v4 } from 'uuid'
-import { DTO_EXPORT, IFuncArgs, IFuncsList } from '../ActionComponents/ActionTypes/Types'
+import { DTO_EXPORT, IC_FuncArgs, IC_FuncsList } from '../ActionComponents/ActionTypes/Types'
 
 
 export const _log = console.log
@@ -18,12 +18,12 @@ export const _rad2deg = (rad: number) => (rad * 180) / Math.PI
 
 export const _isArr = (obj: any) => Array.isArray(obj)
 
-export const getFormFields = <Args extends IFuncArgs>(args: Args): { fields: keyof Args[] } => {
+export const getFormFields = <Args extends IC_FuncArgs>(args: Args): { fields: keyof Args[] } => {
     const keys = Object.keys(args) as unknown as keyof Args[]
     return { fields: keys }
 }
 
-export const dto_Export = (fn: IFuncsList, initState: IFuncArgs): DTO_EXPORT => {
+export const dto_Export = (fn: IC_FuncsList, initState: IC_FuncArgs): DTO_EXPORT => {
 
     const { fields } = getFormFields(initState)
     const dto: DTO_EXPORT = {

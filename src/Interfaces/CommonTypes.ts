@@ -1,5 +1,5 @@
 import { StringifyProps } from "../ActionComponents/ActionTypes/FnProperties"
-import { ArgsList, FnKeys, IFunctions } from "../ActionComponents/ActionTypes/Types"
+import { IC_ArgsList, FnKeys, IC_Functions } from "../ActionComponents/ActionTypes/Types"
 
 export interface ISize {
     w: number
@@ -13,9 +13,9 @@ export interface ISizeFull {
 
 export interface CommonProps<T extends FnKeys> {
     type: T
-    initstate: StringifyProps<ArgsList[T]>
-    args: ArgsList[T]
-    fn: IFunctions[T]
-    output: ReturnType<IFunctions[T]>
-    fields: StringifyProps<ArgsList[T]>[]
+    initstate: StringifyProps<IC_ArgsList[T]>
+    args: IC_ArgsList[T]
+    fn: IC_Functions[T]
+    output: ReturnType<IC_Functions[T]>
+    fields: StringifyProps<IC_ArgsList[T]>[]
 }

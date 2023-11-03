@@ -9,32 +9,45 @@ import { _log } from '../../Helpers/HelpersFns'
 import { FactoryDiv } from '../Templates/Factory'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { observer } from 'mobx-react-lite'
-import { IC_ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, IC_FuncsList, IC_Functions } from '../../ActionComponents/ActionTypes/Types'
+import { IC_ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, IC_FuncsList, IC_Functions, IFuncsState, IC_DataList, IC_FuncArgs } from '../../ActionComponents/ActionTypes/Types'
 import { IDataTransferObject } from '../../Models/DTO_ChainStore'
 import { DataNode } from '../../Models/LinkedList'
-import { MainStore } from '../../mobXStore/MainStore'
+import { MainStore, MainStore_ } from '../../mobXStore/MainStore'
+import NodeForm from '../FlexForm/NodeForm'
 
 
 type PageProps = {}
-
+type IState = {} & IFuncsState
 const test_div = (w: number, h: number, count?: number) => {
     return <div className={`w-[${w}em] h-[${h}em] bg-gray-500`}> |{count ?? 'BLANK'}| </div>
 }
-const M = new MainStore()
+
 const d = FactoryDiv
+
+
+
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { dto_Store } = useStoresContext()
+    const MAIN = new MainStore_(dto_Store)
 
-    const [action_type, setType] = useState<Enum_NodesAction | null>(Enum_NodesAction.nets)
-    const [ST, setST] = useState(M.importNodes(dto_Store.traverse()))
 
+    const [action_type, setType] = useState<Enum_NodesAction>(Enum_NodesAction.nets)
+    const [ST, setST] = useState<IC_DataList>(MAIN.statesList)
+    const CURRENT = useMemo(() => {
+        if (!action_type) return null
+        return ST[action_type]
+    }, [ST, action_type])
     // const [fs, setFs] = useState<IDataTransferObject | null>(null)
-    // const [saved, setSaved] = useState<Record<FnKeys, IC_ArgsList[FnKeys][]>>({ nets: [], offset5: [] })
+    const [saved, setSaved] = useState<Record<FnKeys, IC_ArgsList[FnKeys][]>>({ nets: [], offset5: [] })
     // const [out, setout] = useState<Record<FnKeys, ReturnType<IC_Functions[FnKeys]>[]>>({ nets: [], offset5: [] })
-    // const saveResult = (args: any) => {
-    //     setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
-    // }
+    const saveResult = (args: IC_ArgsList[FnKeys]) => {
+        if (!action_type) return
+        if (action_type === 'nets') setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args as IC_ArgsList['nets']] }))
+        if (action_type === 'offset5') setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args as IC_ArgsList['offset5']] }))
+        // if ('W' in args) setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
+        // if ('width' in args) setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
+    }
 
 
     // useEffect(() => {
@@ -113,10 +126,8 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
 
             <Grid container item spacing={2}>
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
-                    {
-                        // fs && <DTOForm initState={ST?.state[action_type]?.initState} submitFn={saveResult} />
-                    }
-
+                    {/* {CURRENT && <DTOForm initState={CURRENT?.initState} submitFn={saveResult} type={action_type!} />} */}
+                    {CURRENT && <NodeForm dto={CURRENT} />}
                 </Grid>
                 <Grid item container
                     key={'output'}
@@ -139,5 +150,5 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
         </Grid>
     )
 })
-
+BentoLayoutPage.displayName = "____BENTO_____"
 export default BentoLayoutPage

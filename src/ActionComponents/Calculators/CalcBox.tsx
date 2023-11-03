@@ -53,11 +53,11 @@ const CalcBox = (props: CalcBoxProps) => {
                 >
                     {props.type.toUpperCase()}
                 </FormLabel>
-                <DTOForm
+                {/* <DTOForm
 
                     initState={initstate}
                     submitFn={save}
-                />
+                /> */}
             </Stack>
         </Box >
     )

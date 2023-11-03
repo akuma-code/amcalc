@@ -1,6 +1,7 @@
 import { _log } from "../../Helpers/HelpersFns";
 import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes";
+import { IDataTransferObject } from "../../Models/DTO_ChainStore";
 import { FnProperties, FnPropertyNames, StringifyProps } from "./FnProperties";
 
 export type Fn_Args_offset5 = {
@@ -53,7 +54,8 @@ export type IC_FuncsList = IC_Functions[FnKeys]
 
 export type TypeSelector<T extends FnKeys> = {
     type: T
-    fields: Array<keyof IC_ArgsList[T]>
+    // fields: Array<keyof IC_ArgsList[T]> | string[]
+    fields: string[]
     initstate: IC_ArgsList[T]
     arg: IC_ArgsList[T]
     fn: IC_Functions[T]
@@ -75,6 +77,8 @@ export type IOFFSET5 = TypeSelector<Enum_NodesAction.offset5>
 export type IFuncsState =
     | INETS
     | IOFFSET5
+
+export type IC_DataList = Record<FnKeys, IDataTransferObject>
 
 interface SelectorProps {
     type: FnKeys

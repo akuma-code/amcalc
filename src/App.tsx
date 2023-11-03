@@ -6,12 +6,12 @@ import { _log } from './Helpers/HelpersFns';
 
 
 function App() {
-  BentoLayoutPage.displayName = "BENTO"
+
   return (
     <div>
 
       {/* <Homepage /> */}
-      <BentoLayoutPage key={BentoLayoutPage.displayName} />
+      <BentoLayoutPage key={'Bento Layout'} />
 
     </div>
   );

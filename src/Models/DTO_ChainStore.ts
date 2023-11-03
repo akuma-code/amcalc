@@ -25,23 +25,13 @@ export class DTO_Node implements IDataTransferObject {
         this.initState = dto.initState
     }
 
-    exec<T extends IC_ArgsList[typeof this.type]>(args: T) {
 
-        try {
-
-            // const out = this.fn(args)
-            // return out
-        } catch (error) {
-            _log("Something gone wrong, check arguments!")
-            return
-        }
-    }
 
 
 
 
 }
-type StateSelector = (type: FnKeys) => {}
+
 class FnLinkedList<Data extends IDataTransferObject> extends LinkedList<Data> {
     head: DataNode<Data> | null = null;
 
@@ -74,7 +64,20 @@ class FnLinkedList<Data extends IDataTransferObject> extends LinkedList<Data> {
 
         return node?.data ?? null
     }
+    public list(): Record<FnKeys, Data> {
 
+        let list: Record<FnKeys, Data> = {} as Record<FnKeys, Data>
+        if (!this.head) return list
+
+        const toList = (node: DataNode<Data>): Record<FnKeys, Data> => {
+            list = { ...list, [node.data.type]: node.data }
+            return node.next ? toList(node.next) : list
+        }
+
+
+
+        return toList(this.head)
+    }
 }
 export default FnLinkedList;
 

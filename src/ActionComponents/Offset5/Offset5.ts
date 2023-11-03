@@ -34,9 +34,9 @@ const initOffset5State: Fn_Args_offset5 = {
     da: 0,
     db: 0,
 }
-const Offset5: DTO_EXPORT = dto_Export(CalcOffsetFn_Type5, initOffset5State)
+const Offset5_DTO: DTO_EXPORT = dto_Export(CalcOffsetFn_Type5, initOffset5State)
 
-export default Offset5
+export default Offset5_DTO
 // class Offset5Node extends ActionFnNode<typeof CalcOffsetFn_Type5>{
 
 //     exec(args: DTO_CalcOffset5['args'], save_args: boolean = false) {

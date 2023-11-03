@@ -1,6 +1,6 @@
 import React from 'react'
 import { IDataTransferObject } from '../../Models/DTO_ChainStore'
-import { Box, FormControl, FormHelperText, Input, InputLabel, TextField } from '@mui/material'
+import { Box, FormControl, FormHelperText, Input, InputLabel } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { IC_ArgsList, Enum_NodesAction, FnKeys, IC_FuncArgs, TypeSelector } from '../../ActionComponents/ActionTypes/Types'
 import { _ID, _log } from '../../Helpers/HelpersFns'
@@ -8,10 +8,10 @@ import { StringifyProps } from '../../ActionComponents/ActionTypes/FnProperties'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
 import { Button } from '@mui/material'
 
-type FormDTO = Pick<TypeSelector<Enum_NodesAction>, 'fields' | 'initstate'>
+type FormDTO = Pick<TypeSelector<FnKeys>, 'fields' | 'initstate'>
 
 export type FormProps = {
-
+    type: FnKeys
     initState: FormDTO['initstate']
     submitFn?: (args: FormDTO['initstate']) => void
 }
@@ -30,21 +30,20 @@ const getInitFields = (obj: FormProps['initState']) => {
 
 
 
-const DTOForm: React.FC<FormProps> = ({ initState, submitFn }) => {
+const DTOForm: React.FC<FormProps> = ({ initState, submitFn, type }) => {
     const init = getInitFields(initState)
+    type TT = typeof type
+    type DV = ReturnType<typeof getInitFields>
     const fields = Object.keys(init)
 
-    const {
-        register, handleSubmit,
-        formState: { errors, submitCount },
-        setError
-    } = useForm<StringifyProps<typeof initState>>({ defaultValues: init })
+    const { register, handleSubmit } = useForm()
 
-    const regProps = (fieldName: keyof typeof init) => register<keyof IC_ArgsList[FnKeys]>(fieldName)
+    const regProps = (fieldName: string) => register(fieldName as keyof IC_ArgsList[TT])
     if (!fields) return FieldsError
 
-    function onFinish(args: IC_FuncArgs) {
-        submitFn && submitFn(args)
+    function onFinish<K extends IC_FuncArgs>(args: K) {
+        if (submitFn && type === 'offset5') submitFn(args)
+        if (submitFn && type === 'nets') submitFn(args as IC_ArgsList['nets'])
         _log(args)
         return args
     }
@@ -56,7 +55,7 @@ const DTOForm: React.FC<FormProps> = ({ initState, submitFn }) => {
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
-            onSubmit={handleSubmit(data => onFinish(data as IC_ArgsList[FnKeys]), (er) => _log(er.root?.message))}
+            onSubmit={handleSubmit(d => onFinish<IC_ArgsList[TT]>(d as IC_ArgsList[TT]), (er) => _log(er.root?.message))}
             autoComplete="on"
             id='dto_form'
             display={'flex'}
@@ -91,7 +90,7 @@ const DTOForm: React.FC<FormProps> = ({ initState, submitFn }) => {
 }
 
 const FieldsError = <div>DTO fields not set!</div>
-
+DTOForm.displayName = 'DTO_FORM'
 export default DTOForm
 
 // const old = <div className='m-1 p-2 border-slate-400 border-2 rounded-lg w-fit h-fit'>

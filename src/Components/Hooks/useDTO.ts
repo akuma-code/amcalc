@@ -1,5 +1,6 @@
+import { useState } from "react"
 import { StringifyProps } from "../../ActionComponents/ActionTypes/FnProperties"
-import { IC_ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, Fn_Output_nets, IC_FuncArgs, IC_FuncsList, IC_Functions, TypeSelector } from "../../ActionComponents/ActionTypes/Types"
+import { IC_ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, Fn_Output_nets, IC_FuncArgs, IC_FuncsList, IC_Functions, TypeSelector, IFuncsState } from "../../ActionComponents/ActionTypes/Types"
 import { _log } from "../../Helpers/HelpersFns"
 import { ANYobj } from "../../Interfaces/MathActionsTypes"
 
@@ -10,7 +11,7 @@ type FormProps<K extends FnKeys> = Pick<TypeSelector<K>, 'fields' | 'initstate' 
 
 
 export const useDTO = <FK extends FnKeys>(fn_type: Enum_NodesAction & string) => {
-
+    const [state, setState] = useState<Record<FnKeys, Partial<IFuncsState>>>({ nets: {}, offset5: {} })
     const createOutput = (fn: IC_Functions[FK], ...saved_args: FormProps<FK>['arg'][]) => {
         const out = (arg: FormProps<FK>['arg']) => {
             const res = {
@@ -35,5 +36,10 @@ export const useDTO = <FK extends FnKeys>(fn_type: Enum_NodesAction & string) =>
             arg: initState
         }
     }
+
+    const stateSelector = () => {
+        return state[fn_type]
+    }
+
     return { createOutput, formProps }
 }

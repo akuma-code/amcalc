@@ -58,10 +58,10 @@ interface Iv1_Calc {
 
 
 
-class v1_Calc<K extends keyof MathFunc> implements Iv1_Calc {
+class v1_Calc implements Iv1_Calc {
     actions: Record<string, ISavedSimpleAction> = {}
 
-    save(actionId: string, action: IMathFunc[K], initValue: number): void {
+    save(actionId: string, action: IMathFunc[keyof MathFunc], initValue: number): void {
         const actId = actionId + ` ${initValue || 'noValue'}`;
 
         this.actions = { ...this.actions, [actId]: { initValue, action: action } }

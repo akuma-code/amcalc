@@ -10,7 +10,7 @@ type DTO_NetOutput = { [K in 'skf' | 'simple']: ISize }
 type DTO_NetArgs = ISizeFull
 type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_NetOutput
 
-const CalcNetSize: ICalcNets = ({ width, height }) => {
+export const CalcNetSize: ICalcNets = ({ width, height }) => {
 
     if (!width || !height) throw new Error("ARGS ERROR!")
     const simple = {

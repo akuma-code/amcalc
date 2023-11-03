@@ -3,7 +3,7 @@ import { DTO_StoreObj, DTO_ExportFnType, ExportFnInterface } from "../../Interfa
 import { } from "../../mobXStore/Stores";
 import { DTO_EXPORT, Fn_Args_offset5, Fn_offset5 } from "../ActionTypes/Types";
 
-const CalcOffsetFn_Type5: Fn_offset5 = (args) => {
+export const CalcOffsetFn_Type5: Fn_offset5 = (args) => {
     const { H, W, da, db, h } = args
 
 

@@ -26,6 +26,7 @@ function stateSelect(dto: IDataTransferObject) {
 const w = WrapIter
 
 //! ****************************
+
 const NodeForm: React.FC<NodeFormProps> = observer(({ dto }: NodeFormProps) => {
 
     const { type, fields, fn, initState } = dto

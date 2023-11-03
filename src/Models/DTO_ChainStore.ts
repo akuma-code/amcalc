@@ -1,6 +1,5 @@
-import { IC_FuncArgs, Enum_NodesAction, DTO_EXPORT, IC_Functions, FnKeys, IC_FuncsList, IC_ArgsList, Fn_Output_nets, TypeSelector, IFuncsState } from "../ActionComponents/ActionTypes/Types";
-import { _log, getFormFields } from "../Helpers/HelpersFns";
-import { ANYfn } from "../Interfaces/MathActionsTypes";
+import { IC_FuncArgs, Enum_NodesAction, DTO_EXPORT, IC_Functions, FnKeys } from "../ActionComponents/ActionTypes/Types";
+import { _log } from "../Helpers/HelpersFns";
 import { LinkedList, DataNode } from "./LinkedList";
 
 export interface IDataTransferObject {
@@ -24,14 +23,10 @@ export class DTO_Node implements IDataTransferObject {
         this.fields = dto.fields
         this.initState = dto.initState
     }
-
-
-
-
-
-
 }
 
+
+//!_________________================_________________________
 class FnLinkedList<Data extends IDataTransferObject> extends LinkedList<Data> {
     head: DataNode<Data> | null = null;
 

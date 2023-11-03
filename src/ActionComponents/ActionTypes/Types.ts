@@ -72,21 +72,9 @@ export type IC_StateSelect<K extends FnKeys> = {
 }
 export type GetFieldsName<T extends ANYobj> = (keyof T) extends infer propName ? propName : null
 
-export type INETS = TypeSelector<Enum_NodesAction.nets>
-export type IOFFSET5 = TypeSelector<Enum_NodesAction.offset5>
-export type IFuncsState =
-    | INETS
-    | IOFFSET5
 
 export type IC_DataList = Record<FnKeys, IDataTransferObject>
 
-interface SelectorProps {
-    type: FnKeys
-    payload: unknown
-}
-// type _StateSelector = (action:SelectorProps)=>
-
-// export type IGetFields<Arg extends IFuncArgs> = (args: Arg) => (keyof Arg)[]
 
 export type DTO_EXPORT = {
     fn: IC_FuncsList

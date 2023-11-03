@@ -1,23 +1,21 @@
 import { Grid } from '@mui/material'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useReducer, useState } from 'react'
 import { IconButton } from '../UI/IconButton'
 import Icons from '../Icons/SvgIcons'
 
-import DTOForm, { FormProps } from '../FlexForm/DTO_Form'
-import { OutputTable } from '../FlexForm/OutputTable'
 import { _log } from '../../Helpers/HelpersFns'
 import { FactoryDiv } from '../Templates/Factory'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { observer } from 'mobx-react-lite'
-import { IC_ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, IC_FuncsList, IC_Functions, IFuncsState, IC_DataList, IC_FuncArgs } from '../../ActionComponents/ActionTypes/Types'
-import { IDataTransferObject } from '../../Models/DTO_ChainStore'
-import { DataNode } from '../../Models/LinkedList'
-import { MainStore, MainStore_ } from '../../mobXStore/MainStore'
+import { IC_ArgsList, Enum_NodesAction, FnKeys, IC_DataList } from '../../ActionComponents/ActionTypes/Types'
+import { MainStore_ } from '../../mobXStore/MainStore'
 import NodeForm from '../FlexForm/NodeForm'
+import { CalcReducer } from '../../Redux/ActionReducer'
+import { InitStateRedux } from '../../Redux/ReduxTypes'
 
 
 type PageProps = {}
-type IState = {} & IFuncsState
+
 const test_div = (w: number, h: number, count?: number) => {
     return <div className={`w-[${w}em] h-[${h}em] bg-gray-500`}> |{count ?? 'BLANK'}| </div>
 }
@@ -30,7 +28,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { dto_Store } = useStoresContext()
     const MAIN = new MainStore_(dto_Store)
-
+    const [STORE, dispatch] = useReducer(CalcReducer, InitStateRedux)
 
     const [action_type, setType] = useState<Enum_NodesAction>(Enum_NodesAction.nets)
     const [ST, setST] = useState<IC_DataList>(MAIN.statesList)

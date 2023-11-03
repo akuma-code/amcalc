@@ -11,7 +11,7 @@ import { IC_ArgsList, Enum_NodesAction, FnKeys, IC_DataList } from '../../Action
 import { MainStore_ } from '../../mobXStore/MainStore'
 import NodeForm from '../FlexForm/NodeForm'
 import { CalcReducer } from '../../Redux/ActionReducer'
-import { InitStateRedux } from '../../Redux/ReduxTypes'
+import { InitStateRedux, ReduxState } from '../../Redux/ReduxTypes'
 
 
 type PageProps = {}
@@ -28,7 +28,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { dto_Store } = useStoresContext()
     const MAIN = new MainStore_(dto_Store)
-    const [STORE, dispatch] = useReducer(CalcReducer, InitStateRedux)
+
 
     const [action_type, setType] = useState<Enum_NodesAction>(Enum_NodesAction.nets)
     const [ST, setST] = useState<IC_DataList>(MAIN.statesList)
@@ -46,8 +46,15 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
         // if ('W' in args) setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
         // if ('width' in args) setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
     }
+    // function dispSave(w: number, h: number) {
+    //     dispatch({
+    //         type: Enum_NodesAction.nets,
+    //         payload: { width: w, height: h }
+    //     })
+    // }
+    function getForm(type: Enum_NodesAction) {
 
-
+    }
     // useEffect(() => {
     //     const dd = dto_Store.search(n => n.type === action_type)?.data
     //     if (!dd) return
@@ -125,7 +132,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             <Grid container item spacing={2}>
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
                     {/* {CURRENT && <DTOForm initState={CURRENT?.initState} submitFn={saveResult} type={action_type!} />} */}
-                    {CURRENT && <NodeForm dto={CURRENT} />}
+
                 </Grid>
                 <Grid item container
                     key={'output'}

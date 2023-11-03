@@ -12,7 +12,8 @@ export function CalcReducer(state: ReduxState, action: ActionsList) {
                 ...state,
                 nets: {
                     saved: [...state.nets.saved, { width, height }],
-                    out: [...state.nets.out, output]
+                    out: [...state.nets.out, output],
+                    init: { width: 0, height: 0 }
                 },
             }
         }
@@ -20,9 +21,10 @@ export function CalcReducer(state: ReduxState, action: ActionsList) {
             const output = CalcOffsetFn_Type5(action.payload)
             return {
                 ...state,
-                offset: {
+                offset5: {
                     saved: [...state.offset5.saved, action.payload],
-                    out: [...state.offset5.out, output]
+                    out: [...state.offset5.out, output],
+                    init: { W: 0, H: 0, h: 0, da: 0, db: 0 }
                 },
             }
         }

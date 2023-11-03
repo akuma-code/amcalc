@@ -10,7 +10,7 @@ import { ANYobj } from '../../Interfaces/MathActionsTypes'
 import { WrapIter } from '../../ActionComponents/ActionModels/FnGenerator'
 
 type NodeFormProps = {
-    dto: IDataTransferObject
+    type: Enum_NodesAction
 }
 function stateSelect(dto: IDataTransferObject) {
     switch (dto.type) {
@@ -27,14 +27,12 @@ const w = WrapIter
 
 //! ****************************
 
-const NodeForm: React.FC<NodeFormProps> = observer(({ dto }: NodeFormProps) => {
+const NodeForm: React.FC<NodeFormProps> = observer(({ type }: NodeFormProps) => {
 
-    const { type, fields, fn, initState } = dto
-    type T = typeof type
-    const state = stateSelect(dto)
-    if (!state) return <h1>STATE ERROR</h1>
 
-    const { handleSubmit, register } = useForm({ defaultValues: state.initstate as ANYobj })
+
+
+
 
     return (
         <Box

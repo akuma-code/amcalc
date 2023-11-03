@@ -15,12 +15,21 @@ export type ActionsList =
 
 export type ReduxState = {
     [Key in FnKeys]: {
+        init: IC_ArgsList[Key]
         saved: IC_ArgsList[Key][]
         out: any[]
     }
 }
 
 export const InitStateRedux: ReduxState = {
-    nets: { saved: [], out: [] },
-    offset5: { saved: [], out: [] }
+    nets: {
+        saved: [],
+        out: [],
+        init: { width: 0, height: 0 }
+    },
+    offset5: {
+        saved: [],
+        out: [],
+        init: { W: 0, H: 0, h: 0, da: 0, db: 0 }
+    }
 }

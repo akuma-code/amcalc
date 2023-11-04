@@ -19,9 +19,12 @@ const MobxForm = observer((props: MobxFormProps) => {
     const { ReduxStore } = useStoresContext()
 
     const state = ReduxStore.getState()
-
+    const changeFn = (type: Enum_NodesAction, new_values: Partial<typeof state.init>) => {
+        if ('W' in new_values) {
+        }
+    }
     const { register, handleSubmit } = useForm<typeof state.init>({ defaultValues: state.init })
-    const inputProps = (field: keyof typeof state.init) => register(field, {})
+    const inputProps = (field: keyof typeof state.init) => register(field)
     const inpFields = Object.keys(state.init)
     return (
         <Box

@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { IR_CalculatorStore, ReduxState } from "../Redux/ReduxTypes";
+import { Enum_ReduxActions, IR_CalculatorStore, ReduxState } from "../Redux/ReduxTypes";
 import { Enum_NodesAction } from "../ActionComponents/ActionTypes/Types";
 
 export class CalcStateStore {
@@ -28,6 +28,14 @@ export class CalcStateStore {
 
     changeType(type: Enum_NodesAction) {
         this.selected_type = type
+    }
+
+    update(type: Enum_NodesAction, new_props: Partial<ReduxState[Enum_NodesAction]>) {
+        this.store = {
+            ...this.store, [type]: {
+                ...this.store[type],
+            }
+        }
     }
 }
 

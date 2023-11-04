@@ -3,9 +3,7 @@ import { CLS_NetFnCalc } from "../Nets/CalcNetNode"
 import { CLS_Offset5FnCalc } from "../Offset5/Offset5Node"
 import { Enum_NodesAction, Fn_Args_nets, Fn_Args_offset5 } from "./Types"
 
-export type ICalculatoreStore = {
 
-}
 
 
 export type INetsNode_CLS = {

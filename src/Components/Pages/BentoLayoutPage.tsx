@@ -12,6 +12,7 @@ import { MainStore_ } from '../../mobXStore/MainStore'
 import NodeForm from '../FlexForm/NodeForm'
 import { CalcReducer } from '../../Redux/ActionReducer'
 import { InitStateRedux, ReduxState } from '../../Redux/ReduxTypes'
+import MobxForm from '../FlexForm/MobxForm'
 
 
 type PageProps = {}
@@ -26,16 +27,16 @@ const d = FactoryDiv
 
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
-    const { dto_Store } = useStoresContext()
-    const MAIN = new MainStore_(dto_Store)
+    const { dto_Store, ReduxStore } = useStoresContext()
+    // const MAIN = new MainStore_(dto_Store)
 
 
     const [action_type, setType] = useState<Enum_NodesAction>(Enum_NodesAction.nets)
-    const [ST, setST] = useState<IC_DataList>(MAIN.statesList)
-    const CURRENT = useMemo(() => {
-        if (!action_type) return null
-        return ST[action_type]
-    }, [ST, action_type])
+    // const [ST, setST] = useState<IC_DataList>(MAIN.statesList)
+    // const CURRENT = useMemo(() => {
+    //     if (!action_type) return null
+    //     return ST[action_type]
+    // }, [ST, action_type])
     // const [fs, setFs] = useState<IDataTransferObject | null>(null)
     const [saved, setSaved] = useState<Record<FnKeys, IC_ArgsList[FnKeys][]>>({ nets: [], offset5: [] })
     // const [out, setout] = useState<Record<FnKeys, ReturnType<IC_Functions[FnKeys]>[]>>({ nets: [], offset5: [] })
@@ -106,13 +107,13 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                         desc='NETS'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => setType(Enum_NodesAction.nets)}
+                        onClickFn={() => ReduxStore.changeType(Enum_NodesAction.nets)}
                     />
                     <IconButton
                         desc='OFFSET5'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => setType(Enum_NodesAction.offset5)}
+                        onClickFn={() => ReduxStore.changeType(Enum_NodesAction.offset5)}
                     />
                     <IconButton
                         desc='NOT READY'
@@ -132,7 +133,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             <Grid container item spacing={2}>
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
                     {/* {CURRENT && <DTOForm initState={CURRENT?.initState} submitFn={saveResult} type={action_type!} />} */}
-
+                    <MobxForm />
                 </Grid>
                 <Grid item container
                     key={'output'}

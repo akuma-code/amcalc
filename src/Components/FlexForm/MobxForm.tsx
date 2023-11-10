@@ -1,14 +1,14 @@
 import React from 'react'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { observer } from 'mobx-react-lite'
-import { useForm } from 'react-hook-form'
-import { Enum_NodesAction, FnKeys } from '../../ActionComponents/ActionTypes/Types'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Enum_NodesAction, FnKeys, IC_ArgsList } from '../../ActionComponents/ActionTypes/Types'
 import { ReduxState } from '../../Redux/ReduxTypes'
 import { Box, Button, FormControl, FormHelperText, Input, InputLabel } from '@mui/material'
-import { _ID } from '../../Helpers/HelpersFns'
+import { _ID, _log } from '../../Helpers/HelpersFns'
 
 type MobxFormProps = {
-
+    submitInputs: (inputs: IC_ArgsList[FnKeys]) => void
 }
 
 type FormInputs = {
@@ -19,20 +19,42 @@ const MobxForm = observer((props: MobxFormProps) => {
     const { ReduxStore } = useStoresContext()
 
     const state = ReduxStore.getState()
-    const changeFn = (type: Enum_NodesAction, new_values: Partial<typeof state.init>) => {
-        if ('W' in new_values) {
+    // const changeFn = (type: Enum_NodesAction, new_values: IC_ArgsList[typeof type]) => {
+    //     _log(type)
+    //     _log(new_values)
+    //     props.submitInputs(new_values)
+    // }
+    const { register, handleSubmit, getValues } = useForm<IC_ArgsList[FnKeys]>()
+    const inpFields = Object.keys(state.init)
+
+    const onSubmitSwitch = (state_type: Enum_NodesAction, data: IC_ArgsList[keyof IC_ArgsList]) => {
+        switch (state_type) {
+            case Enum_NodesAction.nets: {
+                // const data = getValues()
+                _log(data)
+                return data
+            }
+
+            case Enum_NodesAction.offset5: {
+                // const data = getValues()
+                _log(data)
+                return data
+            }
+            default:
+                _log("State error")
+                break;
         }
     }
-    const { register, handleSubmit } = useForm<typeof state.init>({ defaultValues: state.init })
-    const inputProps = (field: keyof typeof state.init) => register(field)
-    const inpFields = Object.keys(state.init)
+    const onSubmitFn: SubmitHandler<typeof state.init> = (data) => {
+        onSubmitSwitch(ReduxStore.selected_type, data)
+    }
     return (
         <Box
             component="form"
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
-            onSubmit={() => { }}
+            onSubmit={handleSubmit(onSubmitFn)}
             autoComplete="on"
             id='mobx_form'
             display={'flex'}
@@ -40,10 +62,10 @@ const MobxForm = observer((props: MobxFormProps) => {
             height={'fit-content'}
         >
             {
-                inpFields.map((f) =>
+                inpFields.map((f, idx) =>
                     <FormControl variant="standard" key={_ID()}>
-                        <InputLabel htmlFor={'mobx_form'}>{f}</InputLabel>
-                        <Input
+                        <InputLabel htmlFor={`input_` + idx}>{f}</InputLabel>
+                        <Input id={`input_` + idx}
                             {...register<keyof typeof state.init>(f as keyof typeof state.init)}
                             defaultValue=''
                         />
@@ -56,7 +78,7 @@ const MobxForm = observer((props: MobxFormProps) => {
 
 
             <Button type='submit'
-                form='dto_form'
+                form='mobx_form'
                 variant='contained'
                 color='success'
 

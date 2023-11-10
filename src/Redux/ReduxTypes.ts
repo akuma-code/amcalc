@@ -1,5 +1,5 @@
 import { StringifyProps } from "../ActionComponents/ActionTypes/FnProperties";
-import { Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, Fn_nets, Fn_offset5, IC_ArgsList, IC_Functions } from "../ActionComponents/ActionTypes/Types";
+import { Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, Fn_nets, Fn_offset5, IC_ArgsList, IC_FuncArgs, IC_Functions } from "../ActionComponents/ActionTypes/Types";
 
 export interface AINets {
     type: Enum_NodesAction.nets
@@ -22,6 +22,10 @@ export type ReduxState = {
     }
 }
 
+export type IR_SavedArgs = Record<FnKeys, IC_FuncArgs>
+
+
+
 export const InitStateRedux: ReduxState = {
     nets: {
         saved: [],
@@ -36,17 +40,18 @@ export const InitStateRedux: ReduxState = {
 }
 
 
-export type IR_CalculatorStore = {
-    store: {
-        [Key in FnKeys]: {
-            type: Key
-            fn: IC_Functions[Key]
-            init: StringifyProps<IC_ArgsList[Key]>
-            args: IC_ArgsList[Key]
-        }
-    }
-    selected_type: Enum_NodesAction
+export type IR_State<Key extends FnKeys> = {
+    type: Key
+    fn: IC_Functions[Key]
+    init: StringifyProps<IC_ArgsList[Key]>
+    args: IC_ArgsList[Key]
 }
+export type IR_CalculatorStore = {
+    store: { [Key in FnKeys]: IR_State<Key> }
+    selected_type: Enum_NodesAction
+    active_state?: IR_State<FnKeys>
+}
+
 export enum Enum_ReduxActions {
     // state_select = 'state_select',
     form_create = 'form_create',
@@ -85,6 +90,5 @@ export interface IAction_SelectType {
 }
 
 export type IR_Actions =
-    // | IAction_StateSelect
     | IAction_FormCreate
     | IAction_SelectType

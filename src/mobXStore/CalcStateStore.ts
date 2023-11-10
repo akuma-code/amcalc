@@ -1,11 +1,13 @@
 import { makeAutoObservable } from "mobx";
-import { Enum_ReduxActions, IR_CalculatorStore, ReduxState } from "../Redux/ReduxTypes";
-import { Enum_NodesAction } from "../ActionComponents/ActionTypes/Types";
+import { Enum_ReduxActions, IR_CalculatorStore, IR_State, ReduxState } from "../Redux/ReduxTypes";
+import { Enum_NodesAction, FnKeys } from "../ActionComponents/ActionTypes/Types";
 
 export class CalcStateStore {
     store!: ReduxState
+    public active_state: ReduxState[FnKeys] | null
     public selected_type: Enum_NodesAction = Enum_NodesAction.nets
     constructor() {
+        this.active_state = null
         this.init()
         makeAutoObservable(this)
     }
@@ -15,12 +17,7 @@ export class CalcStateStore {
         this.store = init_store_state()
     }
 
-    updateNets(new_props: Partial<ReduxState['nets']>) {
-        this.store.nets = { ...this.store.nets, ...new_props }
-    }
-    updateOffset5(new_props: Partial<ReduxState['offset5']>) {
-        this.store.offset5 = { ...this.store.offset5, ...new_props }
-    }
+
 
     getState() {
         return this.store[this.selected_type]
@@ -28,12 +25,13 @@ export class CalcStateStore {
 
     changeType(type: Enum_NodesAction) {
         this.selected_type = type
+        this.active_state = this.store[this.selected_type]
     }
 
     update(type: Enum_NodesAction, new_props: Partial<ReduxState[Enum_NodesAction]>) {
         this.store = {
             ...this.store, [type]: {
-                ...this.store[type],
+                ...this.store[type], ...new_props
             }
         }
     }

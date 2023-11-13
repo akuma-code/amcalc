@@ -1,7 +1,7 @@
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types"
 import { ISize, ISizeFull } from "../Interfaces/CommonTypes"
 
-export enum ArgsTypeEn {
+export enum ArgsTypesEn {
     'size_full', 'offset5', 'size',
 }
 export interface ArgsTypesList {
@@ -9,4 +9,5 @@ export interface ArgsTypesList {
     size: ISize,
     offset5: Fn_Args_offset5
 }
-export type ArgsTypes = Record<keyof typeof ArgsTypeEn, ArgsTypesList[keyof ArgsTypesList]>
+
+export type ArgsTypes = {}

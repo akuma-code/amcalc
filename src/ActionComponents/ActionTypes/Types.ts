@@ -55,7 +55,7 @@ export type IC_FuncsList = IC_Functions[FnKeys]
 export type TypeSelector<T extends FnKeys> = {
     type: T
     // fields: Array<keyof IC_ArgsList[T]> | string[]
-    fields: string[]
+    fields: readonly (keyof IC_ArgsList[T])[]
     initstate: IC_ArgsList[T]
     arg: IC_ArgsList[T]
     fn: IC_Functions[T]

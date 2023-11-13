@@ -25,7 +25,8 @@ const MobxForm = observer((props: MobxFormProps) => {
     //     props.submitInputs(new_values)
     // }
     const { register, handleSubmit, getValues } = useForm<IC_ArgsList[FnKeys]>()
-    const inpFields = Object.keys(state.init)
+    const current = ReduxStore.active_state ? ReduxStore.active_state.init : state.init
+    const inpFields: readonly (keyof typeof current)[] = []
 
     const onSubmitSwitch = (state_type: Enum_NodesAction, data: IC_ArgsList[keyof IC_ArgsList]) => {
         switch (state_type) {

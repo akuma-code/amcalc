@@ -43,7 +43,7 @@ export const InitStateRedux: ReduxState = {
 export type IR_State<Key extends FnKeys> = {
     type: Key
     fn: IC_Functions[Key]
-    init: StringifyProps<IC_ArgsList[Key]>
+    init: IC_ArgsList[Key]
     args: IC_ArgsList[Key]
 }
 export type IR_CalculatorStore = {

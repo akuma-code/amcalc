@@ -38,12 +38,12 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     //     return ST[action_type]
     // }, [ST, action_type])
     // const [fs, setFs] = useState<IDataTransferObject | null>(null)
-    const [saved, setSaved] = useState<Record<FnKeys, IC_ArgsList[FnKeys][]>>({ nets: [], offset5: [] })
+    const [saved, setSaved] = useState<Record<FnKeys, readonly IC_ArgsList[FnKeys][]>>({ nets: [], offset5: [] })
     // const [out, setout] = useState<Record<FnKeys, ReturnType<IC_Functions[FnKeys]>[]>>({ nets: [], offset5: [] })
     const saveResult = (args: IC_ArgsList[FnKeys]) => {
         if (!action_type) return
-        if (action_type === 'nets') setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args as IC_ArgsList['nets']] }))
-        if (action_type === 'offset5') setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args as IC_ArgsList['offset5']] }))
+        // if (action_type === 'nets') setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args as IC_ArgsList['nets']] }))
+        // if (action_type === 'offset5') setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args as IC_ArgsList['offset5']] }))
         // if ('W' in args) setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
         // if ('width' in args) setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
     }

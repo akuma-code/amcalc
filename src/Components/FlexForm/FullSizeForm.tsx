@@ -12,9 +12,11 @@ type FullSizeInputProps = {
 const FullSizeForm = ({ onFinish }: FullSizeInputProps) => {
 
   const { fields, init, desc, placeholder } = dto_formdata.dto_formFullSizes
-  const { register, handleSubmit, getValues } = useForm<typeof init>()
+  const { register, handleSubmit, getValues, watch } = useForm<typeof init>()
   const onSubmitFn = () => {
     const inputs = getValues()
+    const W = +watch('width')
+    // if (W > 1000) _log("WIDTH EXCEED!")
     onFinish(inputs)
     return inputs
   }

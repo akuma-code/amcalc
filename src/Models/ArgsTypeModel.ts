@@ -16,20 +16,29 @@ export type ArgsTypes =
     | 'offset5'
     | 'size'
 
+export type DTO_InputsProp<T extends ArgsTypes> = {
+    init: ArgsTypesList[T]
+    fields: readonly (keyof ArgsTypesList[T])[]
+    placeholder?: { [key: string]: string }
+    desc?: string
+}
 export interface DTO_InputSizeFull {
     fields: readonly (keyof ISizeFull)[]
-    init: { width: number, height: number }
+    init: ISizeFull
     placeholder?: { width: string, height: string }
     desc?: string
 }
 
 export interface DTO_InputOffset5 {
     fields: readonly (keyof Fn_Args_offset5)[]
-    init?: Fn_Args_offset5
+    init: Fn_Args_offset5
     placeholder?: StringifyProps<Fn_Args_offset5>
     desc?: string
 }
-
+export interface DTO_FormDataList {
+    nets: DTO_InputSizeFull
+    offset5: DTO_InputOffset5
+}
 const dto_formFullSizes: DTO_InputSizeFull = {
     fields: ['height', "width"],
     init: { height: 0, width: 0 },
@@ -52,4 +61,4 @@ const dto_formOffset5: DTO_InputOffset5 = {
     desc: "Смещение верхнего угла трапеции"
 }
 
-export const dto_formdata = { dto_formFullSizes, dto_formOffset5 }
+export const dto_formdata: DTO_FormDataList = { nets: dto_formFullSizes, offset5: dto_formOffset5 }

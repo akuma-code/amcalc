@@ -14,6 +14,7 @@ import { CalcReducer } from '../../Redux/ActionReducer'
 import { InitStateRedux, ReduxState } from '../../Redux/ReduxTypes'
 import MobxForm from '../FlexForm/MobxForm'
 import FullSizeForm from '../FlexForm/FullSizeForm'
+import { dto_formdata } from '../../Models/ArgsTypeModel'
 
 
 type PageProps = {}
@@ -28,6 +29,7 @@ const d = FactoryDiv
 
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
+    const { nets: dto_fs, offset5 } = dto_formdata
     const { dto_Store, ReduxStore } = useStoresContext()
     // const MAIN = new MainStore_(dto_Store)
 
@@ -135,7 +137,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
                     {/* {CURRENT && <DTOForm initState={CURRENT?.initState} submitFn={saveResult} type={action_type!} />} */}
                     {/* <MobxForm submitInputs={(inputs) => saveResult(inputs)} /> */}
-                    <FullSizeForm onFinish={(inputs) => { setSaved(prev => ({ ...prev, nets: [...prev.nets, inputs] })) }} />
+                    {/* <FullSizeForm  /> */}
                 </Grid>
                 <Grid item container
                     key={'output'}

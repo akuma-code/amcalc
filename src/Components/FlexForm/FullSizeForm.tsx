@@ -1,23 +1,26 @@
 import { Box, Button, FormControl, FormHelperText, FormLabel, Input, InputLabel } from '@mui/material'
 import React from 'react'
-import { DTO_InputSizeFull, dto_formdata } from '../../Models/ArgsTypeModel'
+import { ArgsTypes, DTO_FormDataList, DTO_InputSizeFull, DTO_InputsProp, dto_formdata } from '../../Models/ArgsTypeModel'
 import { useForm } from 'react-hook-form'
 import { _ID, _log } from '../../Helpers/HelpersFns'
 import { ISizeFull } from '../../Interfaces/CommonTypes'
+import { ANYobj } from '../../Interfaces/MathActionsTypes'
 
-type FullSizeInputProps = {
-  onFinish: (inputs: ISizeFull) => void
+type ANY_InputProps = {
+  fields: string[]
+  init: ANYobj
+  desc?: string
+  placeholder?: ANYobj
 }
 
-const FullSizeForm = ({ onFinish }: FullSizeInputProps) => {
+const FullSizeForm: React.FC<ANY_InputProps> = ({ fields, init, desc, placeholder }) => {
 
-  const { fields, init, desc, placeholder } = dto_formdata.dto_formFullSizes
-  const { register, handleSubmit, getValues, watch } = useForm<typeof init>()
+  // const { fields, init, desc, placeholder } = dto_formdata.dto_formFullSizes
+  const { register, handleSubmit, getValues } = useForm<typeof init>()
   const onSubmitFn = () => {
     const inputs = getValues()
-    const W = +watch('width')
     // if (W > 1000) _log("WIDTH EXCEED!")
-    onFinish(inputs)
+
     return inputs
   }
 

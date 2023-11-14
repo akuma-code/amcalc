@@ -68,11 +68,7 @@ const Homepage = observer(() => {
                             }}
                     /> */}
 
-                        {dtos.map(dto =>
 
-                            <CalcBox type={dto.type} init={dto.initState} key={dto.type} />
-
-                        )}
                     </Stack>
                 </Box>
             </div>

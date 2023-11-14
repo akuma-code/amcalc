@@ -89,5 +89,15 @@ const MobxForm = observer((props: MobxFormProps) => {
     )
 })
 
+const InputControl = (fields: string[]) => {
+
+
+    return (
+        <FormControl variant="standard" key={_ID()}>
+
+        </FormControl>
+    )
+}
+
 MobxForm.displayName = '________MobxForm______'
 export default MobxForm

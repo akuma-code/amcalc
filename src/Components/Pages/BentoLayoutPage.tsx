@@ -13,7 +13,7 @@ import NodeForm from '../FlexForm/NodeForm'
 import { CalcReducer } from '../../Redux/ActionReducer'
 import { InitStateRedux, ReduxState } from '../../Redux/ReduxTypes'
 import MobxForm from '../FlexForm/MobxForm'
-import InputForm from '../FlexForm/FullSizeForm'
+import InputForm, { InputsO5 } from '../FlexForm/FullSizeForm'
 import { dto_formdata } from '../../Models/ArgsTypeModel'
 
 
@@ -93,7 +93,8 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     {/* {CURRENT && <DTOForm initState={CURRENT?.initState} submitFn={saveResult} type={action_type!} />} */}
                     {/* <MobxForm submitInputs={(inputs) => saveResult(inputs)} /> */}
                     {/* <InputForm  {...InputStore.get_form_data(InputStore.inpType)} /> */}
-
+                    {/* <InputForm fields={['width', 'height']} init={{ width: 0, height: 0 }} /> */}
+                    <InputsO5 />
                 </Grid>
                 <Grid item container
                     key={'output'}

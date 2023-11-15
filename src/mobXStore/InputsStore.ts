@@ -34,7 +34,7 @@ export class InputsStore {
     }
 
     get_form_data(type: ArgsTypes) {
-        return dto_form(type)
+        return dto_forms()
     }
     changeInpType(type: ArgsTypes) {
         this.inpType = type
@@ -44,7 +44,7 @@ export class InputsStore {
 
 
 
-const dto_form = (type: ArgsTypes = 'size_full') => {
+export const dto_forms = () => {
 
     const dto_formFullSizes: DTO_InputSizeFull = {
         fields: ["width", 'height',],
@@ -77,11 +77,11 @@ const dto_form = (type: ArgsTypes = 'size_full') => {
         desc: "Смещение верхнего угла трапеции"
     }
 
-    const output = {
+    const forms = {
         offset5: dto_formOffset5,
         size: dto_formSizes,
         size_full: dto_formFullSizes
     }
 
-    return output[type]
+    return forms
 }

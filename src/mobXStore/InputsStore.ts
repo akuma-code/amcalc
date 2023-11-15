@@ -2,15 +2,16 @@ import { makeAutoObservable } from "mobx";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes, ArgsTypesList, DTO_InputOffset5, DTO_InputSize, DTO_InputSizeFull, DTO_InputsProp } from "../Models/ArgsTypeModel";
 
-export interface Mbx_InputsStore<T extends ArgsTypes> {
-    type: T
-    saved: ArgsTypesList[T][]
+export interface Mbx_InputsStore {
+    saved: Record<string, Mbx_InputState['args'][]>
+    inpType: ArgsTypes
 }
 
 export interface Mbx_InputState {
     type: ArgsTypes
     args: ArgsTypesList[ArgsTypes]
 }
+
 
 export class InputsStore {
     public saved: Record<string, Mbx_InputState['args'][]> = {}

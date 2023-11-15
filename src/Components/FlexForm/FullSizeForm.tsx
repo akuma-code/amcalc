@@ -8,6 +8,7 @@ import { ANYobj } from '../../Interfaces/MathActionsTypes'
 import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { Fn_Args_offset5 } from '../../ActionComponents/ActionTypes/Types'
+import { InputsStore } from '../../mobXStore/InputsStore'
 
 type ANY_InputProps = {
   fields: readonly string[]
@@ -71,8 +72,8 @@ const InputForm: React.FC<ANY_InputProps> = ({ fields, init, desc, placeholder }
   )
 }
 
-export const InputsFS = () => {
-  const { InputStore } = useStoresContext()
+export const InputsFS = (store: InputsStore) => {
+  // const { InputStore } = useStoresContext()
   const { register, handleSubmit, getValues } = useForm<ISizeFull>()
   const fields = ['width', 'height'] as const
   const desc = "FullSize"
@@ -81,7 +82,7 @@ export const InputsFS = () => {
     width: "Ширина"
   }
   const save = () => {
-    InputStore.save('size_full', getValues())
+    store.save('size_full', getValues())
   }
 
   return (
@@ -186,15 +187,15 @@ export const InputsO5 = () => {
       </Box> </FormLabel>
   )
 }
-export const InputFormSelector = (itype: ArgsTypes) => {
-  // const IS = useStoresContext().InputStore
-  const F: Record<ArgsTypes, React.ReactNode> = {
-    offset5: InputsO5(),
-    size_full: InputsFS(),
-    size: InputsFS()
-  }
-  return F[itype]
-}
+// export const InputFormSelector = (itype: ArgsTypes) => {
+//   const {InputStore} = useStoresContext()
+//   const F: Record<ArgsTypes, React.ReactNode> = {
+//     offset5: InputsO5(),
+//     size_full: InputsFS(),
+//     size: InputsFS()
+//   }
+//   return F[itype]
+// }
 
 export default InputForm
 

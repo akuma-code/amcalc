@@ -6,10 +6,10 @@ import FnLinkedList, { IDataTransferObject } from "../../Models/DTO_ChainStore"
 import { CalcStateStore } from '../../mobXStore/CalcStateStore'
 import { InputsStore } from '../../mobXStore/InputsStore'
 export interface IStoresContext {
-    ActionsStore?: ActionsStore
-    StoreV2Nodes?: StoreV2DataNodes
-    mbxStore: mbxActionStore<{ nodeId: string, data: any }>
-    dto_Store: FnLinkedList<IDataTransferObject>
+    // ActionsStore?: ActionsStore
+    // StoreV2Nodes?: StoreV2DataNodes
+    // mbxStore: mbxActionStore<{ nodeId: string, data: any }>
+    // dto_Store: FnLinkedList<IDataTransferObject>
     ReduxStore: CalcStateStore
     InputStore: InputsStore
 }

@@ -18,31 +18,31 @@ type FlexFormProps = {
 export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defaultState }) => {
     const init = defaultState ? defaultState : {} as IC_ArgsList[FnKeys]
     const { register, handleSubmit, watch, formState: { errors, submitCount }, setError } = useForm<IC_ArgsList[FnKeys]>({ defaultValues: init })
-    const { mbxStore } = useStoresContext()
-    const F = Object.keys(fields) as unknown as keyof IC_ArgsList[FnKeys][] & string[]
-    // const savedFn = save2(submitFn!)
-    const onFinish = (args: any) => {
-        if (!submitFn) {
-            _log("No submit Fn")
-            return { formdata: args }
-        }
-        // const s = savedFn(args)
-        const data = {
-            initState: args,
-            result: submitFn(args)
-        }
-        const data_node = new mbxDataNode(data)
-        mbxStore.add(data_node)
-        // _log("datanode: ", data_node)
-        return submitFn(args)
-    }
-    const resetFn = () => {
-        mbxStore.clear()
-    }
-    if (F.length === 0) return <div>No inputs finded</div>
+    // const { mbxStore } = useStoresContext()
+    // const F = Object.keys(fields) as unknown as keyof IC_ArgsList[FnKeys][] & string[]
+    // // const savedFn = save2(submitFn!)
+    // const onFinish = (args: any) => {
+    //     if (!submitFn) {
+    //         _log("No submit Fn")
+    //         return { formdata: args }
+    //     }
+    //     // const s = savedFn(args)
+    //     const data = {
+    //         initState: args,
+    //         result: submitFn(args)
+    //     }
+    //     const data_node = new mbxDataNode(data)
+    //     mbxStore.add(data_node)
+    //     // _log("datanode: ", data_node)
+    //     return submitFn(args)
+    // }
+    // const resetFn = () => {
+    //     mbxStore.clear()
+    // }
+    // if (F.length === 0) return <div>No inputs finded</div>
     return (
         <div className='m-1 p-2 border-slate-400 border-2 rounded-lg w-fit h-fit'>
-            <form name='flexform' id='flex_form' onSubmit={handleSubmit(onFinish)} >
+            {/* <form name='flexform' id='flex_form' onSubmit={handleSubmit(onFinish)} >
                 <div className='flex flex-col gap-2 justify-items-center' >
                     {
 
@@ -82,7 +82,7 @@ export const FlexForm: React.FC<FlexFormProps> = ({ fields = [], submitFn, defau
                         Reset [{submitCount}]
                     </button>
                 </label>
-            </form>
+            </form> */}
         </div>
     )
 }

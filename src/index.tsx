@@ -12,8 +12,8 @@ import { InputsStore } from './mobXStore/InputsStore';
 const Stores: IStoresContext = {
   // ActionsStore: new ActionsStore(),
   // StoreV2Nodes: new StoreV2DataNodes(),
-  mbxStore: new mbxActionStore(),
-  dto_Store: dto_Store,
+  // mbxStore: new mbxActionStore(),
+  // dto_Store: dto_Store,
   ReduxStore: new CalcStateStore(),
   InputStore: new InputsStore()
 

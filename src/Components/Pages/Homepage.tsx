@@ -10,17 +10,17 @@ import CalcBox from '../../ActionComponents/Calculators/CalcBox'
 
 const Homepage = observer(() => {
 
-    const { mbxStore, dto_Store } = useStoresContext()
-    const dtos = dto_Store.traverse()
+    // const { mbxStore, dto_Store } = useStoresContext()
+    // const dtos = dto_Store.traverse()
 
     const [res, setRes] = useState<number | null>(null)
-    const stored = mbxStore.store.map(n => createOutputTableData(n.data.initState, n.data.result))
+    // const stored = mbxStore.store.map(n => createOutputTableData(n.data.initState, n.data.result))
 
     const reset = () => {
         setRes(prev => null)
         // setInputX("")
-        mbxStore.clear()
-        _log(mbxStore.list())
+        // mbxStore.clear()
+        // _log(mbxStore.list())
     }
 
     // _log(Offset5Node)

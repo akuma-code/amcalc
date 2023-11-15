@@ -13,7 +13,7 @@ import NodeForm from '../FlexForm/NodeForm'
 import { CalcReducer } from '../../Redux/ActionReducer'
 import { InitStateRedux, ReduxState } from '../../Redux/ReduxTypes'
 import MobxForm from '../FlexForm/MobxForm'
-import FullSizeForm from '../FlexForm/FullSizeForm'
+import InputForm, { InputFormSelector } from '../FlexForm/FullSizeForm'
 import { dto_formdata } from '../../Models/ArgsTypeModel'
 
 
@@ -29,56 +29,10 @@ const d = FactoryDiv
 
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
-    const { nets: dto_fs, offset5 } = dto_formdata
-    const { dto_Store, ReduxStore } = useStoresContext()
-    // const MAIN = new MainStore_(dto_Store)
+    const { InputStore } = useStoresContext()
+    const f = InputFormSelector(InputStore.inpType)
 
 
-    const [action_type, setType] = useState<Enum_NodesAction>(Enum_NodesAction.nets)
-    // const [ST, setST] = useState<IC_DataList>(MAIN.statesList)
-    // const CURRENT = useMemo(() => {
-    //     if (!action_type) return null
-    //     return ST[action_type]
-    // }, [ST, action_type])
-    // const [fs, setFs] = useState<IDataTransferObject | null>(null)
-    const [saved, setSaved] = useState<Record<FnKeys, readonly IC_ArgsList[FnKeys][]>>({ nets: [], offset5: [] })
-    // const [out, setout] = useState<Record<FnKeys, ReturnType<IC_Functions[FnKeys]>[]>>({ nets: [], offset5: [] })
-    const saveResult = (args: IC_ArgsList[FnKeys]) => {
-        if (!action_type) return
-        // if (action_type === 'nets') setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args as IC_ArgsList['nets']] }))
-        // if (action_type === 'offset5') setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args as IC_ArgsList['offset5']] }))
-        // if ('W' in args) setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
-        // if ('width' in args) setSaved(prev => ({ ...prev, [action_type]: [...prev[action_type], args] }))
-    }
-    // function dispSave(w: number, h: number) {
-    //     dispatch({
-    //         type: Enum_NodesAction.nets,
-    //         payload: { width: w, height: h }
-    //     })
-    // }
-    function getForm(type: Enum_NodesAction) {
-
-    }
-    // useEffect(() => {
-    //     const dd = dto_Store.search(n => n.type === action_type)?.data
-    //     if (!dd) return
-    //     setFs(dd)
-    // }, [action_type, dto_Store])
-
-    // useEffect(() => {
-    //     if (!fs) return
-    //     const fn = dto_Store.fnSearch(d => d.type === action_type)!
-    //     if (action_type === Enum_NodesAction.nets) {
-
-    //         setout(prev => ({ ...prev, nets: saved.nets.map(a => fn(a as any)) }))
-    //     }
-    // }, [action_type, dto_Store, fs, saved.nets])
-
-    // useEffect(() => {
-    //     const node = dto_Store.search(n => n.type === action_type)
-    //     if (!node) return
-    //     M.importDTO(node.data)
-    // }, [action_type, dto_Store])
     return (
         <Grid container spacing={2} minHeight={160} maxWidth={'85vw'} key={'MainGridContainer'}
             sx={{
@@ -93,7 +47,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     border={'2px solid blue'} p={2}
                 >
 
-                    {d.div(action_type!)}
+                    {d.div(InputStore.inpType)}
 
                 </Grid>
                 <Grid key={'selector'}
@@ -107,21 +61,22 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 >
 
                     <IconButton
-                        desc='NETS'
+                        desc='FullSize'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => ReduxStore.changeType(Enum_NodesAction.nets)}
+                        onClickFn={() => InputStore.changeInpType('size_full')}
                     />
                     <IconButton
                         desc='OFFSET5'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => ReduxStore.changeType(Enum_NodesAction.offset5)}
+                        onClickFn={() => InputStore.changeInpType('offset5')}
                     />
                     <IconButton
-                        desc='NOT READY'
+                        desc='Size'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
+                        onClickFn={() => InputStore.changeInpType('size')}
                     />
                     <IconButton
                         desc='NOT READY'
@@ -137,7 +92,8 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
                     {/* {CURRENT && <DTOForm initState={CURRENT?.initState} submitFn={saveResult} type={action_type!} />} */}
                     {/* <MobxForm submitInputs={(inputs) => saveResult(inputs)} /> */}
-                    <FullSizeForm  {...offset5} />
+                    {/* <InputForm  {...InputStore.get_form_data(InputStore.inpType)} /> */}
+                    {f}
                 </Grid>
                 <Grid item container
                     key={'output'}

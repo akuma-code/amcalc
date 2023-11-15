@@ -7,7 +7,7 @@ import { ISizeFull } from '../../Interfaces/CommonTypes'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
 
 type ANY_InputProps = {
-  fields: string[]
+  fields: readonly string[]
   init: ANYobj
   desc?: string
   placeholder?: ANYobj
@@ -24,7 +24,7 @@ const FullSizeForm: React.FC<ANY_InputProps> = ({ fields, init, desc, placeholde
     return inputs
   }
 
-  return (
+  return (<FormLabel htmlFor='fs_form' >
     <Box
       component="form"
       sx={{
@@ -37,9 +37,9 @@ const FullSizeForm: React.FC<ANY_InputProps> = ({ fields, init, desc, placeholde
       flexDirection={'column'}
       height={'fit-content'}
     >
-      <FormLabel htmlFor='fs_form' >
-        {desc && desc}
-      </FormLabel>
+
+      {desc && desc}
+
       {
         fields.map((f, idx) =>
           <FormControl variant="standard" key={_ID()} margin='dense'>
@@ -48,9 +48,9 @@ const FullSizeForm: React.FC<ANY_InputProps> = ({ fields, init, desc, placeholde
               {...register(f, { required: true })}
               defaultValue=''
             />
-            <FormHelperText >
+            {/* <FormHelperText >
               {placeholder && placeholder[f]}
-            </FormHelperText>
+            </FormHelperText> */}
           </FormControl>
         )
       }
@@ -63,7 +63,7 @@ const FullSizeForm: React.FC<ANY_InputProps> = ({ fields, init, desc, placeholde
 
       >SUBMIT</Button>
 
-    </Box>
+    </Box> </FormLabel>
   )
 }
 

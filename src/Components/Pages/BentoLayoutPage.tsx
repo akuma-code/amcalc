@@ -137,7 +137,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
                     {/* {CURRENT && <DTOForm initState={CURRENT?.initState} submitFn={saveResult} type={action_type!} />} */}
                     {/* <MobxForm submitInputs={(inputs) => saveResult(inputs)} /> */}
-                    {/* <FullSizeForm  /> */}
+                    <FullSizeForm  {...offset5} />
                 </Grid>
                 <Grid item container
                     key={'output'}

@@ -1,6 +1,6 @@
 import { Box, Button, FormControl, FormHelperText, FormLabel, Input, InputLabel } from '@mui/material'
 import React, { useMemo, useState } from 'react'
-import { ArgsTypes, DTO_FormDataList, DTO_InputSizeFull, DTO_InputsProp, dto_formdata } from '../../Models/ArgsTypeModel'
+import { ArgsTypes, DTO_FormDataList, DTO_InputSizeFull, DTO_InputsProp } from '../../Models/ArgsTypeModel'
 import { useForm } from 'react-hook-form'
 import { _ID, _log } from '../../Helpers/HelpersFns'
 import { ISizeFull } from '../../Interfaces/CommonTypes'
@@ -16,6 +16,8 @@ type ANY_InputProps = {
   desc?: string
   placeholder?: ANYobj
 }
+
+
 
 const InputForm: React.FC<ANY_InputProps> = ({ fields, init, desc, placeholder }) => {
 
@@ -86,12 +88,12 @@ export const InputsFS = (): React.ReactNode => {
     // savedata('size_full', getValues())
 
   }
-  const form = useMemo(() => {
+  const Form = useMemo(() => {
     const { size_full } = dto_forms()
     const f = InputForm({ ...size_full })
     return f
   }, [])
-  return form
+  return Form
   // (
   //   <FormLabel htmlFor='fs_form' >
   //     <Box

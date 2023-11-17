@@ -8,10 +8,11 @@ import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../../Hooks/useStoresContext'
 import { Box, Button, FormControl, FormLabel, Input, InputLabel } from '@mui/material'
 import { _ID, _log } from '../../../Helpers/HelpersFns'
-import { InputsStore } from '../../../mobXStore/InputsStore'
+import { Mbx_InputsStore } from '../../../mobXStore/InputsStore'
 import { ANYobj } from '../../../Interfaces/MathActionsTypes'
 import { StringifyProps, StringifyProps_2 } from '../../../ActionComponents/ActionTypes/FnProperties'
 import { getValue } from '@testing-library/user-event/dist/utils'
+import { InputsTypeEnum, useFormStateSelector } from '../../Hooks/useFormStateSelector'
 
 
 type IControlsFullSize = StringifyProps_2<ISizeFull>
@@ -24,6 +25,8 @@ export const MultiFormSelector = () => {
     // const { InputStore: IS } = store
     const current_state = IS.inpType
     // const { offset5: of5_dto, size_full } = IS.get_form_data
+    // const { payload } = useFormStateSelector(current_state as InputsTypeEnum)
+    // console.log('payload: ', payload)
     const { fields, init, desc, placeholder } = IS.get_form_data[current_state]
 
     const { register, handleSubmit, getValues, reset } = useForm<typeof init>()

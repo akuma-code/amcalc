@@ -8,7 +8,7 @@ import { ANYobj } from '../../Interfaces/MathActionsTypes'
 import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { Fn_Args_offset5 } from '../../ActionComponents/ActionTypes/Types'
-import { InputsStore, dto_forms } from '../../mobXStore/InputsStore'
+import { Mbx_InputsStore, dto_forms } from '../../mobXStore/InputsStore'
 import { StringifyProps } from '../../ActionComponents/ActionTypes/FnProperties'
 
 type ANY_InputProps = {

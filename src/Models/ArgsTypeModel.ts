@@ -12,6 +12,9 @@ export interface ArgsTypesList {
     offset5: Fn_Args_offset5
 }
 
+
+
+
 export type ArgsTypes =
     | 'size_full'
     | 'offset5'

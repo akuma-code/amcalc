@@ -14,7 +14,8 @@ import { CalcReducer } from '../../Redux/ActionReducer'
 import { InitStateRedux, ReduxState } from '../../Redux/ReduxTypes'
 import MobxForm from '../FlexForm/MobxForm'
 import InputForm, { InputsFS, InputsO5 } from '../FlexForm/FullSizeForm'
-import { MultiFormSelector, MultiFormSelector_v2 } from '../FlexForm/MultiForms/MultiFormSelector'
+import { MultiFormSelector } from '../FlexForm/MultiForms/MultiFormSelector'
+import { InputsTypeEnum, useFormStateSelector } from '../Hooks/useFormStateSelector'
 
 
 

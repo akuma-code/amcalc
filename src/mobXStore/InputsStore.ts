@@ -13,7 +13,7 @@ export interface Mbx_InputState {
 }
 
 
-export class InputsStore {
+export class Mbx_InputsStore {
     public saved: Record<string, Mbx_InputState['args'][]> = {}
     public inpType: ArgsTypes = 'size_full'
     constructor() {

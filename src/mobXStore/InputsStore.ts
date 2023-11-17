@@ -33,7 +33,7 @@ export class InputsStore {
         return this.saved[type] = []
     }
 
-    get_form_data(type: ArgsTypes) {
+    get get_form_data() {
         return dto_forms()
     }
     changeInpType(type: ArgsTypes) {

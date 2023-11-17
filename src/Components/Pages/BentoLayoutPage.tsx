@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material'
-import React, { useMemo, useReducer, useState } from 'react'
+import React, { useCallback, useMemo, useReducer, useState } from 'react'
 import { IconButton } from '../UI/IconButton'
 import Icons from '../Icons/SvgIcons'
 
@@ -14,7 +14,7 @@ import { CalcReducer } from '../../Redux/ActionReducer'
 import { InitStateRedux, ReduxState } from '../../Redux/ReduxTypes'
 import MobxForm from '../FlexForm/MobxForm'
 import InputForm, { InputsFS, InputsO5 } from '../FlexForm/FullSizeForm'
-import { MultiFormSelector } from '../FlexForm/MultiForms/MultiFormSelector'
+import { MultiFormSelector, MultiFormSelector_v2 } from '../FlexForm/MultiForms/MultiFormSelector'
 
 
 
@@ -32,7 +32,10 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { InputStore } = useStoresContext()
 
-
+    const selectedTypeCounterString = useCallback(() => {
+        const c = InputStore.load(InputStore.inpType)?.length ?? 0
+        return `${InputStore.inpType.toUpperCase()} size is [${c}]`
+    }, [InputStore])
 
     return (
         <Grid container spacing={2} minHeight={160} maxWidth={'85vw'} key={'MainGridContainer'}
@@ -48,7 +51,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     border={'2px solid blue'} p={2}
                 >
 
-                    {InputStore.inpType}
+                    {selectedTypeCounterString()}
 
                 </Grid>
                 <Grid key={'selector'}
@@ -96,6 +99,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     {/* <InputForm  {...InputStore.get_form_data(InputStore.inpType)} /> */}
                     {/* <InputForm fields={['width', 'height']} init={{ width: 0, height: 0 }} /> */}
                     <MultiFormSelector />
+                    {/* <InputsO5 /> */}
                 </Grid>
                 <Grid item container
                     key={'output'}

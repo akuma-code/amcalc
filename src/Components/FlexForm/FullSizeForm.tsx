@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormHelperText, FormLabel, Input, InputLabel } from '@mui/material'
 import React, { useMemo, useState } from 'react'
 import { ArgsTypes, DTO_FormDataList, DTO_InputSizeFull, DTO_InputsProp } from '../../Models/ArgsTypeModel'
-import { useForm } from 'react-hook-form'
+import { UseFormRegister, UseFormUnregister, useForm } from 'react-hook-form'
 import { _ID, _log } from '../../Helpers/HelpersFns'
 import { ISizeFull } from '../../Interfaces/CommonTypes'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { Fn_Args_offset5 } from '../../ActionComponents/ActionTypes/Types'
 import { InputsStore, dto_forms } from '../../mobXStore/InputsStore'
+import { StringifyProps } from '../../ActionComponents/ActionTypes/FnProperties'
 
 type ANY_InputProps = {
   fields: readonly string[]
@@ -88,6 +89,9 @@ export const InputsFS = (): React.ReactNode => {
     // savedata('size_full', getValues())
 
   }
+
+
+
   const Form = useMemo(() => {
     const { size_full } = dto_forms()
     const f = InputForm({ ...size_full })
@@ -137,26 +141,40 @@ export const InputsFS = (): React.ReactNode => {
   //     </Box> </FormLabel>
   // )
 }
-export const InputsO5 = () => {
+export const InputsO5 = observer(() => {
   const store = useStoresContext()
-  const { register, handleSubmit, getValues } = useForm<Fn_Args_offset5>()
-  const fields = ['H', "W", "da", "db", "h"] as const
-  const desc = "Offset5"
-  const placeholder: Record<keyof Fn_Args_offset5, string> = {
-    H: "Высота",
-    W: "Ширина",
-    da: "дельта А",
-    db: "дельта Б",
-    h: "Высота мин"
-  }
+  const { InputStore: IS } = store
+  const current_state = IS.inpType
+  // const { offset5: of5_dto, size_full } = IS.get_form_data
+  const { fields, init, desc } = IS.get_form_data[current_state]
+    ;
+  const { register, handleSubmit, getValues, reset } = useForm<typeof init>()
+
   const save = () => {
-    store.InputStore.save('offset5', getValues())
-    const s = store.InputStore.load('offset5')
-    _log(...s)
+    switch (current_state) {
+      case 'size_full': {
+        IS.save(current_state, getValues())
+
+        break
+      }
+      case 'offset5': {
+        IS.save(current_state, getValues())
+        break
+      }
+      case 'size': {
+        IS.save(current_state, getValues())
+        break
+
+      }
+      default: break
+    }
+    IS.save(current_state, getValues())
+    reset()
+    // const s = IS.load('offset5')
   }
 
   return (
-    <FormLabel htmlFor='fs_form' >
+    <FormLabel htmlFor='o5_form' >
       <Box
         component="form"
         sx={{
@@ -164,10 +182,11 @@ export const InputsO5 = () => {
         }}
         onSubmit={handleSubmit(save)}
         autoComplete="on"
-        id='fs_form'
+        id='o5_form'
         display={'flex'}
         flexDirection={'column'}
         height={'fit-content'}
+        margin={1}
       >
 
         {desc && desc}
@@ -175,29 +194,37 @@ export const InputsO5 = () => {
         {
           fields.map((f, idx) =>
             <FormControl variant="standard" key={_ID()} margin='dense'>
-              <InputLabel htmlFor={`input_` + idx}>{placeholder && placeholder[f]}</InputLabel>
+              <InputLabel htmlFor={`input_` + idx}>{`placeholder && placeholder[f] as any`}</InputLabel>
               <Input id={`input_` + idx}
                 {...register(f, { required: true })}
-                defaultValue=''
-              />
-              {/* <FormHelperText >
-              {placeholder && placeholder[f]}
-            </FormHelperText> */}
+                defaultValue='' />
+
             </FormControl>
           )
         }
 
 
         <Button type='submit'
-          form='fs_form'
+          form='o5_form'
           variant='contained'
           color='success'
 
-        >SUBMIT</Button>
+        >
+          SUBMIT
+        </Button>
+        <Button type='reset'
+          form='o5_form'
+          variant='contained'
+          color='error'
+          sx={{ margin: 2 }}
+        >
+          RESET
+        </Button>
 
       </Box> </FormLabel>
   )
-}
+})
+InputsO5.displayName = "____________Offset5 Inputs Form_________________"
 // export const InputFormSelector = (itype: ArgsTypes) => {
 //   const {InputStore} = useStoresContext()
 //   const F: Record<ArgsTypes, React.ReactNode> = {
@@ -209,4 +236,16 @@ export const InputsO5 = () => {
 // }
 
 export default InputForm
+
+function FieldControl(idx: number, f: keyof Fn_Args_offset5, register: UseFormRegister<Fn_Args_offset5>, placeholder?: StringifyProps<Fn_Args_offset5>,) {
+  return <FormControl variant="standard" key={_ID()} margin='dense'>
+    <InputLabel htmlFor={`input_` + idx}>{placeholder && placeholder[f]}</InputLabel>
+    <Input id={`input_` + idx}
+      {...register(f, { required: true })}
+      defaultValue='' />
+    {/* <FormHelperText >
+        {placeholder && placeholder[f]}
+      </FormHelperText> */}
+  </FormControl>
+}
 

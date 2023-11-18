@@ -3,7 +3,7 @@ import React, { useState, useReducer } from 'react'
 import { dto_forms } from "../../mobXStore/InputsStore"
 import { DTO_FormStatesList, dto_formStates, dto_formdata } from "../FlexForm/DTO_Forms"
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes"
-import { FormSelectorState, IFormInstances, ISaveFullSize, ISaveOffset5, ISaveSize, SAVE_ARG } from "../../ActionComponents/ActionTypes/ReducerTypes"
+import { FormSelectorState, GetFormState, IFormInstances, ISaveFullSize, ISaveOffset5, ISaveSize, SAVE_ARG } from "../../ActionComponents/ActionTypes/ReducerTypes"
 import { ISize, ISizeFull } from "../../Interfaces/CommonTypes"
 import { Fn_Args_offset5, IC_ArgsList } from "../../ActionComponents/ActionTypes/Types"
 
@@ -36,11 +36,7 @@ type BasicFormState = {
     saved: any[]
     init: ANYobj
 }
-type InitFormState<Arg> = Arg extends DTO_ARGS ? {
-    init: Arg
-    fields: ReadonlyArray<keyof Arg>
-    saved: Arg[]
-} : never
+type FormStates = { [Key in keyof ArgsTypesList]: GetFormState<ArgsTypesList[Key]> }
 
 
 
@@ -48,7 +44,8 @@ type InitFormState<Arg> = Arg extends DTO_ARGS ? {
 
 
 
-export const useFormStateSelector = (): IFormInstances[InputsTypeEnum] => {
+
+export const useFormStateSelector = () => {
 
 
     return { fields: [], init: { w: 0, h: 0 }, saved: [] }

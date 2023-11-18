@@ -58,8 +58,17 @@ export type ISaveArgsActions =
 
 export type FormState_Fields<Arg extends ANYobj> = ReadonlyArray<keyof Arg>
 export type FormState_Saved<Arg extends ANYobj> = Array<Arg>
-export type FormStatePlaceHolder<Arg extends DTO_ARGS> = { [key: string]: string }
+export type FormStatePlaceHolder<Arg extends ANYobj> = { [K in keyof Arg]: string }
+export type FormStateInit<Arg extends ANYobj> = { readonly [K in keyof Arg]: "" }
 
+
+export type GetFormState<T extends DTO_ARGS> = {
+    fields: FormState_Fields<T>
+    placeholder: FormStatePlaceHolder<T>
+    saved: FormState_Saved<T>
+    init: FormStateInit<T>
+
+}
 // export type FormStateProps<Arg extends DTO_ARGS> = { placeholder?: { [KEY in Arg ]?: string }, desc?: string }
 export type FormInstaceState<ARGS extends DTO_ARGS> = {
     fields: FormState_Fields<ARGS>
@@ -69,8 +78,6 @@ export type FormInstaceState<ARGS extends DTO_ARGS> = {
     placeholder?: FormStatePlaceHolder<ARGS>
 }
 
-type p = FormStatePlaceHolder<ISizeFull>
-const pp: p = { width: 'ss' }
 export type DTO_FormsInstance<I extends InputsTypeEnum> = FormInstaceState<ArgsTypesList[I]>
 
 

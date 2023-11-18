@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 
-import { useFormContext, FormProvider, useForm, useFieldArray, Controller, UseControllerProps, useController } from 'react-hook-form'
+import { useFormContext, FormProvider, useForm, useFieldArray, Controller, UseControllerProps, useController, UseFormRegisterReturn, UseFormRegister } from 'react-hook-form'
 import { ISizeFull } from '../../../Interfaces/CommonTypes'
 import { Fn_Args_offset5 } from '../../../ActionComponents/ActionTypes/Types'
 import { dto_formdata } from '../DTO_Forms'
@@ -12,12 +12,18 @@ import { Mbx_InputsStore } from '../../../mobXStore/InputsStore'
 import { ANYobj } from '../../../Interfaces/MathActionsTypes'
 import { StringifyProps, StringifyProps_2 } from '../../../ActionComponents/ActionTypes/FnProperties'
 import { getValue } from '@testing-library/user-event/dist/utils'
-import { InputsTypeEnum, useFormStateSelector } from '../../Hooks/useFormStateSelector'
+import { DTO_ARGS, InputsTypeEnum, useFormStateSelector } from '../../Hooks/useFormStateSelector'
+import { ArgsTypes, ArgsTypesList } from '../../../Models/ArgsTypeModel'
+import { FormStatePlaceHolder } from '../../../ActionComponents/ActionTypes/ReducerTypes'
 
 
 type IControlsFullSize = StringifyProps_2<ISizeFull>
 type IControlsOffset5 = Fn_Args_offset5
-
+type IFieldsArrayItem<Arg extends ANYobj = ANYobj> = {
+    // field: keyof Arg
+    props: UseFormRegisterReturn<keyof Arg & string>
+    placeholder?: string
+}
 type MultiFormProps = {}
 export const MultiFormSelector = () => {
 
@@ -29,7 +35,21 @@ export const MultiFormSelector = () => {
     // console.log('payload: ', payload)
     const { fields, init, desc, placeholder } = IS.get_form_data[current_state]
 
+
     const { register, handleSubmit, getValues, reset } = useForm<typeof init>()
+
+    const InputPropsArray = fields.map(f => {
+        const pl = placeholder ? placeholder[f as keyof typeof placeholder] : ""
+        const fieldprop: IFieldsArrayItem = {
+
+            props: register(f, { required: true, shouldUnregister: true }),
+            placeholder: pl
+        }
+        return fieldprop
+    })
+
+
+
 
     const save = () => {
         switch (current_state) {
@@ -49,20 +69,13 @@ export const MultiFormSelector = () => {
             }
             default: break
         }
-        IS.save(current_state, getValues())
+        // IS.save(current_state, getValues())
         reset()
         // const s = IS.load('offset5')
     }
 
-
-
-
     return (
-        FORM()
-    )
-
-    function FORM() {
-        return <FormLabel htmlFor='o5_form'>
+        <FormLabel htmlFor='o5_form'>
             <Box
                 component="form"
                 sx={{
@@ -79,13 +92,8 @@ export const MultiFormSelector = () => {
 
                 {desc && desc}
 
-                {fields.map((f, idx) => <FormControl variant="standard" key={_ID()} margin='dense'>
-                    <InputLabel htmlFor={`input_` + idx}>{`placeholder && placeholder[f] as any`}</InputLabel>
-                    <Input id={`input_` + idx}
-                        {...register(f, { required: true })}
-                        defaultValue='' />
-
-                </FormControl>
+                {InputPropsArray.map((fprop, idx) =>
+                    FCInput(idx, fprop)
                 )}
 
 
@@ -107,14 +115,30 @@ export const MultiFormSelector = () => {
                 </Button>
 
             </Box> </FormLabel>
-    }
+
+    )
+
 }
 
 
 MultiFormSelector.displayName = '______FormSelector___________'
+
+
+function FCInput(idx: number, inputprops: IFieldsArrayItem<any>) {
+    const { placeholder, props } = inputprops
+
+    return <FormControl variant="standard" key={_ID()} margin='dense'>
+        <InputLabel htmlFor={`input_` + idx}>{placeholder && placeholder}</InputLabel>
+        <Input id={`input_` + idx} {...props}
+            defaultValue='' />
+
+    </FormControl>
+}
+
+
+
 type InputProps = {
-    field_name: string
-    onChangeFn?: (...args: any) => void
+
 }
 type InputControlProps = UseControllerProps<StringifyProps_2<ISizeFull>, keyof ISizeFull>
 
@@ -138,58 +162,4 @@ const InputControl = ({ name, control }: InputControlProps) => {
     )
 }
 
-export const MultiFormSelector_v2: React.FC<MultiFormProps> = observer(() => {
-    const { InputStore } = useStoresContext()
-    const inst = InputStore.inpType
-    const dto = useMemo(() => {
-        return dto_formdata[inst]
-    }, [inst])
 
-    const methods = useForm<IControlsFullSize>({
-        defaultValues: {
-            height: "",
-            width: "",
-        },
-        mode: 'onChange'
-    })
-
-
-    // useEffect(() => {
-    //     reset({ full_size: [] })
-    // }, [reset])
-    return (
-        <FormProvider {...methods}>
-            <Box
-                component="form"
-                sx={{
-                    '& .MuiTextField-root': { m: 1, width: '25ch' },
-                }}
-                // onSubmit={handleSubmit(() => InputStore.save('size_full', getValues() as unknown as ISizeFull))}
-                autoComplete="on"
-                id='fs_form'
-                display={'flex'}
-                flexDirection={'column'}
-                height={'fit-content'}
-            >
-                {'khlgjhgjgf'}
-
-                {['width', 'height'].map((f, idx) => (
-
-                    <InputControl
-                        name={f as keyof ISizeFull}
-                        key={idx}
-                    // control={control}
-                    />
-                ))}
-            </Box>
-            <Button type='submit'
-                form='fs_form'
-                variant='contained'
-                color='success'
-
-            >
-                SUBMIT
-            </Button>
-        </FormProvider>
-    )
-})

@@ -1,4 +1,5 @@
 import { StringifyProps } from "../ActionComponents/ActionTypes/FnProperties"
+import { FormStatePlaceHolder } from "../ActionComponents/ActionTypes/ReducerTypes"
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types"
 import { ISize, ISizeFull } from "../Interfaces/CommonTypes"
 import { ANYobj } from "../Interfaces/MathActionsTypes"
@@ -29,20 +30,20 @@ export type DTO_InputsProp = {
 export interface DTO_InputSizeFull {
     fields: readonly (keyof ISizeFull)[]
     init: ISizeFull
-    placeholder?: { width: string, height: string }
+    placeholder?: FormStatePlaceHolder<ISizeFull>
     desc?: string
 }
 export interface DTO_InputSize {
     fields: readonly (keyof ISize)[]
     init: ISize
-    placeholder?: { w: string, h: string }
+    placeholder?: FormStatePlaceHolder<ISize>
     desc?: string
 }
 
 export interface DTO_InputOffset5 {
     fields: readonly (keyof Fn_Args_offset5)[]
     init: Fn_Args_offset5
-    placeholder?: StringifyProps<Fn_Args_offset5>
+    placeholder?: FormStatePlaceHolder<Fn_Args_offset5>
     desc?: string
 }
 export interface DTO_FormDataList {

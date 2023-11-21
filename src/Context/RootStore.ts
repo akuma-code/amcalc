@@ -53,6 +53,7 @@ interface ExtendedRootStores extends Partial<IAnyStore>, IRootStores_v1 { }
 
 class RootArgsStore_v1 {
     public stores: ExtendedRootStores | null
+    public storeKeys: ReadonlyArray<keyof ExtendedRootStores> = []
     constructor() {
         this.stores = this.init()
     }
@@ -60,9 +61,11 @@ class RootArgsStore_v1 {
     public use(name: InputsTypeEnum, store: DataStore) {
         if (!this.stores) {
             this.stores = { [name]: store }
+            this.storeKeys = Object.keys(this.stores)
             return
         }
         this.stores = { ...this.stores, [name]: store }
+        this.storeKeys = Object.keys(this.stores)
         return
     }
     public addStore<T extends ANYobj>(dataInterface: ICommonDataStoreItem<T>) {
@@ -70,16 +73,17 @@ class RootArgsStore_v1 {
         const new_store = new DataStore<typeof init>(this)
         if (!this.stores) {
             this.stores = { [type]: new_store }
+            this.storeKeys = Object.keys(this.stores)
             return
         }
         this.stores = { ...this.stores, [type]: new_store }
-
+        this.storeKeys = Object.keys(this.stores)
     }
     private init() {
         this.use(InputsTypeEnum.size, new DataStore<ISize>(this))
         this.use(InputsTypeEnum.offset5, new DataStore<Fn_Args_offset5>(this))
-        // this.use(InputsTypeEnum.size_full, new DataStore<ISizeFull>(this))
-        this.addStore({ type: InputsTypeEnum.size_full, init: { width: 5, height: 5 } })
+        this.use(InputsTypeEnum.size_full, new DataStore<ISizeFull>(this))
+        // this.addStore({ type: InputsTypeEnum.size_full, init: { width: 5, height: 5 } })
         return this.stores
     }
     getStore(name: string) {
@@ -90,11 +94,12 @@ class RootArgsStore_v1 {
         return this.stores[name]?.store || []
     }
 }
-const dataint: IDataStoreItem_unk = {
-    type: InputsTypeEnum.size_full,
-    dataType: { width: 5, height: 5 }
+const dataint: ICommonDataStoreItem<ISizeFull> = {
+    type: 'SIZE',
+    init: { width: 5, height: 5 }
 }
 const RAS = new RootArgsStore_v1()
+// RAS.addStore(dataint)
 // RAS.addStore(dataint)
 // RAS.use(InputsTypeEnum.size_full, new DataStore<ISizeFull>(RAS))
 // RAS.use(InputsTypeEnum.size, new DataStore<ISize>(RAS))

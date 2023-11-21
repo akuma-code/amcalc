@@ -28,44 +28,59 @@ interface IOffset5Data {
     type: InputsTypeEnum.offset5
     init: Fn_Args_offset5
 }
-
-class DataStore<D = ANYobj>{
-    public store: Array<D>
-    rootStore: RootArgsStore_v1
-    constructor(rootstore: RootArgsStore_v1) {
-        this.store = []
-        this.rootStore = rootstore
-    }
-
-    add(data: D) {
-        this.store = [...this.store, data]
-    }
+interface IDataStoreWithInit<D extends ANYobj> {
+    store: Array<D>
+    init?: D
+    rootStore?: RootArgsStore_v1
 
 }
+
 type IRootStores_v1 = {
     [Key in keyof ArgsTypesList]?: DataStore<ArgsTypesList[Key]>
 }
 type IAnyStore = {
-    [key: string]: DataStore
+    [key: string]: DataStore<ANYobj>
 }
 interface ExtendedRootStores extends Partial<IAnyStore>, IRootStores_v1 { }
 
 
+class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
+    public store: Array<D>
+    init?: D
+    rootStore?: RootArgsStore_v1
+    constructor(rootstore?: RootArgsStore_v1) {
+        this.store = []
+        this.rootStore = rootstore
+    }
+    protected setInit(init_state: D) {
+        this.init = init_state
+    }
+    add(data: D) {
+        if (!this.init) this.init = data
+        this.store = [...this.store, data]
+    }
+
+}
+
 class RootArgsStore_v1 {
     public stores: ExtendedRootStores | null
-    public storeKeys: ReadonlyArray<keyof ExtendedRootStores> = []
+    // public storeKeys: ReadonlyArray<keyof ExtendedRootStores> = []
     constructor() {
         this.stores = this.init()
     }
-
-    public use(name: InputsTypeEnum, store: DataStore) {
+    get storeKeys(): ReadonlyArray<keyof ExtendedRootStores> | [] {
+        if (!this.stores) return []
+        const keys = [...Object.keys(this.stores)] as const
+        return keys
+    }
+    public use<T extends ANYobj>(name: InputsTypeEnum, store: DataStore<T>) {
         if (!this.stores) {
             this.stores = { [name]: store }
-            this.storeKeys = Object.keys(this.stores)
+            _log(this.storeKeys)
             return
         }
         this.stores = { ...this.stores, [name]: store }
-        this.storeKeys = Object.keys(this.stores)
+        _log(this.storeKeys)
         return
     }
     public addStore<T extends ANYobj>(dataInterface: ICommonDataStoreItem<T>) {
@@ -73,11 +88,10 @@ class RootArgsStore_v1 {
         const new_store = new DataStore<typeof init>(this)
         if (!this.stores) {
             this.stores = { [type]: new_store }
-            this.storeKeys = Object.keys(this.stores)
+
             return
         }
         this.stores = { ...this.stores, [type]: new_store }
-        this.storeKeys = Object.keys(this.stores)
     }
     private init() {
         this.use(InputsTypeEnum.size, new DataStore<ISize>(this))
@@ -99,6 +113,7 @@ const dataint: ICommonDataStoreItem<ISizeFull> = {
     init: { width: 5, height: 5 }
 }
 const RAS = new RootArgsStore_v1()
+// RAS.stores!.size_full!.add({ width: 4, height: 19 })
 // RAS.addStore(dataint)
 // RAS.addStore(dataint)
 // RAS.use(InputsTypeEnum.size_full, new DataStore<ISizeFull>(RAS))
@@ -112,6 +127,8 @@ const s: ExtendedRootStores = {
 
 
 }
+// s.size_full?.add({ width: 4, height: 19 })
+
 export default RAS
 
 

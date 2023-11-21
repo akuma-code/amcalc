@@ -15,9 +15,10 @@ import { InitStateRedux, ReduxState } from '../../Redux/ReduxTypes'
 import MobxForm from '../FlexForm/MobxForm'
 import InputForm, { InputsFS, InputsO5 } from '../FlexForm/FullSizeForm'
 import { MultiFormSelector } from '../FlexForm/MultiForms/MultiFormSelector'
-import { InputsTypeEnum, useFormStateSelector } from '../Hooks/useFormStateSelector'
+import { InputsTypeEnum } from '../Hooks/useFormStateSelector'
+import RAS from '../../Context/RootStore'
 
-
+_log(RAS)
 
 type PageProps = {}
 
@@ -29,10 +30,10 @@ const d = FactoryDiv
 
 
 
+
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { InputStore } = useStoresContext()
-
     const selectedTypeCounterString = useCallback(() => {
         const c = InputStore.load(InputStore.inpType)?.length ?? 0
         return `${InputStore.inpType.toUpperCase()} size is [${c}]`

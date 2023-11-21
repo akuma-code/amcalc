@@ -12,7 +12,7 @@ import { Mbx_InputsStore } from '../../../mobXStore/InputsStore'
 import { ANYobj } from '../../../Interfaces/MathActionsTypes'
 import { StringifyProps, StringifyProps_2 } from '../../../ActionComponents/ActionTypes/FnProperties'
 import { getValue } from '@testing-library/user-event/dist/utils'
-import { DTO_ARGS, InputsTypeEnum, useFormStateSelector } from '../../Hooks/useFormStateSelector'
+import { DTO_ARGS, InputsTypeEnum } from '../../Hooks/useFormStateSelector'
 import { ArgsTypes, ArgsTypesList } from '../../../Models/ArgsTypeModel'
 import { FormStatePlaceHolder } from '../../../ActionComponents/ActionTypes/ReducerTypes'
 
@@ -134,32 +134,4 @@ function FCInput(idx: number, inputprops: IFieldsArrayItem<any>) {
 
     </FormControl>
 }
-
-
-
-type InputProps = {
-
-}
-type InputControlProps = UseControllerProps<StringifyProps_2<ISizeFull>, keyof ISizeFull>
-
-const InputControl = ({ name, control }: InputControlProps) => {
-    // const { control, register } = useFormContext()
-    const { field, fieldState } = useController({ name })
-    return (
-        <Controller
-            name={name}
-            control={control}
-            // defaultValue={''}
-            render={({ field: { value, onChange } }) => (
-                <FormControl variant="standard" key={_ID()} margin='dense'>
-                    {/* <InputLabel htmlFor={`input_` + idx}>{placeholder && placeholder[f]}</InputLabel> */}
-                    <Input value={value} onChange={onChange}
-                    />
-
-                </FormControl>
-            )}
-        />
-    )
-}
-
 

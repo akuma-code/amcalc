@@ -9,13 +9,15 @@ import mbxActionStore from './mobXStore/Stores';
 import dto_Store from './ActionComponents/ActionModels/DTO_Store';
 import { CalcStateStore } from './mobXStore/CalcStateStore';
 import { Mbx_InputsStore } from './mobXStore/InputsStore';
+import { RootArgsStore_v1 } from './Context/RootStore';
 const Stores: IStoresContext = {
   // ActionsStore: new ActionsStore(),
   // StoreV2Nodes: new StoreV2DataNodes(),
   // mbxStore: new mbxActionStore(),
   // dto_Store: dto_Store,
   ReduxStore: new CalcStateStore(),
-  InputStore: new Mbx_InputsStore()
+  InputStore: new Mbx_InputsStore(),
+  RootStore: new RootArgsStore_v1()
 
 }
 const root = ReactDOM.createRoot(

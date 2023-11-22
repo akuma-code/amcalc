@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { IActionDataNumber, v1DataNode } from "../mobXStore/ActionStore";
 import { _log } from "../Helpers/HelpersFns";
-import { InputsTypeEnum } from "../Components/Hooks/useFormStateSelector";
+import { DTO_ARGS, InputsTypeEnum } from "../Components/Hooks/useFormStateSelector";
 import { ISize, ISizeFull } from "../Interfaces/CommonTypes";
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
@@ -29,7 +29,7 @@ interface IOffset5Data {
     init: Fn_Args_offset5
 }
 interface IDataStoreWithInit<D extends ANYobj> {
-    store: Array<D>
+    saved: Array<D>
     init?: D
     rootStore?: RootArgsStore_v1
 
@@ -45,11 +45,11 @@ interface ExtendedRootStores extends Partial<IAnyStore>, IRootStores_v1 { }
 
 
 class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
-    public store: Array<D>
+    public saved: Array<D>
     init?: D
     rootStore?: RootArgsStore_v1
     constructor(rootstore?: RootArgsStore_v1) {
-        this.store = []
+        this.saved = []
         this.rootStore = rootstore
     }
     protected setInit(init_state: D) {
@@ -57,12 +57,17 @@ class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
     }
     add(data: D) {
         if (!this.init) this.init = data
-        this.store = [...this.store, data]
+        this.saved = [...this.saved, data]
+    }
+
+    clear() {
+        this.saved = []
+
     }
 
 }
 
-class RootArgsStore_v1 {
+export class RootArgsStore_v1 {
     public stores: ExtendedRootStores | null
     // public storeKeys: ReadonlyArray<keyof ExtendedRootStores> = []
     constructor() {
@@ -76,11 +81,10 @@ class RootArgsStore_v1 {
     public use<T extends ANYobj>(name: InputsTypeEnum, store: DataStore<T>) {
         if (!this.stores) {
             this.stores = { [name]: store }
-            _log(this.storeKeys)
+
             return
         }
         this.stores = { ...this.stores, [name]: store }
-        _log(this.storeKeys)
         return
     }
     public addStore<T extends ANYobj>(dataInterface: ICommonDataStoreItem<T>) {
@@ -105,14 +109,36 @@ class RootArgsStore_v1 {
             _log("No such store")
             return []
         }
-        return this.stores[name]?.store || []
+        return this.stores[name]?.saved || []
+    }
+
+    saveTostore<T extends ANYobj>(store_id: InputsTypeEnum, data: T) {
+        if (!this.stores) return
+
+        switch (store_id) {
+            case InputsTypeEnum.size_full: {
+                const s = this.stores[store_id]
+                s?.add(data as unknown as ISizeFull)
+                return
+            }
+            case InputsTypeEnum.offset5: {
+                const s = this.stores[store_id]
+                s?.add(data as unknown as Fn_Args_offset5)
+                return
+            }
+            case InputsTypeEnum.size: {
+                const s = this.stores[store_id]
+                s?.add(data as unknown as ISize)
+                return
+            }
+        }
     }
 }
 const dataint: ICommonDataStoreItem<ISizeFull> = {
     type: 'SIZE',
     init: { width: 5, height: 5 }
 }
-const RAS = new RootArgsStore_v1()
+export const RootArgsStore = new RootArgsStore_v1()
 // RAS.stores!.size_full!.add({ width: 4, height: 19 })
 // RAS.addStore(dataint)
 // RAS.addStore(dataint)
@@ -120,16 +146,16 @@ const RAS = new RootArgsStore_v1()
 // RAS.use(InputsTypeEnum.size, new DataStore<ISize>(RAS))
 // RAS.use(InputsTypeEnum.offset5, new DataStore<Fn_Args_offset5>(RAS))
 const s: ExtendedRootStores = {
-    offset5: new DataStore<Fn_Args_offset5>(RAS),
-    size_full: new DataStore<ISizeFull>(RAS),
-    size: new DataStore<ISize>(RAS),
-    test: new DataStore<ANYobj>(RAS),
+    offset5: new DataStore<Fn_Args_offset5>(RootArgsStore),
+    size_full: new DataStore<ISizeFull>(RootArgsStore),
+    size: new DataStore<ISize>(RootArgsStore),
+    test: new DataStore<ANYobj>(RootArgsStore),
 
 
 }
 // s.size_full?.add({ width: 4, height: 19 })
 
-export default RAS
+
 
 
 

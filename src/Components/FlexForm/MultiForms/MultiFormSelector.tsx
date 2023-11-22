@@ -28,6 +28,7 @@ type MultiFormProps = {}
 export const MultiFormSelector = () => {
 
     const IS = useStoresContext().InputStore
+    const { RootStore } = useStoresContext()
     // const { InputStore: IS } = store
     const current_state = IS.inpType
     // const { offset5: of5_dto, size_full } = IS.get_form_data
@@ -55,15 +56,17 @@ export const MultiFormSelector = () => {
         switch (current_state) {
             case 'size_full': {
                 IS.save(current_state, getValues())
-
+                RootStore.saveTostore(current_state, getValues())
                 break
             }
             case 'offset5': {
                 IS.save(current_state, getValues())
+                RootStore.saveTostore(current_state, getValues())
                 break
             }
             case 'size': {
                 IS.save(current_state, getValues())
+                RootStore.saveTostore(current_state, getValues())
                 break
 
             }

@@ -5,6 +5,7 @@ import { useContext } from 'react'
 import FnLinkedList, { IDataTransferObject } from "../../Models/DTO_ChainStore"
 import { CalcStateStore } from '../../mobXStore/CalcStateStore'
 import { Mbx_InputsStore } from '../../mobXStore/InputsStore'
+import { RootArgsStore, RootArgsStore_v1 } from '../../Context/RootStore'
 export interface IStoresContext {
     // ActionsStore?: ActionsStore
     // StoreV2Nodes?: StoreV2DataNodes
@@ -12,6 +13,7 @@ export interface IStoresContext {
     // dto_Store: FnLinkedList<IDataTransferObject>
     ReduxStore: CalcStateStore
     InputStore: Mbx_InputsStore
+    RootStore: RootArgsStore_v1
 }
 
 

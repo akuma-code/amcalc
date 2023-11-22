@@ -16,9 +16,8 @@ import MobxForm from '../FlexForm/MobxForm'
 import InputForm, { InputsFS, InputsO5 } from '../FlexForm/FullSizeForm'
 import { MultiFormSelector } from '../FlexForm/MultiForms/MultiFormSelector'
 import { InputsTypeEnum } from '../Hooks/useFormStateSelector'
-import RAS from '../../Context/RootStore'
+import { RootArgsStore } from '../../Context/RootStore'
 
-_log(RAS)
 
 type PageProps = {}
 
@@ -70,19 +69,19 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                         desc='FullSize'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => InputStore.changeInpType('size_full')}
+                        onClickFn={() => InputStore.changeInpType(InputsTypeEnum.size_full)}
                     />
                     <IconButton
                         desc='OFFSET5'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => InputStore.changeInpType('offset5')}
+                        onClickFn={() => InputStore.changeInpType(InputsTypeEnum.offset5)}
                     />
                     <IconButton
                         desc='Size'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => InputStore.changeInpType('size')}
+                        onClickFn={() => InputStore.changeInpType(InputsTypeEnum.size)}
                     />
                     <IconButton
                         desc='NOT READY'

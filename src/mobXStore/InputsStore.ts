@@ -1,10 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes, ArgsTypesList, DTO_InputOffset5, DTO_InputSize, DTO_InputSizeFull, DTO_InputsProp } from "../Models/ArgsTypeModel";
+import { InputsTypeEnum } from "../Components/Hooks/useFormStateSelector";
 
 export interface Mbx_InputsStore {
     saved: Record<string, Mbx_InputState['args'][]>
-    inpType: ArgsTypes
+    inpType: InputsTypeEnum
 }
 
 export interface Mbx_InputState {
@@ -15,7 +16,7 @@ export interface Mbx_InputState {
 
 export class Mbx_InputsStore {
     public saved: Record<string, Mbx_InputState['args'][]> = {}
-    public inpType: ArgsTypes = 'size_full'
+    public inpType: InputsTypeEnum = InputsTypeEnum.size_full
     constructor() {
         makeAutoObservable(this)
     }
@@ -36,7 +37,7 @@ export class Mbx_InputsStore {
     get get_form_data() {
         return dto_forms()
     }
-    changeInpType(type: ArgsTypes) {
+    changeInpType(type: InputsTypeEnum) {
         this.inpType = type
     }
 }

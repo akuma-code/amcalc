@@ -16,7 +16,7 @@ import MobxForm from '../FlexForm/MobxForm'
 import InputForm, { InputsFS, InputsO5 } from '../FlexForm/FullSizeForm'
 import { MultiFormSelector } from '../FlexForm/MultiForms/MultiFormSelector'
 import { InputsTypeEnum } from '../Hooks/useFormStateSelector'
-import { RootArgsStore } from '../../Context/RootStore'
+
 
 
 type PageProps = {}
@@ -32,12 +32,12 @@ const d = FactoryDiv
 
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
-    const { InputStore } = useStoresContext()
+    const { InputStore, RootStore } = useStoresContext()
     const selectedTypeCounterString = useCallback(() => {
         const c = InputStore.load(InputStore.inpType)?.length ?? 0
         return `${InputStore.inpType.toUpperCase()} size is [${c}]`
     }, [InputStore])
-
+    // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
     return (
         <Grid container spacing={2} minHeight={160} maxWidth={'85vw'} key={'MainGridContainer'}
             sx={{
@@ -82,12 +82,13 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                         svg_icon={Icons.RoundedArrows}
                         type='button'
                         onClickFn={() => InputStore.changeInpType(InputsTypeEnum.size)}
-                    />
-                    <IconButton
-                        desc='NOT READY'
-                        svg_icon={Icons.RoundedArrows}
-                        type='button'
-                    />
+                    />{
+                        RootStore.stores &&
+                        <IconButton
+                            desc='Clear Current Store'
+                            svg_icon={Icons.RoundedArrows}
+                            type='button'
+                        />}
 
                 </Grid>
             </Grid>

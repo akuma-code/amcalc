@@ -31,9 +31,11 @@ interface IOffset5Data {
 interface IDataStoreWithInit<D extends ANYobj> {
     saved: Array<D>
     init?: D
+    isInited: boolean
     rootStore?: RootArgsStore_v1
 
 }
+type InitedDSWithInit<T extends IDataStoreWithInit<ANYobj>> = (data: T) => T extends { init: ANYobj } ? T : never
 
 type IRootStores_v1 = {
     [Key in keyof ArgsTypesList]?: DataStore<ArgsTypesList[Key]>
@@ -46,18 +48,30 @@ interface ExtendedRootStores extends Partial<IAnyStore>, IRootStores_v1 { }
 
 class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
     public saved: Array<D>
+
     init?: D
     rootStore?: RootArgsStore_v1
     constructor(rootstore?: RootArgsStore_v1) {
         this.saved = []
         this.rootStore = rootstore
     }
+
+    get isInited() {
+        return this.init ? true : false
+    }
     protected setInit(init_state: D) {
         this.init = init_state
+
     }
     add(data: D) {
-        if (!this.init) this.init = data
+        if (!this.init) {
+            this.setInit(data)
+
+        }
         this.saved = [...this.saved, data]
+    }
+    load() {
+        return this.saved
     }
 
     clear() {
@@ -68,10 +82,10 @@ class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
 }
 
 export class RootArgsStore_v1 {
-    public stores: ExtendedRootStores | null
+    public stores: ExtendedRootStores
     // public storeKeys: ReadonlyArray<keyof ExtendedRootStores> = []
     constructor() {
-        this.stores = this.init()
+        this.stores = this.initStores()
     }
     get storeKeys(): ReadonlyArray<keyof ExtendedRootStores> | [] {
         if (!this.stores) return []
@@ -97,20 +111,20 @@ export class RootArgsStore_v1 {
         }
         this.stores = { ...this.stores, [type]: new_store }
     }
-    private init() {
+    private initStores() {
         this.use(InputsTypeEnum.size, new DataStore<ISize>(this))
         this.use(InputsTypeEnum.offset5, new DataStore<Fn_Args_offset5>(this))
         this.use(InputsTypeEnum.size_full, new DataStore<ISizeFull>(this))
         // this.addStore({ type: InputsTypeEnum.size_full, init: { width: 5, height: 5 } })
         return this.stores
     }
-    getStore(name: string) {
-        if (!this.stores) {
-            _log("No such store")
-            return []
-        }
-        return this.stores[name]?.saved || []
-    }
+    // getStore(name: string) {
+    //     if (!this.stores) {
+    //         _log("No such store")
+    //         return []
+    //     }
+    //     return this.stores[name]?.saved || []
+    // }
 
     saveTostore<T extends ANYobj>(store_id: InputsTypeEnum, data: T) {
         if (!this.stores) return

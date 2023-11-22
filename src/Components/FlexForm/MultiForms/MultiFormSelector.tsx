@@ -25,10 +25,10 @@ type IFieldsArrayItem<Arg extends ANYobj = ANYobj> = {
     placeholder?: string
 }
 type MultiFormProps = {}
-export const MultiFormSelector = () => {
+export const MultiFormSelector = observer(() => {
 
-    const IS = useStoresContext().InputStore
-    const { RootStore } = useStoresContext()
+    // const IS = useStoresContext().InputStore
+    const { RootStore, InputStore: IS } = useStoresContext()
     // const { InputStore: IS } = store
     const current_state = IS.inpType
     // const { offset5: of5_dto, size_full } = IS.get_form_data
@@ -78,7 +78,7 @@ export const MultiFormSelector = () => {
     }
 
     return (
-        <FormLabel htmlFor='o5_form'>
+        <FormLabel htmlFor='form'>
             <Box
                 component="form"
                 sx={{
@@ -86,7 +86,7 @@ export const MultiFormSelector = () => {
                 }}
                 onSubmit={handleSubmit(save)}
                 autoComplete="on"
-                id='o5_form'
+                id='form'
                 display={'flex'}
                 flexDirection={'column'}
                 height={'fit-content'}
@@ -101,7 +101,7 @@ export const MultiFormSelector = () => {
 
 
                 <Button type='submit'
-                    form='o5_form'
+                    form='form'
                     variant='contained'
                     color='success'
 
@@ -109,7 +109,7 @@ export const MultiFormSelector = () => {
                     SUBMIT
                 </Button>
                 <Button type='reset'
-                    form='o5_form'
+                    form='form'
                     variant='contained'
                     color='error'
                     sx={{ margin: 2 }}
@@ -121,7 +121,7 @@ export const MultiFormSelector = () => {
 
     )
 
-}
+})
 
 
 MultiFormSelector.displayName = '______FormSelector___________'

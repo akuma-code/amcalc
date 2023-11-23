@@ -95,7 +95,7 @@ export class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
 
 export class RootArgsStore_v1 {
     public stores: ExtendedRootStores
-    active_state?: InputsTypeEnum
+    active_state: InputsTypeEnum = InputsTypeEnum.size
     // public storeKeys: ReadonlyArray<keyof ExtendedRootStores> = []
     constructor() {
         this.stores = this.initStores()

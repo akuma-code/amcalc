@@ -103,7 +103,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     {/* <MultiFormSelector /> */}
                     {/* <InputsO5 /> */}
 
-                    <DynamicInputsForm active_state={RootStore.active_state} />
+                    <DynamicInputsForm />
                 </Grid>
                 <Grid item container
                     key={'output'}

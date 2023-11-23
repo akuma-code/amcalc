@@ -10,6 +10,7 @@ import dto_Store from './ActionComponents/ActionModels/DTO_Store';
 import { CalcStateStore } from './mobXStore/CalcStateStore';
 import { Mbx_InputsStore } from './mobXStore/InputsStore';
 import { RootArgsStore_v1 } from './Context/RootStore';
+import { InputsTypeEnum } from './Components/Hooks/useFormStateSelector';
 const Stores: IStoresContext = {
   // ActionsStore: new ActionsStore(),
   // StoreV2Nodes: new StoreV2DataNodes(),
@@ -17,7 +18,8 @@ const Stores: IStoresContext = {
   // dto_Store: dto_Store,
   ReduxStore: new CalcStateStore(),
   InputStore: new Mbx_InputsStore(),
-  RootStore: new RootArgsStore_v1()
+  RootStore: new RootArgsStore_v1(),
+
 
 }
 const root = ReactDOM.createRoot(

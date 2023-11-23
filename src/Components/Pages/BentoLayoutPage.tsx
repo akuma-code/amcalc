@@ -16,6 +16,7 @@ import MobxForm from '../FlexForm/MobxForm'
 import InputForm, { InputsFS, InputsO5 } from '../FlexForm/FullSizeForm'
 import { MultiFormSelector } from '../FlexForm/MultiForms/MultiFormSelector'
 import { InputsTypeEnum } from '../Hooks/useFormStateSelector'
+import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
 
 
 
@@ -32,11 +33,9 @@ const d = FactoryDiv
 
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
-    const { InputStore, RootStore } = useStoresContext()
-    const selectedTypeCounterString = useCallback(() => {
-        const c = InputStore.load(InputStore.inpType)?.length ?? 0
-        return `${InputStore.inpType.toUpperCase()} size is [${c}]`
-    }, [InputStore])
+    const { RootStore } = useStoresContext()
+
+
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
     return (
         <Grid container spacing={2} minHeight={160} maxWidth={'85vw'} key={'MainGridContainer'}
@@ -52,7 +51,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     border={'2px solid blue'} p={2}
                 >
 
-                    {selectedTypeCounterString()}
+
 
                 </Grid>
                 <Grid key={'selector'}
@@ -69,20 +68,21 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                         desc='FullSize'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => InputStore.changeInpType(InputsTypeEnum.size_full)}
+                        onClickFn={() => RootStore.selectState(InputsTypeEnum.size_full)}
                     />
                     <IconButton
                         desc='OFFSET5'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => InputStore.changeInpType(InputsTypeEnum.offset5)}
+                        onClickFn={() => RootStore.selectState(InputsTypeEnum.offset5)}
                     />
                     <IconButton
                         desc='Size'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => InputStore.changeInpType(InputsTypeEnum.size)}
-                    />{
+                        onClickFn={() => RootStore.selectState(InputsTypeEnum.size)}
+                    />
+                    {
                         RootStore.stores &&
                         <IconButton
                             desc='Clear Current Store'
@@ -100,8 +100,10 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     {/* <MobxForm submitInputs={(inputs) => saveResult(inputs)} /> */}
                     {/* <InputForm  {...InputStore.get_form_data(InputStore.inpType)} /> */}
                     {/* <InputForm fields={['width', 'height']} init={{ width: 0, height: 0 }} /> */}
-                    <MultiFormSelector />
+                    {/* <MultiFormSelector /> */}
                     {/* <InputsO5 /> */}
+
+                    <DynamicInputsForm active_state={RootStore.active_state} />
                 </Grid>
                 <Grid item container
                     key={'output'}

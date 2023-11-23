@@ -6,6 +6,7 @@ import FnLinkedList, { IDataTransferObject } from "../../Models/DTO_ChainStore"
 import { CalcStateStore } from '../../mobXStore/CalcStateStore'
 import { Mbx_InputsStore } from '../../mobXStore/InputsStore'
 import { RootArgsStore, RootArgsStore_v1 } from '../../Context/RootStore'
+import { InputsTypeEnum } from './useFormStateSelector'
 export interface IStoresContext {
     // ActionsStore?: ActionsStore
     // StoreV2Nodes?: StoreV2DataNodes
@@ -14,6 +15,7 @@ export interface IStoresContext {
     ReduxStore: CalcStateStore
     InputStore: Mbx_InputsStore
     RootStore: RootArgsStore_v1
+
 }
 
 

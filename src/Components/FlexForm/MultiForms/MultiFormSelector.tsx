@@ -1,24 +1,17 @@
-import React, { useEffect, useMemo } from 'react'
 
-import { useFormContext, FormProvider, useForm, useFieldArray, Controller, UseControllerProps, useController, UseFormRegisterReturn, UseFormRegister } from 'react-hook-form'
-import { ISizeFull } from '../../../Interfaces/CommonTypes'
-import { Fn_Args_offset5 } from '../../../ActionComponents/ActionTypes/Types'
-import { dto_formdata } from '../DTO_Forms'
+import { Controller, useForm, useFormContext, UseFormRegisterReturn } from 'react-hook-form'
 import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../../Hooks/useStoresContext'
 import { Box, Button, FormControl, FormLabel, Input, InputLabel } from '@mui/material'
 import { _ID, _log } from '../../../Helpers/HelpersFns'
-import { Mbx_InputsStore } from '../../../mobXStore/InputsStore'
-import { ANYobj } from '../../../Interfaces/MathActionsTypes'
-import { StringifyProps, StringifyProps_2 } from '../../../ActionComponents/ActionTypes/FnProperties'
-import { getValue } from '@testing-library/user-event/dist/utils'
-import { DTO_ARGS, InputsTypeEnum } from '../../Hooks/useFormStateSelector'
-import { ArgsTypes, ArgsTypesList } from '../../../Models/ArgsTypeModel'
-import { FormStatePlaceHolder } from '../../../ActionComponents/ActionTypes/ReducerTypes'
+import { ANYfn, ANYobj } from '../../../Interfaces/MathActionsTypes'
+import { useState } from 'react'
+import useInput from '../../Hooks/useInput'
+import { InputsTypeEnum } from '../../Hooks/useFormStateSelector'
+import { AnyArg } from '../../Hooks/useDynamicInputs'
 
 
-type IControlsFullSize = StringifyProps_2<ISizeFull>
-type IControlsOffset5 = Fn_Args_offset5
+
 type IFieldsArrayItem<Arg extends ANYobj = ANYobj> = {
     // field: keyof Arg
     props: UseFormRegisterReturn<keyof Arg & string>
@@ -27,58 +20,65 @@ type IFieldsArrayItem<Arg extends ANYobj = ANYobj> = {
 type MultiFormProps = {}
 export const MultiFormSelector = observer(() => {
 
-    // const IS = useStoresContext().InputStore
+
     const { RootStore, InputStore: IS } = useStoresContext()
-    // const { InputStore: IS } = store
-    const current_state = IS.inpType
-    // const { offset5: of5_dto, size_full } = IS.get_form_data
-    // const { payload } = useFormStateSelector(current_state as InputsTypeEnum)
-    // console.log('payload: ', payload)
+
+    const current_state = RootStore.active_state || InputsTypeEnum.size
+
     const { fields, init, desc, placeholder } = IS.get_form_data[current_state]
 
 
-    const { register, handleSubmit, getValues, reset } = useForm<typeof init>()
+    const { register, handleSubmit, getValues, reset, control } = useForm<typeof init>()
 
     const InputPropsArray = fields.map(f => {
         const pl = placeholder ? placeholder[f as keyof typeof placeholder] : ""
         const fieldprop: IFieldsArrayItem = {
-
             props: register(f, { required: true, shouldUnregister: true }),
             placeholder: pl
         }
         return fieldprop
     })
+    const CONTR = (f: keyof AnyArg) => {
 
+        const K = _ID()
+        return <Controller name={f}
+            control={control}
+            render={(field) =>
+                <FormControl variant="standard" key={K} margin='dense'>
+                    <InputLabel htmlFor={`input_` + K}>{f}</InputLabel>
+                    <Input id={`input_` + K}
+                        {...register(f)}
+                    />
+                </FormControl>}
 
-
+        />
+    }
 
     const save = () => {
         switch (current_state) {
             case 'size_full': {
-                IS.save(current_state, getValues())
+                // IS.save(current_state, getValues())
                 RootStore.saveTostore(current_state, getValues())
                 break
             }
             case 'offset5': {
-                IS.save(current_state, getValues())
+                // IS.save(current_state, getValues())
                 RootStore.saveTostore(current_state, getValues())
                 break
             }
             case 'size': {
-                IS.save(current_state, getValues())
+                // IS.save(current_state, getValues())
                 RootStore.saveTostore(current_state, getValues())
                 break
 
             }
             default: break
         }
-        // IS.save(current_state, getValues())
         reset()
-        // const s = IS.load('offset5')
     }
 
     return (
-        <FormLabel htmlFor='form'>
+        <FormLabel htmlFor='form' key={'MultiFormSelector'}>
             <Box
                 component="form"
                 sx={{
@@ -95,11 +95,14 @@ export const MultiFormSelector = observer(() => {
 
                 {desc && desc}
 
-                {InputPropsArray.map((fprop, idx) =>
-                    FCInput(idx, fprop)
-                )}
+                {
+                    InputPropsArray.map((fprop, idx) =>
+                        FCInput(idx, fprop)
+                    )
+                }
 
-
+                {/* <DinamicInput onChangeFn={(v) => _log(v)} />
+                <DinamicInput onChangeFn={(v) => _log(v)} /> */}
                 <Button type='submit'
                     form='form'
                     variant='contained'
@@ -117,14 +120,15 @@ export const MultiFormSelector = observer(() => {
                     RESET
                 </Button>
 
-            </Box> </FormLabel>
+            </Box>
+        </FormLabel>
 
     )
 
 })
 
 
-MultiFormSelector.displayName = '______FormSelector___________'
+MultiFormSelector.displayName = '___MultiFormSelector'
 
 
 function FCInput(idx: number, inputprops: IFieldsArrayItem<any>) {
@@ -138,3 +142,30 @@ function FCInput(idx: number, inputprops: IFieldsArrayItem<any>) {
     </FormControl>
 }
 
+export interface DinInputProps {
+
+    onChangeFn: (val: number) => void
+}
+const DinamicInput = (props: DinInputProps) => {
+    // const v = typeof props.value === 'string' ? props.value : `${props.value}`
+    const [val, onChange] = useInput("")
+    const chHand: (e: React.ChangeEvent<HTMLInputElement>) => void = (e) => {
+
+        onChange(e)
+        props.onChangeFn(+e.target.value)
+    }
+    const K = _ID()
+    return (
+        <FormControl variant="standard" key={K} margin='dense'>
+            <InputLabel htmlFor={`input_` + K}>{ }</InputLabel>
+            <Input id={`input_` + K}
+                onChange={chHand}
+                value={val} />
+
+        </FormControl>
+    )
+}
+
+const DiControl = () => {
+
+}

@@ -36,7 +36,7 @@ const dto_formOffset5: DTO_InputOffset5 = {
     desc: "Смещение верхнего угла трапеции"
 }
 
-interface DTO_state<O extends ANYobj> {
+export interface DTO_state<O extends ANYobj> {
     payload?: O,
     saved?: O[]
     fields: readonly (keyof O)[]
@@ -49,6 +49,8 @@ interface DTO_state<O extends ANYobj> {
 export type DTO_FormStatesList = {
     [Key in ArgsTypes]: DTO_state<ArgsTypesList[Key]>
 }
+
+
 const dto_state_FullSize: DTO_state<ISizeFull> = {
     fields: ['height', "width"],
     init: { height: 0, width: 0 },
@@ -110,7 +112,9 @@ export const dto_form_instances: IFormInstances = {
     size: dto_instance_s
 }
 export const dto_formdata: DTO_FormDataList = { size_full: dto_formFullSizes, offset5: dto_formOffset5, size: dto_formSizes }
-export const dto_formStates = {
+
+
+export const dto_formStates: DTO_FormStatesList = {
     size_full: dto_state_FullSize,
     offset5: dto_state_Offse5,
     size: dto_state_Size

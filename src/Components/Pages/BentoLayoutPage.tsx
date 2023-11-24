@@ -12,11 +12,11 @@ import { MainStore_ } from '../../mobXStore/MainStore'
 import NodeForm from '../FlexForm/NodeForm'
 import { CalcReducer } from '../../Redux/ActionReducer'
 import { InitStateRedux, ReduxState } from '../../Redux/ReduxTypes'
-import MobxForm from '../FlexForm/MobxForm'
 import InputForm, { InputsFS, InputsO5 } from '../FlexForm/FullSizeForm'
 import { MultiFormSelector } from '../FlexForm/MultiForms/MultiFormSelector'
 import { InputsTypeEnum } from '../Hooks/useFormStateSelector'
 import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
+import SizeFullForm from '../FlexForm/MultiForms/SizeFullForm'
 
 
 
@@ -82,13 +82,13 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                         type='button'
                         onClickFn={() => RootStore.selectState(InputsTypeEnum.size)}
                     />
-                    {
-                        RootStore.stores &&
-                        <IconButton
-                            desc='Clear Current Store'
-                            svg_icon={Icons.RoundedArrows}
-                            type='button'
-                        />}
+
+
+                    <IconButton
+                        desc='Clear Current Store'
+                        svg_icon={Icons.RoundedArrows}
+                        type='button'
+                    />
 
                 </Grid>
             </Grid>
@@ -118,7 +118,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     overflow={'auto'}
                 >
 
-
+                    <SizeFullForm getSize={(s) => RootStore.saveTostore(InputsTypeEnum.size_full, s)} />
 
                 </Grid>
             </Grid>

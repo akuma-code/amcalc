@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DataStore, IRootStores_v1, RootArgsStore_v1 } from "../../Context/RootStore";
 import { ANYobj } from "../../Interfaces/MathActionsTypes";
 import { dto_forms } from "../../mobXStore/InputsStore";
-import { DTO_ARGS, InputsTypeEnum } from "./useFormStateSelector";
+import { DTO_ARGS, IFormFieldsValues, InputsTypeEnum } from "./useFormStateSelector";
 import { ArgsTypes, ArgsTypesList, DTO_FormDataList } from "../../Models/ArgsTypeModel";
-import { DTO_state } from "../FlexForm/DTO_Forms";
+import { DTO_state, dto_formStates } from "../FlexForm/DTO_Forms";
 import { useForm, useFormContext } from "react-hook-form";
+import { useStoresContext } from "./useStoresContext";
+import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
+import { _log } from "../../Helpers/HelpersFns";
+import { GetFormState } from "../../ActionComponents/ActionTypes/ReducerTypes";
+import { Fn_Args_offset5 } from "../../ActionComponents/ActionTypes/Types";
 
 
 export enum RS_v1Actions {
@@ -43,12 +48,70 @@ export interface IStateActions {
     search: (data: any) => void
     delete: (data: any) => void
 }
-export type InputProps_DTO = DTO_FormDataList
+type DynamicFormStateValues = IFormFieldsValues[keyof IFormFieldsValues]
 
 
-export function useDinamicInputs() {
-    const methods = useForm()
-    const { control, } = useFormContext<DTO_FormDataList>()
+const initState = (o: IFormFieldsValues): ArgsTypesList => {
+
+    const { offset5, size, size_full } = o
+    const r: { [K in keyof ArgsTypesList]: ArgsTypesList[K] } = {
+        offset5: offset5.init,
+        size_full: size_full.init,
+        size: size.init
+    }
+    return r
+
+}
+type RedStateSelector = {
+    args: DTO_ARGS
+
+
+}
+
+const dto_formSelector = (store_id: InputsTypeEnum, store: ArgsTypesList) => {
+
+    const compute_form = (state_id: InputsTypeEnum) => {
+        let s = dto_formStates[state_id]
+
+        return s
+    }
+
+
+    switch (store_id) {
+        case InputsTypeEnum.size_full: {
+            const RES = compute_form(store_id) as GetFormState<ISizeFull>
+            return RES
+        }
+        case InputsTypeEnum.offset5: {
+            const RES = compute_form(store_id) as GetFormState<Fn_Args_offset5>
+            return RES
+        }
+        case InputsTypeEnum.size: {
+            const RES = compute_form(store_id) as GetFormState<ISize>
+            return RES
+        }
+        default: { throw new Error("State select invalid") }
+    }
+
+}
+
+
+export function useDinamicInputs(state_id: InputsTypeEnum) {
+    const initS = initState(dto_formStates)
+
+    const { fields, init, desc, placeholder, type } = dto_formSelector(state_id, initS)
+
+    const methods = useForm<typeof init>()
+
+
+    return { fields, init, desc, placeholder, type }
+
+
+
+
+
+
+
 
 
 }

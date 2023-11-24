@@ -5,6 +5,7 @@ import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes"
 import { ArgsTypesList } from "../../Models/ArgsTypeModel"
 
 import { Fn_Args_offset5 } from "./Types"
+import { AnyArg } from "../../Components/Hooks/useDynamicInputs"
 
 export enum SAVE_ARG {
     save_size_full = 'save_full_size',
@@ -56,17 +57,19 @@ export type ISaveArgsActions =
     | ISaveOffset5
 
 
-export type FormState_Fields<Arg extends ANYobj> = ReadonlyArray<keyof Arg>
-export type FormState_Saved<Arg extends ANYobj> = Array<Arg>
-export type FormStatePlaceHolder<Arg extends ANYobj> = { [K in keyof Arg]: string }
-export type FormStateInit<Arg extends ANYobj> = { readonly [K in keyof Arg]: "" }
+export type FormState_Fields<Arg extends AnyArg> = ReadonlyArray<keyof Arg>
+export type FormState_Saved<Arg extends AnyArg> = Array<Arg>
+export type FormStatePlaceHolder<Arg extends AnyArg> = { [K in keyof Arg]: string }
+export type FormStateInit<Arg extends AnyArg> = Arg
 
 
 export type GetFormState<T extends DTO_ARGS> = {
+    type: InputsTypeEnum
     fields: FormState_Fields<T>
     placeholder: FormStatePlaceHolder<T>
-    saved: FormState_Saved<T>
+    saved?: FormState_Saved<T>
     init: FormStateInit<T>
+    desc: string
 
 }
 // export type FormStateProps<Arg extends DTO_ARGS> = { placeholder?: { [KEY in Arg ]?: string }, desc?: string }

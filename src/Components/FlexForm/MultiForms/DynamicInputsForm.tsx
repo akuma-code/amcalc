@@ -8,7 +8,7 @@ import { ANYfn, ANYobj } from '../../../Interfaces/MathActionsTypes'
 import { useState } from 'react'
 import useInput from '../../Hooks/useInput'
 import { DTO_ARGS, InputsTypeEnum } from '../../Hooks/useFormStateSelector'
-import { AnyArg } from '../../Hooks/useDynamicInputs'
+import { AnyArg, useDinamicInputs } from '../../Hooks/useDynamicInputs'
 import { ArgsTypes, ArgsTypesList, DTO_FormDataList } from '../../../Models/ArgsTypeModel'
 import { dto_formStates, DTO_FormStatesList } from '../DTO_Forms'
 import { DataStore, ExtendedRootStores, IRootStores_v1 } from '../../../Context/RootStore'
@@ -16,49 +16,53 @@ import { ISize, ISizeFull } from '../../../Interfaces/CommonTypes'
 import { Fn_Args_offset5 } from '../../../ActionComponents/ActionTypes/Types'
 
 
-type RS = Required<IRootStores_v1>[ArgsTypes]
+type RS = Required<IRootStores_v1>
 type Props = {
 
 }
 
-const DynamicInputsForm = (props: Props) => {
+const DynamicInputsForm = observer((props: Props) => {
     const { RootStore } = useStoresContext()
-    const { reset, handleSubmit, register } = useForm<AnyArg>()
+    const AS = RootStore.active_state
+    const DIN = useDinamicInputs(AS)
+    const methods = useForm<typeof DIN.init>()
+    // _log(fields)
+    // const methods = useForm<AnyArg>()
 
-    const current_state = useMemo(() => {
-        const ac = RootStore.active_state
-        // if(active_state) return undefined
-        const dto = dto_formStates
-        const current = () => dto[ac].init
-        const s = {
-            type: ac,
-            payload: current()
-        }
-        switch (RootStore.active_state) {
-            case InputsTypeEnum.size_full: {
-                return s.payload as ISizeFull
-            }
-            case InputsTypeEnum.offset5: { return s.payload as Fn_Args_offset5 }
-            case InputsTypeEnum.size: { return s.payload as ISize }
-            default: return s.payload as never
-        }
-        // const data_store = RootStore.stores[RootStore.active_state]!
-        // const { fields, init } = dto_formStates[RootStore.active_state]
+    // const current_state = useMemo(() => {
+    //     const ac = RootStore.active_state
+    //     // if(active_state) return undefined
+    //     const dto = dto_formStates
+    //     const current = () => dto[ac].init
+    //     const s = {
+    //         type: ac,
+    //         payload: current()
+    //     }
+    //     switch (RootStore.active_state) {
+    //         case InputsTypeEnum.size_full: {
+    //             return s.payload as ISizeFull
+    //         }
+    //         case InputsTypeEnum.offset5: { return s.payload as Fn_Args_offset5 }
+    //         case InputsTypeEnum.size: { return s.payload as ISize }
+    //         default: return
+    //     }
+    //     // const data_store = RootStore.stores[RootStore.active_state]!
+    //     // const { fields, init } = dto_formStates[RootStore.active_state]
 
 
-    }, [RootStore.active_state])
+    // }, [RootStore.active_state])
 
     // const {field,fieldState,formState}=useController<typeof current_state['init']>()
 
 
 
 
-    const save = (store_id: InputsTypeEnum, data: ArgsTypesList[typeof RootStore.active_state]) => {
+    const save = (store_id: InputsTypeEnum, data: AnyArg) => {
         _log("saved to ", store_id)
         _log("data: ", data)
         RootStore.saveTostore(store_id, data)
     }
-
+    const C1 = useForm<ISizeFull>()
     return (
         <FormProvider {...methods}>
 
@@ -68,7 +72,7 @@ const DynamicInputsForm = (props: Props) => {
                 sx={{
                     '& .MuiTextField-root': { m: 1, width: '25ch' },
                 }}
-                // onSubmit={handleSubmit(save)}
+                onSubmit={methods.handleSubmit((d) => save(AS, d))}
                 autoComplete="on"
                 id='dform'
                 display={'flex'}
@@ -76,9 +80,38 @@ const DynamicInputsForm = (props: Props) => {
                 height={'fit-content'}
                 margin={1}
             >
-                <FormControl>
-                    {current_state.fields.map(f => UC_Input(current_state.init))}
+
+                {/* {
+                fields.map(f => */}
+                <FormControl variant="standard" margin='dense' >
+                    <Controller name={'height'} control={C1.control} shouldUnregister={true}
+                        render={({ field: { name, onChange, value } }) =>
+
+                            <div>
+                                <InputLabel htmlFor={`input_` + name}>{name}</InputLabel>
+                                <Input id={`input_` + name}
+                                    onChange={onChange}
+                                    value={value} />
+                            </div>
+                        }
+                    />
                 </FormControl>
+                <FormControl variant="standard" margin='dense' >
+                    <Controller name={'width'} control={C1.control} shouldUnregister={true}
+                        render={({ field: { name, onChange, value } }) =>
+
+                            <div>
+                                <InputLabel htmlFor={`input_` + name}>{name}</InputLabel>
+                                <Input id={`input_` + name}
+                                    onChange={onChange}
+                                    value={value} />
+                            </div>
+                        }
+                    />
+                </FormControl>
+                {/* )
+                } */}
+
                 {ControlBtns('dform')}
 
 
@@ -86,9 +119,9 @@ const DynamicInputsForm = (props: Props) => {
 
 
 
-        </FormProvider>
+        </FormProvider >
     )
-}
+})
 
 const ControlBtns = (form_id: string) => {
     return <>
@@ -111,22 +144,8 @@ const ControlBtns = (form_id: string) => {
     </>
 }
 const InputController = () => {
-    const { control } = useFormContext<RS>()
+    const { control } = useFormContext()
 
-
-
-    // const CTRL = ()=>{
-
-    //     return (
-    //     <FormControl variant="standard" margin='dense'>
-    //         <Input 
-    //             onChange={changeFn}
-    //             value={val} />
-
-    //     </FormControl>)
-    // }
-
-    // if (!control) return <div>No CONTROL</div>
     return (
         <Controller
             control={control}
@@ -150,22 +169,21 @@ const FControl = (K: string, val: number, changeFn: React.ChangeEventHandler<HTM
 }
 
 
-type FormValues = {
-    FirstName: string;
-};
 
-function UC_Input(props: UseControllerProps<FormValues>) {
-    const { field, fieldState } = useController(props);
+function UcInput(props: UseControllerProps<AnyArg>) {
+    const { field } = useController(props);
+    const { name, onBlur, onChange, value, ref } = field
 
-    return (
-        <FormControl variant="standard" key={field.name} margin='dense'>
-            <InputLabel htmlFor={`input_` + field.name}>{ }</InputLabel>
-            <Input id={`input_` + field.name}
-                {...field}
-            />
+    return <FormControl variant="standard" key={name} margin='dense'>
+        <InputLabel htmlFor={`input_` + name}>{field.name}</InputLabel>
+        <Input id={`input_` + name}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            ref={ref}
+        />
 
-        </FormControl>
-    );
+    </FormControl>
 }
 
 

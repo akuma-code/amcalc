@@ -65,6 +65,7 @@ export class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
     constructor(rootstore?: RootArgsStore_v1) {
         this.saved = []
         this.rootStore = rootstore
+        makeAutoObservable(this)
     }
 
     get isInited() {

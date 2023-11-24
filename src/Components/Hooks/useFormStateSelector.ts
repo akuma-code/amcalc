@@ -22,7 +22,7 @@ export type DTO_ARGS =
 
 
 
-type FormStates = { [Key in keyof ArgsTypesList]: GetFormState<ArgsTypesList[Key]> }
+export type IFormFieldsValues = { [Key in keyof ArgsTypesList]: GetFormState<ArgsTypesList[Key]> }
 
 
 

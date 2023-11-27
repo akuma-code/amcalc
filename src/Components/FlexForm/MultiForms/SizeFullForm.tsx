@@ -1,10 +1,10 @@
 import { Box, Button, FormControl, Input, InputLabel } from '@mui/material'
 import React, { useState } from 'react'
 import { Controller, UseControllerProps, useController, useForm, useFormContext } from 'react-hook-form'
-import { ISizeFull } from '../../../Interfaces/CommonTypes'
+import { ISizeFull, SizeFull } from '../../../Interfaces/CommonTypes'
 import { dto_formStates } from '../DTO_Forms'
 import { InputsTypeEnum } from '../../Hooks/useFormStateSelector'
-import { SizeFull } from '../../../ActionComponents/Nets/CalcNetSize'
+
 
 type Props = {
     getSize: (size: ISizeFull) => void

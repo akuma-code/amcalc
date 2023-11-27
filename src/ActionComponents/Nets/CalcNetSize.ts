@@ -3,11 +3,7 @@ import { ISize, ISizeFull } from "../../Interfaces/CommonTypes"
 import { DTO_ExportFnType } from "../../Interfaces/MathActionsTypes"
 import { DTO_EXPORT } from "../ActionTypes/Types"
 
-export class SizeFull {
-    constructor(
-        public width: number, public height: number
-    ) { }
-}
+
 
 
 type DTO_NetOutput = { [K in 'skf' | 'simple']: ISize }

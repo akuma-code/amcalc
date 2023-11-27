@@ -34,7 +34,7 @@ const d = FactoryDiv
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { RootStore } = useStoresContext()
-
+    const active_state_type = RootStore.active_state
 
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
     return (
@@ -103,7 +103,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     {/* <MultiFormSelector /> */}
                     {/* <InputsO5 /> */}
 
-                    <DynamicInputsForm />
+                    <DynamicInputsForm formStateType={active_state_type} />
                 </Grid>
                 <Grid item container
                     key={'output'}

@@ -5,11 +5,11 @@ import { dto_forms } from "../../mobXStore/InputsStore";
 import { DTO_ARGS, IFormFieldsValues, InputsTypeEnum } from "./useFormStateSelector";
 import { ArgsTypes, ArgsTypesList, DTO_FormDataList } from "../../Models/ArgsTypeModel";
 import { DTO_state, dto_formStates } from "../FlexForm/DTO_Forms";
-import { useForm, useFormContext } from "react-hook-form";
+import { Path, UseFormRegister, useForm, useFormContext } from "react-hook-form";
 import { useStoresContext } from "./useStoresContext";
 import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
 import { _log } from "../../Helpers/HelpersFns";
-import { GetFormState } from "../../ActionComponents/ActionTypes/ReducerTypes";
+import { FieldsLabelEnum, GetFormState } from "../../ActionComponents/ActionTypes/ReducerTypes";
 import { Fn_Args_offset5 } from "../../ActionComponents/ActionTypes/Types";
 
 
@@ -62,22 +62,22 @@ const initState = (o: IFormFieldsValues): ArgsTypesList => {
     return r
 
 }
-type RedStateSelector = {
-    args: DTO_ARGS
 
-
+const GetFieldsArray = <T extends AnyArg>(o: T) => {
+    const k = [] as (keyof T & string)[]
+    for (let key in o) {
+        if (typeof key === 'string') k.push(key as keyof T & string)
+    }
+    return k
 }
 
-const dto_formSelector = (store_id: InputsTypeEnum, store: ArgsTypesList) => {
+const dto_formSelector = (store_id: InputsTypeEnum) => {
 
-    const compute_form = (state_id: InputsTypeEnum) => {
-        let s = dto_formStates[state_id]
-
-        return s
-    }
+    const compute_form = (state_id: InputsTypeEnum) => dto_formStates[state_id]
 
 
     switch (store_id) {
+
         case InputsTypeEnum.size_full: {
             const RES = compute_form(store_id) as GetFormState<ISizeFull>
             return RES
@@ -96,53 +96,31 @@ const dto_formSelector = (store_id: InputsTypeEnum, store: ArgsTypesList) => {
 }
 
 
-export function useDinamicInputs(state_id: InputsTypeEnum) {
-    const initS = initState(dto_formStates)
+export function useDinamicInputs_(state_id: InputsTypeEnum) {
 
-    const { fields, init, desc, placeholder, type } = dto_formSelector(state_id, initS)
+
+    const { fields, init, desc, placeholder, type } = dto_formSelector(state_id)
 
     const methods = useForm<typeof init>()
 
-
-    return { fields, init, desc, placeholder, type }
-
-
-
-
-
-
-
-
-
+    return { fields, init, desc, placeholder, type, methods }
 }
 
+export function useDynamicInputs(state_id: InputsTypeEnum) {
+    const { init } = dto_formSelector(state_id)
+    const methods = useForm<typeof init>()
 
-export const rootStoreReducer = (root_store: RootArgsStore_v1, action: IRootStore_v1Actions) => {
+    const inputPropArray = MakeInputs<typeof init>(init)
 
-
-    switch (action.type) {
-        case RS_v1Actions.SAVE_DATA: {
-            const { data, store_id } = action.payload
-
-            root_store.saveTostore(store_id, data)
-            return root_store
-        }
-
-        case RS_v1Actions.USE: {
-            const { store, store_id } = action.payload
-            root_store.use(store_id, store)
-            return root_store
-
-
-        }
-        case RS_v1Actions.CLEAR_STORE: {
-            const { store_id } = action.payload
-            root_store.stores[store_id]?.clear()
-
-            return root_store
-        }
-        default: return root_store
-    }
-
+    // return inputPropArray.map(p => ({ ...p, register }))
+    return [inputPropArray, methods] as const
 }
+const MakeInputs = <T extends AnyArg>(args: T) => {
+    const fields = GetFieldsArray(args)
 
+
+    const inputsArray = fields.map(f => {
+        return { field: f, label: FieldsLabelEnum[f as keyof AnyArg] }
+    })
+    return inputsArray
+}

@@ -13,10 +13,15 @@ export enum SAVE_ARG {
     save_offset5 = 'save_offset5'
 }
 
-interface FState {
-    fields: readonly (keyof ANYobj & string)[]
-    saved: any[]
-    type: InputsTypeEnum
+export enum FieldsLabelEnum {
+    width = 'ширина',
+    height = 'высота',
+    w = 'ширина мин',
+    h = 'высота мин',
+    W = 'ширина макс',
+    H = 'высота макс',
+    da = 'дельта А',
+    db = 'дельта Б',
 }
 
 

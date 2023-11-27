@@ -114,6 +114,13 @@ export function ContolInput({ register, name, ...rest }: IRegInput<AnyArg>) {
         </FormControl>
     )
 }
+type ListOfInputsProps = {
+
+}
+function ListOfInputs(props: ListOfInputsProps) {
+
+}
+
 
 function UcInput(props: UseControllerProps<AnyArg>) {
     const { field } = useController(props);

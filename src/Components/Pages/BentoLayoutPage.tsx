@@ -34,7 +34,7 @@ const d = FactoryDiv
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { RootStore } = useStoresContext()
-    const active_state_type = RootStore.active_state
+
 
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
     return (
@@ -96,14 +96,8 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
 
             <Grid container item spacing={2}>
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
-                    {/* {CURRENT && <DTOForm initState={CURRENT?.initState} submitFn={saveResult} type={action_type!} />} */}
-                    {/* <MobxForm submitInputs={(inputs) => saveResult(inputs)} /> */}
-                    {/* <InputForm  {...InputStore.get_form_data(InputStore.inpType)} /> */}
-                    {/* <InputForm fields={['width', 'height']} init={{ width: 0, height: 0 }} /> */}
-                    {/* <MultiFormSelector /> */}
-                    {/* <InputsO5 /> */}
 
-                    <DynamicInputsForm formStateType={active_state_type} />
+                    <DynamicInputsForm formStateType={RootStore.active_state} />
                 </Grid>
                 <Grid item container
                     key={'output'}
@@ -118,7 +112,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     overflow={'auto'}
                 >
 
-                    <SizeFullForm getSize={(s) => RootStore.saveTostore(InputsTypeEnum.size_full, s)} />
+                    {/* <SizeFullForm getSize={(s) => RootStore.saveTostore(InputsTypeEnum.size_full, s)} /> */}
 
                 </Grid>
             </Grid>

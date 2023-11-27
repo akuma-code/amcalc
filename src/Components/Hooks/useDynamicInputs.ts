@@ -95,17 +95,6 @@ const dto_formSelector = (store_id: InputsTypeEnum) => {
 
 }
 
-
-export function useDinamicInputs_(state_id: InputsTypeEnum) {
-
-
-    const { fields, init, desc, placeholder, type } = dto_formSelector(state_id)
-
-    const methods = useForm<typeof init>()
-
-    return { fields, init, desc, placeholder, type, methods }
-}
-
 export function useDynamicInputs(state_id: InputsTypeEnum) {
     const { init } = dto_formSelector(state_id)
     const methods = useForm<typeof init>()
@@ -115,6 +104,8 @@ export function useDynamicInputs(state_id: InputsTypeEnum) {
     // return inputPropArray.map(p => ({ ...p, register }))
     return [inputPropArray, methods] as const
 }
+
+
 const MakeInputs = <T extends AnyArg>(args: T) => {
     const fields = GetFieldsArray(args)
 
@@ -123,4 +114,17 @@ const MakeInputs = <T extends AnyArg>(args: T) => {
         return { field: f, label: FieldsLabelEnum[f as keyof AnyArg] }
     })
     return inputsArray
+}
+
+
+
+
+function useDinamicInputs_(state_id: InputsTypeEnum) {
+
+
+    const { fields, init, desc, placeholder, type } = dto_formSelector(state_id)
+
+    const methods = useForm<typeof init>()
+
+    return { fields, init, desc, placeholder, type, methods }
 }

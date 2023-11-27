@@ -1,25 +1,19 @@
-import React, { useMemo } from 'react'
-import { Control, Controller, FormProvider, useController, UseControllerProps, useForm, useFormContext, UseFormRegister, UseFormRegisterReturn, UseFormReturn } from 'react-hook-form'
+import { FormProvider, useController, UseControllerProps, UseFormRegister } from 'react-hook-form'
 import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../../Hooks/useStoresContext'
-import { Box, Button, FormControl, FormLabel, Input, InputLabel } from '@mui/material'
+import { Box, Button, FormControl, Input, InputLabel } from '@mui/material'
 import { _ID, _log } from '../../../Helpers/HelpersFns'
-import { ANYfn, ANYobj } from '../../../Interfaces/MathActionsTypes'
-import { useState } from 'react'
-import useInput from '../../Hooks/useInput'
-import { DTO_ARGS, InputsTypeEnum } from '../../Hooks/useFormStateSelector'
+import { ANYobj } from '../../../Interfaces/MathActionsTypes'
+import { InputsTypeEnum } from '../../Hooks/useFormStateSelector'
 import { AnyArg, useDynamicInputs } from '../../Hooks/useDynamicInputs'
-import { ArgsTypes, ArgsTypesList, DTO_FormDataList } from '../../../Models/ArgsTypeModel'
-import { dto_formStates, DTO_FormStatesList } from '../DTO_Forms'
-import { DataStore, ExtendedRootStores, IRootStores_v1 } from '../../../Context/RootStore'
-import { ISize, ISizeFull } from '../../../Interfaces/CommonTypes'
-import { Fn_Args_offset5 } from '../../../ActionComponents/ActionTypes/Types'
+import { IRootStores_v1 } from '../../../Context/RootStore'
 import { FieldsLabelEnum } from '../../../ActionComponents/ActionTypes/ReducerTypes'
 
 
 type RS = Required<IRootStores_v1>
 type Props = {
     formStateType: InputsTypeEnum
+
 }
 
 
@@ -37,7 +31,7 @@ const DynamicInputsForm = observer((props: Props) => {
 
     const save = (store_id: InputsTypeEnum, data: AnyArg) => {
         _log("saved to ", store_id, data)
-
+        // props.onSubmitFn && props.onSubmitFn(store_id, data)
         RootStore.saveTostore(store_id, data)
         Methods.reset()
     }
@@ -77,6 +71,8 @@ const DynamicInputsForm = observer((props: Props) => {
 
 
 DynamicInputsForm.displayName = "DynamicInputForm"
+
+
 const ControlBtns = (form_id: string) => {
     return <>
         <Button type='submit'

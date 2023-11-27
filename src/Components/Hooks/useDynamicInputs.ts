@@ -66,7 +66,7 @@ const initState = (o: IFormFieldsValues): ArgsTypesList => {
 const GetFieldsArray = <T extends AnyArg>(o: T) => {
     const k = [] as (keyof T & string)[]
     for (let key in o) {
-        if (typeof key === 'string') k.push(key as keyof T & string)
+        if (typeof key === 'string') k.push(key)
     }
     return k
 }

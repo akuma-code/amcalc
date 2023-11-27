@@ -36,36 +36,36 @@ const DynamicInputsForm = observer((props: Props) => {
         Methods.reset()
     }
     return (
-        <FormProvider {...Methods}>
+        // <FormProvider {...Methods}>
 
 
-            <Box
-                component="form"
-                sx={{
-                    '& .MuiTextField-root': { m: 1, width: '25ch' },
-                }}
-                onSubmit={Methods.handleSubmit((d) => save(AS, d))}
-                autoComplete="on"
-                id='dform'
-                display={'flex'}
-                flexDirection={'column'}
-                height={'fit-content'}
-                margin={1}
-            >
+        <Box
+            component="form"
+            sx={{
+                '& .MuiTextField-root': { m: 1, width: '25ch' },
+            }}
+            onSubmit={Methods.handleSubmit((d) => save(AS, d))}
+            autoComplete="on"
+            id='dform'
+            display={'flex'}
+            flexDirection={'column'}
+            height={'fit-content'}
+            margin={1}
+        >
 
-                {
-                    PropsArr.map(prop =>
-                        <ContolInput {...prop} name={prop.field} key={prop.field} register={Methods.register} />
-                    )
-                }
-                {ControlBtns('dform')}
-
-
-            </Box>
+            {
+                PropsArr.map(prop =>
+                    <ContolInput {...prop} name={prop.field} key={prop.field} register={Methods.register} />
+                )
+            }
+            {ControlBtns('dform')}
 
 
+        </Box>
 
-        </FormProvider >
+
+
+        // </FormProvider >
     )
 })
 

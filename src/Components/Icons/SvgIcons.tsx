@@ -24,7 +24,13 @@ const DoubleShevronDown = <svg xmlns="http://www.w3.org/2000/svg" fill="none" vi
   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
 </svg>
 
-
+const WidthIcon = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <title>arrow-expand-horizontal</title>
+  <path d="M9,11H15V8L19,12L15,16V13H9V16L5,12L9,8V11M2,20V4H4V20H2M20,20V4H22V20H20Z" />
+</svg>
+const HeightIcon = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <title>arrow-expand-vertical</title>
+  <path d="M13,9V15H16L12,19L8,15H11V9H8L12,5L16,9H13M4,2H20V4H4V2M4,20H20V22H4V20Z" /></svg>
 const Icons = {
   PaperAirplane,
   RoundedArrows,
@@ -32,6 +38,9 @@ const Icons = {
   defaultIcon,
   DoubleShevronDown,
   DoubleShevronUp,
+  WidthIcon,
+  HeightIcon,
+
 }
 
 export default Icons

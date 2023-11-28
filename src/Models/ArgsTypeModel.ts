@@ -1,7 +1,7 @@
 import { StringifyProps } from "../ActionComponents/ActionTypes/FnProperties"
 import { FormStatePlaceHolder } from "../ActionComponents/ActionTypes/ReducerTypes"
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types"
-import { ISize, ISizeFull } from "../Interfaces/CommonTypes"
+import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes"
 import { ANYobj } from "../Interfaces/MathActionsTypes"
 
 export enum ArgsTypesEn {
@@ -9,7 +9,7 @@ export enum ArgsTypesEn {
 }
 export interface ArgsTypesList {
     size_full: ISizeFull
-    size: ISize,
+    size: ISizeShort,
     offset5: Fn_Args_offset5
 }
 
@@ -34,9 +34,9 @@ export interface DTO_InputSizeFull {
     desc?: string
 }
 export interface DTO_InputSize {
-    fields: readonly (keyof ISize)[]
-    init: ISize
-    placeholder?: FormStatePlaceHolder<ISize>
+    fields: readonly (keyof ISizeShort)[]
+    init: ISizeShort
+    placeholder?: FormStatePlaceHolder<ISizeShort>
     desc?: string
 }
 

@@ -1,10 +1,10 @@
 import { _log } from "../../Helpers/HelpersFns";
-import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
+import { ISizeShort, ISizeFull } from "../../Interfaces/CommonTypes";
 
 
 export class CalcNet {
-    skf: ISize
-    simple: ISize
+    skf: ISizeShort
+    simple: ISizeShort
     constructor(init_data: ISizeFull) {
         this.skf = { w: init_data.width - 45, h: init_data.height - 47 }
         this.simple = { w: init_data.width + 24, h: init_data.height + 45 }

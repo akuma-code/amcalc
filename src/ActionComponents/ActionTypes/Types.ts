@@ -1,5 +1,5 @@
 import { _log } from "../../Helpers/HelpersFns";
-import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
+import { ISizeShort, ISizeFull } from "../../Interfaces/CommonTypes";
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes";
 import { IDataTransferObject } from "../../Models/DTO_ChainStore";
 import { FnProperties, FnPropertyNames, StringifyProps } from "./FnProperties";
@@ -23,8 +23,8 @@ export type Fn_Output_offset5 = {
 }
 export type Fn_offset5 = (arg: Fn_Args_offset5) => Fn_Output_offset5
 
-type INetSKF = { skf: ISize }
-type INetSimple = { simple: ISize }
+type INetSKF = { skf: ISizeShort }
+type INetSimple = { simple: ISizeShort }
 
 export type Fn_Args_nets = { [K in keyof ISizeFull]: number }
 export type Fn_Output_nets = INetSKF & INetSimple

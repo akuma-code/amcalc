@@ -1,12 +1,12 @@
 import { dto_Export } from "../../Helpers/HelpersFns"
-import { ISize, ISizeFull } from "../../Interfaces/CommonTypes"
+import { ISizeShort, ISizeFull } from "../../Interfaces/CommonTypes"
 import { DTO_ExportFnType } from "../../Interfaces/MathActionsTypes"
 import { DTO_EXPORT } from "../ActionTypes/Types"
 
 
 
 
-type DTO_NetOutput = { [K in 'skf' | 'simple']: ISize }
+type DTO_NetOutput = { [K in 'skf' | 'simple']: ISizeShort }
 type DTO_NetArgs = ISizeFull
 type ICalcNets = ({ width, height }: DTO_NetArgs) => DTO_NetOutput
 

@@ -1,8 +1,8 @@
-import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
+import { ISizeShort, ISizeFull } from "../../Interfaces/CommonTypes";
 
 export class CLS_NetFnCalc {
-    skf: ISize
-    simple: ISize
+    skf: ISizeShort
+    simple: ISizeShort
     constructor(size: ISizeFull) {
         this.skf = {
             w: size.width - 45,

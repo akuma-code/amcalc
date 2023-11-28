@@ -23,7 +23,7 @@ export const MultiFormSelector = observer(() => {
 
     const { RootStore, InputStore: IS } = useStoresContext()
 
-    const current_state = RootStore.active_state || InputsTypeEnum.size
+    const current_state = RootStore.active_state || InputsTypeEnum.size_short
 
     const { fields, init, desc, placeholder } = IS.get_form_data[current_state]
 

@@ -5,7 +5,7 @@ import CalcNetSize from "../Nets/CalcNetSize";
 import { DTO_Nodes_list } from "../ActionTypes/Types";
 import CalcOffsetFn_Type5 from "../Offset5/Offset5";
 import { CLS_NetFnCalc } from "../Nets/CalcNetNode";
-import { ISize, ISizeFull } from "../../Interfaces/CommonTypes";
+import { ISizeShort, ISizeFull } from "../../Interfaces/CommonTypes";
 
 
 // export interface ListDataNode<F extends ANYfn, T extends Enum_NodesAction> {

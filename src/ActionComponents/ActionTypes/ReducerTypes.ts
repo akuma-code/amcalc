@@ -1,11 +1,12 @@
-import { FormState } from "react-hook-form"
+import { FormState, UseFormReturn } from "react-hook-form"
 import { DTO_ARGS, InputsTypeEnum } from "../../Components/Hooks/useFormStateSelector"
-import { ISize, ISizeFull } from "../../Interfaces/CommonTypes"
+import { ISizeShort, ISizeFull, SizeShort, SizeFull } from "../../Interfaces/CommonTypes"
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes"
 import { ArgsTypesList } from "../../Models/ArgsTypeModel"
 
 import { Fn_Args_offset5 } from "./Types"
 import { AnyArg } from "../../Components/Hooks/useDynamicInputs"
+import { _log } from "../../Helpers/HelpersFns"
 
 export enum SAVE_ARG {
     save_size_full = 'save_full_size',
@@ -39,8 +40,8 @@ export interface ArgState_Offse5 {
     state: FormSelectorState<Fn_Args_offset5>
 }
 export interface ArgState_Size {
-    type: InputsTypeEnum.size
-    state: FormSelectorState<ISize>
+    type: InputsTypeEnum.size_short
+    state: FormSelectorState<ISizeShort>
 }
 
 export interface ISaveFullSize {
@@ -49,7 +50,7 @@ export interface ISaveFullSize {
 }
 export interface ISaveSize {
     type: SAVE_ARG.save_size
-    payload: ISize
+    payload: ISizeShort
 }
 export interface ISaveOffset5 {
     type: SAVE_ARG.save_offset5
@@ -62,31 +63,34 @@ export type ISaveArgsActions =
     | ISaveOffset5
 
 
-export type FormState_Fields<Arg extends AnyArg> = ReadonlyArray<keyof Arg>
+export type FormState_Fields<Arg extends AnyArg> = ReadonlyArray<keyof Arg & string>
 export type FormState_Saved<Arg extends AnyArg> = Array<Arg>
 export type FormStatePlaceHolder<Arg extends AnyArg> = { [K in keyof Arg]: string }
 export type FormStateInit<Arg extends AnyArg> = Arg
 
 
-export type GetFormState<T extends DTO_ARGS> = {
+export type GetFormState__<T extends DTO_ARGS> = {
     type: InputsTypeEnum
     fields: FormState_Fields<T>
-    placeholder: FormStatePlaceHolder<T>
-    saved?: FormState_Saved<T>
+    // placeholder: FormStatePlaceHolder<T>
+    // saved?: FormState_Saved<T>
     init: FormStateInit<T>
-    desc: string
-
-}
-// export type FormStateProps<Arg extends DTO_ARGS> = { placeholder?: { [KEY in Arg ]?: string }, desc?: string }
-export type FormInstaceState<ARGS extends DTO_ARGS> = {
-    fields: FormState_Fields<ARGS>
-    init: ARGS
-    saved: FormState_Saved<ARGS>
     desc?: string
-    placeholder?: FormStatePlaceHolder<ARGS>
+
 }
 
-export type DTO_FormsInstance<I extends InputsTypeEnum> = FormInstaceState<ArgsTypesList[I]>
 
 
-export type IFormInstances = { [Key in InputsTypeEnum]: DTO_FormsInstance<Key> }
+export type GetFormInstaceState<T> = T extends ANYobj ?
+    T extends AnyArg ?
+    {
+        store_id: InputsTypeEnum
+        fields: ReadonlyArray<keyof T>
+        init: T
+        desc?: string
+
+    } : never : never
+
+export type FormDTOList = { [Key in keyof ArgsTypesList]: GetFormInstaceState<ArgsTypesList[Key]> }
+
+export type FormDTOListWithMethods = { [Key in keyof FormDTOList]: FormDTOList[Key] & { methods: UseFormReturn<ArgsTypesList[Key]> } }

@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { IActionDataNumber, v1DataNode } from "../mobXStore/ActionStore";
 import { _log } from "../Helpers/HelpersFns";
 import { DTO_ARGS, InputsTypeEnum } from "../Components/Hooks/useFormStateSelector";
-import { ISize, ISizeFull } from "../Interfaces/CommonTypes";
+import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes";
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
@@ -22,8 +22,8 @@ interface ISizeFullData {
     init: ISizeFull
 }
 interface ISizeData {
-    type: InputsTypeEnum.size
-    init: ISize
+    type: InputsTypeEnum.size_short
+    init: ISizeShort
 }
 interface IOffset5Data {
     type: InputsTypeEnum.offset5
@@ -96,7 +96,7 @@ export class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
 
 export class RootArgsStore_v1 {
     public stores: ExtendedRootStores
-    active_state: InputsTypeEnum = InputsTypeEnum.size
+    active_state: InputsTypeEnum = InputsTypeEnum.size_short
     // public storeKeys: ReadonlyArray<keyof ExtendedRootStores> = []
     constructor() {
         this.stores = this.initStores()
@@ -132,7 +132,7 @@ export class RootArgsStore_v1 {
     }
 
     private initStores() {
-        this.use(InputsTypeEnum.size, new DataStore<ISize>(this))
+        this.use(InputsTypeEnum.size_short, new DataStore<ISizeShort>(this))
         this.use(InputsTypeEnum.offset5, new DataStore<Fn_Args_offset5>(this))
         this.use(InputsTypeEnum.size_full, new DataStore<ISizeFull>(this))
         // this.addStore({ type: InputsTypeEnum.size_full, init: { width: 5, height: 5 } })
@@ -153,9 +153,9 @@ export class RootArgsStore_v1 {
                 s?.add(data as Fn_Args_offset5)
                 return
             }
-            case InputsTypeEnum.size: {
+            case InputsTypeEnum.size_short: {
                 const s = this.stores[store_id]
-                s?.add(data as ISize)
+                s?.add(data as ISizeShort)
                 return
             }
         }
@@ -178,7 +178,7 @@ const dataint: ICommonDataStoreItem<ISizeFull> = {
 const s: ExtendedRootStores = {
     offset5: new DataStore<Fn_Args_offset5>(RootArgsStore),
     size_full: new DataStore<ISizeFull>(RootArgsStore),
-    size: new DataStore<ISize>(RootArgsStore),
+    size: new DataStore<ISizeShort>(RootArgsStore),
     test: new DataStore<ANYobj>(RootArgsStore),
 
 

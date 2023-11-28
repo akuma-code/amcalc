@@ -80,7 +80,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                         desc='Size'
                         svg_icon={Icons.RoundedArrows}
                         type='button'
-                        onClickFn={() => RootStore.selectState(InputsTypeEnum.size)}
+                        onClickFn={() => RootStore.selectState(InputsTypeEnum.size_short)}
                     />
 
 

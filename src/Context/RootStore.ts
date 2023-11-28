@@ -96,8 +96,8 @@ export class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
 
 export class RootArgsStore_v1 {
     public stores: ExtendedRootStores
-    active_state: InputsTypeEnum = InputsTypeEnum.size_short
-    // public storeKeys: ReadonlyArray<keyof ExtendedRootStores> = []
+    active_store: InputsTypeEnum = InputsTypeEnum.size_short
+
     constructor() {
         this.stores = this.initStores()
         makeAutoObservable(this)
@@ -118,7 +118,7 @@ export class RootArgsStore_v1 {
         return
     }
     selectState(state_id: InputsTypeEnum) {
-        this.active_state = state_id
+        this.active_store = state_id
     }
     public addStore<T extends ANYobj>(dataInterface: ICommonDataStoreItem<T>) {
         const { type, init } = dataInterface

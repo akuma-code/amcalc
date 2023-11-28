@@ -4,10 +4,10 @@ import { ISizeFull } from "../../Interfaces/CommonTypes"
 
 export const useFuncs = () => {
     const nets: Fn_nets = ({ width, height }: ISizeFull) => {
-        if (!width || !height) throw new Error("ARGS ERROR!")
+        // if (!width || !height) throw new Error("ARGS ERROR!")
         const simple = {
-            w: width + 24,
-            h: height + 45
+            w: +width + 24,
+            h: +height + 45
         }
 
         const skf = {

@@ -17,6 +17,7 @@ import { MultiFormSelector } from '../FlexForm/MultiForms/MultiFormSelector'
 import { InputsTypeEnum } from '../Hooks/useFormStateSelector'
 import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
 import SizeFullForm from '../FlexForm/MultiForms/SizeFullForm'
+import NetsOutput from '../FlexForm/Output/NetsOutput'
 
 
 
@@ -97,7 +98,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             <Grid container item spacing={2}>
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
 
-                    <DynamicInputsForm formStateType={RootStore.active_state} />
+                    <DynamicInputsForm formStateType={RootStore.active_store} />
                 </Grid>
                 <Grid item container
                     key={'output'}
@@ -112,7 +113,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     overflow={'auto'}
                 >
 
-                    {/* <SizeFullForm getSize={(s) => RootStore.saveTostore(InputsTypeEnum.size_full, s)} /> */}
+                    <NetsOutput />
 
                 </Grid>
             </Grid>

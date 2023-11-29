@@ -1,4 +1,4 @@
-import { Box, Grid } from '@mui/material'
+import { Box, Divider, Grid, Stack } from '@mui/material'
 import React, { useCallback, useMemo, useReducer, useState } from 'react'
 import { IconButton } from '../UI/IconButton'
 import Icons from '../Icons/SvgIcons'
@@ -133,8 +133,15 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ items, active }) => {
 
     const ss = items.sort((a, b) => b.size - a.size)
     return (
-        <Box display='flex' flexDirection={'column'} justifyContent={'space-between'} sx={{ width: '100%' }}>
+        <Box sx={{ width: '70%', m: 'auto' }}
+            // display='flex'
+            // flexDirection={'column'}
+            // justifyContent={'space-around'}
+            component={Stack}
+            useFlexGap
+            rowGap={1}>
             <span className='text-center text-2xl'> active: {active} </span>
+            <Divider variant='middle' >stores size</Divider>
             {ss.map(s =>
                 s.size > 0 ? <TextIconChip text={s.store_id} icon={s.size.toString()} key={s.store_id} /> : null
             )}

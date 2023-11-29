@@ -9,35 +9,9 @@ import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
 import { useState } from "react";
 import { AnyArg } from "../Components/Hooks/useDynamicInputs";
 
-interface IDataStoreItem<T extends InputsTypeEnum> {
-    type: T
-    init: ArgsTypesList[T]
-}
 interface ICommonDataStoreItem<T> {
     type: string
     init: T
-}
-interface ISizeFullData {
-    type: InputsTypeEnum.size_full
-    init: ISizeFull
-}
-interface ISizeData {
-    type: InputsTypeEnum.size_short
-    init: ISizeShort
-}
-interface IOffset5Data {
-    type: InputsTypeEnum.offset5
-    init: Fn_Args_offset5
-}
-type iArgs =
-    | ISizeFullData
-    | ISizeData
-    | IOffset5Data
-function AT(args: ArgsTypesList[keyof ArgsTypesList]): args is ArgsTypesList[keyof ArgsTypesList] {
-    if ('width' in args) return true
-    if ('w' in args) return true
-    if ('W' in args) return true
-    return false
 }
 interface IDataStoreWithInit<D extends ANYobj> {
     saved: Array<D>
@@ -46,7 +20,6 @@ interface IDataStoreWithInit<D extends ANYobj> {
     rootStore?: RootArgsStore_v1
 
 }
-type InitedDSWithInit<T extends IDataStoreWithInit<ANYobj>> = (data: T) => T extends { init: ANYobj } ? T : never
 
 export type IRootStores_v1 = {
     [Key in keyof ArgsTypesList]?: DataStore<ArgsTypesList[Key]>
@@ -57,10 +30,10 @@ type IAnyStore = {
 export interface ExtendedRootStores extends Partial<IAnyStore>, IRootStores_v1 { }
 
 
-export class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
+export class DataStore<D extends ANYobj>  {
     public saved: Array<D>
 
-    init?: D
+
     rootStore?: RootArgsStore_v1
     constructor(rootstore?: RootArgsStore_v1) {
         this.saved = []
@@ -68,19 +41,10 @@ export class DataStore<D extends ANYobj> implements IDataStoreWithInit<D> {
         makeAutoObservable(this)
     }
 
-    get isInited() {
-        return this.init ? true : false
-    }
-    protected setInit(init_state: D) {
-        this.init = init_state
-
+    get savedSize() {
+        return this.saved.length
     }
     add(data: D) {
-        if (!this.init) {
-            this.setInit(data)
-
-        }
-
         this.saved = [...this.saved, data]
     }
     load() {
@@ -137,6 +101,24 @@ export class RootArgsStore_v1 {
         this.use(InputsTypeEnum.size_full, new DataStore<ISizeFull>(this))
         // this.addStore({ type: InputsTypeEnum.size_full, init: { width: 5, height: 5 } })
         return this.stores
+    }
+    get traverse() {
+        const arr: DataStore<ANYobj>[] = []
+        for (let store in this.stores) {
+            let key: keyof typeof this.stores = store
+            arr.push(this.stores[key]!)
+        }
+        return arr
+    }
+    public get storesSize() {
+
+        const arr = []
+        for (let store in this.stores) {
+            let key: keyof typeof this.stores = store
+            arr.push({ store_id: key, size: this.stores[key]!.savedSize })
+        }
+        return arr
+
     }
 
     saveTostore<T extends AnyArg>(store_id: InputsTypeEnum, data: T) {

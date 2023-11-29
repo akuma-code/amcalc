@@ -1,9 +1,6 @@
 import { _log } from "../../Helpers/HelpersFns";
 import { IDataTransferObject } from "../../Models/DTO_ChainStore";
-import { Enum_NodesAction, FnKeys, Fn_nets, IC_DataList, IC_FuncArgs } from "../ActionTypes/Types";
-import { CalcNet } from "../Nets/CalcNetModel";
-import CalcNet_DTO from "../Nets/CalcNetSize";
-import Offset5_DTO from "../Offset5/Offset5";
+import { IC_DataList } from "../ActionTypes/Types";
 
 
 
@@ -36,43 +33,3 @@ export function WrapIter<T extends IC_DataList[keyof IC_DataList]>(iterator: Ite
     return res.value
 }
 
-
-// function getType<T extends {type:FnKeys}>(obj:T){
-//     if(obj.type===type) return obj as T
-// }
-
-// while(true){
-//     yield getType(obj)
-// }
-
-
-const test_node_n: IDataTransferObject = {
-    "type": Enum_NodesAction.nets,
-    "fields": [
-        "width",
-        "height"
-    ] as unknown as keyof IC_FuncArgs[],
-    "initState": {
-        "width": 0,
-        "height": 0
-    },
-    fn: CalcNet_DTO.fn
-}
-const test_node_o: IDataTransferObject = {
-    "type": Enum_NodesAction.offset5,
-    "fields": [
-        "W",
-        "H",
-        "h",
-        "da",
-        "db"
-    ] as unknown as keyof IC_FuncArgs[],
-    "initState": {
-        "W": 0,
-        "H": 0,
-        "h": 0,
-        "da": 0,
-        "db": 0
-    },
-    fn: Offset5_DTO.fn
-}

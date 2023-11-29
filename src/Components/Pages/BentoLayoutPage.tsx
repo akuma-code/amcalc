@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import React, { useCallback, useMemo, useReducer, useState } from 'react'
 import { IconButton } from '../UI/IconButton'
 import Icons from '../Icons/SvgIcons'
@@ -17,7 +17,7 @@ import { MultiFormSelector } from '../FlexForm/MultiForms/MultiFormSelector'
 import { InputsTypeEnum } from '../Hooks/useFormStateSelector'
 import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
 import SizeFullForm from '../FlexForm/MultiForms/SizeFullForm'
-import NetsOutput from '../FlexForm/Output/NetsOutput'
+import NetsOutput, { TextIconChip } from '../FlexForm/Output/NetsOutput'
 
 
 
@@ -29,12 +29,18 @@ const test_div = (w: number, h: number, count?: number) => {
 
 const d = FactoryDiv
 
-
-
+type InfoBoxProps = {
+    items: {
+        store_id: string;
+        size: number;
+    }[]
+    active: string
+}
 
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { RootStore } = useStoresContext()
+
 
 
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
@@ -52,7 +58,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     border={'2px solid blue'} p={2}
                 >
 
-
+                    <InfoBox items={RootStore.storesSize} active={RootStore.active_store} />
 
                 </Grid>
                 <Grid key={'selector'}
@@ -121,5 +127,20 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
         </Grid>
     )
 })
+
+
+export const InfoBox: React.FC<InfoBoxProps> = ({ items, active }) => {
+
+    const ss = items.sort((a, b) => b.size - a.size)
+    return (
+        <Box display='flex' flexDirection={'column'} justifyContent={'space-between'} sx={{ width: '100%' }}>
+            <span className='text-center text-2xl'> active: {active} </span>
+            {ss.map(s =>
+                s.size > 0 ? <TextIconChip text={s.store_id} icon={s.size.toString()} key={s.store_id} /> : null
+            )}
+        </Box>
+    )
+}
+
 BentoLayoutPage.displayName = "____BENTO_____"
 export default BentoLayoutPage

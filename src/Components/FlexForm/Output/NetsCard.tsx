@@ -1,6 +1,6 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useCallback } from 'react';
 import { ISizeFull, ISizeShort } from '../../../Interfaces/CommonTypes';
-import { useFuncs } from '../../../Hooks/useFuncs';
+import { Calc } from '../../../Hooks/useFuncs';
 import { observer } from 'mobx-react-lite';
 import { Avatar, Box, Card, CardContent, Divider, Stack, IconButton } from '@mui/material';
 import { useOutputContext } from '../../../Hooks/useOutputCtx';
@@ -21,7 +21,7 @@ export type ViewNetsState = { [Key in 'skf' | 'simple']: boolean }
 export const NetsCard: React.FC<NetCardProps> = observer((props) => {
     const { ThemeView } = useStoresContext()
     const { mode, show } = ThemeView.Options_Nets_out
-
+    const [color, setColor] = useState<string>('#fff');
     const [viewNet, setViewNet] = useState({ ...show, mode, desc: NetViewEn[mode] });
 
     const stateBgColor = (mode: CardViewMode) => {
@@ -31,10 +31,12 @@ export const NetsCard: React.FC<NetCardProps> = observer((props) => {
             case 'both': { return `#9c9a9a`; }
         }
     };
-    const [color, setColor] = useState<string>('#fff');
-    const net = useFuncs().nets(props.size);
-    const { simple, skf } = net;
-    const toggleView = () => setViewNet(prev => ({ ...prev, ...toggleNextView(viewNet.mode) }));
+
+
+    const { simple, skf } = Calc.nets(props.size);
+
+
+    const toggleView = useCallback(() => setViewNet(prev => ({ ...prev, ...toggleNextView(viewNet.mode) })), [viewNet.mode]);
 
     useLayoutEffect(() => {
         setColor(prev => stateBgColor(viewNet.mode));

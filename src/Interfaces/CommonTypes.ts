@@ -1,3 +1,4 @@
+import { ANYobj } from "./MathActionsTypes"
 
 export interface ISizeShort {
     w: number
@@ -25,3 +26,4 @@ export function _isFullSize(size: ISizeShort | ISizeFull): size is ISizeShort {
     if ('w' in size) return true
     else return false
 }
+export type ISize = ISizeFull | ISizeShort

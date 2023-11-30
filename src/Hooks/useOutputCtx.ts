@@ -1,5 +1,5 @@
 import React, { useContext, } from 'react'
-import { ANYfn } from '../../Interfaces/MathActionsTypes'
+import { ANYfn } from '../Interfaces/MathActionsTypes'
 type ViewNetsMode = 'skf' | 'simple' | 'both'
 type ViewNetsState = { [Key in 'skf' | 'simple']: boolean }
 export type CardViewState = {

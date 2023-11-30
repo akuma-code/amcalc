@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { StringifyProps } from "../../ActionComponents/ActionTypes/FnProperties"
-import { IC_ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, IC_Functions, TypeSelector } from "../../ActionComponents/ActionTypes/Types"
-import { _log } from "../../Helpers/HelpersFns"
+import { StringifyProps } from "../ActionComponents/ActionTypes/FnProperties"
+import { IC_ArgsList, Enum_NodesAction, FnKeys, Fn_Args_nets, Fn_Args_offset5, IC_Functions, TypeSelector } from "../ActionComponents/ActionTypes/Types"
+import { _log } from "../Helpers/HelpersFns"
 
 
 

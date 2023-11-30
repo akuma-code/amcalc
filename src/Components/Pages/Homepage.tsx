@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { _deg2rad, _log, _promptVar } from '../../Helpers/HelpersFns'
 import { observer } from 'mobx-react-lite'
-import { useStoresContext } from '../Hooks/useStoresContext'
+import { useStoresContext } from '../../Hooks/useStoresContext'
 import { createOutputTableData } from '../FlexForm/OutputTable'
 import { Box, Stack } from '@mui/material'
 import CalcBox from '../../ActionComponents/Calculators/CalcBox'

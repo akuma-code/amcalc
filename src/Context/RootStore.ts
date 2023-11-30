@@ -1,11 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { _log } from "../Helpers/HelpersFns";
-import { InputsTypeEnum } from "../Components/Hooks/useFormStateSelector";
+import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes";
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypesList } from "../Models/ArgsTypeModel";
-import { AnyArg } from "../Components/Hooks/useDynamicInputs";
+import { AnyArg } from "../Hooks/useDynamicInputs";
 
 interface ICommonDataStoreItem<T> {
     type: string

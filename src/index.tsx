@@ -3,14 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { IStoresContext, StoresContext } from './Components/Hooks/useStoresContext';
-import { ActionsStore, StoreV2DataNodes } from './mobXStore/ActionStore';
-import mbxActionStore from './mobXStore/Stores';
-import dto_Store from './ActionComponents/ActionModels/DTO_Store';
-import { CalcStateStore } from './mobXStore/CalcStateStore';
-import { Mbx_InputsStore } from './mobXStore/InputsStore';
+import { IStoresContext, StoresContext } from './Hooks/useStoresContext';
 import { RootArgsStore_v1 } from './Context/RootStore';
-import { InputsTypeEnum } from './Components/Hooks/useFormStateSelector';
 import { ThemeView } from './Context/ThemeView';
 const Stores: IStoresContext = {
   ThemeView: new ThemeView(),

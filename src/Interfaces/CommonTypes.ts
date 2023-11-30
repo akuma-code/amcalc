@@ -8,6 +8,8 @@ export interface ISizeFull {
     width: number
     height: number
 }
+
+export type ISize = ISizeFull | ISizeShort
 export class SizeShort {
     constructor(
         public w: number,
@@ -22,8 +24,8 @@ export class SizeFull {
 }
 
 
-export function _isFullSize(size: ISizeShort | ISizeFull): size is ISizeShort {
+export function _isFullSize(size: ISize): size is ISizeShort {
     if ('w' in size) return true
     else return false
 }
-export type ISize = ISizeFull | ISizeShort
+

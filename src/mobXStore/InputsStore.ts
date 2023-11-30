@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes, ArgsTypesList, DTO_InputOffset5, DTO_InputSize, DTO_InputSizeFull, DTO_InputsProp } from "../Models/ArgsTypeModel";
-import { InputsTypeEnum } from "../Components/Hooks/useFormStateSelector";
+import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 
 export interface Mbx_InputsStore {
     saved: Record<string, Mbx_InputState['args'][]>

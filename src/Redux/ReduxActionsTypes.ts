@@ -1,5 +1,5 @@
-import { AnyArg } from "../Components/Hooks/useDynamicInputs"
-import { DTO_ARGS, InputsTypeEnum } from "../Components/Hooks/useFormStateSelector"
+import { AnyArg } from "../Hooks/useDynamicInputs"
+import { DTO_ARGS, InputsTypeEnum } from "../Hooks/useFormStateSelector"
 import { DataStore } from "../Context/RootStore"
 import { ANYobj } from "../Interfaces/MathActionsTypes"
 export enum RS_v1Actions {

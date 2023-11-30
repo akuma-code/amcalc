@@ -1,7 +1,7 @@
 import { Box, Divider, Stack } from '@mui/material';
 import React from 'react';
 import { TextIconChip } from '../FlexForm/Output/TextIconChipProps';
-import { useStoresContext } from '../Hooks/useStoresContext';
+import { useStoresContext } from '../../Hooks/useStoresContext';
 import { observer } from 'mobx-react-lite';
 import { LABELS_LIST } from '../../Interfaces/Enums';
 

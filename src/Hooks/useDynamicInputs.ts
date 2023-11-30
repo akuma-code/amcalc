@@ -1,11 +1,11 @@
 import { IFormFieldsValues, InputsTypeEnum } from "./useFormStateSelector";
-import { ArgsTypesList } from "../../Models/ArgsTypeModel";
-import { dto_formStates } from "../FlexForm/DTO_Forms";
+import { ArgsTypesList } from "../Models/ArgsTypeModel";
+import { dto_formStates } from "../Components/FlexForm/DTO_Forms";
 import { useForm } from "react-hook-form";
-import { ISizeShort, ISizeFull } from "../../Interfaces/CommonTypes";
-import { _log } from "../../Helpers/HelpersFns";
-import { FieldsLabelEnum, FormDTOList, FormDTOListWithMethods, GetFormInstaceState, GetFormState__ } from "../../ActionComponents/ActionTypes/ReducerTypes";
-import { Fn_Args_offset5 } from "../../ActionComponents/ActionTypes/Types";
+import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes";
+import { _log } from "../Helpers/HelpersFns";
+import { FieldsLabelEnum, FormDTOList, FormDTOListWithMethods, GetFormInstaceState, GetFormState__ } from "../ActionComponents/ActionTypes/ReducerTypes";
+import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
 
 
 

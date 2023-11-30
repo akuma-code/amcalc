@@ -1,13 +1,13 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { ISizeFull, ISizeShort } from '../../../Interfaces/CommonTypes';
-import { useFuncs } from '../../Hooks/useFuncs';
+import { useFuncs } from '../../../Hooks/useFuncs';
 import { observer } from 'mobx-react-lite';
 import { Avatar, Box, Card, CardContent, Divider, Stack, IconButton } from '@mui/material';
-import { useOutputContext } from '../../Hooks/useOutputCtx';
+import { useOutputContext } from '../../../Hooks/useOutputCtx';
 import { NetViewEn, CardViewMode, selectView } from './NetsOutput';
 import { TextIconChip } from './TextIconChipProps';
 import Icons from '../../Icons/SvgIcons';
-import { useStoresContext } from '../../Hooks/useStoresContext';
+import { useStoresContext } from '../../../Hooks/useStoresContext';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import { LABELS_LIST } from '../../../Interfaces/Enums';
 interface NetCardProps {

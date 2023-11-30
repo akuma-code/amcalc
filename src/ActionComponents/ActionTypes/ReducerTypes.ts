@@ -1,11 +1,11 @@
 import { FormState, UseFormReturn } from "react-hook-form"
-import { DTO_ARGS, InputsTypeEnum } from "../../Components/Hooks/useFormStateSelector"
+import { DTO_ARGS, InputsTypeEnum } from "../../Hooks/useFormStateSelector"
 import { ISizeShort, ISizeFull, SizeShort, SizeFull } from "../../Interfaces/CommonTypes"
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes"
 import { ArgsTypesList } from "../../Models/ArgsTypeModel"
 
 import { Fn_Args_offset5 } from "./Types"
-import { AnyArg } from "../../Components/Hooks/useDynamicInputs"
+import { AnyArg } from "../../Hooks/useDynamicInputs"
 import { _log } from "../../Helpers/HelpersFns"
 
 export enum SAVE_ARG {

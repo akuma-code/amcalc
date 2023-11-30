@@ -1,7 +1,7 @@
-import { ArgsTypesList } from "../../Models/ArgsTypeModel"
-import { GetFormState__ } from "../../ActionComponents/ActionTypes/ReducerTypes"
-import { ISizeShort, ISizeFull } from "../../Interfaces/CommonTypes"
-import { Fn_Args_offset5 } from "../../ActionComponents/ActionTypes/Types"
+import { ArgsTypesList } from "../Models/ArgsTypeModel"
+import { GetFormState__ } from "../ActionComponents/ActionTypes/ReducerTypes"
+import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes"
+import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types"
 
 export enum InputsTypeEnum {
     size_full = 'size_full',

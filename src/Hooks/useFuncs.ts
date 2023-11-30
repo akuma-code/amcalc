@@ -1,6 +1,6 @@
-import { Fn_Args_offset5, Fn_nets, Fn_offset5 } from "../../ActionComponents/ActionTypes/Types"
-import { _rad2deg } from "../../Helpers/HelpersFns"
-import { ISizeFull } from "../../Interfaces/CommonTypes"
+import { Fn_Args_offset5, Fn_nets, Fn_offset5 } from "../ActionComponents/ActionTypes/Types"
+import { _rad2deg } from "../Helpers/HelpersFns"
+import { ISizeFull } from "../Interfaces/CommonTypes"
 
 export const useFuncs = () => {
     const nets: Fn_nets = ({ width, height }: ISizeFull) => {

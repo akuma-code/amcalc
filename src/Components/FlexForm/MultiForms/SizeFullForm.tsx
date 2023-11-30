@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Controller, UseControllerProps, useController, useForm, useFormContext } from 'react-hook-form'
 import { ISizeFull, SizeFull } from '../../../Interfaces/CommonTypes'
 import { dto_formStates } from '../DTO_Forms'
-import { InputsTypeEnum } from '../../Hooks/useFormStateSelector'
+import { InputsTypeEnum } from '../../../Hooks/useFormStateSelector'
 
 
 type Props = {

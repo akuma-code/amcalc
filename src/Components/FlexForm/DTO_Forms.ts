@@ -3,7 +3,7 @@ import { Fn_Args_offset5 } from "../../ActionComponents/ActionTypes/Types"
 import { ISizeShort, ISizeFull } from "../../Interfaces/CommonTypes"
 import { ANYobj } from "../../Interfaces/MathActionsTypes"
 import { ArgsTypes, ArgsTypesList, DTO_FormDataList, DTO_InputOffset5, DTO_InputSize, DTO_InputSizeFull } from "../../Models/ArgsTypeModel"
-import { IFormFieldsValues, InputsTypeEnum } from "../Hooks/useFormStateSelector"
+import { IFormFieldsValues, InputsTypeEnum } from "../../Hooks/useFormStateSelector"
 
 
 export interface DTO_state<O extends ANYobj> {

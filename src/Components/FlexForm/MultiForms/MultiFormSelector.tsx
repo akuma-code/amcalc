@@ -1,14 +1,14 @@
 
 import { Controller, useForm, useFormContext, UseFormRegisterReturn } from 'react-hook-form'
 import { observer } from 'mobx-react-lite'
-import { useStoresContext } from '../../Hooks/useStoresContext'
+import { useStoresContext } from '../../../Hooks/useStoresContext'
 import { Box, Button, FormControl, FormLabel, Input, InputLabel } from '@mui/material'
 import { _ID, _log } from '../../../Helpers/HelpersFns'
 import { ANYfn, ANYobj } from '../../../Interfaces/MathActionsTypes'
 import { useState } from 'react'
-import useInput from '../../Hooks/useInput'
-import { InputsTypeEnum } from '../../Hooks/useFormStateSelector'
-import { AnyArg } from '../../Hooks/useDynamicInputs'
+import useInput from '../../../Hooks/useInput'
+import { InputsTypeEnum } from '../../../Hooks/useFormStateSelector'
+import { AnyArg } from '../../../Hooks/useDynamicInputs'
 
 
 

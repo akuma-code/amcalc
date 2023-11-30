@@ -42,7 +42,7 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
         const order = ['skf', 'simple', 'both'] as const
         const fi = order.findIndex(i => i === view.mode)
         const next_type = order[fi + 1] ? order[fi + 1] : order[0]
-        setView(prev => ({ ...prev, mode: next_type, show: selectView(next_type) }))
+        setView(prev => ({ ...prev, mode: next_type, ...selectView(next_type) }))
         updateOptions(next_type)
     }
 

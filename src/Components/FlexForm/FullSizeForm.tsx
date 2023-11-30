@@ -1,14 +1,13 @@
-import { Box, Button, FormControl, FormHelperText, FormLabel, Input, InputLabel } from '@mui/material'
-import React, { useMemo, useState } from 'react'
-import { ArgsTypes, DTO_FormDataList, DTO_InputSizeFull, DTO_InputsProp } from '../../Models/ArgsTypeModel'
-import { UseFormRegister, UseFormUnregister, useForm } from 'react-hook-form'
+import { Box, Button, FormControl, FormLabel, Input, InputLabel } from '@mui/material'
+import React, { useMemo } from 'react'
+import { UseFormRegister, useForm } from 'react-hook-form'
 import { _ID, _log } from '../../Helpers/HelpersFns'
 import { ISizeFull } from '../../Interfaces/CommonTypes'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
 import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../Hooks/useStoresContext'
 import { Fn_Args_offset5 } from '../../ActionComponents/ActionTypes/Types'
-import { Mbx_InputsStore, dto_forms } from '../../mobXStore/InputsStore'
+import { dto_forms } from '../../mobXStore/InputsStore'
 import { StringifyProps } from '../../ActionComponents/ActionTypes/FnProperties'
 
 type ANY_InputProps = {
@@ -141,37 +140,37 @@ export const InputsFS = (): React.ReactNode => {
   //     </Box> </FormLabel>
   // )
 }
-export const InputsO5 = observer(() => {
-  const store = useStoresContext()
-  const { InputStore: IS } = store
-  const current_state = IS.inpType
-  // const { offset5: of5_dto, size_full } = IS.get_form_data
-  const { fields, init, desc } = IS.get_form_data[current_state]
-    ;
-  const { register, handleSubmit, getValues, reset } = useForm<typeof init>()
+const InputsO5 = observer(() => {
+  // const store = useStoresContext()
+  // const { InputStore: IS } = store
+  // const current_state = IS.inpType
+  // // const { offset5: of5_dto, size_full } = IS.get_form_data
+  // const { fields, init, desc } = IS.get_form_data[current_state]
+  //   ;
+  // const { register, handleSubmit, getValues, reset } = useForm<typeof init>()
 
-  const save = () => {
-    switch (current_state) {
-      case 'size_full': {
-        IS.save(current_state, getValues())
+  // const save = () => {
+  //   switch (current_state) {
+  //     case 'size_full': {
+  //       IS.save(current_state, getValues())
 
-        break
-      }
-      case 'offset5': {
-        IS.save(current_state, getValues())
-        break
-      }
-      case 'size': {
-        IS.save(current_state, getValues())
-        break
+  //       break
+  //     }
+  //     case 'offset5': {
+  //       IS.save(current_state, getValues())
+  //       break
+  //     }
+  //     case 'size': {
+  //       IS.save(current_state, getValues())
+  //       break
 
-      }
-      default: break
-    }
-    IS.save(current_state, getValues())
-    reset()
-    // const s = IS.load('offset5')
-  }
+  //     }
+  //     default: break
+  //   }
+  //   IS.save(current_state, getValues())
+  //   reset()
+  // const s = IS.load('offset5')
+  // }
 
   return (
     <FormLabel htmlFor='o5_form' >
@@ -180,7 +179,7 @@ export const InputsO5 = observer(() => {
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        onSubmit={handleSubmit(save)}
+        // onSubmit={handleSubmit(save)}
         autoComplete="on"
         id='o5_form'
         display={'flex'}
@@ -189,18 +188,18 @@ export const InputsO5 = observer(() => {
         margin={1}
       >
 
-        {desc && desc}
+        {/* {desc && desc} */}
 
         {
-          fields.map((f, idx) =>
-            <FormControl variant="standard" key={_ID()} margin='dense'>
-              <InputLabel htmlFor={`input_` + idx}>{`placeholder && placeholder[f] as any`}</InputLabel>
-              <Input id={`input_` + idx}
-                {...register(f, { required: true })}
-                defaultValue='' />
+          // fields.map((f, idx) =>
+          //   <FormControl variant="standard" key={_ID()} margin='dense'>
+          //     <InputLabel htmlFor={`input_` + idx}>{`placeholder && placeholder[f] as any`}</InputLabel>
+          //     <Input id={`input_` + idx}
+          //       {...register(f, { required: true })}
+          //       defaultValue='' />
 
-            </FormControl>
-          )
+          //   </FormControl>
+          // )
         }
 
 
@@ -235,7 +234,7 @@ InputsO5.displayName = "____________Offset5 Inputs Form_________________"
 //   return F[itype]
 // }
 
-export default InputForm
+// export default InputForm
 
 function FieldControl(idx: number, f: keyof Fn_Args_offset5, register: UseFormRegister<Fn_Args_offset5>, placeholder?: StringifyProps<Fn_Args_offset5>,) {
   return <FormControl variant="standard" key={_ID()} margin='dense'>

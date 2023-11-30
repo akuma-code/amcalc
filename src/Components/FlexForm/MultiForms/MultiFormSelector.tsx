@@ -17,65 +17,49 @@ type IFieldsArrayItem<Arg extends ANYobj = ANYobj> = {
     props: UseFormRegisterReturn<keyof Arg & string>
     placeholder?: string
 }
-type MultiFormProps = {}
 export const MultiFormSelector = observer(() => {
 
 
-    const { RootStore, InputStore: IS } = useStoresContext()
+    // const { RootStore, InputStore: IS } = useStoresContext()
 
-    const current_state = RootStore.active_store || InputsTypeEnum.size_short
+    // const current_state = RootStore.active_store || InputsTypeEnum.size_short
 
-    const { fields, init, desc, placeholder } = IS.get_form_data[current_state]
+    // const { fields, init, desc, placeholder } = IS.get_form_data[current_state]
 
 
-    const { register, handleSubmit, getValues, reset, control } = useForm<typeof init>()
+    // const { register, handleSubmit, getValues, reset, control } = useForm<typeof init>()
 
-    const InputPropsArray = fields.map(f => {
-        const pl = placeholder ? placeholder[f as keyof typeof placeholder] : ""
-        const fieldprop: IFieldsArrayItem = {
-            props: register(f, { required: true, shouldUnregister: true }),
-            placeholder: pl
-        }
-        return fieldprop
-    })
-    const CONTR = (f: keyof AnyArg) => {
+    // const InputPropsArray = fields.map(f => {
+    //     const pl = placeholder ? placeholder[f as keyof typeof placeholder] : ""
+    //     const fieldprop: IFieldsArrayItem = {
+    //         props: register(f, { required: true, shouldUnregister: true }),
+    //         placeholder: pl
+    //     }
+    //     return fieldprop
+    // })
 
-        const K = _ID()
-        return <Controller name={f}
-            control={control}
-            render={(field) =>
-                <FormControl variant="standard" key={K} margin='dense'>
-                    <InputLabel htmlFor={`input_` + K}>{f}</InputLabel>
-                    <Input id={`input_` + K}
-                        {...register(f)}
-                    />
-                </FormControl>}
+    // const save = () => {
+    //     switch (current_state) {
+    //         case 'size_full': {
+    //             // IS.save(current_state, getValues())
+    //             RootStore.saveTostore(current_state, getValues())
+    //             break
+    //         }
+    //         case 'offset5': {
+    //             // IS.save(current_state, getValues())
+    //             RootStore.saveTostore(current_state, getValues())
+    //             break
+    //         }
+    //         case 'size': {
+    //             // IS.save(current_state, getValues())
+    //             RootStore.saveTostore(current_state, getValues())
+    //             break
 
-        />
-    }
-
-    const save = () => {
-        switch (current_state) {
-            case 'size_full': {
-                // IS.save(current_state, getValues())
-                RootStore.saveTostore(current_state, getValues())
-                break
-            }
-            case 'offset5': {
-                // IS.save(current_state, getValues())
-                RootStore.saveTostore(current_state, getValues())
-                break
-            }
-            case 'size': {
-                // IS.save(current_state, getValues())
-                RootStore.saveTostore(current_state, getValues())
-                break
-
-            }
-            default: break
-        }
-        reset()
-    }
+    //         }
+    //         default: break
+    //     }
+    //     reset()
+    // }
 
     return (
         <FormLabel htmlFor='form' key={'MultiFormSelector'}>
@@ -84,7 +68,7 @@ export const MultiFormSelector = observer(() => {
                 sx={{
                     '& .MuiTextField-root': { m: 1, width: '25ch' },
                 }}
-                onSubmit={handleSubmit(save)}
+                // onSubmit={handleSubmit(save)}
                 autoComplete="on"
                 id='form'
                 display={'flex'}
@@ -93,12 +77,12 @@ export const MultiFormSelector = observer(() => {
                 margin={1}
             >
 
-                {desc && desc}
+                {/* {desc && desc} */}
 
                 {
-                    InputPropsArray.map((fprop, idx) =>
-                        FCInput(idx, fprop)
-                    )
+                    // InputPropsArray.map((fprop, idx) =>
+                    //     FCInput(idx, fprop)
+                    // )
                 }
 
                 {/* <DinamicInput onChangeFn={(v) => _log(v)} />
@@ -146,26 +130,4 @@ export interface DinInputProps {
 
     onChangeFn: (val: number) => void
 }
-const DinamicInput = (props: DinInputProps) => {
-    // const v = typeof props.value === 'string' ? props.value : `${props.value}`
-    const [val, onChange] = useInput("")
-    const chHand: (e: React.ChangeEvent<HTMLInputElement>) => void = (e) => {
 
-        onChange(e)
-        props.onChangeFn(+e.target.value)
-    }
-    const K = _ID()
-    return (
-        <FormControl variant="standard" key={K} margin='dense'>
-            <InputLabel htmlFor={`input_` + K}>{ }</InputLabel>
-            <Input id={`input_` + K}
-                onChange={chHand}
-                value={val} />
-
-        </FormControl>
-    )
-}
-
-const DiControl = () => {
-
-}

@@ -11,13 +11,9 @@ import { CalcStateStore } from './mobXStore/CalcStateStore';
 import { Mbx_InputsStore } from './mobXStore/InputsStore';
 import { RootArgsStore_v1 } from './Context/RootStore';
 import { InputsTypeEnum } from './Components/Hooks/useFormStateSelector';
+import { ThemeView } from './Context/ThemeView';
 const Stores: IStoresContext = {
-  // ActionsStore: new ActionsStore(),
-  // StoreV2Nodes: new StoreV2DataNodes(),
-  // mbxStore: new mbxActionStore(),
-  // dto_Store: dto_Store,
-  // ReduxStore: new CalcStateStore(),
-  InputStore: new Mbx_InputsStore(),
+  ThemeView: new ThemeView(),
   RootStore: new RootArgsStore_v1(),
 
 

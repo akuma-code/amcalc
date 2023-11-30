@@ -1,12 +1,10 @@
 import { makeAutoObservable } from "mobx";
-import { IActionDataNumber, v1DataNode } from "../mobXStore/ActionStore";
 import { _log } from "../Helpers/HelpersFns";
-import { DTO_ARGS, InputsTypeEnum } from "../Components/Hooks/useFormStateSelector";
+import { InputsTypeEnum } from "../Components/Hooks/useFormStateSelector";
 import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes";
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
-import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
-import { useState } from "react";
+import { ArgsTypesList } from "../Models/ArgsTypeModel";
 import { AnyArg } from "../Components/Hooks/useDynamicInputs";
 
 interface ICommonDataStoreItem<T> {
@@ -47,7 +45,7 @@ export class DataStore<D extends ANYobj>  {
     add(data: D) {
         this.saved = [...this.saved, data]
     }
-    load() {
+    get store() {
         return this.saved
     }
 

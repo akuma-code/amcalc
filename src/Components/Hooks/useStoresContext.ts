@@ -7,14 +7,12 @@ import { CalcStateStore } from '../../mobXStore/CalcStateStore'
 import { Mbx_InputsStore } from '../../mobXStore/InputsStore'
 import { RootArgsStore, RootArgsStore_v1 } from '../../Context/RootStore'
 import { InputsTypeEnum } from './useFormStateSelector'
+import { ThemeView } from '../../Context/ThemeView'
 export interface IStoresContext {
-    // ActionsStore?: ActionsStore
-    // StoreV2Nodes?: StoreV2DataNodes
-    // mbxStore: mbxActionStore<{ nodeId: string, data: any }>
-    // dto_Store: FnLinkedList<IDataTransferObject>
-    // ReduxStore: CalcStateStore
-    InputStore: Mbx_InputsStore
+
+
     RootStore: RootArgsStore_v1
+    ThemeView: ThemeView
 
 }
 

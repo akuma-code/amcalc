@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { SizeFull } from '../../../Interfaces/CommonTypes'
+import { SizeFull, SizeShort } from '../../../Interfaces/CommonTypes'
 import { useStoresContext } from '../../../Hooks/useStoresContext'
 import { observer } from 'mobx-react-lite'
 import { Box, Button, ButtonGroup } from '@mui/material'
@@ -9,6 +9,7 @@ import { Stack } from '@mui/system'
 import { NetsCard, ViewNetsState } from './NetsCard'
 import Icons from '../../Icons/SvgIcons'
 import { StringsIterator } from '../../../ActionComponents/ActionModels/FnGenerator'
+import OutputCard from './OutputCard'
 
 
 export type CardViewMode = 'skf' | 'simple' | 'both'
@@ -58,12 +59,7 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
     }, [view.mode])
     return (
         <Box sx={{ maxHeight: '70vh', width: '100%' }} display={'flex'} flexDirection={'column'}>
-            {/* <OutputContext.Provider
-                value={{
-                    ...view,
-                    control: setView
-                }}
-            > */}
+
             <ButtonGroup sx={{ alignSelf: 'end' }}
                 variant="outlined" aria-label="outlined button group">
                 <Button
@@ -80,12 +76,12 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
                 >{Icons.defaultIcon}</Button>
             </ButtonGroup>
             <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" >
-
+                <OutputCard savedSize={new SizeShort(300, 550)} viewOptions={{ showSkf: true, showSimple: false }} />
                 {testsaved.map((size, idx) =>
                     <NetsCard size={size} idxCounter={idx} key={_ID()} />
                 )}
             </Stack>
-            {/* </OutputContext.Provider> */}
+
         </Box>
     )
 })

@@ -31,7 +31,8 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
         const net_type = order[fi + 1] ? order[fi + 1] : order[0]
 
     }
-    const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === RootStore.active_store, [RootStore.active_store])
+    const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === RootStore.active_store,
+        [RootStore.active_store])
     const ControlButtonsGroup = useMemo(() => {
         const Group = () => <ButtonGroup sx={{ mx: 1, gap: 1, width: 200 }}
             variant="contained"

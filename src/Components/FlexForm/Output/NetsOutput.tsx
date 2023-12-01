@@ -8,6 +8,7 @@ import { CardViewState, OutputContext } from '../../../Hooks/useOutputCtx'
 import { Stack } from '@mui/system'
 import { NetsCard, ViewNetsState } from './NetsCard'
 import Icons from '../../Icons/SvgIcons'
+import { StringsIterator } from '../../../ActionComponents/ActionModels/FnGenerator'
 
 
 export type CardViewMode = 'skf' | 'simple' | 'both'
@@ -46,6 +47,8 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
         updateOptions(next_type)
     }
 
+    const s = new StringsIterator('1', '2', '3')
+    const test = () => _log(s.next())
 
     useEffect(() => {
 
@@ -55,32 +58,34 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
     }, [view.mode])
     return (
         <Box sx={{ maxHeight: '70vh', width: '100%' }} display={'flex'} flexDirection={'column'}>
-            <OutputContext.Provider
+            {/* <OutputContext.Provider
                 value={{
                     ...view,
                     control: setView
                 }}
-            >
-                <ButtonGroup sx={{ alignSelf: 'end' }}
-                    variant="outlined" aria-label="outlined button group">
-                    <Button
-                        onClick={toggleView}
-                    >
-                        Toggle View to {next_view(view.mode)}
-                    </Button>
-                    <Button disabled
-                        onClick={() => updateOptions(view.mode)}
-                    >Update Options
-                    </Button>
-                    <Button disabled>{Icons.defaultIcon}</Button>
-                </ButtonGroup>
-                <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" >
+            > */}
+            <ButtonGroup sx={{ alignSelf: 'end' }}
+                variant="outlined" aria-label="outlined button group">
+                <Button
+                    onClick={toggleView}
+                >
+                    Toggle View to {next_view(view.mode)}
+                </Button>
+                <Button disabled
+                    onClick={() => updateOptions(view.mode)}
+                >Update Options
+                </Button>
+                <Button
+                    onClick={test}
+                >{Icons.defaultIcon}</Button>
+            </ButtonGroup>
+            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" >
 
-                    {testsaved.map((size, idx) =>
-                        <NetsCard size={size} idxCounter={idx} key={_ID()} />
-                    )}
-                </Stack>
-            </OutputContext.Provider>
+                {testsaved.map((size, idx) =>
+                    <NetsCard size={size} idxCounter={idx} key={_ID()} />
+                )}
+            </Stack>
+            {/* </OutputContext.Provider> */}
         </Box>
     )
 })

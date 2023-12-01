@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import { DTO_EXPORT, IC_FuncArgs, IC_FuncsList } from '../ActionComponents/ActionTypes/Types'
+import { ISize, ISizeTuple, _isFullSize } from '../Interfaces/CommonTypes'
 
 
 export const _log = console.log
@@ -32,4 +33,11 @@ export const dto_Export = (fn: IC_FuncsList, initState: IC_FuncArgs): DTO_EXPORT
         initState
     }
     return dto
+}
+
+
+
+export function _sizeTuppler(size: ISize): ISizeTuple {
+    if (_isFullSize(size)) return [size.w, size.h] as const
+    else return [size.width, size.height] as const
 }

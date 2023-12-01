@@ -10,6 +10,7 @@ export interface ISizeFull {
 }
 
 export type ISize = ISizeFull | ISizeShort
+export type ISizeTuple = readonly [width: number, height: number]
 export class SizeShort {
     constructor(
         public w: number,

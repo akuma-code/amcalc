@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect, useCallback } from 'react';
-import { ISizeFull, ISizeShort } from '../../../Interfaces/CommonTypes';
+import { ISize, ISizeFull, ISizeShort } from '../../../Interfaces/CommonTypes';
 import { Calc } from '../../../Hooks/useFuncs';
 import { observer } from 'mobx-react-lite';
 import { Avatar, Box, Card, CardContent, Divider, Stack, IconButton } from '@mui/material';
@@ -10,6 +10,7 @@ import Icons from '../../Icons/SvgIcons';
 import { useStoresContext } from '../../../Hooks/useStoresContext';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import { LABELS_LIST } from '../../../Interfaces/Enums';
+import { _log, _sizeTuppler } from '../../../Helpers/HelpersFns';
 interface NetCardProps {
     size: ISizeFull;
     idxCounter?: number;
@@ -87,12 +88,13 @@ export const NetsCard: React.FC<NetCardProps> = observer((props) => {
 
 
 type InitSizeChipProps = {
-    size: ISizeFull
+    size: ISize
 }
 
 
 export const FooterCardSize = ({ size }: InitSizeChipProps) => {
-    const { width, height } = size
+    const st = _sizeTuppler(size)
+    const [width, height] = st
     const W = `${width} мм`
     const H = `${height} мм`
     return (
@@ -107,14 +109,15 @@ export const FooterCardSize = ({ size }: InitSizeChipProps) => {
 }
 
 type NetSizeBodyProps = {
-    short_size: ISizeShort
+    size: ISizeShort
     isShow: boolean
 
 }
-const SizeItemBlock = ({ short_size, isShow }: NetSizeBodyProps) => {
-    const { w, h } = short_size
-    const W = `${w} мм`
-    const H = `${h} мм`
+const SizeItemBlock = ({ size, isShow }: NetSizeBodyProps) => {
+    const st = _sizeTuppler(size)
+    const [width, height] = st
+    const W = `${width} мм`
+    const H = `${height} мм`
     return (
         <Box
             sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 1, px: 1 }}
@@ -149,9 +152,9 @@ export const CardBodyBlock: React.FC<CardBodyProps> = ({ nets, viewNets }) => {
 
             display: 'flex', justifyContent: 'space-evenly', flexDirection: { xs: 'row', md: 'column' },
         }}>
-            <SizeItemBlock short_size={nets.simple} isShow={viewNets.simple} />
+            <SizeItemBlock size={nets.simple} isShow={viewNets.simple} />
             <Divider orientation='vertical' flexItem sx={{ mx: .3, width: '2px', bgColor: 'red' }} variant='fullWidth' />
-            <SizeItemBlock short_size={nets.skf} isShow={viewNets.skf} />
+            <SizeItemBlock size={nets.skf} isShow={viewNets.skf} />
         </Box>
     )
 }
@@ -163,6 +166,6 @@ export function toggleNextView(viewmode: CardViewMode) {
     const order = ['skf', 'simple', 'both'] as const
     const fi = order.findIndex(i => i === viewmode)
     const net_type = order[fi + 1] ? order[fi + 1] : order[0]
-    return { ...selectView(net_type), mode: net_type }
+    return { mode: net_type, ...selectView(net_type), }
 }
 

@@ -1,7 +1,6 @@
 import { _log } from "../../Helpers/HelpersFns";
-import { ANYfn } from "../../Interfaces/MathActionsTypes";
 import FnLinkedList, { DTO_Node, IDataTransferObject } from "../../Models/DTO_ChainStore";
-import { DTO_Nodes_list, Enum_NodesAction } from "../ActionTypes/Types";
+import { Enum_NodesAction } from "../ActionTypes/Types";
 import CalcNetSize from "../Nets/CalcNetSize";
 import CalcOffsetFn_Type5 from "../Offset5/Offset5";
 

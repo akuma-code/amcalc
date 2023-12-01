@@ -3,24 +3,7 @@ import { IDataTransferObject } from "../../Models/DTO_ChainStore";
 import { IC_DataList } from "../ActionTypes/Types";
 
 
-
-function* G_StateSelector(dto: IDataTransferObject) {
-
-    const { type } = dto
-    type RType = typeof type
-    const TypeObject: IC_DataList[keyof IC_DataList] = yield dto as IC_DataList[RType]
-    if (type === 'nets') {
-        yield TypeObject as IC_DataList['nets']
-    }
-    if (type === 'offset5') {
-        yield TypeObject as IC_DataList['nets']
-    }
-    _log("Type not defined")
-    return null
-}
-
-
-export function WrapIter<T extends IC_DataList[keyof IC_DataList]>(iterator: Iterator<T, IDataTransferObject, IC_DataList[keyof IC_DataList]>) {
+function WrapIter<T extends IC_DataList[keyof IC_DataList]>(iterator: Iterator<T, T, IC_DataList[keyof IC_DataList]>) {
     let res = iterator.next()
 
     while (!res.done) {
@@ -31,5 +14,20 @@ export function WrapIter<T extends IC_DataList[keyof IC_DataList]>(iterator: Ite
     }
 
     return res.value
+}
+
+export class StringsIterator {
+    order: string[]
+    counter: number = 0
+    constructor(...strings: string[]) {
+        this.order = strings
+    }
+
+    next() {
+        const current = this.order[this.counter]
+        this.counter++
+        if (this.counter === this.order.length) this.counter = 0
+        return current
+    }
 }
 

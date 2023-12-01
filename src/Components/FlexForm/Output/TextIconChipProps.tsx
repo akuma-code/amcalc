@@ -8,9 +8,14 @@ type TextIconChipProps = {
     textSX?: ANYobj;
     iconSX?: ANYobj;
     icon?: React.ReactNode;
+    wh?: number
 
 };
-export const TextIconChip = ({ text, icon, textSX, iconSX }: TextIconChipProps) => {
+export const TextIconChip = ({ text, icon, textSX, iconSX, wh = 28 }: TextIconChipProps) => {
+    const SX = {
+        textSX,
+        iSX: { ...{ width: wh, height: wh, p: 0.3 }, ...iconSX }
+    }
     return (
         <Box
             display={'flex'}
@@ -20,7 +25,7 @@ export const TextIconChip = ({ text, icon, textSX, iconSX }: TextIconChipProps) 
             justifyContent={'space-between'}
             alignItems={'center'}
             gap={1}>
-            <Box component={Avatar} variant='square' sx={{ width: 28, height: 28, p: 0.3 }}>
+            <Box component={Avatar} variant='square' sx={SX.iSX}>
 
                 {icon ?
                     icon
@@ -28,7 +33,7 @@ export const TextIconChip = ({ text, icon, textSX, iconSX }: TextIconChipProps) 
                     <WifiTetheringOutlinedIcon />}
             </Box>
 
-            <Box
+            <Box sx={SX.textSX}
             >
                 <span>{text}</span>
             </Box>

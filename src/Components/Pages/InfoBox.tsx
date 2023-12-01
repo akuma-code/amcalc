@@ -37,10 +37,4 @@ export const InfoBox: React.FC<InfoBoxProps> = observer(() => {
         </Box>
     );
 });
-
-export const StoreSizeInfo: React.FC<Partial<InfoBoxProps>> = () => {
-    const { RootStore } = useStoresContext()
-    const selectedStore = RootStore.active_store
-    const StSizeList = RootStore.storesSize
-    return <InfoBox items={StSizeList} active={selectedStore} />
-}
+InfoBox.displayName = '***Info***'

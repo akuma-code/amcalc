@@ -18,7 +18,7 @@ export class ThemeView implements IThemeView {
         this.Options_Nets_out = this.init.netOutput
     }
 
-    set NetsOut(options: OutputNetsOptions) {
+    private set NetsOut(options: OutputNetsOptions) {
         this.Options_Nets_out = { ...this.Options_Nets_out, ...options }
     }
 

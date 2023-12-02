@@ -28,6 +28,8 @@ const testsaved = [
     new SizeFull(600, 800),
     new SizeFull(300, 500),
 ]
+const view_modes: CardViewMode[] = ['skf', 'simple', 'both']
+const ViewModesIterator = new StringsIterator(...view_modes)
 
 const NetsOutput: React.FC<NetOutputProps> = observer(() => {
 
@@ -42,15 +44,14 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
     const saved = RootStore.stores.size_full?.saved || []
     // const CalcedNets = testsaved.map(nets)
     function toggleView() {
-        const order = ['skf', 'simple', 'both'] as const
-        const fi = order.findIndex(i => i === view.mode)
-        const next_type = order[fi + 1] ? order[fi + 1] : order[0]
+        const next_type = ViewModesIterator.next()
+
         setView(prev => ({ ...prev, mode: next_type, ...selectView(next_type) }))
         updateOptions(next_type)
     }
 
     const s = new StringsIterator('1', '2', '3')
-    const test = () => _log(s.next())
+    const test = () => _log(({ ...RootStore.stores.size_full }))
 
     useEffect(() => {
 

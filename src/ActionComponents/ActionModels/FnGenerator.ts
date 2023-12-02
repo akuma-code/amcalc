@@ -16,10 +16,10 @@ function WrapIter<T extends IC_DataList[keyof IC_DataList]>(iterator: Iterator<T
     return res.value
 }
 
-export class StringsIterator {
-    order: string[]
+export class StringsIterator<T extends string> {
+    order: T[]
     counter: number = 0
-    constructor(...strings: string[]) {
+    constructor(...strings: T[]) {
         this.order = strings
     }
 

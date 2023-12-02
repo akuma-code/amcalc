@@ -11,7 +11,7 @@ interface ICommonDataStoreItem<T> {
     type: string
     init: T
 }
-
+//__
 export type IRootStores_v1 = {
     [Key in keyof ArgsTypesList]?: DataStore<ArgsTypesList[Key]>
 }

@@ -5,6 +5,7 @@ import { ISize, ISizeTuple, _isFullSize } from '../Interfaces/CommonTypes'
 
 export const _log = console.log
 
+
 export const _styleSet = (...args: string[]): string => {
     return args.join(' ')
 }
@@ -38,6 +39,6 @@ export const dto_Export = (fn: IC_FuncsList, initState: IC_FuncArgs): DTO_EXPORT
 
 
 export function _sizeTuppler(size: ISize): ISizeTuple {
-    if (_isFullSize(size)) return [size.w, size.h] as const
-    else return [size.width, size.height] as const
+    if (_isFullSize(size)) return [size.width, size.height] as const
+    else return [size.w, size.h] as const
 }

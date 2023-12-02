@@ -8,6 +8,8 @@ import { InputsTypeEnum } from '../../../Hooks/useFormStateSelector'
 import { AnyArg, useDinamicFields_ } from '../../../Hooks/useDynamicInputs'
 import { FieldsLabelEnum } from '../../../ActionComponents/ActionTypes/ReducerTypes'
 import { DevTool } from '@hookform/devtools'
+import { _isFullSize } from '../../../Interfaces/CommonTypes'
+import { SizeObserver } from '../../../Context/DataStore'
 
 
 type Props = {
@@ -23,7 +25,7 @@ const DynamicInputsForm = observer((props: Props) => {
     const [flist, control] = useDinamicFields_(AS)
     const save = (store_id: InputsTypeEnum, data: AnyArg) => {
         _log("saved to ", store_id, data)
-
+        if ('width' in data) { SizeObserver.notify(data) }
         RootStore.saveTostore(store_id, data)
         control.reset()
     }

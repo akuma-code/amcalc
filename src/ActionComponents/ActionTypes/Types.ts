@@ -28,7 +28,7 @@ type INetSimple = { simple: ISizeShort }
 
 export type Fn_Args_nets = { [K in keyof ISizeFull]: number }
 export type Fn_Output_nets = INetSKF & INetSimple
-export type Fn_nets = ({ width, height }: Fn_Args_nets) => Fn_Output_nets
+export type Fn_nets = (size: ISizeFull) => Fn_Output_nets
 
 
 

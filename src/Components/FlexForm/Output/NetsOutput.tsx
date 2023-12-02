@@ -10,6 +10,7 @@ import { NetsCard, ViewNetsState } from './NetsCard'
 import Icons from '../../Icons/SvgIcons'
 import { StringsIterator } from '../../../ActionComponents/ActionModels/FnGenerator'
 import OutputCard from './OutputCard'
+import { InputsTypeEnum } from '../../../Hooks/useFormStateSelector'
 
 
 export type CardViewMode = 'skf' | 'simple' | 'both'
@@ -50,8 +51,8 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
         updateOptions(next_type)
     }
 
-    const s = new StringsIterator('1', '2', '3')
-    const test = () => _log(({ ...RootStore.stores.size_full }))
+
+    const test = () => console.log('stores: ', { ...RootStore.stores })
 
     useEffect(() => {
 

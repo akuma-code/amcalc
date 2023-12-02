@@ -1,6 +1,7 @@
 import { _log } from "../Helpers/HelpersFns";
-import { _isFullSize, ISize } from "../Interfaces/CommonTypes";
+import { _isFullSize, ISize, ISizeFull } from "../Interfaces/CommonTypes";
 import { Calc } from "../Hooks/useFuncs";
+import { AnyArg } from "../Hooks/useDynamicInputs";
 
 
 export interface IDSObserver {
@@ -13,6 +14,14 @@ export interface IDSObserver {
 export interface ICalcOutput_ {
     result: any
     text?: string
+}
+
+
+
+
+export interface IObserverOutput<T extends AnyArg> {
+    result: T
+    text: string
 }
 
 export class DataStoreObserver implements IDSObserver {
@@ -34,6 +43,7 @@ export class DataStoreObserver implements IDSObserver {
             text: txt
         }
         this.output.push(calcedItem)
+        _log(this.output)
     }
 
     // applyCalc(saved_arg: ISize) {

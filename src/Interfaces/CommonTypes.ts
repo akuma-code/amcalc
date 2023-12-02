@@ -25,8 +25,8 @@ export class SizeFull {
 }
 
 
-export function _isFullSize(size: ISize): size is ISizeShort {
-    if ('w' in size) return true
+export function _isFullSize(size: ISize): size is ISizeFull {
+    if ('width' in size) return true
     else return false
 }
 

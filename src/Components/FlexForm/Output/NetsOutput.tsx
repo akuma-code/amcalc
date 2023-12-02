@@ -35,7 +35,8 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
     const [view, setView] = useState<CardViewState>(ThemeView.Options_Nets_out)
     // const { mode, show } = useOutputContext()
     const updateOptions = (mode: CardViewMode) => {
-        ThemeView.options('Options_Nets_out', { mode, ...selectView(mode) })
+        const { simple, skf } = selectView(mode)
+        ThemeView.options('Options_Nets_out', { mode, show: { simple, skf } })
 
     }
     const saved = RootStore.stores.size_full?.saved || []

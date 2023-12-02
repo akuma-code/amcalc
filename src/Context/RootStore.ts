@@ -1,22 +1,15 @@
 import { makeAutoObservable } from "mobx";
-import { _log } from "../Helpers/HelpersFns";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
-import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes";
+import { ISizeShort, ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypesList } from "../Models/ArgsTypeModel";
 import { AnyArg } from "../Hooks/useDynamicInputs";
+import { DataStore } from "./DataStore";
 
 interface ICommonDataStoreItem<T> {
     type: string
     init: T
-}
-interface IDataStoreWithInit<D extends ANYobj> {
-    saved: Array<D>
-    init?: D
-    isInited: boolean
-    rootStore?: RootArgsStore_v1
-
 }
 
 export type IRootStores_v1 = {
@@ -27,38 +20,10 @@ type IAnyStore = {
 }
 export interface ExtendedRootStores extends Partial<IAnyStore>, IRootStores_v1 { }
 
-
-export class DataStore<D extends ANYobj>  {
-    public saved: Array<D>
-
-
-    rootStore?: RootArgsStore_v1
-    constructor(rootstore?: RootArgsStore_v1) {
-        this.saved = []
-        this.rootStore = rootstore
-        makeAutoObservable(this)
-    }
-
-    get savedSize() {
-        return this.saved.length
-    }
-    add(data: D) {
-        this.saved = [...this.saved, data]
-    }
-    get store() {
-        return this.saved
-    }
-
-    clear() {
-        this.saved = []
-
-    }
-
-}
-
+//__ RootStore___________________________________________
 export class RootArgsStore_v1 {
     public stores: ExtendedRootStores
-    active_store: InputsTypeEnum = InputsTypeEnum.size_short
+    active_store: InputsTypeEnum = InputsTypeEnum.size_full
 
     constructor() {
         this.stores = this.initStores()
@@ -82,22 +47,15 @@ export class RootArgsStore_v1 {
     selectState(state_id: InputsTypeEnum) {
         this.active_store = state_id
     }
-    public addStore<T extends ANYobj>(dataInterface: ICommonDataStoreItem<T>) {
-        const { type, init } = dataInterface
-        const new_store = new DataStore<typeof init>(this)
-        if (!this.stores) {
-            this.stores = { [type]: new_store }
 
-            return
-        }
-        this.stores = { ...this.stores, [type]: new_store }
-    }
 
     private initStores() {
-        this.use(InputsTypeEnum.size_short, new DataStore<ISizeShort>(this))
+        const FullSIZE = new DataStore<ISizeFull>(this)
+        const ShortSIZE = new DataStore<ISizeShort>(this)
+        this.use(InputsTypeEnum.size_full, FullSIZE)
+        this.use(InputsTypeEnum.size_short, ShortSIZE)
         this.use(InputsTypeEnum.offset5, new DataStore<Fn_Args_offset5>(this))
-        this.use(InputsTypeEnum.size_full, new DataStore<ISizeFull>(this))
-        // this.addStore({ type: InputsTypeEnum.size_full, init: { width: 5, height: 5 } })
+
         return this.stores
     }
     get traverse() {
@@ -145,10 +103,6 @@ export class RootArgsStore_v1 {
 export const RootArgsStore = new RootArgsStore_v1()
 
 
-const dataint: ICommonDataStoreItem<ISizeFull> = {
-    type: 'SIZE',
-    init: { width: 5, height: 5 }
-}
 // RAS.stores!.size_full!.add({ width: 4, height: 19 })
 // RAS.addStore(dataint)
 // RAS.addStore(dataint)

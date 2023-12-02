@@ -1,6 +1,6 @@
 import { AnyArg } from "../Hooks/useDynamicInputs"
 import { DTO_ARGS, InputsTypeEnum } from "../Hooks/useFormStateSelector"
-import { DataStore } from "../Context/RootStore"
+import { DataStore } from "../Context/DataStore"
 import { ANYobj } from "../Interfaces/MathActionsTypes"
 export enum RS_v1Actions {
     SAVE_DATA = 'save_data',

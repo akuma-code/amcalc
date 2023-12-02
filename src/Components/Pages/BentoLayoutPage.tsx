@@ -10,6 +10,7 @@ import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
 import NetsOutput from '../FlexForm/Output/NetsOutput'
 import { InfoBox } from './InfoBox'
 import { CardViewState } from '../../Hooks/useOutputCtx'
+import { MockServer } from '../Templates/FakeServer'
 
 
 
@@ -22,9 +23,12 @@ const test_div = (w: number, h: number, count?: number) => {
 const d = FactoryDiv
 
 
+
+
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { RootStore } = useStoresContext()
+
     function toggleView(view: CardViewState) {
         const order = ['skf', 'simple', 'both'] as const
         const fi = order.findIndex(i => i === view.mode)

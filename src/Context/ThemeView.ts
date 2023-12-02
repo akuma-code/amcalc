@@ -5,6 +5,7 @@ import { ANYobj } from "../Interfaces/MathActionsTypes";
 interface OutputNetsOptions {
     mode: 'skf' | 'simple' | 'both'
     show: ViewNetsState
+
 }
 interface IThemeView {
     Options_Nets_out: OutputNetsOptions

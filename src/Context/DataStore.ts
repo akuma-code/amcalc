@@ -22,7 +22,7 @@ export class DataStore<D extends ANYobj> {
     constructor(rootstore?: RootArgsStore_v1) {
         this.saved = [];
         this.rootStore = rootstore;
-        makeAutoObservable(this);
+        makeAutoObservable(this, {}, { name: 'DStore' });
     }
 
     get savedSize() {

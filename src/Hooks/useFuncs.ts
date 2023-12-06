@@ -1,6 +1,6 @@
 import { Fn_Args_offset5, Fn_nets, Fn_offset5 } from "../ActionComponents/ActionTypes/Types"
 import { _rad2deg } from "../Helpers/HelpersFns"
-import { ISizeFull } from "../Interfaces/CommonTypes"
+import { ISizeFull, ISizeTuple } from "../Interfaces/CommonTypes"
 
 export const useFuncs = () => {
     const nets: Fn_nets = ({ width, height }: ISizeFull) => {
@@ -98,6 +98,12 @@ export class Calc {
         }
         return simple
     }
+    static OtkPanel(size: ISizeFull) {
+        const pm = +(size.width / 1000 + 2 * size.height / 1000 + 0.3).toFixed(4)
+        return { pm }
+    }
+
+
 
 }
 

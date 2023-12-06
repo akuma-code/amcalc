@@ -29,10 +29,10 @@ export const InfoBox: React.FC<InfoBoxProps> = observer(() => {
         >
             <span className='text-end text-xl'> {LABELS_LIST[selectedStore]} </span>
             <Divider variant='fullWidth'>stores size</Divider>
-            {ss.map(s =>
-                s.size > 0 ?
-                    <TextIconChip text={s.store_id} icon={s.size.toString()} key={s.store_id} />
-                    : null
+            {StSizeList.map(s =>
+                // s.size > 0 ?
+                <TextIconChip text={s.store_id} icon={s.size.toString()} key={s.store_id} />
+                // : null
             )}
         </Box>
     );

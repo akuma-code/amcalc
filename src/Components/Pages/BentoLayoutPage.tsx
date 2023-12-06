@@ -11,6 +11,7 @@ import NetsOutput from '../FlexForm/Output/NetsOutput'
 import { InfoBox } from './InfoBox'
 import { CardViewState } from '../../Hooks/useOutputCtx'
 import { MockServer } from '../Templates/FakeServer'
+import OutputVers1 from '../FlexForm/Output/Output_v1'
 
 
 
@@ -38,10 +39,9 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === RootStore.active_store,
         [RootStore.active_store])
     const ControlButtonsGroup = useMemo(() => {
-        const Group = () => <ButtonGroup sx={{ mx: 1, gap: 1, width: 200 }}
+        const Group = () => <ButtonGroup sx={{ mx: 1, gap: 1, width: 200, height: 'fit-content' }}
             variant="contained"
             size='large'
-
             component={Stack}
         >
             <Button fullWidth={true}
@@ -118,8 +118,8 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     flexWrap={'wrap'}
                     overflow={'auto'}
                 >
-
-                    <NetsOutput />
+                    <OutputVers1 store={RootStore.stores.size_full!.saved} />
+                    {/* <NetsOutput /> */}
 
                 </Grid>
             </Grid>

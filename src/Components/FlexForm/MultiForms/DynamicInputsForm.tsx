@@ -9,7 +9,8 @@ import { AnyArg, useDinamicFields_ } from '../../../Hooks/useDynamicInputs'
 import { FieldsLabelEnum } from '../../../ActionComponents/ActionTypes/ReducerTypes'
 import { DevTool } from '@hookform/devtools'
 import { _isFullSize } from '../../../Interfaces/CommonTypes'
-import { SizeObserver } from '../../../Context/DataStore'
+// import { SizeObserver } from '../../../Context/DataStore'
+
 
 
 type Props = {
@@ -26,10 +27,11 @@ const DynamicInputsForm = observer((props: Props) => {
 
 
 
-    const save = (store_id: InputsTypeEnum, data: AnyArg) => {
-        _log("saved to ", store_id, data)
-        if ('width' in data) { SizeObserver.notify(data) }
-        RootStore.saveTostore(store_id, data)
+    const save = (data: AnyArg) => {
+
+        _log("saved to ", data)
+        // if ('width' in data) { SizeObserver.notify(data) }
+        RootStore.saveTostore(AS, data)
         control.reset()
     }
     return (
@@ -38,7 +40,7 @@ const DynamicInputsForm = observer((props: Props) => {
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
-            onSubmit={control.handleSubmit((d) => save(AS, d))}
+            onSubmit={control.handleSubmit(save)}
             autoComplete="on"
             id='dform'
             display={'flex'}
@@ -112,7 +114,7 @@ const ListOfInputs: React.FC<ListOfInputsProps> = ({ fields, methods }) => {
             {
                 fields.map(item =>
                     <UnControlledInput name={item.fieldName} register={methods.register} key={item.fieldName} />
-                )}
+                ).reverse()}
         </Box>)
 }
 

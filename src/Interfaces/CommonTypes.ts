@@ -5,8 +5,8 @@ export interface ISizeShort {
     h: number
 }
 export interface ISizeFull {
-    width: number
     height: number
+    width: number
 }
 
 export type ISize = ISizeFull | ISizeShort

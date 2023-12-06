@@ -80,9 +80,12 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
             </ButtonGroup>
             <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" >
                 {/* <OutputCard savedSize={new SizeShort(300, 550)} viewOptions={{ showSkf: true, showSimple: false }} /> */}
-                {saved && saved.map((size, idx) =>
-                    <NetsCard size={size} idxCounter={idx} key={_ID()} />
-                )}
+                {
+                    // saved && 
+                    testsaved.map((size, idx) =>
+                        // <NetsCard size={size} idxCounter={idx} key={_ID()} />
+                        <OutputCard savedSize={size} key={idx} />
+                    )}
             </Stack>
 
         </Box>

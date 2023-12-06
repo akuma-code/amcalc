@@ -1,12 +1,13 @@
-import { _log } from "../Helpers/HelpersFns";
-import { _isFullSize, ISize, ISizeFull } from "../Interfaces/CommonTypes";
+import { _ID, _log, _sizeTuppler } from "../Helpers/HelpersFns";
+import { _isFullSize, ISize, ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
 import { Calc } from "../Hooks/useFuncs";
 import { AnyArg } from "../Hooks/useDynamicInputs";
+import { ANYobj } from "../Interfaces/MathActionsTypes";
 
 
 export interface IDSObserver {
     name: string
-    output: ICalcOutput_[]
+    output: unknown[]
     update(payload: any): void
 
 }
@@ -24,43 +25,36 @@ export interface IObserverOutput<T extends AnyArg> {
     text: string
 }
 
-export class DataStoreObserver implements IDSObserver {
-    output: ICalcOutput_[] = [];
+export class OutputSizeObserver {
+    output: OutputSizeBlock[] = [];
     name: string;
     constructor(obs_name: string) {
         this.name = obs_name;
     }
 
-    update(payload: any): void {
-        const { simple, skf } = Calc.nets(payload);
-        const txt = `
-            Простая: ${simple.w} x ${simple.h}
-            SKF: ${skf.w} x ${skf.h}`;
-
-
-        const calcedItem = {
-            result: Calc.nets(payload),
-            text: txt
-        }
-        this.output.push(calcedItem)
+    update(payload: ISize): void {
+        this.output.push(new OutputSizeBlock(payload))
         _log(this.output)
     }
 
-    // applyCalc(saved_arg: ISize) {
-    //     const res = {
-    //         result: {},
-    //         text: ""
-    //     };
-    //     if (!_isFullSize(saved_arg)) {
-    //         const { simple, skf } = Calc.nets(saved_arg);
-    //         const txt = `
-    //         Простая: ${simple.w} x ${simple.h}
-    //         SKF: ${skf.w} x ${skf.h}`;
-    //         res.text = txt;
-    //         res.result = { skf, simple };
-    //         this.output.push(res);
-    //         return;
-    //     }
-    //     _log("Args not saved! Error!");
-    // }
+}
+
+
+
+export class OutputSizeBlock {
+    block_id: string = _ID()
+    out: Record<string, ANYobj>
+    constructor(size: ISize) {
+
+        this.out = this.calc(size)
+    }
+
+    calc(args: ISize) {
+        const size = new SizeFull(..._sizeTuppler(args))
+        const netSkf = Calc.netSkf(size)
+        const netSimple = Calc.netSimple(size)
+        const Otk = Calc.OtkPanel(size)
+        this.out = { netSimple, netSkf, Otk }
+        return { netSimple, netSkf, Otk }
+    }
 }

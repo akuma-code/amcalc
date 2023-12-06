@@ -2,9 +2,11 @@ import { computed, makeAutoObservable, observable } from "mobx";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { RootArgsStore_v1 } from "./RootStore";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
-import { DataStoreObserver, IDSObserver } from "./DataStoreObserver";
+import { OutputSizeObserver, IDSObserver } from "./DataStoreObserver";
 import { AnyArg } from "../Hooks/useDynamicInputs";
-import { ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
+import { ISize, ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
+import { Calc } from "../Hooks/useFuncs";
+import { _sizeTuppler } from "../Helpers/HelpersFns";
 
 interface IDS_Subject {
     store_name: InputsTypeEnum
@@ -26,7 +28,7 @@ export class DataStore<D extends ANYobj> {
     constructor(rootstore?: RootArgsStore_v1) {
         this.saved = [];
         this.rootStore = rootstore;
-
+        makeAutoObservable(this)
     }
 
 
@@ -46,7 +48,7 @@ export class DataStore<D extends ANYobj> {
 }
 
 //__       Subject Data Store <--> Наблюдатель, который рассылает данные
-export class SubjectDS<T extends AnyArg> {
+export class SubjectDS<T extends AnyArg>{
     observers: IDSObserver[]
     constructor(rstore?: RootArgsStore_v1) {
         // super(rstore)
@@ -65,8 +67,9 @@ export class SubjectDS<T extends AnyArg> {
     }
 }
 
-export const SizeObserver = new SubjectDS<ISizeFull>()
-const obs = new DataStoreObserver('FullSize')
-SizeObserver.addObserver(obs)
+
+// export const SizeObserver = new SubjectDS<ISizeFull>()
+// const obs = new OutputSizeObserver('FullSize')
+// SizeObserver.addObserver(obs)
 
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { SizeFull, SizeShort } from '../../../Interfaces/CommonTypes'
 import { useStoresContext } from '../../../Hooks/useStoresContext'
 import { observer } from 'mobx-react-lite'
@@ -42,7 +42,7 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
         ThemeView.options('Options_Nets_out', { mode, show: { simple, skf } })
 
     }
-    const saved = RootStore.stores.size_full?.saved || []
+    const saved = useMemo(() => RootStore.stores.size_full?.saved, [RootStore.stores.size_full?.saved])
     // const CalcedNets = testsaved.map(nets)
     function toggleView() {
         const next_type = ViewModesIterator.next()
@@ -79,8 +79,8 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
                 >{Icons.defaultIcon}</Button>
             </ButtonGroup>
             <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" >
-                <OutputCard savedSize={new SizeShort(300, 550)} viewOptions={{ showSkf: true, showSimple: false }} />
-                {testsaved.map((size, idx) =>
+                {/* <OutputCard savedSize={new SizeShort(300, 550)} viewOptions={{ showSkf: true, showSimple: false }} /> */}
+                {saved && saved.map((size, idx) =>
                     <NetsCard size={size} idxCounter={idx} key={_ID()} />
                 )}
             </Stack>

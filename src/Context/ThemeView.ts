@@ -1,6 +1,9 @@
-import { makeAutoObservable } from "mobx";
+import { action, makeAutoObservable, observable } from "mobx";
 import { ViewNetsState } from "../Components/FlexForm/Output/NetsCard";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
+import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
+import { observer } from "mobx-react-lite";
+import { StringsIterator } from "../ActionComponents/ActionModels/FnGenerator";
 
 interface OutputNetsOptions {
     mode: 'skf' | 'simple' | 'both'
@@ -42,5 +45,26 @@ export class ThemeView implements IThemeView {
         const updated: OutputNetsOptions = { ...current, mode: new_mode, show: new_show }
         this.NetsOut = updated
 
+    }
+}
+
+export class OutputViewConfig {
+    selected_store: InputsTypeEnum = InputsTypeEnum.size_full
+    visible: Record<string, boolean> = {}
+    constructor() {
+        makeAutoObservable(this, {
+            selected_store: observable,
+            visible: observable,
+            toggle: action
+        })
+        this.visible = { showSkf: false, showSimple: true }
+    }
+    toggle(mode: 'skf' | 'simple' | 'both') {
+
+        switch (mode) {
+            case "skf": { this.visible = { ...this.visible, showSkf: true, showSimple: false }; break }
+            case "simple": { this.visible = { ...this.visible, showSkf: false, showSimple: true }; break }
+            case "both": { this.visible = { ...this.visible, showSkf: true, showSimple: false }; break }
+        }
     }
 }

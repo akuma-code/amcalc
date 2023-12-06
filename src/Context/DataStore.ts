@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { computed, makeAutoObservable, observable } from "mobx";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { RootArgsStore_v1 } from "./RootStore";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
@@ -18,18 +18,18 @@ interface IDS_Subject {
 export class DataStore<D extends ANYobj> {
     public saved: Array<D>;
     rootStore?: RootArgsStore_v1;
-
+    get savedSize() {
+        return this.saved.length;
+    }
 
 
     constructor(rootstore?: RootArgsStore_v1) {
         this.saved = [];
         this.rootStore = rootstore;
-        // makeAutoObservable(this, {}, { name: 'DStore' });
+
     }
 
-    get savedSize() {
-        return this.saved.length;
-    }
+
     add(data: D) {
         this.saved = [...this.saved, data];
     }
@@ -46,10 +46,10 @@ export class DataStore<D extends ANYobj> {
 }
 
 //__       Subject Data Store <--> Наблюдатель, который рассылает данные
-export class SubjectDS<T extends AnyArg> extends DataStore<T>{
+export class SubjectDS<T extends AnyArg> {
     observers: IDSObserver[]
     constructor(rstore?: RootArgsStore_v1) {
-        super(rstore)
+        // super(rstore)
         this.observers = []
     }
 

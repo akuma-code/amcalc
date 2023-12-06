@@ -2,11 +2,11 @@ import { createContext } from 'react'
 
 import { useContext } from 'react'
 import { RootArgsStore_v1 } from '../Context/RootStore'
-import { ThemeView } from '../Context/ThemeView'
+import { OutputViewConfig, ThemeView } from '../Context/ThemeView'
 export interface IStoresContext {
     RootStore: RootArgsStore_v1
     ThemeView: ThemeView
-
+    ViewConfig: OutputViewConfig
 }
 
 

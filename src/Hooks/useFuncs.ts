@@ -82,7 +82,22 @@ export class Calc {
 
         return { ...calc }
     }
-
+    static netSkf(size: ISizeFull) {
+        const { width, height } = size
+        const skf = {
+            w: +width - 45,
+            h: +height - 47
+        }
+        return skf
+    }
+    static netSimple(size: ISizeFull) {
+        const { width, height } = size
+        const simple = {
+            w: +width + 24,
+            h: +height + 45
+        }
+        return simple
+    }
 
 }
 

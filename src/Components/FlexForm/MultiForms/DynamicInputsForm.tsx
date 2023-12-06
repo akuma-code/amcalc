@@ -23,6 +23,9 @@ const DynamicInputsForm = observer((props: Props) => {
 
 
     const [flist, control] = useDinamicFields_(AS)
+
+
+
     const save = (store_id: InputsTypeEnum, data: AnyArg) => {
         _log("saved to ", store_id, data)
         if ('width' in data) { SizeObserver.notify(data) }
@@ -94,7 +97,7 @@ export function UnControlledInput({ register, name, ...rest }: IRegInput<AnyArg>
         <FormControl variant="standard" margin='dense' >
             <InputLabel htmlFor={`input_` + name}>{FieldsLabelEnum[name as keyof AnyArg] || ""}</InputLabel>
             <Input id={`input_` + name}
-                {...register(name as keyof AnyArg, { required: true, shouldUnregister: true })}
+                {...register(name as keyof AnyArg, { required: true, shouldUnregister: true, valueAsNumber: true })}
                 {...rest}
             />
         </FormControl>

@@ -5,10 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { IStoresContext, StoresContext } from './Hooks/useStoresContext';
 import { RootArgsStore_v1 } from './Context/RootStore';
-import { ThemeView } from './Context/ThemeView';
+import { OutputViewConfig, ThemeView } from './Context/ThemeView';
 const Stores: IStoresContext = {
   ThemeView: new ThemeView(),
   RootStore: new RootArgsStore_v1(),
+  ViewConfig: new OutputViewConfig()
 
 
 }

@@ -7,6 +7,7 @@ import { SubjectDS } from '../../../Context/DataStore'
 import { OutputSizeBlock, OutputSizeObserver } from '../../../Context/DataStoreObserver'
 import { _ID } from '../../../Helpers/HelpersFns'
 import OutputCard from './OutputCard'
+import { Stack } from '@mui/material'
 
 type OutputProps = {
     store?: ISizeFull[]
@@ -38,14 +39,14 @@ const OutputVers1 = (props: OutputProps) => {
     // }, [RootStore.stores])
     // if (!size_full) return null
     return (
-        <div>
-            {saved.length}
+        <Stack maxHeight={'70vh'}>
+
             {
-                fakeInit.map(s =>
+                [...saved, ...fakeInit].map(s =>
                     <OutputCard savedSize={s} key={_ID()} />
                 )
             }
-        </div>
+        </Stack>
     )
 }
 OutputVers1.displayName = '*** Output_v1 ***'

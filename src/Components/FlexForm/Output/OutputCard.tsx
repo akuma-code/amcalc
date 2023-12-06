@@ -72,7 +72,7 @@ const OutputCard = ({ savedSize, outblock }: OutputCardProps) => {
             <Box component={Stack}
                 useFlexGap
                 flexDirection={'column'}
-                gap={1}
+
                 margin={1}
             >
                 <SkfOut {...output.netSkf as ISizeShort} />

@@ -1,4 +1,4 @@
-import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
+import { action, computed, makeAutoObservable, makeObservable, observable, toJS } from "mobx";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { RootArgsStore_v1 } from "./RootStore";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
@@ -7,6 +7,7 @@ import { AnyArg } from "../Hooks/useDynamicInputs";
 import { ISize, ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
 import { _ID, _sizeTuppler } from "../Helpers/HelpersFns";
 import { Calc, Fn_CalcList } from "../Hooks/useFuncs";
+import { truncate } from "fs";
 
 interface IDS_Subject {
     store_name: InputsTypeEnum
@@ -19,18 +20,15 @@ interface IDS_Subject {
 // __DataStore <=> ObserverSubject
 export class DataStore<D extends ANYobj = AnyArg> {
     private saved: Array<D>;
-    output: DataOutputBlock<D>[] = []
-    rootStore?: RootArgsStore_v1;
+    private rootStore?: RootArgsStore_v1;
+    output: DataOutputBlock<D>[]
     store_id!: string
+    uniqueID: string = _ID()
 
     constructor(rootstore?: RootArgsStore_v1) {
-        this.saved = [];
-        this.rootStore = rootstore;
-
-        makeObservable(this, {
+        makeAutoObservable(this, {
             output: observable,
-            rootStore: observable,
-            store_id: observable,
+
             store: computed,
             storeSize: computed,
             data: computed,
@@ -38,14 +36,25 @@ export class DataStore<D extends ANYobj = AnyArg> {
             clear: action,
             updateOutput: action,
             setName: action,
-        })
+
+        }, { autoBind: true }
+
+        )
+        this.saved = [];
+        this.rootStore = rootstore;
+        this.output = []
     }
+
+
     get storeSize() {
+
         return this.saved.length;
     }
 
     setName(name: string) {
+
         this.store_id = name
+        return this
     }
     add(data: D) {
         this.saved = [...this.saved, data];
@@ -55,12 +64,13 @@ export class DataStore<D extends ANYobj = AnyArg> {
         return this.saved;
     }
     get data() {
-        const store = this.store
-        const out = this.output
+        const store = toJS(this.store)
+        const out = toJS(this.output)
         return { store, out }
     }
     clear() {
         this.saved = [];
+        this.updateOutput()
 
     }
 
@@ -72,7 +82,7 @@ export class DataStore<D extends ANYobj = AnyArg> {
 }
 
 export class DataOutputBlock<A extends ANYobj = AnyArg> {
-    root?: DataStore<A>
+    private root?: DataStore<A>
     initArg: A
     block_id: string = _ID()
     out: any[] = []

@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { ISizeShort, ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
@@ -6,7 +6,7 @@ import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypesList } from "../Models/ArgsTypeModel";
 import { AnyArg } from "../Hooks/useDynamicInputs";
 import { DataStore } from "./DataStore";
-import { _log } from "../Helpers/HelpersFns";
+import { _ID, _log } from "../Helpers/HelpersFns";
 
 export type IRootStores_v1 = {
     [Key in keyof ArgsTypesList]?: DataStore<ArgsTypesList[Key]>
@@ -26,8 +26,18 @@ export class RootArgsStore_v1 {
 
 
     constructor() {
+        makeAutoObservable(this,
+            // {
+            //     stores: observable,
+            //     saveTostore: action,
+            //     use: action,
+            //     storeKeys: computed,
+            //     // select: action,
+            //     // traverse: action,
+            //     // storesSize: action
+            // }
+        )
         this.stores = this.initStores()
-        makeAutoObservable(this)
     }
     get storeKeys(): ReadonlyArray<keyof ExtendedRootStores> | [] {
         if (!this.stores) return []
@@ -36,6 +46,7 @@ export class RootArgsStore_v1 {
     }
 
     public use<T extends ANYobj>(store_id: InputsTypeEnum, store: DataStore<T>) {
+        store.setName(store_id)
         if (!this.stores) {
             this.stores = { [store_id]: store }
 
@@ -84,7 +95,7 @@ export class RootArgsStore_v1 {
         //     const compSize = this.select(store)?.savedSize || 1
         //     arr.push({ store_id: key, size: compSize })
         // }
-        console.log('ss', ...SIZE)
+        // console.log('ss', ...SIZE)
         return SIZE
 
     }
@@ -97,17 +108,17 @@ export class RootArgsStore_v1 {
         const s = this.select(store_id)
         switch (store_id) {
             case InputsTypeEnum.size_full: {
-                s?.add(data)
+                if ('width' in data) s?.add(data)
                 break
             }
             case InputsTypeEnum.offset5: {
                 // const s = this.select(store_id)
-                s?.add(data)
+                if ('da' in data) s?.add(data)
                 break
             }
             case InputsTypeEnum.size_short: {
                 // const s = this.select(store_id)
-                s?.add(data)
+                if ('w' in data) s?.add(data)
                 break
             }
             default: {

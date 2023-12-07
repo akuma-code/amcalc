@@ -4,7 +4,7 @@ import React, { useMemo, useCallback } from 'react'
 import { _log, _toJSON } from '../../Helpers/HelpersFns'
 import { FactoryDiv } from '../Templates/Factory'
 import { useStoresContext } from '../../Hooks/useStoresContext'
-import { observer } from 'mobx-react-lite'
+import { observer, } from 'mobx-react-lite'
 import { InputsTypeEnum } from '../../Hooks/useFormStateSelector'
 import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
 import NetsOutput from '../FlexForm/Output/NetsOutput'
@@ -33,7 +33,10 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     const { RootStore, ViewConfig } = useStoresContext()
 
     const logStores = () => {
-        _log({ ...RootStore.stores })
+        const s = RootStore.select(ViewConfig.selected_store)
+        if (!s) return
+        const { store, out } = s.data
+        _log({ ...s.data })
     }
     const SelectStoreAndOut = useCallback((type: InputsTypeEnum) => {
         ViewConfig.selectStore(type)
@@ -68,6 +71,8 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
 
         return Group
     }, [SelectStoreAndOut, isSelected])
+
+    const info_items = RootStore.storesSize()
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
     return (
         <Grid container spacing={2} minHeight={160} maxWidth={'85vw'} key={'MainGridContainer'}
@@ -84,7 +89,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 >
 
 
-                    <InfoBox />
+                    <InfoBox items={info_items} />
 
                 </Grid>
                 <Grid key={'selector'}
@@ -106,7 +111,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                         </Button>
 
                         <Button
-                            onClick={() => _log(...RootStore.storesSize())}
+                            onClick={() => _log(RootStore.storesSize())}
                         >{Icons.defaultIcon}</Button>
                     </ButtonGroup>
                 </Grid>

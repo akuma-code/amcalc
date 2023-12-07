@@ -31,7 +31,7 @@ const DynamicInputsForm = observer((props: Props) => {
 
         _log("saved ", data)
         // if ('width' in data) { SizeObserver.notify(data) }
-        RootStore.saveTostore(ViewConfig.selected_store, data)
+        RootStore.saveTostore(AS, data)
         control.reset()
     }
     return (
@@ -59,7 +59,7 @@ const DynamicInputsForm = observer((props: Props) => {
 })
 
 
-DynamicInputsForm.displayName = "DynamicInputForm"
+DynamicInputsForm.displayName = "***Dynamic Input Form"
 
 export type IRegInput<T extends ANYobj> = {
     register: UseFormRegister<T>

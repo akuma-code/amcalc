@@ -4,23 +4,29 @@ import { TextIconChip } from '../FlexForm/Output/TextIconChipProps';
 import { useStoresContext } from '../../Hooks/useStoresContext';
 import { observer } from 'mobx-react-lite';
 import { LABELS_LIST } from '../../Interfaces/Enums';
+import { InputsTypeEnum } from '../../Hooks/useFormStateSelector';
+import { _log } from '../../Helpers/HelpersFns';
 
 
 export type InfoBoxProps = {
     items?: {
-        store_id: string;
+        store_id: InputsTypeEnum;
         size: number;
     }[]
-    active?: string
+
 }
 
-export const InfoBox: React.FC<InfoBoxProps> = observer(() => {
-    const { RootStore, ViewConfig } = useStoresContext()
+export const InfoBox: React.FC<InfoBoxProps> = ({ items }) => {
+    const { ViewConfig } = useStoresContext()
     const SS = ViewConfig.selected_store
-    const StSizes = useMemo(() => {
-        let s = RootStore.storesSize()
-        return [...s] as const
-    }, [RootStore])
+
+    // const StSizes = useMemo(() => {
+    //     const sts = RootStore.traverse()
+
+    //     const SS = sts.map(ds => ({ store_id: ds.store_id as InputsTypeEnum, size: ds.storeSize }))
+    //     // console.log('SS', SS)
+    //     return SS
+    // }, [RootStore])
 
 
     return (
@@ -30,15 +36,15 @@ export const InfoBox: React.FC<InfoBoxProps> = observer(() => {
             useFlexGap
             rowGap={1}
         >
-            <span className='text-center text-xl'> {LABELS_LIST[SS]} </span>
+            <span className='text-center text-lg'> {LABELS_LIST[SS]} </span>
             <Divider variant='fullWidth'>stores size</Divider>
             {
-                StSizes.map(s =>
+                items && items.map(s =>
                 (s.size > 0 ?
                     <TextIconChip text={s.store_id} icon={s.size.toString()} key={s.store_id} />
                     : null)
                 )}
         </Box>
     );
-});
+};
 InfoBox.displayName = '***Info***'

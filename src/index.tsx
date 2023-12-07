@@ -5,17 +5,29 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { IStoresContext, StoresContext } from './Hooks/useStoresContext';
 import { RootArgsStore_v1 } from './Context/RootStore';
-import { OutputViewConfig, ThemeView } from './Context/ThemeView';
-const Stores: IStoresContext = {
+import { OutputViewConfig, ThemeView } from './Context/ThemeView'
 
+import { configure } from "mobx"
+
+configure({
+  useProxies: "always",
+  enforceActions: 'observed'
+});
+
+
+
+const Stores: IStoresContext = {
   RootStore: new RootArgsStore_v1(),
   ViewConfig: new OutputViewConfig()
-
-
 }
+
+
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+
 root.render(
   <React.StrictMode>
     <StoresContext.Provider

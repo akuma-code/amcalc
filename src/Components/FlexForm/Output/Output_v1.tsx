@@ -25,7 +25,7 @@ const obs = new OutputSizeObserver('sizer')
 
 StoreSizeObs.addObserver(obs)
 
-const OutputVers1 = (props: OutputProps) => {
+const OutputVers1 = observer((props: OutputProps) => {
     // const { RootStore: { stores: { size_full } } } = useStoresContext()
 
 
@@ -53,6 +53,6 @@ const OutputVers1 = (props: OutputProps) => {
             }
         </Stack>
     )
-}
+})
 OutputVers1.displayName = '*** Output_v1 ***'
 export default OutputVers1

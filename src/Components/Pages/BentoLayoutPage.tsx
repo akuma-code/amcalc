@@ -4,6 +4,7 @@ import React, { useMemo, useCallback } from 'react'
 import { _log, _toJSON } from '../../Helpers/HelpersFns'
 import { FactoryDiv } from '../Templates/Factory'
 import { useStoresContext } from '../../Hooks/useStoresContext'
+import { toJS } from 'mobx'
 import { observer, } from 'mobx-react-lite'
 import { InputsTypeEnum } from '../../Hooks/useFormStateSelector'
 import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
@@ -36,7 +37,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
         const s = RootStore.select(ViewConfig.selected_store)
         if (!s) return
         const { store, out } = s.data
-        _log({ ...s.data })
+        _log({ ...toJS(s) })
     }
     const SelectStoreAndOut = useCallback((type: InputsTypeEnum) => {
         ViewConfig.selectStore(type)

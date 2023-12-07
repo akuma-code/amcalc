@@ -6,7 +6,7 @@ import { OutputSizeObserver, IDSObserver } from "./DataStoreObserver";
 import { AnyArg } from "../Hooks/useDynamicInputs";
 import { ISize, ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
 import { _ID, _sizeTuppler } from "../Helpers/HelpersFns";
-import { Calc, Fn_CalcList } from "../Hooks/useFuncs";
+import { Calc_, Fn_CalcList } from "../Hooks/useFuncs";
 import { truncate } from "fs";
 
 interface IDS_Subject {
@@ -22,10 +22,10 @@ export class DataStore<D extends ANYobj = AnyArg> {
     private saved: Array<D>;
     private rootStore?: RootArgsStore_v1;
     output: DataOutputBlock<D>[]
-    store_id!: string
+    store_id?: string | null
     uniqueID: string = _ID()
 
-    constructor(rootstore?: RootArgsStore_v1) {
+    constructor({ root, name }: { root?: RootArgsStore_v1, name: string }) {
         makeAutoObservable(this, {
             output: observable,
 
@@ -41,8 +41,9 @@ export class DataStore<D extends ANYobj = AnyArg> {
 
         )
         this.saved = [];
-        this.rootStore = rootstore;
+        this.rootStore = root;
         this.output = []
+        this.setName(name)
     }
 
 

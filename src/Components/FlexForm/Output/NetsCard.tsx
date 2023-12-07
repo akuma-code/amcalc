@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useCallback } from 'react';
 import { ISize, ISizeFull, ISizeShort } from '../../../Interfaces/CommonTypes';
-import { Calc } from '../../../Hooks/useFuncs';
+import { Calc_ } from '../../../Hooks/useFuncs';
 import { observer } from 'mobx-react-lite';
 import { Avatar, Box, Card, CardContent, Divider, Stack, IconButton } from '@mui/material';
 import { useOutputContext } from '../../../Hooks/useOutputCtx';
@@ -34,7 +34,7 @@ export const NetsCard: React.FC<NetCardProps> = observer((props) => {
     };
 
 
-    const { simple, skf } = Calc.nets(props.size);
+    const { simple, skf } = Calc_.nets(props.size);
 
 
     // const toggleView = useCallback(() => setViewNet(prev => ({ ...prev, ...toggleNextView(viewNet.mode) })), [viewNet.mode]);

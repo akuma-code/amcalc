@@ -1,6 +1,6 @@
 import { _ID, _log, _sizeTuppler } from "../Helpers/HelpersFns";
 import { _isFullSize, ISize, ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
-import { Calc } from "../Hooks/useFuncs";
+import { Calc_ } from "../Hooks/useFuncs";
 import { AnyArg } from "../Hooks/useDynamicInputs";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 
@@ -51,9 +51,9 @@ export class OutputSizeBlock {
 
     calc(args: ISize) {
         const size = new SizeFull(..._sizeTuppler(args))
-        const netSkf = Calc.skf(size)
-        const netSimple = Calc.simple(size)
-        const Otk = Calc.otkosi(size)
+        const netSkf = Calc_.skf(size)
+        const netSimple = Calc_.simple(size)
+        const Otk = Calc_.otkosi(size)
         this.out = { netSimple, netSkf, Otk }
         return { netSimple, netSkf, Otk }
     }

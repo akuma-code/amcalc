@@ -59,12 +59,12 @@ export class RootArgsStore_v1 {
 
 
     private initStores() {
-        const FullSIZE = new DataStore<ISizeFull>(this)
-        const ShortSIZE = new DataStore<ISizeShort>(this)
-        const OFFSET5 = new DataStore<Fn_Args_offset5>(this)
-        FullSIZE.setName(InputsTypeEnum.size_full)
-        ShortSIZE.setName(InputsTypeEnum.size_short)
-        OFFSET5.setName(InputsTypeEnum.offset5)
+        const FullSIZE = new DataStore<ISizeFull>({ root: this, name: InputsTypeEnum.size_full })
+        const ShortSIZE = new DataStore<ISizeShort>({ root: this, name: InputsTypeEnum.size_short })
+        const OFFSET5 = new DataStore<Fn_Args_offset5>({ root: this, name: InputsTypeEnum.offset5 })
+        // FullSIZE.setName(InputsTypeEnum.size_full)
+        // ShortSIZE.setName(InputsTypeEnum.size_short)
+        // OFFSET5.setName(InputsTypeEnum.offset5)
 
         this.use(InputsTypeEnum.size_full, FullSIZE)
         this.use(InputsTypeEnum.size_short, ShortSIZE)
@@ -89,13 +89,7 @@ export class RootArgsStore_v1 {
         }
         const storesarr = this.traverse()
         const SIZE = storesarr.map(getsize)
-        // const arr = []
-        // for (let store in this.stores) {
-        //     let key: keyof typeof this.stores = store
-        //     const compSize = this.select(store)?.savedSize || 1
-        //     arr.push({ store_id: key, size: compSize })
-        // }
-        // console.log('ss', ...SIZE)
+
         return SIZE
 
     }
@@ -103,12 +97,13 @@ export class RootArgsStore_v1 {
         return this.stores[store_id]
     }
     saveTostore<T extends AnyArg>(store_id: InputsTypeEnum, data: T) {
-        if (!this.stores) return
+        // if (!this.stores) return
 
         const s = this.select(store_id)
+        if (!s) return
         switch (store_id) {
             case InputsTypeEnum.size_full: {
-                if ('width' in data) s?.add(data)
+                if ('width' in data) s.add(data)
                 break
             }
             case InputsTypeEnum.offset5: {
@@ -139,10 +134,10 @@ export const RootArgsStore = new RootArgsStore_v1()
 // RAS.use(InputsTypeEnum.size, new DataStore<ISize>(RAS))
 // RAS.use(InputsTypeEnum.offset5, new DataStore<Fn_Args_offset5>(RAS))
 const s: ExtendedRootStores = {
-    offset5: new DataStore<Fn_Args_offset5>(RootArgsStore),
-    size_full: new DataStore<ISizeFull>(RootArgsStore),
-    size: new DataStore<ISizeShort>(RootArgsStore),
-    test: new DataStore<ANYobj>(RootArgsStore),
+    offset5: new DataStore<Fn_Args_offset5>({ root: RootArgsStore, name: 'off5' }),
+    size_full: new DataStore<ISizeFull>({ root: RootArgsStore, name: 'full' }),
+    size: new DataStore<ISizeShort>({ root: RootArgsStore, name: 'short' }),
+    test: new DataStore<ANYobj>({ root: RootArgsStore, name: 'any' }),
 
 
 }

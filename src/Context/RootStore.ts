@@ -134,10 +134,10 @@ export const RootArgsStore = new RootArgsStore_v1()
 // RAS.use(InputsTypeEnum.size, new DataStore<ISize>(RAS))
 // RAS.use(InputsTypeEnum.offset5, new DataStore<Fn_Args_offset5>(RAS))
 const s: ExtendedRootStores = {
-    offset5: new DataStore<Fn_Args_offset5>({ root: RootArgsStore, name: 'off5' }),
-    size_full: new DataStore<ISizeFull>({ root: RootArgsStore, name: 'full' }),
-    size: new DataStore<ISizeShort>({ root: RootArgsStore, name: 'short' }),
-    test: new DataStore<ANYobj>({ root: RootArgsStore, name: 'any' }),
+    offset5: new DataStore<Fn_Args_offset5>({ name: 'off5' }),
+    size_full: new DataStore<ISizeFull>({ name: 'full' }),
+    size: new DataStore<ISizeShort>({ name: 'short' }),
+    test: new DataStore<ANYobj>({ name: 'any' }),
 
 
 }

@@ -81,7 +81,12 @@ export class DataStore<D extends ANYobj = AnyArg> {
 
 
 }
+type Out<A extends ANYobj> = A extends AnyArg ? {
+    type: InputsTypeEnum
+    payload: ReturnType<Fn_CalcList<A>>
+} : any
 
+type SizeOutput = Out<ISizeFull>
 export class DataOutputBlock<A extends ANYobj = AnyArg> {
     private root?: DataStore<A>
     initArg: A

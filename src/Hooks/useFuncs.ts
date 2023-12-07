@@ -1,6 +1,6 @@
 import { FnProperties, FnPropertyNames, NonFnPropertyNames } from "../ActionComponents/ActionTypes/FnProperties"
 import { Fn_Args_offset5, Fn_Output_offset5, Fn_nets, Fn_offset5 } from "../ActionComponents/ActionTypes/Types"
-import { _rad2deg } from "../Helpers/HelpersFns"
+import { _rad2deg, _sizeTuppler } from "../Helpers/HelpersFns"
 import { ISizeFull, ISizeShort, ISizeTuple, SizeShort } from "../Interfaces/CommonTypes"
 import { ANYfn, ANYobj } from "../Interfaces/MathActionsTypes"
 import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel"
@@ -110,9 +110,9 @@ type CalcFuncs<A extends ANYobj> = { [Key in keyof CalcType]: CalcType[Key] exte
 export type Fn_CalcList<A extends AnyArg> = CalcFuncs<A>
 type ff = FnProperties<typeof Calc>
 type ss = { [A in InputsTypeEnum]: Fn_CalcList<ArgsTypesList[A]> }
-type fs = {
+type Out = {
     type: InputsTypeEnum
-    payload: Fn_CalcList<ISizeFull>
+    payload: ReturnType<Fn_CalcList<ISizeFull>>
 }
 type ARGS<K extends InputsTypeEnum> = {
     type: K
@@ -120,7 +120,7 @@ type ARGS<K extends InputsTypeEnum> = {
 }
 
 type CalcPropNames = FnPropertyNames<FnProperties<typeof Calc>>
-
+type CalcHandler = { [Key in CalcPropNames]?: typeof Calc[Key] }
 
 export class Calc_ {
 

@@ -6,24 +6,24 @@ import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypesList } from "../Models/ArgsTypeModel";
 import { AnyArg } from "../Hooks/useDynamicInputs";
 import { DataStore } from "./DataStore";
+import { _log } from "../Helpers/HelpersFns";
 
-interface ICommonDataStoreItem<T> {
-    type: string
-    init: T
-}
-//__
 export type IRootStores_v1 = {
     [Key in keyof ArgsTypesList]?: DataStore<ArgsTypesList[Key]>
 }
+
+
 type IAnyStore = {
     [key: string]: DataStore<ANYobj>
 }
-export interface ExtendedRootStores extends Partial<IAnyStore>, IRootStores_v1 { }
+
+
+export interface ExtendedRootStores extends IRootStores_v1, Partial<IAnyStore> { }
 
 //__ RootStore___________________________________________
 export class RootArgsStore_v1 {
     public stores: ExtendedRootStores
-    active_store: InputsTypeEnum = InputsTypeEnum.size_full
+
 
     constructor() {
         this.stores = this.initStores()
@@ -44,56 +44,74 @@ export class RootArgsStore_v1 {
         this.stores = { ...this.stores, [store_id]: store }
         return
     }
-    selectState(state_id: InputsTypeEnum) {
-        this.active_store = state_id
-    }
+
 
 
     private initStores() {
         const FullSIZE = new DataStore<ISizeFull>(this)
         const ShortSIZE = new DataStore<ISizeShort>(this)
+        const OFFSET5 = new DataStore<Fn_Args_offset5>(this)
+        FullSIZE.setName(InputsTypeEnum.size_full)
+        ShortSIZE.setName(InputsTypeEnum.size_short)
+        OFFSET5.setName(InputsTypeEnum.offset5)
+
         this.use(InputsTypeEnum.size_full, FullSIZE)
         this.use(InputsTypeEnum.size_short, ShortSIZE)
-        this.use(InputsTypeEnum.offset5, new DataStore<Fn_Args_offset5>(this))
+        this.use(InputsTypeEnum.offset5, OFFSET5)
 
         return this.stores
     }
-    get traverse() {
-        const arr: DataStore<ANYobj>[] = []
+    traverse() {
+        const arr: DataStore<AnyArg>[] = []
         for (let store in this.stores) {
-            let key: keyof typeof this.stores = store
-            arr.push(this.stores[key]!)
+
+            let st = this.select(store) as DataStore<AnyArg>
+            if (!st) continue
+            arr.push(st)
         }
         return arr
     }
-    public get storesSize() {
-
-        const arr = []
-        for (let store in this.stores) {
-            let key: keyof typeof this.stores = store
-            arr.push({ store_id: key, size: this.stores[key]!.savedSize })
+    public storesSize() {
+        const getsize = (ds: DataStore) => {
+            const { storeSize, store_id } = ds
+            return { size: storeSize, store_id: store_id as InputsTypeEnum }
         }
-        return arr
+        const storesarr = this.traverse()
+        const SIZE = storesarr.map(getsize)
+        // const arr = []
+        // for (let store in this.stores) {
+        //     let key: keyof typeof this.stores = store
+        //     const compSize = this.select(store)?.savedSize || 1
+        //     arr.push({ store_id: key, size: compSize })
+        // }
+        console.log('ss', ...SIZE)
+        return SIZE
 
     }
-
+    select(store_id: keyof typeof this.stores) {
+        return this.stores[store_id]
+    }
     saveTostore<T extends AnyArg>(store_id: InputsTypeEnum, data: T) {
         if (!this.stores) return
 
+        const s = this.select(store_id)
         switch (store_id) {
             case InputsTypeEnum.size_full: {
-                const s = this.stores[store_id]
-                s?.add(data as ISizeFull)
-                return
+                s?.add(data)
+                break
             }
             case InputsTypeEnum.offset5: {
-                const s = this.stores[store_id]
-                s?.add(data as Fn_Args_offset5)
-                return
+                // const s = this.select(store_id)
+                s?.add(data)
+                break
             }
             case InputsTypeEnum.size_short: {
-                const s = this.stores[store_id]
-                s?.add(data as ISizeShort)
+                // const s = this.select(store_id)
+                s?.add(data)
+                break
+            }
+            default: {
+                _log("Store id ", store_id, " not found!")
                 return
             }
         }

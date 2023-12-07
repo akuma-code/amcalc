@@ -14,13 +14,13 @@ import { _isFullSize } from '../../../Interfaces/CommonTypes'
 
 
 type Props = {
-    formStateType: InputsTypeEnum
+    // formStateType: InputsTypeEnum
 
 }
 
 const DynamicInputsForm = observer((props: Props) => {
-    const { RootStore } = useStoresContext()
-    const AS = props.formStateType
+    const { ViewConfig, RootStore } = useStoresContext()
+    const AS = ViewConfig.selected_store
 
 
     const [flist, control] = useDinamicFields_(AS)
@@ -29,9 +29,9 @@ const DynamicInputsForm = observer((props: Props) => {
 
     const save = (data: AnyArg) => {
 
-        _log("saved to ", data)
+        _log("saved ", data)
         // if ('width' in data) { SizeObserver.notify(data) }
-        RootStore.saveTostore(AS, data)
+        RootStore.saveTostore(ViewConfig.selected_store, data)
         control.reset()
     }
     return (
@@ -99,7 +99,7 @@ export function UnControlledInput({ register, name, ...rest }: IRegInput<AnyArg>
         <FormControl variant="standard" margin='dense' >
             <InputLabel htmlFor={`input_` + name}>{FieldsLabelEnum[name as keyof AnyArg] || ""}</InputLabel>
             <Input id={`input_` + name}
-                {...register(name as keyof AnyArg, { required: true, shouldUnregister: true, valueAsNumber: true })}
+                {...register(name as keyof AnyArg, { required: true, shouldUnregister: true, valueAsNumber: true, })}
                 {...rest}
             />
         </FormControl>

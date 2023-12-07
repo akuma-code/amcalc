@@ -1,10 +1,11 @@
 import { v4 } from 'uuid'
 import { DTO_EXPORT, IC_FuncArgs, IC_FuncsList } from '../ActionComponents/ActionTypes/Types'
 import { ISize, ISizeTuple, _isFullSize } from '../Interfaces/CommonTypes'
+import { ANYobj } from '../Interfaces/MathActionsTypes'
 
 
 export const _log = console.log
-
+export const _toJSON = (o: ANYobj) => JSON.parse(JSON.stringify(o, null, 2))
 
 export const _styleSet = (...args: string[]): string => {
     return args.join(' ')

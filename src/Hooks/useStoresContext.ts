@@ -5,7 +5,7 @@ import { RootArgsStore_v1 } from '../Context/RootStore'
 import { OutputViewConfig, ThemeView } from '../Context/ThemeView'
 export interface IStoresContext {
     RootStore: RootArgsStore_v1
-    ThemeView: ThemeView
+    ThemeView?: ThemeView
     ViewConfig: OutputViewConfig
 }
 

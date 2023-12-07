@@ -34,32 +34,23 @@ const ViewModesIterator = new StringsIterator(...view_modes)
 
 const NetsOutput: React.FC<NetOutputProps> = observer(() => {
 
-    const { RootStore, ThemeView } = useStoresContext()
-    const [view, setView] = useState<CardViewState>(ThemeView.Options_Nets_out)
+    const { RootStore, ViewConfig } = useStoresContext()
+    const [view, setView] = useState(ViewConfig.visible)
     // const { mode, show } = useOutputContext()
-    const updateOptions = (mode: CardViewMode) => {
-        const { simple, skf } = selectView(mode)
-        ThemeView.options('Options_Nets_out', { mode, show: { simple, skf } })
 
-    }
-    const saved = useMemo(() => RootStore.stores.size_full?.saved, [RootStore.stores.size_full?.saved])
+    const saved = useMemo(() => RootStore.stores.size_full?.store, [RootStore.stores.size_full?.store])
     // const CalcedNets = testsaved.map(nets)
     function toggleView() {
         const next_type = ViewModesIterator.next()
 
-        setView(prev => ({ ...prev, mode: next_type, ...selectView(next_type) }))
-        updateOptions(next_type)
+
+
     }
 
 
     const test = () => console.log('stores: ', { ...RootStore.stores })
 
-    useEffect(() => {
 
-        setView(prev => ({ ...prev, show: selectView(view.mode) }))
-
-
-    }, [view.mode])
     return (
         <Box sx={{ maxHeight: '70vh', width: '100%' }} display={'flex'} flexDirection={'column'}>
 
@@ -68,10 +59,9 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
                 <Button
                     onClick={toggleView}
                 >
-                    Toggle View to {next_view(view.mode)}
+                    Toggle View
                 </Button>
                 <Button disabled
-                    onClick={() => updateOptions(view.mode)}
                 >Update Options
                 </Button>
                 <Button

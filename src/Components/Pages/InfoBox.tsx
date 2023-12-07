@@ -1,5 +1,5 @@
 import { Box, Divider, Stack } from '@mui/material';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TextIconChip } from '../FlexForm/Output/TextIconChipProps';
 import { useStoresContext } from '../../Hooks/useStoresContext';
 import { observer } from 'mobx-react-lite';
@@ -15,11 +15,14 @@ export type InfoBoxProps = {
 }
 
 export const InfoBox: React.FC<InfoBoxProps> = observer(() => {
-    const { RootStore } = useStoresContext()
-    const selectedStore = RootStore.active_store
-    const StSizeList = RootStore.storesSize
+    const { RootStore, ViewConfig } = useStoresContext()
+    const SS = ViewConfig.selected_store
+    const StSizes = useMemo(() => {
+        let s = RootStore.storesSize()
+        return [...s] as const
+    }, [RootStore])
 
-    const ss = StSizeList.sort((a, b) => b.size - a.size);
+
     return (
         <Box sx={{ width: '90%', m: 'auto' }}
 
@@ -27,13 +30,14 @@ export const InfoBox: React.FC<InfoBoxProps> = observer(() => {
             useFlexGap
             rowGap={1}
         >
-            <span className='text-end text-xl'> {LABELS_LIST[selectedStore]} </span>
+            <span className='text-center text-xl'> {LABELS_LIST[SS]} </span>
             <Divider variant='fullWidth'>stores size</Divider>
-            {StSizeList.map(s =>
-                // s.size > 0 ?
-                <TextIconChip text={s.store_id} icon={s.size.toString()} key={s.store_id} />
-                // : null
-            )}
+            {
+                StSizes.map(s =>
+                (s.size > 0 ?
+                    <TextIconChip text={s.store_id} icon={s.size.toString()} key={s.store_id} />
+                    : null)
+                )}
         </Box>
     );
 });

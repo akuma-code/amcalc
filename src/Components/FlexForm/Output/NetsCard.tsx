@@ -21,9 +21,9 @@ export type ViewNetsState = { [Key in 'skf' | 'simple']: boolean }
 
 export const NetsCard: React.FC<NetCardProps> = observer((props) => {
     const { ThemeView } = useStoresContext()
-    const { mode, show } = ThemeView.Options_Nets_out
+
     const [color, setColor] = useState<string>('#fff');
-    const [viewNet, setViewNet] = useState({ ...show, mode, desc: NetViewEn[mode] });
+    // const [viewNet, setViewNet] = useState({ ...show, mode, desc: NetViewEn[mode] });
 
     const stateBgColor = (mode: CardViewMode) => {
         switch (mode) {
@@ -37,12 +37,11 @@ export const NetsCard: React.FC<NetCardProps> = observer((props) => {
     const { simple, skf } = Calc.nets(props.size);
 
 
-    const toggleView = useCallback(() => setViewNet(prev => ({ ...prev, ...toggleNextView(viewNet.mode) })), [viewNet.mode]);
+    // const toggleView = useCallback(() => setViewNet(prev => ({ ...prev, ...toggleNextView(viewNet.mode) })), [viewNet.mode]);
 
-    useLayoutEffect(() => {
-        setColor(prev => stateBgColor(viewNet.mode));
-        setViewNet(prev => ({ ...prev, desc: NetViewEn[viewNet.mode] }));
-    }, [viewNet.mode]);
+    // useLayoutEffect(() => {
+    //     setColor(prev => stateBgColor(viewNet.mode));
+    // }, [viewNet.mode]);
     return (
         <Card border={1.5} borderColor={'cyan'} borderRadius={1}
             component={Box}
@@ -67,14 +66,16 @@ export const NetsCard: React.FC<NetCardProps> = observer((props) => {
                 <Avatar sx={{ p: 0.5, bgcolor: '#3f0e0e', borderRadius: 2, px: 2, width: 'fit-content', height: 'fit-content' }}
                     variant='square'
                 >
-                    {viewNet.desc}
+                    {/* {viewNet.desc} */}
                 </Avatar>
                 <IconButton sx={{ border: '1px solid #000000', bgcolor: '#84e20a' }} size='small'
-                    onClick={toggleView}>{Icons.RoundedArrows}</IconButton>
+                // onClick={toggleView}
+                >
+                    {Icons.RoundedArrows}</IconButton>
             </Box>
-            {viewNet.mode !== 'both' && <Divider>{viewNet.desc}</Divider>}
+            {/* {viewNet.mode !== 'both' && <Divider>{viewNet.desc}</Divider>} */}
 
-            <CardBodyBlock nets={{ simple, skf }} viewNets={viewNet} />
+            {/* <CardBodyBlock nets={{ simple, skf }} viewNets={viewNet} /> */}
 
             <Divider>входные размеры</Divider>
 

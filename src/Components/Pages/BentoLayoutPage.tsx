@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Grid, Stack } from '@mui/material'
 import React, { useMemo, useCallback } from 'react'
 
-import { _log } from '../../Helpers/HelpersFns'
+import { _log, _toJSON } from '../../Helpers/HelpersFns'
 import { FactoryDiv } from '../Templates/Factory'
 import { useStoresContext } from '../../Hooks/useStoresContext'
 import { observer } from 'mobx-react-lite'
@@ -12,6 +12,8 @@ import { InfoBox } from './InfoBox'
 import { CardViewState } from '../../Hooks/useOutputCtx'
 import { MockServer } from '../Templates/FakeServer'
 import OutputVers1 from '../FlexForm/Output/Output_v1'
+import Icons from '../Icons/SvgIcons'
+import { ANYobj } from '../../Interfaces/MathActionsTypes'
 
 
 
@@ -28,16 +30,17 @@ const d = FactoryDiv
 
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
-    const { RootStore } = useStoresContext()
+    const { RootStore, ViewConfig } = useStoresContext()
 
-    function toggleView(view: CardViewState) {
-        const order = ['skf', 'simple', 'both'] as const
-        const fi = order.findIndex(i => i === view.mode)
-        const net_type = order[fi + 1] ? order[fi + 1] : order[0]
-
+    const logStores = () => {
+        _log({ ...RootStore.stores })
     }
-    const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === RootStore.active_store,
-        [RootStore.active_store])
+    const SelectStoreAndOut = useCallback((type: InputsTypeEnum) => {
+        ViewConfig.selectStore(type)
+        ViewConfig.selectOut(type)
+    }, [ViewConfig])
+    const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === ViewConfig.selected_store,
+        [ViewConfig.selected_store])
     const ControlButtonsGroup = useMemo(() => {
         const Group = () => <ButtonGroup sx={{ mx: 1, gap: 1, width: 200, height: 'fit-content' }}
             variant="contained"
@@ -45,18 +48,18 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             component={Stack}
         >
             <Button fullWidth={true}
-                onClick={() => RootStore.selectState(InputsTypeEnum.size_full)}
+                onClick={() => SelectStoreAndOut(InputsTypeEnum.size_full)}
                 color={isSelected(InputsTypeEnum.size_full) ? 'primary' : 'success'}
                 sx={isSelected(InputsTypeEnum.size_full) ? { outline: '2px solid red' } : { outline: 'none' }}
             >
                 Size Full
             </Button>
-            <Button onClick={() => RootStore.selectState(InputsTypeEnum.size_short)}
+            <Button onClick={() => SelectStoreAndOut(InputsTypeEnum.size_short)}
                 color={isSelected(InputsTypeEnum.size_short) ? 'primary' : 'success'}
                 sx={isSelected(InputsTypeEnum.size_short) ? { outline: '2px solid red' } : { outline: 'none' }}>
                 Size Short
             </Button>
-            <Button onClick={() => RootStore.selectState(InputsTypeEnum.offset5)}
+            <Button onClick={() => SelectStoreAndOut(InputsTypeEnum.offset5)}
                 color={isSelected(InputsTypeEnum.offset5) ? 'primary' : 'success'}
                 sx={isSelected(InputsTypeEnum.offset5) ? { outline: '2px solid red' } : { outline: 'none' }}>
                 Offset5
@@ -64,7 +67,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
         </ButtonGroup>
 
         return Group
-    }, [RootStore, isSelected])
+    }, [SelectStoreAndOut, isSelected])
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
     return (
         <Grid container spacing={2} minHeight={160} maxWidth={'85vw'} key={'MainGridContainer'}
@@ -94,7 +97,18 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 >
 
                     <ControlButtonsGroup />
+                    <ButtonGroup sx={{ alignSelf: 'start' }}
+                        variant="contained" >
+                        <Button onClick={logStores}
+                            color='warning'
+                        >
+                            Log stores
+                        </Button>
 
+                        <Button
+                            onClick={() => _log(...RootStore.storesSize())}
+                        >{Icons.defaultIcon}</Button>
+                    </ButtonGroup>
                 </Grid>
             </Grid>
 
@@ -102,7 +116,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             <Grid container item spacing={2}>
                 <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
 
-                    <DynamicInputsForm formStateType={RootStore.active_store} />
+                    <DynamicInputsForm />
 
 
                 </Grid>
@@ -111,14 +125,10 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     sx={{ bgcolor: '#a9f135' }}
                     xs={9}
                     border={'2px solid green'} p={2}
-                    direction={'row'}
-                    maxHeight={'80vh'}
-                    maxWidth={'80vw'}
-                    gap={2}
-                    flexWrap={'wrap'}
-                    overflow={'auto'}
+
                 >
-                    <OutputVers1 store={RootStore.stores.size_full!.saved} />
+
+                    <OutputVers1 store={RootStore.stores.size_full!.store} />
                     {/* <NetsOutput /> */}
 
                 </Grid>

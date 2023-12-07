@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, observable } from "mobx";
+import { action, makeAutoObservable, makeObservable, observable } from "mobx";
 import { ViewNetsState } from "../Components/FlexForm/Output/NetsCard";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
@@ -50,13 +50,17 @@ export class ThemeView implements IThemeView {
 
 export class OutputViewConfig {
     selected_store: InputsTypeEnum = InputsTypeEnum.size_full
+    selected_output: InputsTypeEnum = InputsTypeEnum.size_full
     visible: Record<string, boolean> = {}
     constructor() {
-        makeAutoObservable(this, {
+        makeObservable(this, {
             selected_store: observable,
+            selected_output: observable,
             visible: observable,
-            toggle: action
-        })
+            toggle: action,
+            selectOut: action,
+            selectStore: action,
+        }, { name: 'ViewConfig' })
         this.visible = { showSkf: false, showSimple: true }
     }
     toggle(mode: 'skf' | 'simple' | 'both') {
@@ -66,5 +70,12 @@ export class OutputViewConfig {
             case "simple": { this.visible = { ...this.visible, showSkf: false, showSimple: true }; break }
             case "both": { this.visible = { ...this.visible, showSkf: true, showSimple: false }; break }
         }
+    }
+
+    selectStore(store_id: InputsTypeEnum) {
+        this.selected_store = store_id
+    }
+    selectOut(store_id: InputsTypeEnum) {
+        this.selected_output = store_id
     }
 }

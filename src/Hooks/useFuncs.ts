@@ -1,6 +1,15 @@
-import { Fn_Args_offset5, Fn_nets, Fn_offset5 } from "../ActionComponents/ActionTypes/Types"
+import { Fn_Args_offset5, Fn_Output_offset5, Fn_nets, Fn_offset5 } from "../ActionComponents/ActionTypes/Types"
 import { _rad2deg } from "../Helpers/HelpersFns"
-import { ISizeFull, ISizeTuple } from "../Interfaces/CommonTypes"
+import { ISizeFull, ISizeShort, ISizeTuple, SizeShort } from "../Interfaces/CommonTypes"
+import { ANYfn, ANYobj } from "../Interfaces/MathActionsTypes"
+import { AnyArg } from "./useDynamicInputs"
+
+export interface FnCalculatorList {
+    skf(args: ISizeFull): ISizeShort
+    simple: (args: ISizeFull) => ISizeShort
+    otkosi: (args: ISizeFull) => { pm: number }
+    offset5: (args: Fn_Args_offset5) => Fn_Output_offset5
+}
 
 export const useFuncs = () => {
     const nets: Fn_nets = ({ width, height }: ISizeFull) => {
@@ -45,6 +54,7 @@ export const useFuncs = () => {
 }
 
 export class Calc {
+
     static nets: Fn_nets = ({ width, height }: ISizeFull) => {
         // if (!width || !height) throw new Error("ARGS ERROR!")
         const simple = {
@@ -82,7 +92,7 @@ export class Calc {
 
         return { ...calc }
     }
-    static netSkf(size: ISizeFull) {
+    static skf(size: ISizeFull) {
         const { width, height } = size
         const skf = {
             w: +width - 45,
@@ -90,7 +100,7 @@ export class Calc {
         }
         return skf
     }
-    static netSimple(size: ISizeFull) {
+    static simple(size: ISizeFull) {
         const { width, height } = size
         const simple = {
             w: +width + 24,
@@ -98,7 +108,7 @@ export class Calc {
         }
         return simple
     }
-    static OtkPanel(size: ISizeFull) {
+    static otkosi(size: ISizeFull) {
         const pm = +(size.width / 1000 + 2 * size.height / 1000 + 0.3).toFixed(4)
         return { pm }
     }
@@ -106,4 +116,9 @@ export class Calc {
 
 
 }
-
+export type CalcType = typeof Calc
+type CalcFuncs<A extends ANYobj> = Pick<{ [Key in keyof CalcType]: CalcType[Key] extends (args: A) => any ?
+    CalcType[Key]
+    : never
+}, keyof FnCalculatorList>
+export type Fn_CalcList<A extends ANYobj> = Partial<CalcFuncs<A>>

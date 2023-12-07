@@ -39,7 +39,12 @@ const OutputVers1 = (props: OutputProps) => {
     // }, [RootStore.stores])
     // if (!size_full) return null
     return (
-        <Stack maxHeight={'70vh'}>
+        <Stack maxHeight={'100%'}
+            direction={'row'}
+            maxWidth={'80vw'}
+            gap={2}
+            flexWrap={'wrap'}
+            overflow={'auto'}>
 
             {
                 [...saved, ...fakeInit].map(s =>

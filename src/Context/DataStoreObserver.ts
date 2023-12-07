@@ -51,9 +51,9 @@ export class OutputSizeBlock {
 
     calc(args: ISize) {
         const size = new SizeFull(..._sizeTuppler(args))
-        const netSkf = Calc.netSkf(size)
-        const netSimple = Calc.netSimple(size)
-        const Otk = Calc.OtkPanel(size)
+        const netSkf = Calc.skf(size)
+        const netSimple = Calc.simple(size)
+        const Otk = Calc.otkosi(size)
         this.out = { netSimple, netSkf, Otk }
         return { netSimple, netSkf, Otk }
     }

@@ -7,7 +7,7 @@ import { IStoresContext, StoresContext } from './Hooks/useStoresContext';
 import { RootArgsStore_v1 } from './Context/RootStore';
 import { OutputViewConfig, ThemeView } from './Context/ThemeView';
 const Stores: IStoresContext = {
-  ThemeView: new ThemeView(),
+
   RootStore: new RootArgsStore_v1(),
   ViewConfig: new OutputViewConfig()
 

@@ -6,12 +6,12 @@ import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types"
 export enum InputsTypeEnum {
     size_full = 'size_full',
     offset5 = 'offset5',
-    size_short = 'size'
+    // size_short = 'size'
 }
 
 export type DTO_ARGS =
     | ISizeFull
-    | ISizeShort
+
     | Fn_Args_offset5
 
 

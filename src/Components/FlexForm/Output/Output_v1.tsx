@@ -3,11 +3,12 @@ import React, { useEffect, useState, useMemo } from 'react'
 import { useStoresContext } from '../../../Hooks/useStoresContext'
 import { ISizeFull, SizeFull } from '../../../Interfaces/CommonTypes'
 import { InputsTypeEnum } from '../../../Hooks/useFormStateSelector'
-import { SubjectDS } from '../../../Context/DataStore'
+import { SubjectDS } from "../../../Context/SubjectDS"
 import { OutputSizeBlock, OutputSizeObserver } from '../../../Context/DataStoreObserver'
 import { _ID } from '../../../Helpers/HelpersFns'
 import OutputCard from './OutputCard'
 import { Stack } from '@mui/material'
+import { Fn_Args_offset5 } from '../../../ActionComponents/ActionTypes/Types'
 
 type OutputProps = {
     store?: ISizeFull[]

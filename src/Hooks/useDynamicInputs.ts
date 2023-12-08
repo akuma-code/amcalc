@@ -37,10 +37,7 @@ const dto_formSelector = (store_id: InputsTypeEnum) => {
             const RES = compute_form(store_id) as GetFormState__<Fn_Args_offset5>
             return RES
         }
-        case InputsTypeEnum.size_short: {
-            const RES = compute_form(store_id) as GetFormState__<ISizeShort>
-            return RES
-        }
+
         default: { throw new Error("State select invalid") }
     }
 
@@ -91,10 +88,7 @@ const state_list = (store_id: InputsTypeEnum) => {
         case InputsTypeEnum.offset5: {
             return dto as GetFormInstaceState<Fn_Args_offset5>
         }
-        case InputsTypeEnum.size_short: {
 
-            return dto as GetFormInstaceState<ISizeShort>
-        }
         default: { throw new Error("State select invalid") }
     }
 }

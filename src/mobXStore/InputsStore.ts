@@ -1,7 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { ANYobj } from "../Interfaces/MathActionsTypes";
-import { ArgsTypes, ArgsTypesList, DTO_InputOffset5, DTO_InputSize, DTO_InputSizeFull, DTO_InputsProp } from "../Models/ArgsTypeModel";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
+import { ArgsTypes, ArgsTypesList, DTO_InputOffset5, DTO_InputSizeFull } from "../Models/ArgsTypeModel";
 
 export interface Mbx_InputsStore {
     saved: Record<string, Mbx_InputState['args'][]>
@@ -56,15 +55,7 @@ export const dto_forms = () => {
         },
         desc: "Ширина и высота"
     }
-    const dto_formSizes: DTO_InputSize = {
-        fields: ['w', "h"],
-        init: { w: 0, h: 0 },
-        placeholder: {
-            h: "Высота",
-            w: "Ширина"
-        },
-        desc: "Ширина и высота"
-    }
+
     const dto_formOffset5: DTO_InputOffset5 = {
         fields: ['H', "W", "da", "db", "h"],
         init: { H: 0, W: 0, da: 0, db: 0, h: 0 },
@@ -80,7 +71,6 @@ export const dto_forms = () => {
 
     const forms = {
         offset5: dto_formOffset5,
-        size: dto_formSizes,
         size_full: dto_formFullSizes
     }
 

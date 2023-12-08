@@ -1,13 +1,14 @@
-import { action, computed, makeAutoObservable, makeObservable, observable, toJS } from "mobx";
-import { ANYobj } from "../Interfaces/MathActionsTypes";
-import { RootArgsStore_v1 } from "./RootStore";
-import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
-import { OutputSizeObserver, IDSObserver } from "./DataStoreObserver";
+import { action, computed, makeAutoObservable, observable, toJS } from "mobx";
+import { _ID, _log } from "../Helpers/HelpersFns";
 import { AnyArg } from "../Hooks/useDynamicInputs";
-import { ISize, ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
-import { _ID, _sizeTuppler } from "../Helpers/HelpersFns";
-import { Calc_, Fn_CalcList } from "../Hooks/useFuncs";
-import { truncate } from "fs";
+import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
+import { ANYobj } from "../Interfaces/MathActionsTypes";
+import { IDSObserver } from "./DataStoreObserver";
+import { RootArgsStore_v1 } from "./RootStore";
+import { Calc, FnCalculatorList, ICalcPropNames } from "../Hooks/useFuncs";
+import { Fn_Args_offset5, Fn_Output_offset5 } from "../ActionComponents/ActionTypes/Types";
+import { ISizeFull, ISizeShort, SizeFull } from "../Interfaces/CommonTypes";
+import { ArgsTypesList } from "../Models/ArgsTypeModel";
 
 interface IDS_Subject {
     store_name: InputsTypeEnum
@@ -18,17 +19,16 @@ interface IDS_Subject {
 }
 
 // __DataStore <=> ObserverSubject
-export class DataStore<D extends ANYobj = AnyArg> {
+export class DataStore<D extends AnyArg> {
     private saved: Array<D>;
     private rootStore?: RootArgsStore_v1;
     output: DataOutputBlock<D>[]
-    store_id?: string | null
+    store_id?: string | InputsTypeEnum
     uniqueID: string = _ID()
 
     constructor({ root, name }: { root?: RootArgsStore_v1, name: string }) {
         makeAutoObservable(this, {
             output: observable,
-
             store: computed,
             storeSize: computed,
             data: computed,
@@ -37,7 +37,7 @@ export class DataStore<D extends ANYobj = AnyArg> {
             updateOutput: action,
             setName: action,
 
-        }, { autoBind: true }
+        }, { autoBind: true, deep: true }
 
         )
         this.saved = [];
@@ -76,57 +76,185 @@ export class DataStore<D extends ANYobj = AnyArg> {
     }
 
     updateOutput() {
-        this.output = [...this.saved].map(a => new DataOutputBlock(a, this))
+        this.output = [...this.saved].map(a => new DataOutputBlock<D>(a, { root_store: this, type: this.store_id as InputsTypeEnum }))
     }
 
 
 }
-type Out<A extends ANYobj> = A extends AnyArg ? {
-    type: InputsTypeEnum
-    payload: ReturnType<Fn_CalcList<A>>
-} : any
 
-type SizeOutput = Out<ISizeFull>
-export class DataOutputBlock<A extends ANYobj = AnyArg> {
+interface IFnArgsUnion<K extends InputsTypeEnum & string> {
+    type: K,
+    payload: ArgsTypesList[K]
+}
+export type ISizeBlock = IFnArgsUnion<InputsTypeEnum.size_full>
+export type IOffset5Block = IFnArgsUnion<InputsTypeEnum.offset5>
+export type IOutBlock = ISizeBlock | IOffset5Block
+interface OutBlockOptions {
+    root_store?: DataStore<any>
+    type?: IOutBlock['type']
+}
+
+export class DataOutputBlock<A extends AnyArg> {
     private root?: DataStore<A>
     initArg: A
+    argType?: InputsTypeEnum
     block_id: string = _ID()
     out: any[] = []
-    constructor(arg: A, root_store?: DataStore<A>) {
-        this.root = root_store
+
+    constructor(arg: A, options?: OutBlockOptions) {
         this.initArg = arg
+        this.root = options?.root_store
+        this.argType = options ? options.type : undefined
+        this.init()
     }
 
-    calc() {
+    initFuncs(block: IOutBlock) {
+        const type = block.type
+
+        const BC = new BlockCalculator(block)
+        switch (type) {
+            case InputsTypeEnum.size_full: {
+
+
+                this.out.push(...BC.calced)
+                _log(BC)
+                break
+            }
+            case InputsTypeEnum.offset5: {
+                // const BC = new BlockCalculator()
+                this.out.push(...BC.calced)
+                break
+            }
+            default: return console.log('this.out', this.out)
+        }
 
     }
+    init() {
+        if (!this.argType) return
+        const block = {
+            type: this.argType,
+            payload: this.initArg
+        } as IOutBlock
+        this.initFuncs(block)
+    }
+
 
 
 }
+class BlockCalculator {
+    calced: ReturnType<typeof this.calc> = []
+    constructor(block: IOutBlock) {
+        this.calc(block)
+    }
+    calc(input: IOutBlock) {
+        const out: any[] = []
+        const { payload, type } = input
+        switch (type) {
+            case InputsTypeEnum.size_full: {
+                const Fns = outCalcSelector({ type, payload })
 
-//__       Subject Data Store <--> Наблюдатель, который рассылает данные
-export class SubjectDS<T extends AnyArg>{
-    observers: IDSObserver[]
-    constructor(rstore?: RootArgsStore_v1) {
-        // super(rstore)
-        this.observers = []
+
+                out.push(...Fns)
+                console.log('out', out)
+                break
+
+            }
+            case InputsTypeEnum.offset5: {
+                const Fns = outCalcSelector({ type, payload })
+                // Fns.forEach(f => out.push(f(input.payload)))
+                out.push(...Fns)
+                break
+            }
+        }
+        this.calced = [...out]
+        return out
     }
 
-    notify(payload: T) {
-        this.observers.forEach(o => o.update(payload))
+}
+
+function outCalcSelector(block: Partial<IOutBlock>) {
+
+    const funcs = {
+        size_full: [
+            Calc.skf,
+            Calc.simple,
+            Calc.otkosi
+        ],
+        offset5: [
+            Calc.offset5,
+        ]
     }
 
-    addObserver(obs: IDSObserver) {
-        this.observers.push(obs)
+    const output = []
+    switch (block.type) {
+        case InputsTypeEnum.size_full: {
+            const outfuncs = funcs[block.type]
+            const out = outfuncs.map(f => f(block.payload!))
+            output.push(out)
+            break
+        }
+        case InputsTypeEnum.offset5: {
+            const outfuncs = funcs[block.type]
+            const out = outfuncs.map(f => f(block.payload!))
+            output.push(out)
+            break
+        }
     }
-    delObserver(obs: IDSObserver) {
-        this.observers.filter(o => o.name !== obs.name)
-    }
+    return output
+
 }
 
 
-// export const SizeObserver = new SubjectDS<ISizeFull>()
-// const obs = new OutputSizeObserver('FullSize')
-// SizeObserver.addObserver(obs)
 
 
+// const ttt = new BlockCalculator({ type: InputsTypeEnum.size_full, payload: new SizeFull(800, 1300) })
+// console.log('ttt', ttt)
+function test(block: IOutBlock) {
+    const { payload, type } = block
+    const funcs_ = [
+        { skf: Calc.skf },
+        { simple: Calc.simple },
+        { otkosi: Calc.otkosi },
+        { offset5: Calc.offset5 },
+    ]
+    const funcs = {
+        size_full: [
+            Calc.skf,
+            Calc.simple,
+            Calc.otkosi
+        ],
+        offset5: [
+            Calc.offset5,
+        ]
+    }
+
+    const output = []
+    switch (type) {
+        case InputsTypeEnum.size_full: {
+            const outfuncs = funcs[type]
+            const arg = block.payload
+            const out = outfuncs.map(f => f(arg))
+            output.push(out)
+            break
+        }
+        case InputsTypeEnum.offset5: {
+            const outfuncs = funcs[type]
+            const out = outfuncs.map(f => f(payload))
+            output.push(out)
+            break
+        }
+    }
+    console.log('output', output)
+    return output
+}
+
+interface SortedFnCalculatorList {
+    size_full: {
+        skf(args: ISizeFull): { skf: ISizeShort }
+        simple(args: ISizeFull): { simple: ISizeShort }
+        otkosi(args: ISizeFull): { pm: number }
+    }
+    offset5: {
+        offset5(args: Fn_Args_offset5): { offset5: Fn_Output_offset5 }
+    }
+}

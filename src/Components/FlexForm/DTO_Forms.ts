@@ -1,9 +1,8 @@
 import { GetFormState__ } from "../../ActionComponents/ActionTypes/ReducerTypes"
 import { Fn_Args_offset5 } from "../../ActionComponents/ActionTypes/Types"
-import { ISizeShort, ISizeFull } from "../../Interfaces/CommonTypes"
-import { ANYobj } from "../../Interfaces/MathActionsTypes"
-import { ArgsTypes, ArgsTypesList, DTO_FormDataList, DTO_InputOffset5, DTO_InputSize, DTO_InputSizeFull } from "../../Models/ArgsTypeModel"
 import { IFormFieldsValues, InputsTypeEnum } from "../../Hooks/useFormStateSelector"
+import { ISizeFull } from "../../Interfaces/CommonTypes"
+import { ANYobj } from "../../Interfaces/MathActionsTypes"
 
 
 export interface DTO_state<O extends ANYobj> {
@@ -29,18 +28,18 @@ const dto_state_Offse5: GetFormState__<Fn_Args_offset5> = {
 
     desc: "Смещение верхнего угла трапеции",
 }
-const dto_state_Size: GetFormState__<ISizeShort> = {
-    type: InputsTypeEnum.size_short,
-    fields: ['w', "h"],
-    init: { w: 0, h: 0 },
-    desc: "Ш и В",
-}
+// const dto_state_Size: GetFormState__<ISizeShort> = {
+//     type: InputsTypeEnum.size_short,
+//     fields: ['w', "h"],
+//     init: { w: 0, h: 0 },
+//     desc: "Ш и В",
+// }
 
 //! *** DTO Forms Data *** 
 export const dto_formStates: IFormFieldsValues = {
     size_full: dto_state_FullSize,
     offset5: dto_state_Offse5,
-    size: dto_state_Size
+
 }
 //! *** DTO Forms Data ***
 

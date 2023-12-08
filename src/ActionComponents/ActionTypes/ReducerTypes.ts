@@ -39,10 +39,6 @@ export interface ArgState_Offse5 {
     type: InputsTypeEnum.offset5
     state: FormSelectorState<Fn_Args_offset5>
 }
-export interface ArgState_Size {
-    type: InputsTypeEnum.size_short
-    state: FormSelectorState<ISizeShort>
-}
 
 export interface ISaveFullSize {
     type: SAVE_ARG.save_size_full

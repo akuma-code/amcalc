@@ -58,11 +58,11 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             >
                 Size Full
             </Button>
-            <Button onClick={() => SelectStoreAndOut(InputsTypeEnum.size_short)}
+            {/* <Button onClick={() => SelectStoreAndOut(InputsTypeEnum.size_short)}
                 color={isSelected(InputsTypeEnum.size_short) ? 'primary' : 'success'}
                 sx={isSelected(InputsTypeEnum.size_short) ? { outline: '2px solid red' } : { outline: 'none' }}>
                 Size Short
-            </Button>
+            </Button> */}
             <Button onClick={() => SelectStoreAndOut(InputsTypeEnum.offset5)}
                 color={isSelected(InputsTypeEnum.offset5) ? 'primary' : 'success'}
                 sx={isSelected(InputsTypeEnum.offset5) ? { outline: '2px solid red' } : { outline: 'none' }}>

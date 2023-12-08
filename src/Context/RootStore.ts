@@ -1,12 +1,12 @@
-import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
-import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
-import { ISizeShort, ISizeFull, SizeFull } from "../Interfaces/CommonTypes";
+import { makeAutoObservable } from "mobx";
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
+import { _log } from "../Helpers/HelpersFns";
+import { AnyArg } from "../Hooks/useDynamicInputs";
+import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
+import { ISizeFull, ISizeShort } from "../Interfaces/CommonTypes";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypesList } from "../Models/ArgsTypeModel";
-import { AnyArg } from "../Hooks/useDynamicInputs";
 import { DataStore } from "./DataStore";
-import { _ID, _log } from "../Helpers/HelpersFns";
 
 export type IRootStores_v1 = {
     [Key in keyof ArgsTypesList]?: DataStore<ArgsTypesList[Key]>
@@ -14,7 +14,7 @@ export type IRootStores_v1 = {
 
 
 type IAnyStore = {
-    [key: string]: DataStore<ANYobj>
+    [key: string]: DataStore<AnyArg>
 }
 
 
@@ -38,6 +38,7 @@ export class RootArgsStore_v1 {
             // }
         )
         this.stores = this.initStores()
+
     }
     get storeKeys(): ReadonlyArray<keyof ExtendedRootStores> | [] {
         if (!this.stores) return []
@@ -45,7 +46,7 @@ export class RootArgsStore_v1 {
         return keys
     }
 
-    public use<T extends ANYobj>(store_id: InputsTypeEnum, store: DataStore<T>) {
+    public use<T extends AnyArg>(store_id: InputsTypeEnum, store: DataStore<T>) {
         store.setName(store_id)
         if (!this.stores) {
             this.stores = { [store_id]: store }
@@ -60,14 +61,9 @@ export class RootArgsStore_v1 {
 
     private initStores() {
         const FullSIZE = new DataStore<ISizeFull>({ root: this, name: InputsTypeEnum.size_full })
-        const ShortSIZE = new DataStore<ISizeShort>({ root: this, name: InputsTypeEnum.size_short })
         const OFFSET5 = new DataStore<Fn_Args_offset5>({ root: this, name: InputsTypeEnum.offset5 })
-        // FullSIZE.setName(InputsTypeEnum.size_full)
-        // ShortSIZE.setName(InputsTypeEnum.size_short)
-        // OFFSET5.setName(InputsTypeEnum.offset5)
 
         this.use(InputsTypeEnum.size_full, FullSIZE)
-        this.use(InputsTypeEnum.size_short, ShortSIZE)
         this.use(InputsTypeEnum.offset5, OFFSET5)
 
         return this.stores
@@ -83,7 +79,7 @@ export class RootArgsStore_v1 {
         return arr
     }
     public storesSize() {
-        const getsize = (ds: DataStore) => {
+        const getsize = (ds: DataStore<AnyArg>) => {
             const { storeSize, store_id } = ds
             return { size: storeSize, store_id: store_id as InputsTypeEnum }
         }
@@ -94,7 +90,7 @@ export class RootArgsStore_v1 {
 
     }
     select(store_id: keyof typeof this.stores) {
-        return this.stores[store_id]
+        return this.stores[store_id]!
     }
     saveTostore<T extends AnyArg>(store_id: InputsTypeEnum, data: T) {
         // if (!this.stores) return
@@ -111,11 +107,7 @@ export class RootArgsStore_v1 {
                 if ('da' in data) s?.add(data)
                 break
             }
-            case InputsTypeEnum.size_short: {
-                // const s = this.select(store_id)
-                if ('w' in data) s?.add(data)
-                break
-            }
+
             default: {
                 _log("Store id ", store_id, " not found!")
                 return
@@ -133,14 +125,14 @@ export const RootArgsStore = new RootArgsStore_v1()
 // RAS.use(InputsTypeEnum.size_full, new DataStore<ISizeFull>(RAS))
 // RAS.use(InputsTypeEnum.size, new DataStore<ISize>(RAS))
 // RAS.use(InputsTypeEnum.offset5, new DataStore<Fn_Args_offset5>(RAS))
-const s: ExtendedRootStores = {
-    offset5: new DataStore<Fn_Args_offset5>({ name: 'off5' }),
-    size_full: new DataStore<ISizeFull>({ name: 'full' }),
-    size: new DataStore<ISizeShort>({ name: 'short' }),
-    test: new DataStore<ANYobj>({ name: 'any' }),
+// const s: ExtendedRootStores = {
+//     offset5: new DataStore<Fn_Args_offset5>({ name: 'off5' }),
+//     size_full: new DataStore<ISizeFull>({ name: 'full' }),
+//     size: new DataStore<ISizeShort>({ name: 'short' }),
+//     test: new DataStore<ANYobj>({ name: 'any' }),
 
 
-}
+// }
 // s.size_full?.add({ width: 4, height: 19 })
 
 

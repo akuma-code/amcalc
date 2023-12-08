@@ -23,7 +23,7 @@ export interface RS_v1_ClearStore {
 }
 export interface RS_v1_AddStore<T extends ANYobj> {
     type: RS_v1Actions.USE
-    payload: { store_id: InputsTypeEnum, store: DataStore<T> }
+    payload: { store_id: InputsTypeEnum, store: DataStore<AnyArg> }
 }
 export type IRootStore_v1Actions =
     | RS_v1_AddStore<AnyArg>

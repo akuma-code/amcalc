@@ -1,16 +1,12 @@
-import React, { useState, useLayoutEffect, useCallback } from 'react';
-import { ISize, ISizeFull, ISizeShort } from '../../../Interfaces/CommonTypes';
-import { Calc_ } from '../../../Hooks/useFuncs';
+import { Avatar, Box, Card, CardContent, Divider, IconButton, Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { Avatar, Box, Card, CardContent, Divider, Stack, IconButton } from '@mui/material';
-import { useOutputContext } from '../../../Hooks/useOutputCtx';
-import { NetViewEn, CardViewMode, selectView } from './NetsOutput';
-import { TextIconChip } from './TextIconChipProps';
-import Icons from '../../Icons/SvgIcons';
+import React, { useState } from 'react';
+import { _sizeTuppler } from '../../../Helpers/HelpersFns';
 import { useStoresContext } from '../../../Hooks/useStoresContext';
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import { LABELS_LIST } from '../../../Interfaces/Enums';
-import { _log, _sizeTuppler } from '../../../Helpers/HelpersFns';
+import { ISize, ISizeFull, ISizeShort } from '../../../Interfaces/CommonTypes';
+import Icons from '../../Icons/SvgIcons';
+import { CardViewMode, selectView } from './NetsOutput';
+import { TextIconChip } from './TextIconChipProps';
 interface NetCardProps {
     size: ISizeFull;
     idxCounter?: number;
@@ -34,7 +30,6 @@ export const NetsCard: React.FC<NetCardProps> = observer((props) => {
     };
 
 
-    const { simple, skf } = Calc_.nets(props.size);
 
 
     // const toggleView = useCallback(() => setViewNet(prev => ({ ...prev, ...toggleNextView(viewNet.mode) })), [viewNet.mode]);

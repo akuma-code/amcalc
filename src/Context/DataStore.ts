@@ -89,7 +89,7 @@ interface IFnArgsUnion<K extends InputsTypeEnum & string> {
 export type ISizeBlock = IFnArgsUnion<InputsTypeEnum.size_full>
 export type IOffset5Block = IFnArgsUnion<InputsTypeEnum.offset5>
 export type IOutBlock = ISizeBlock | IOffset5Block
-interface OutBlockOptions {
+export interface OutBlockOptions {
     root_store?: DataStore<any>
     type?: IOutBlock['type']
 }
@@ -141,7 +141,7 @@ export class DataOutputBlock<A extends AnyArg> {
 
 
 }
-class BlockCalculator {
+export class BlockCalculator {
     calced: ReturnType<typeof this.calc> = []
     constructor(block: IOutBlock) {
         this.calc(block)

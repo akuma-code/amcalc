@@ -1,3 +1,5 @@
+import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types"
+import { InputsTypeEnum } from "../Hooks/useFormStateSelector"
 import { ANYobj } from "./MathActionsTypes"
 
 export interface ISizeShort {
@@ -12,6 +14,7 @@ export interface ISizeFull {
 export type ISize = ISizeFull | ISizeShort
 export type ISizeTuple = readonly [width: number, height: number]
 export class SizeShort {
+    argType: string = 'size_short'
     constructor(
         public w: number,
         public h: number
@@ -19,6 +22,7 @@ export class SizeShort {
 }
 
 export class SizeFull {
+    argType: InputsTypeEnum = InputsTypeEnum.size_full
     constructor(
         public width: number, public height: number
     ) { }
@@ -30,3 +34,14 @@ export function _isFullSize(size: ISize): size is ISizeFull {
     else return false
 }
 
+export interface Arg_Size extends ISizeFull {
+    argType: InputsTypeEnum.size_full
+}
+
+export interface Arg_Offset5 extends Fn_Args_offset5 {
+    argType: InputsTypeEnum.offset5
+}
+
+export type ArgsUnion =
+    | Arg_Offset5
+    | Arg_Size

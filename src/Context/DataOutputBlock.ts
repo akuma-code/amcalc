@@ -4,39 +4,30 @@ import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { BlockCalculator, IOutBlock } from "./DataStore";
 import { RootArgsStore_v1 } from "./RootStore";
 import { ArgsUnion } from "../Interfaces/CommonTypes";
+import { AnyArg } from "../Hooks/useDynamicInputs";
 
 
 type WithArgType = { argType: InputsTypeEnum }
 interface IStoreData extends WithArgType {
-    data?: ArgsUnion
-    root?: RootArgsStore_v1
-}
+    data?: AnyArg
 
-class StoreData_ implements IStoreData {
-
-    public root?: RootArgsStore_v1 | undefined;
-    constructor(
-        public argType: InputsTypeEnum,
-        public data: ArgsUnion
-    ) { }
 }
 
 
-class DataStore<D extends IStoreData> {
-    private saved: Array<D['data']>;
+class DataStore<D extends ArgsUnion> {
+    private saved: Array<D['args']>;
     private rootStore?: RootArgsStore_v1;
-
     output: any[]
-    store_id?: string | InputsTypeEnum
+    store_id?: InputsTypeEnum
     uniqueID: string = _ID()
 
-    constructor({ root, argType }: IStoreData) {
+    constructor(data_type?: ArgsUnion['argType'], options?: { root: RootArgsStore_v1 }) {
 
         this.saved = [];
-        this.rootStore = root;
+        this.rootStore = options?.root;
         this.output = []
 
-        this.setName(argType)
+        this.setName(data_type)
     }
 
 
@@ -45,12 +36,13 @@ class DataStore<D extends IStoreData> {
         return this.saved.length;
     }
 
-    setName(name: string) {
-
+    setName(name?: InputsTypeEnum) {
+        if (!name) return this
         this.store_id = name
         return this
     }
-    add(data: D['data']) {
+    add(data: D['args']) {
+
         this.saved = [...this.saved, data];
         this.updateOutput()
     }
@@ -69,51 +61,61 @@ class DataStore<D extends IStoreData> {
     }
 
     updateOutput() {
+        const getOutBlock = (saved_data: D) => {
+            switch (saved_data.argType) {
+
+                // case InputsTypeEnum.size_full:return new DataOutputBlock(saved_data.args, {root_store:this})
+                // case InputsTypeEnum.offset5:return new DataOutputBlock(saved_data.args, {root_store:this})
+            }
+        }
         // this.output = [...this.saved].map(a => new DataOutputBlock<D>(a, { root_store: this, type: this.store_id as InputsTypeEnum }))
     }
 
 
 }
 
-class DataOutputBlock<A extends WithArgType> {
-    private root?: DataStore<IStoreData>;
-    initArg: A;
-    argType: A['argType'];
-    block_id: string = _ID();
-    out: any[] = [];
-
-    constructor(arg: A, options?: any) {
-        this.initArg = arg;
-        this.root = options?.root_store!;
-        this.argType = arg.argType
-        this.init();
-    }
-
-    initFuncs(block: A) {
-        const type = block.argType;
-
-        const BC = new BlockCalculator({ ...block } as unknown as IOutBlock);
-        switch (type) {
-            case InputsTypeEnum.size_full: {
+const r = new DataStore()
 
 
-                this.out.push(...BC.calced);
-                _log(BC);
-                break;
-            }
-            case InputsTypeEnum.offset5: {
-                // const BC = new BlockCalculator()
-                this.out.push(...BC.calced);
-                break;
-            }
-            default: return console.log('this.out', this.out);
-        }
+// class DataOutputBlock<A extends ArgsUnion> {
+//     private root?: DataStore<A>;
+//     initData: A;
+//     argType: A['argType'];
+//     block_id: string = _ID();
+//     out: any[] = [];
 
-    }
-    init() {
+//     constructor(data: A['args'], options?: any) {
+//         this.initData = data;
+//         this.root = options?.root_store!;
+//         this.argType = data.argType
+//         this.init();
+//     }
 
-    }
+//     initFuncs(block: A) {
+//         const type = block.argType;
+
+//         const BC = new BlockCalculator({ ...block } as unknown as IOutBlock);
+//         switch (type) {
+//             case InputsTypeEnum.size_full: {
+
+
+//                 this.out.push(...BC.calced);
+//                 _log(BC);
+//                 break;
+//             }
+//             case InputsTypeEnum.offset5: {
+//                 // const BC = new BlockCalculator()
+//                 this.out.push(...BC.calced);
+//                 break;
+//             }
+//             default: return console.log('this.out', this.out);
+//         }
+
+//     }
+//     init() {
+
+//     }
 
 
 
-}
+// }

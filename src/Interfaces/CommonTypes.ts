@@ -34,12 +34,14 @@ export function _isFullSize(size: ISize): size is ISizeFull {
     else return false
 }
 
-export interface Arg_Size extends ISizeFull {
+export interface Arg_Size {
     argType: InputsTypeEnum.size_full
+    args: ISizeFull
 }
 
-export interface Arg_Offset5 extends Fn_Args_offset5 {
+export interface Arg_Offset5 {
     argType: InputsTypeEnum.offset5
+    args: Fn_Args_offset5
 }
 
 export type ArgsUnion =

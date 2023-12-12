@@ -51,7 +51,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === ViewConfig.selected_store,
         [ViewConfig.selected_store])
     const ControlButtonsGroup = useMemo(() => {
-        const Group = () => <ButtonGroup sx={{ mx: 1, gap: 1, width: 200, height: 'fit-content' }}
+        const ButtonControlGroup = () => <ButtonGroup sx={{ mx: 1, gap: 1, width: 200, height: 'fit-content' }}
             variant="contained"
             size='large'
             component={Stack}
@@ -75,7 +75,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             </Button>
         </ButtonGroup>
 
-        return Group
+        return ButtonControlGroup
     }, [SelectStoreAndOut, isSelected])
 
     const info_items = RootStore.storesSize()

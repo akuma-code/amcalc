@@ -60,8 +60,8 @@ export class RootArgsStore_v1 {
 
 
     private initStores() {
-        const FullSIZE = new DataStore<ISizeFull>({ root: this, name: InputsTypeEnum.size_full })
-        const OFFSET5 = new DataStore<Fn_Args_offset5>({ root: this, name: InputsTypeEnum.offset5 })
+        const FullSIZE = new DataStore<ISizeFull>({ name: InputsTypeEnum.size_full })
+        const OFFSET5 = new DataStore<Fn_Args_offset5>({ name: InputsTypeEnum.offset5 })
 
         this.use(InputsTypeEnum.size_full, FullSIZE)
         this.use(InputsTypeEnum.offset5, OFFSET5)
@@ -69,14 +69,14 @@ export class RootArgsStore_v1 {
         return this.stores
     }
     traverse() {
-        const arr: DataStore<AnyArg>[] = []
+        let arr = []
         for (let store in this.stores) {
 
-            let st = this.select(store) as DataStore<AnyArg>
+            let st = this.select(store)
             if (!st) continue
             arr.push(st)
         }
-        return arr
+        return [...arr] as const
     }
     public storesSize() {
         const getsize = (ds: DataStore<AnyArg>) => {

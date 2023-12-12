@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { useStoresContext } from "./useStoresContext"
 import CalcControl, { notReachable } from "../ActionComponents/Calculators/CalcBoxFn"
-import { _ArgsMaker } from "../Interfaces/CommonTypes"
+import { A_Offset5, A_Size, _ArgsMaker } from "../Interfaces/CommonTypes"
 
 
 export const useOutputCalc = () => {
@@ -12,7 +12,7 @@ export const useOutputCalc = () => {
         const calced = outStore.map(a => {
             switch (a.argType) {
                 case 'size_full': {
-                    const arg = { ..._ArgsMaker(a) }
+                    const arg = _ArgsMaker(a)
                     const C = CalcControl[a.argType].calcMap(arg)
                     return C
                 }
@@ -25,8 +25,7 @@ export const useOutputCalc = () => {
                 default:
                     return notReachable(a.argType)
             }
-        }
-        )
+        })
 
         return calced
 

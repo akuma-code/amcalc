@@ -4,9 +4,10 @@ import CalcControl from '../../../ActionComponents/Calculators/CalcBoxFn'
 import { useStoresContext } from '../../../Hooks/useStoresContext'
 import { A_Offset5, A_Size, _ArgsMaker } from '../../../Interfaces/CommonTypes'
 import { useOutputCalc } from '../../../Hooks/useOutputCalc'
+import { _log } from '../../../Helpers/HelpersFns'
 
 type OutputProps = {}
-type ArgVar = | A_Size[] | A_Offset5[]
+
 
 const Output2 = observer((props: OutputProps) => {
     const blocks = useOutputCalc()
@@ -18,6 +19,20 @@ const Output2 = observer((props: OutputProps) => {
         </div>
     )
 })
+
+type OutputSizeCardProps = {
+
+}
+const OutputSizeCard: React.FC<OutputSizeCardProps> = (block) => {
+    return <></>
+}
+
+
+
+
+
+
+
 
 
 Output2.displayName = '*** Output_v2 ***'

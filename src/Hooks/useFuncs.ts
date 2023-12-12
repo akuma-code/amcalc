@@ -2,6 +2,7 @@ import { FnProperties, FnPropertyNames } from "../ActionComponents/ActionTypes/F
 import { Fn_Args_offset5, Fn_Output_offset5, Fn_nets, Fn_offset5 } from "../ActionComponents/ActionTypes/Types"
 import { _log, _rad2deg } from "../Helpers/HelpersFns"
 import { ISizeFull, ISizeShort } from "../Interfaces/CommonTypes"
+import { ArgsTypes } from "../Models/ArgsTypeModel"
 
 export interface FnCalculatorList {
     skf(args: ISizeFull): { skf: ISizeShort }
@@ -106,6 +107,10 @@ export class Calc {
         return { pm }
     }
 }
+export type OutSkfBlock = ReturnType<typeof Calc['skf']>
+export type OutSimpleBlock = ReturnType<typeof Calc['simple']>
+export type OutOtkBlock = ReturnType<typeof Calc['otkosi']>
+export type OutOffset5Block = ReturnType<typeof Calc['offset5']>
 
 
 export type ICalcType = typeof Calc

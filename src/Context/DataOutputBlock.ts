@@ -3,25 +3,22 @@ import { _ID, _log } from "../Helpers/HelpersFns";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { BlockCalculator, IOutBlock } from "./DataStore";
 import { RootArgsStore_v1 } from "./RootStore";
-import { ArgsUnion } from "../Interfaces/CommonTypes";
+import { A_Offset5, ArgsUnion, SizeFull } from "../Interfaces/CommonTypes";
 import { AnyArg } from "../Hooks/useDynamicInputs";
+import { ArgsTypes } from "../Models/ArgsTypeModel";
 
 
-type WithArgType = { argType: InputsTypeEnum }
-interface IStoreData extends WithArgType {
-    data?: AnyArg
-
-}
+type WithArgType = { argType: ArgsTypes }
 
 
 class DataStore<D extends ArgsUnion> {
     private saved: Array<D['args']>;
     private rootStore?: RootArgsStore_v1;
     output: any[]
-    store_id?: InputsTypeEnum
+    store_id?: ArgsTypes
     uniqueID: string = _ID()
 
-    constructor(data_type?: ArgsUnion['argType'], options?: { root: RootArgsStore_v1 }) {
+    constructor(data_type?: ArgsTypes, options?: { root: RootArgsStore_v1 }) {
 
         this.saved = [];
         this.rootStore = options?.root;
@@ -36,14 +33,14 @@ class DataStore<D extends ArgsUnion> {
         return this.saved.length;
     }
 
-    setName(name?: InputsTypeEnum) {
+    setName(name?: ArgsTypes) {
         if (!name) return this
         this.store_id = name
         return this
     }
     add(data: D['args']) {
-
-        this.saved = [...this.saved, data];
+        if (!this.store_id)
+            this.saved = [...this.saved, data];
         this.updateOutput()
     }
     get store() {
@@ -74,7 +71,11 @@ class DataStore<D extends ArgsUnion> {
 
 }
 
-const r = new DataStore()
+export const r = new DataStore()
+r.add(new A_Offset5(5, 5, 1, 1, 2))
+const y = r.store_id
+_log(y)
+
 
 
 // class DataOutputBlock<A extends ArgsUnion> {

@@ -1,17 +1,11 @@
-import { observer } from 'mobx-react-lite'
-import React, { useEffect, useState, useMemo } from 'react'
-import { useStoresContext } from '../../../Hooks/useStoresContext'
-import { ISizeFull, SizeFull } from '../../../Interfaces/CommonTypes'
-import { InputsTypeEnum } from '../../../Hooks/useFormStateSelector'
-import { SubjectDS } from "../../../Context/SubjectDS"
-import { OutputSizeBlock, OutputSizeObserver } from '../../../Context/DataStoreObserver'
-import { _ID } from '../../../Helpers/HelpersFns'
-import OutputCard from './OutputCard'
 import { Stack } from '@mui/material'
-import { Fn_Args_offset5 } from '../../../ActionComponents/ActionTypes/Types'
+import { observer } from 'mobx-react-lite'
+import { _ID } from '../../../Helpers/HelpersFns'
+import { A_InputArgs, SizeFull } from '../../../Interfaces/CommonTypes'
+import OutputCard from './OutputCard'
 
 type OutputProps = {
-    store?: ISizeFull[]
+    store?: A_InputArgs[]
 }
 const fakeInit = [
     new SizeFull(1000, 1000),
@@ -20,25 +14,14 @@ const fakeInit = [
 ]
 
 
-const StoreSizeObs = new SubjectDS<ISizeFull>()
-
-const obs = new OutputSizeObserver('sizer')
-
-StoreSizeObs.addObserver(obs)
 
 const OutputVers1 = observer((props: OutputProps) => {
-    // const { RootStore: { stores: { size_full } } } = useStoresContext()
+
 
 
     const saved = props.store || []
-    const BLOCKS = useMemo(() => {
-        return fakeInit.map(s => new OutputSizeBlock(s))
-    }, [])
-    // useEffect(() => {
-    //     const saved = RootStore.stores['size_full']?.saved!
-    //     setBlocks([...saved].map(s => new OutputSizeBlock(s)))
-    // }, [RootStore.stores])
-    // if (!size_full) return null
+
+
     return (
         <Stack maxHeight={'100%'}
             direction={'row'}
@@ -48,9 +31,8 @@ const OutputVers1 = observer((props: OutputProps) => {
             overflow={'auto'}>
 
             {
-                [...saved, ...fakeInit].map(s =>
-                    <OutputCard savedSize={s} key={_ID()} />
-                )
+                [...saved].map(s => (('width' in s) ? <OutputCard savedSize={s} key={_ID()} /> : null))
+
             }
         </Stack>
     )

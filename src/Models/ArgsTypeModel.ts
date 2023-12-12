@@ -5,7 +5,8 @@ import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes"
 import { ANYobj } from "../Interfaces/MathActionsTypes"
 
 export enum ArgsTypesEn {
-    'size_full', 'offset5',
+    size_full = 'size_full',
+    offset5 = 'offset5',
 }
 export interface ArgsTypesList {
     size_full: ISizeFull

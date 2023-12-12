@@ -7,8 +7,8 @@ import { IDSObserver } from "./DataStoreObserver";
 import { RootArgsStore_v1 } from "./RootStore";
 import { Calc, FnCalculatorList, ICalcPropNames } from "../Hooks/useFuncs";
 import { Fn_Args_offset5, Fn_Output_offset5 } from "../ActionComponents/ActionTypes/Types";
-import { ISizeFull, ISizeShort, SizeFull } from "../Interfaces/CommonTypes";
-import { ArgsTypesList } from "../Models/ArgsTypeModel";
+import { A_InputArgs, ISizeFull, ISizeShort, SizeFull, _ArgsMaker } from "../Interfaces/CommonTypes";
+import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
 
 interface IDS_Subject {
     store_name: InputsTypeEnum
@@ -20,10 +20,10 @@ interface IDS_Subject {
 
 // __DataStore <=> ObserverSubject
 export class DataStore<D extends AnyArg> {
-    private saved: Array<D>;
+    private saved: Array<A_InputArgs>;
     private rootStore?: RootArgsStore_v1;
-    output: DataOutputBlock<D>[]
-    store_id?: string | InputsTypeEnum
+    output: DataOutputBlock<A_InputArgs>[]
+    store_id?: string | ArgsTypes
     uniqueID: string = _ID()
 
     constructor({ root, name }: { root?: RootArgsStore_v1, name: string }) {
@@ -58,7 +58,7 @@ export class DataStore<D extends AnyArg> {
         return this
     }
     add(data: D) {
-        this.saved = [...this.saved, data];
+        this.saved = [...this.saved, _ArgsMaker(data)];
         this.updateOutput()
     }
     get store() {
@@ -76,28 +76,28 @@ export class DataStore<D extends AnyArg> {
     }
 
     updateOutput() {
-        this.output = [...this.saved].map(a => new DataOutputBlock<D>(a, { root_store: this, type: this.store_id as InputsTypeEnum }))
+        this.output = [...this.saved].map(a => new DataOutputBlock(a, { root_store: this, type: this.store_id as InputsTypeEnum }))
     }
 
 
 }
 
-interface IFnArgsUnion<K extends InputsTypeEnum & string> {
+interface IFnArgsUnion<K extends ArgsTypes & string> {
     type: K,
     payload: ArgsTypesList[K]
 }
-export type ISizeBlock = IFnArgsUnion<InputsTypeEnum.size_full>
-export type IOffset5Block = IFnArgsUnion<InputsTypeEnum.offset5>
+export type ISizeBlock = IFnArgsUnion<'size_full'>
+export type IOffset5Block = IFnArgsUnion<'offset5'>
 export type IOutBlock = ISizeBlock | IOffset5Block
 export interface OutBlockOptions {
     root_store?: DataStore<any>
     type?: IOutBlock['type']
 }
 
-export class DataOutputBlock<A extends AnyArg> {
+export class DataOutputBlock<A extends A_InputArgs> {
     private root?: DataStore<A>
     initArg: A
-    argType?: InputsTypeEnum
+    argType?: ArgsTypes
     block_id: string = _ID()
     out: any[] = []
 
@@ -117,7 +117,7 @@ export class DataOutputBlock<A extends AnyArg> {
 
 
                 this.out.push(...BC.calced)
-                _log(BC)
+                // _log(BC)
                 break
             }
             case InputsTypeEnum.offset5: {
@@ -150,16 +150,16 @@ export class BlockCalculator {
         const out: any[] = []
         const { payload, type } = input
         switch (type) {
-            case InputsTypeEnum.size_full: {
+            case 'size_full': {
                 const Fns = outCalcSelector({ type, payload })
 
 
                 out.push(...Fns)
-                console.log('out', out)
+                // console.log('out', out)
                 break
 
             }
-            case InputsTypeEnum.offset5: {
+            case 'offset5': {
                 const Fns = outCalcSelector({ type, payload })
                 // Fns.forEach(f => out.push(f(input.payload)))
                 out.push(...Fns)
@@ -244,7 +244,7 @@ function test(block: IOutBlock) {
             break
         }
     }
-    console.log('output', output)
+    // console.log('output', output)
     return output
 }
 
@@ -258,3 +258,5 @@ interface SortedFnCalculatorList {
         offset5(args: Fn_Args_offset5): { offset5: Fn_Output_offset5 }
     }
 }
+
+type Calcs = Record<keyof SortedFnCalculatorList, SortedFnCalculatorList[keyof SortedFnCalculatorList]>

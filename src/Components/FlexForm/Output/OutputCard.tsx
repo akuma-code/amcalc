@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { Box, Card, Divider, Stack, Typography, Icon } from '@mui/material';
 import { ISize, ISizeShort } from '../../../Interfaces/CommonTypes';
@@ -17,34 +17,10 @@ const OutputCard = ({ savedSize, outblock }: OutputCardProps) => {
     const output = useMemo(() => {
         const block = new OutputSizeBlock(savedSize)
         const { netSkf, netSimple, Otk } = block.out
+
         return { netSimple, netSkf, Otk }
     }, [savedSize])
-    const InitSizeHeader = useMemo(() => {
-        const HEADER = () => <Stack flexDirection={'row'} justifyContent={'space-between'} columnGap={1}
-            sx={{
-                bgcolor: "#ff8000",
-                minWidth: 'fit-content',
-                borderRadius: 1,
-                px: 1
-            }}
-        >
-
-            <Stack direction={'row'} columnGap={1} alignItems={'center'} useFlexGap>
-                <Icon >{Icons.WidthIcon}</Icon>
-                <Typography variant='h6' align='right'>
-                    {initW} мм
-                </Typography>
-            </Stack>
-            <Divider orientation='vertical' flexItem sx={{ bgcolor: 'white' }} />
-            <Stack direction={'row'} columnGap={1} alignItems={'center'} useFlexGap>
-                <Icon>{Icons.HeightIcon} </Icon>
-                <Typography variant='h6' align='right'>
-                    {initH} мм
-                </Typography>
-            </Stack>
-        </Stack>;
-        return HEADER
-    }, [initH, initW])
+    const InitSizeHeader = useMemo(() => getHeader(initW, initH), [initH, initW])
 
 
 
@@ -65,8 +41,8 @@ const OutputCard = ({ savedSize, outblock }: OutputCardProps) => {
                 flexDirection={'column'}
                 margin={1}
             >
-                <SkfOut {...output.netSkf as ISizeShort} />
-                <SimpleOut {...output.netSimple as ISizeShort} />
+                <SkfOut {...output.netSkf.skf} />
+                <SimpleOut {...output.netSimple.simple as ISizeShort} />
                 <OtkOut {...output.Otk as { pm: number }} />
             </Box>
 
@@ -130,6 +106,35 @@ export default OutputCard
 
 
 
+
+function getHeader(initW: number, initH: number) {
+
+    const HEADER = () => <Stack flexDirection={'row'} justifyContent={'space-between'} columnGap={1}
+        sx={{
+            bgcolor: "#ff8000",
+            minWidth: 'fit-content',
+            borderRadius: 1,
+            px: 1
+        }}
+    >
+
+        <Stack direction={'row'} columnGap={1} alignItems={'center'} useFlexGap>
+            <Icon>{Icons.WidthIcon}</Icon>
+            <Typography variant='h6' align='right'>
+                {initW} мм
+            </Typography>
+        </Stack>
+        <Divider orientation='vertical' flexItem sx={{ bgcolor: 'white' }} />
+        <Stack direction={'row'} columnGap={1} alignItems={'center'} useFlexGap>
+            <Icon>{Icons.HeightIcon} </Icon>
+            <Typography variant='h6' align='right'>
+                {initH} мм
+            </Typography>
+        </Stack>
+    </Stack>;
+    return HEADER;
+
+}
 // type HeaderProps = {
 //     inpW: number,
 //     inpH: number

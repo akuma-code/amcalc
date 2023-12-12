@@ -1,6 +1,6 @@
 import { FnProperties, FnPropertyNames } from "../ActionComponents/ActionTypes/FnProperties"
 import { Fn_Args_offset5, Fn_Output_offset5, Fn_nets, Fn_offset5 } from "../ActionComponents/ActionTypes/Types"
-import { _rad2deg } from "../Helpers/HelpersFns"
+import { _log, _rad2deg } from "../Helpers/HelpersFns"
 import { ISizeFull, ISizeShort } from "../Interfaces/CommonTypes"
 
 export interface FnCalculatorList {
@@ -115,3 +115,4 @@ export type Fn_Calc = FnProperties<typeof Calc>
 
 export type ICalcPropNames = FnPropertyNames<Fn_Calc>
 export type ICalcHandler = { [Key in ICalcPropNames]: typeof Calc[Key] }[ICalcPropNames]
+

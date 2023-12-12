@@ -15,6 +15,9 @@ import { MockServer } from '../Templates/FakeServer'
 import OutputVers1 from '../FlexForm/Output/Output_v1'
 import Icons from '../Icons/SvgIcons'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
+import Output2 from '../FlexForm/Output/Output_v2'
+
+
 
 
 
@@ -36,7 +39,9 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     const logStores = () => {
         const s = RootStore.select(ViewConfig.selected_store)
         if (!s) return
-        const { store, out } = s.data
+        const args = toJS(s.store)
+
+        // _log(s.store.map(a => Calcul.run('skf', a)))
         _log({ ...toJS(s) })
     }
     const SelectStoreAndOut = useCallback((type: InputsTypeEnum) => {
@@ -134,7 +139,8 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
 
                 >
 
-                    <OutputVers1 store={RootStore.stores.size_full!.store} />
+                    {ViewConfig.selected_output === InputsTypeEnum.size_full && <OutputVers1 store={RootStore.stores.size_full!.store} />}
+                    <Output2 />
                     {/* <NetsOutput /> */}
 
                 </Grid>

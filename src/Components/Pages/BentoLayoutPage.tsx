@@ -44,8 +44,12 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
         // _log(s.store.map(a => Calcul.run('skf', a)))
         _log({ ...toJS(s) })
     }
-    const SelectStoreAndOut = useCallback((type: InputsTypeEnum) => {
+    const SelectStore = useCallback((type: InputsTypeEnum) => {
         ViewConfig.selectStore(type)
+
+    }, [ViewConfig])
+    const ToggleViewOut = useCallback(() => {
+        const type = ViewConfig.selected_output === 'size_full' ? InputsTypeEnum.offset5 : InputsTypeEnum.size_full
         ViewConfig.selectOut(type)
     }, [ViewConfig])
     const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === ViewConfig.selected_store,
@@ -57,7 +61,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             component={Stack}
         >
             <Button fullWidth={true}
-                onClick={() => SelectStoreAndOut(InputsTypeEnum.size_full)}
+                onClick={() => SelectStore(InputsTypeEnum.size_full)}
                 color={isSelected(InputsTypeEnum.size_full) ? 'primary' : 'success'}
                 sx={isSelected(InputsTypeEnum.size_full) ? { outline: '2px solid red' } : { outline: 'none' }}
             >
@@ -68,7 +72,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 sx={isSelected(InputsTypeEnum.size_short) ? { outline: '2px solid red' } : { outline: 'none' }}>
                 Size Short
             </Button> */}
-            <Button onClick={() => SelectStoreAndOut(InputsTypeEnum.offset5)}
+            <Button onClick={() => SelectStore(InputsTypeEnum.offset5)}
                 color={isSelected(InputsTypeEnum.offset5) ? 'primary' : 'success'}
                 sx={isSelected(InputsTypeEnum.offset5) ? { outline: '2px solid red' } : { outline: 'none' }}>
                 Offset5
@@ -76,7 +80,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
         </ButtonGroup>
 
         return ButtonControlGroup
-    }, [SelectStoreAndOut, isSelected])
+    }, [SelectStore, isSelected])
 
     const info_items = RootStore.storesSize()
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
@@ -116,9 +120,12 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                             Log stores
                         </Button>
 
-                        <Button
-                            onClick={() => _log(RootStore.storesSize())}
-                        >{Icons.defaultIcon}</Button>
+                        <Button sx={{ display: 'flex', gap: 2 }}
+                            onClick={ToggleViewOut}
+                        >
+                            {Icons.defaultIcon}
+                            out {` => `} {ViewConfig.selected_output}
+                        </Button>
                     </ButtonGroup>
                 </Grid>
             </Grid>

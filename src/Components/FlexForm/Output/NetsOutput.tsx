@@ -9,7 +9,7 @@ import { Stack } from '@mui/system'
 import { NetsCard, ViewNetsState } from './NetsCard'
 import Icons from '../../Icons/SvgIcons'
 import { StringsIterator } from '../../../ActionComponents/ActionModels/FnGenerator'
-import OutputCard from './OutputCard'
+import OutputSizeCard from './OutputSizeCard'
 import { InputsTypeEnum } from '../../../Hooks/useFormStateSelector'
 
 
@@ -74,7 +74,7 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
                     // saved && 
                     testsaved.map((size, idx) =>
                         // <NetsCard size={size} idxCounter={idx} key={_ID()} />
-                        <OutputCard savedSize={size} key={idx} />
+                        <OutputSizeCard savedSize={size} key={idx} />
                     )}
             </Stack>
 

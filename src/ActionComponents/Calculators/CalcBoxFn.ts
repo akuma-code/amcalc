@@ -6,7 +6,7 @@ import { Fn_Args_offset5 } from "../ActionTypes/Types"
 
 interface CalcFn {
     fn_id: string
-    fn(payload: any): any
+    fn(payload: any): unknown
 }
 
 class CalcSkf implements CalcFn {
@@ -42,7 +42,7 @@ class CalcOffset5 implements CalcFn {
 
 class CalcBoxFn<A extends A_InputArgs>{
     funcs: CalcFn[] = []
-    use(fn: CalcFn) {
+    addFn(fn: CalcFn) {
         this.funcs.push(fn)
     }
 
@@ -55,28 +55,38 @@ class CalcBoxFn<A extends A_InputArgs>{
         }
         // return this.funcs.map(c => c.fn(payload))
     }
+
+
 }
 export function notReachable(_: never): never {
     throw new Error(`Should never be reached ${_}`);
 }
+
+
+
 const SizeCalculator = new CalcBoxFn<A_Size>()
 const Offset5Calculator = new CalcBoxFn<A_Offset5>()
-SizeCalculator.use(new CalcSkf())
-SizeCalculator.use(new CalcSimple())
-SizeCalculator.use(new CalcOtkosi())
 
-Offset5Calculator.use(new CalcOffset5())
+SizeCalculator.addFn(new CalcSkf())
+SizeCalculator.addFn(new CalcSimple())
+SizeCalculator.addFn(new CalcOtkosi())
+
+Offset5Calculator.addFn(new CalcOffset5())
 
 const CalcControl = {
     size_full: SizeCalculator,
     offset5: Offset5Calculator,
 }
 
+
 export default CalcControl
 
+type FnType<T extends CalcFn> = ReturnType<T['fn']>
+type rr = FnType<typeof CalcControl['size_full']['funcs'][number]>
+type UnpackArray<T> = T extends (infer R)[] ? R : T
 
-
-
+type tt = UnpackArray<typeof SizeCalculator.funcs>
+type uu = FnType<tt>
 // class CalcBox<A> {
 //     fns: Record<string, CalcFn> = {}
 //     use(name: string, fn: CalcFn) {

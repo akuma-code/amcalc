@@ -9,6 +9,7 @@ import { Calc, FnCalculatorList, ICalcPropNames } from "../Hooks/useFuncs";
 import { Fn_Args_offset5, Fn_Output_offset5 } from "../ActionComponents/ActionTypes/Types";
 import { A_InputArgs, ISizeFull, ISizeShort, SizeFull, _ArgsMaker } from "../Interfaces/CommonTypes";
 import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
+import { DataOutput } from "./DataOutputBlock";
 
 interface IDS_Subject {
     store_name: InputsTypeEnum
@@ -22,8 +23,8 @@ interface IDS_Subject {
 export class DataStore<D extends AnyArg> {
     private saved: Array<A_InputArgs>;
     private rootStore?: RootArgsStore_v1;
-    output: DataOutputBlock<A_InputArgs>[]
-    store_id?: string | ArgsTypes
+    output: DataOutput<A_InputArgs>['blocks']
+    store_id!: string | ArgsTypes
     uniqueID: string = _ID()
 
     constructor({ root, name }: { root?: RootArgsStore_v1, name: string }) {
@@ -76,7 +77,11 @@ export class DataStore<D extends AnyArg> {
     }
 
     updateOutput() {
-        this.output = [...this.saved].map(a => new DataOutputBlock(a, { root_store: this, type: this.store_id as InputsTypeEnum }))
+        const out = new DataOutput(this).blocks
+        this.output = out
+
+        console.log('out', out)
+
     }
 
 

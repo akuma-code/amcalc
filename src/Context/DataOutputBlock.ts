@@ -1,80 +1,148 @@
-import { toJS } from "mobx";
-import { _ID, _log } from "../Helpers/HelpersFns";
-import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
-import { BlockCalculator, IOutBlock } from "./DataStore";
-import { RootArgsStore_v1 } from "./RootStore";
-import { A_Offset5, ArgsUnion, SizeFull } from "../Interfaces/CommonTypes";
+import CalcControl, { notReachable } from "../ActionComponents/Calculators/CalcBoxFn";
 import { AnyArg } from "../Hooks/useDynamicInputs";
+import { A_InputArgs } from "../Interfaces/CommonTypes";
 import { ArgsTypes } from "../Models/ArgsTypeModel";
+import { DataStore } from "./DataStore";
 
 
-type WithArgType = { argType: ArgsTypes }
 
 
-class DataStore<D extends ArgsUnion> {
-    private saved: Array<D['args']>;
-    private rootStore?: RootArgsStore_v1;
-    output: any[]
-    store_id?: ArgsTypes
-    uniqueID: string = _ID()
 
-    constructor(data_type?: ArgsTypes, options?: { root: RootArgsStore_v1 }) {
 
-        this.saved = [];
-        this.rootStore = options?.root;
-        this.output = []
-
-        this.setName(data_type)
+export class DataOutput<A extends AnyArg>{
+    root: DataStore<A>
+    argType: ArgsTypes | string
+    saved_args: A_InputArgs[] = []
+    blocks: unknown[] = []
+    constructor(data_store: DataStore<A>) {
+        this.root = data_store
+        this.argType = data_store.store_id
+        this.saved_args = data_store.store
+        this.blocks = this.getBlocks()
     }
 
 
-    get storeSize() {
+    getBlocks() {
+        const mapfn = this.calcFuncs
+        function _c({ argType, ...rest }: A_InputArgs) {
 
-        return this.saved.length;
-    }
 
-    setName(name?: ArgsTypes) {
-        if (!name) return this
-        this.store_id = name
-        return this
-    }
-    add(data: D['args']) {
-        if (!this.store_id)
-            this.saved = [...this.saved, data];
-        this.updateOutput()
-    }
-    get store() {
-        return this.saved;
-    }
-    get data() {
-        const store = toJS(this.store)
-        const out = toJS(this.output)
-        return { store, out }
-    }
-    clear() {
-        this.saved = [];
-        this.updateOutput()
-
-    }
-
-    updateOutput() {
-        const getOutBlock = (saved_data: D) => {
-            switch (saved_data.argType) {
-
-                // case InputsTypeEnum.size_full:return new DataOutputBlock(saved_data.args, {root_store:this})
-                // case InputsTypeEnum.offset5:return new DataOutputBlock(saved_data.args, {root_store:this})
-            }
+            const _b = mapfn.length > 0 ? mapfn.map(fn => fn.fn(rest)) : []
+            return [..._b] as const
         }
-        // this.output = [...this.saved].map(a => new DataOutputBlock<D>(a, { root_store: this, type: this.store_id as InputsTypeEnum }))
+
+        const blocks = this.saved_args.map(_c)
+        return blocks
+
     }
 
-
+    get calcFuncs() {
+        const mapfn = []
+        switch (this.argType) {
+            case "size_full": mapfn.push(...CalcControl.size_full.funcs)
+                break
+            case "offset5": mapfn.push(...CalcControl.offset5.funcs)
+                break
+            default: notReachable(this.argType as never)
+                break
+        }
+        return mapfn
+    }
 }
 
-export const r = new DataStore()
-r.add(new A_Offset5(5, 5, 1, 1, 2))
-const y = r.store_id
-_log(y)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// class DataStore<D extends ArgsUnion> {
+//     private saved: Array<D['args']>;
+//     private rootStore?: RootArgsStore_v1;
+//     output: any[]
+//     store_id?: ArgsTypes
+//     uniqueID: string = _ID()
+
+//     constructor(data_type?: ArgsTypes, options?: { root: RootArgsStore_v1 }) {
+
+//         this.saved = [];
+//         this.rootStore = options?.root;
+//         this.output = []
+
+//         this.setName(data_type)
+//     }
+
+
+//     get storeSize() {
+
+//         return this.saved.length;
+//     }
+
+//     setName(name?: ArgsTypes) {
+//         if (!name) return this
+//         this.store_id = name
+//         return this
+//     }
+//     add(data: D['args']) {
+//         if (!this.store_id)
+//             this.saved = [...this.saved, data];
+//         this.updateOutput()
+//     }
+//     get store() {
+//         return this.saved;
+//     }
+//     get data() {
+//         const store = toJS(this.store)
+//         const out = toJS(this.output)
+//         return { store, out }
+//     }
+//     clear() {
+//         this.saved = [];
+//         this.updateOutput()
+
+//     }
+
+//     updateOutput() {
+//         const getOutBlock = (saved_data: D) => {
+//             switch (saved_data.argType) {
+
+//                 // case InputsTypeEnum.size_full:return new DataOutputBlock(saved_data.args, {root_store:this})
+//                 // case InputsTypeEnum.offset5:return new DataOutputBlock(saved_data.args, {root_store:this})
+//             }
+//         }
+//         // this.output = [...this.saved].map(a => new DataOutputBlock<D>(a, { root_store: this, type: this.store_id as InputsTypeEnum }))
+//     }
+
+
+// }
 
 
 

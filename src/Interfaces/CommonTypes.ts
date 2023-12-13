@@ -44,7 +44,7 @@ export class A_Offset5 {
         public da: number,
         public db: number) { }
 }
-
+export type WithArgType = { argType: ArgsTypes }
 export function _isFullSize(size: ISize): size is ISizeFull {
     if ('width' in size) return true
     else return false

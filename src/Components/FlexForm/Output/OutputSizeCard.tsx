@@ -11,7 +11,7 @@ type OutputCardProps = {
     viewOptions?: { [x: string]: boolean }
 }
 
-const OutputCard = ({ savedSize, outblock }: OutputCardProps) => {
+const OutputSizeCard = ({ savedSize, outblock }: OutputCardProps) => {
     const [initW, initH] = _sizeTuppler(savedSize)
 
     const output = useMemo(() => {
@@ -96,7 +96,7 @@ const OtkOut = (otk: { pm: number }) => {
     )
 }
 
-export default OutputCard
+export default OutputSizeCard
 
 
 

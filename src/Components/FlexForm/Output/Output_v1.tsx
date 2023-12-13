@@ -2,7 +2,7 @@ import { Stack } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { _ID } from '../../../Helpers/HelpersFns'
 import { A_InputArgs, SizeFull } from '../../../Interfaces/CommonTypes'
-import OutputCard from './OutputCard'
+import OutputSizeCard from './OutputSizeCard'
 
 type OutputProps = {
     store?: A_InputArgs[]
@@ -31,7 +31,7 @@ const OutputVers1 = observer((props: OutputProps) => {
             overflow={'auto'}>
 
             {
-                [...saved].map(s => (('width' in s) ? <OutputCard savedSize={s} key={_ID()} /> : null))
+                [...saved].map(s => (('width' in s) ? <OutputSizeCard savedSize={s} key={_ID()} /> : null))
 
             }
         </Stack>

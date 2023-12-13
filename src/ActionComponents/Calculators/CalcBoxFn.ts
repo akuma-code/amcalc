@@ -51,7 +51,7 @@ class CalcBoxFn<A extends A_InputArgs>{
         switch (argType) {
             case InputsTypeEnum.size_full: { return this.funcs.map(c => c.fn(rest)) }
             case InputsTypeEnum.offset5: { return this.funcs.map(c => c.fn(rest)) }
-            default: return notReachable(rest as never)
+            default: return notReachable(argType as never)
         }
         // return this.funcs.map(c => c.fn(payload))
     }

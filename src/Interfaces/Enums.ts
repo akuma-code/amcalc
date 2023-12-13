@@ -11,6 +11,6 @@ export enum LABELS_LIST {
     da = 'дельта А',
     db = 'дельта Б',
     size = 'Размеры (w,h)',
-    size_full = 'Размеры (width, height)',
-    offset5 = 'Смещение (Тип 5)',
+    size_full = 'Размеры',
+    offset5 = 'Смещение',
 }

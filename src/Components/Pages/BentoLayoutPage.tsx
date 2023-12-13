@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Grid, Stack } from '@mui/material'
+import { Box, Button, ButtonGroup, Grid, Stack } from '@mui/material'
 import React, { useMemo, useCallback } from 'react'
 
 import { _log, _toJSON } from '../../Helpers/HelpersFns'
@@ -16,7 +16,10 @@ import OutputVers1 from '../FlexForm/Output/Output_v1'
 import Icons from '../Icons/SvgIcons'
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
 import Output2 from '../FlexForm/Output/Output_v2'
-
+import { ViewControlBar } from '../UI/ViewControlBar'
+import { ArgsTypes } from '../../Models/ArgsTypeModel'
+import { LABELS_LIST } from '../../Interfaces/Enums'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 
 
@@ -39,9 +42,6 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     const logStores = () => {
         const s = RootStore.select(ViewConfig.selected_store)
         if (!s) return
-        const args = toJS(s.store)
-
-        // _log(s.store.map(a => Calcul.run('skf', a)))
         _log({ ...toJS(s) })
     }
     const SelectStore = useCallback((type: InputsTypeEnum) => {
@@ -55,33 +55,37 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === ViewConfig.selected_store,
         [ViewConfig.selected_store])
     const ControlButtonsGroup = useMemo(() => {
-        const ButtonControlGroup = () => <ButtonGroup sx={{ mx: 1, gap: 1, width: 200, height: 'fit-content' }}
+        const ButtonControlGroup = () => <ButtonGroup sx={{ gap: 1, width: 150, height: 'fit-content' }}
             variant="contained"
             size='large'
             component={Stack}
+            orientation='vertical'
         >
-            <Button fullWidth={true}
+            <Button
                 onClick={() => SelectStore(InputsTypeEnum.size_full)}
                 color={isSelected(InputsTypeEnum.size_full) ? 'primary' : 'success'}
                 sx={isSelected(InputsTypeEnum.size_full) ? { outline: '2px solid red' } : { outline: 'none' }}
             >
                 Size Full
             </Button>
-            {/* <Button onClick={() => SelectStoreAndOut(InputsTypeEnum.size_short)}
-                color={isSelected(InputsTypeEnum.size_short) ? 'primary' : 'success'}
-                sx={isSelected(InputsTypeEnum.size_short) ? { outline: '2px solid red' } : { outline: 'none' }}>
-                Size Short
-            </Button> */}
+
             <Button onClick={() => SelectStore(InputsTypeEnum.offset5)}
                 color={isSelected(InputsTypeEnum.offset5) ? 'primary' : 'success'}
                 sx={isSelected(InputsTypeEnum.offset5) ? { outline: '2px solid red' } : { outline: 'none' }}>
                 Offset5
             </Button>
+            <Button onClick={logStores}
+
+                color='error'
+                sx={{}}
+            >
+                Log stores
+            </Button>
         </ButtonGroup>
 
         return ButtonControlGroup
     }, [SelectStore, isSelected])
-
+    const clearStore = (store_id: ArgsTypes) => RootStore.select(store_id).clear()
     const info_items = RootStore.storesSize()
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
     return (
@@ -89,7 +93,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             sx={{
                 bgcolor: '#cffafc',
                 m: 2,
-                p: 1,
+                // p: 1,
             }}>
             <Grid container item spacing={2} maxHeight={250}>
                 <Grid item key={'info'}
@@ -108,52 +112,53 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     item
                     container
                     gap={2}
-                    p={2}
+                    pb={2}
+                    pr={2}
+                    justifyContent={'space-between'}
                 >
 
                     <ControlButtonsGroup />
-                    <ButtonGroup sx={{ alignSelf: 'start' }}
+                    <ButtonGroup
+                        sx={{ alignSelf: 'end', display: 'flex', maxWidth: 'fit-content' }}
+                        orientation='vertical'
                         variant="contained" >
-                        <Button onClick={logStores}
-                            color='warning'
-                        >
-                            Log stores
-                        </Button>
 
-                        <Button sx={{ display: 'flex', gap: 2 }}
-                            onClick={ToggleViewOut}
+                        <Button sx={{ display: 'flex', gap: 1, fontFamily: 'Fira Code' }}
+                            onClick={() => clearStore(ViewConfig.selected_store)}
                         >
-                            {Icons.defaultIcon}
-                            out {` => `} {ViewConfig.selected_output}
+                            Очистить {LABELS_LIST[ViewConfig.selected_store]}
+                            <DeleteOutlinedIcon color='warning' />
                         </Button>
                     </ButtonGroup>
                 </Grid>
             </Grid>
 
 
-            <Grid container item spacing={2}>
-                <Grid item key={'form'} xs={3} border={'2px solid red'} p={2}>
+            <Grid container item spacing={2} >
+                <Grid item key={'form'} xs={3} border={'2px solid red'} >
 
                     <DynamicInputsForm />
 
 
                 </Grid>
-                <Grid item container
+                <Grid item={true} maxWidth={'fit-content'}
                     key={'output'}
-                    sx={{ bgcolor: '#a9f135' }}
+                    sx={{ bgcolor: '#a9f135', position: 'relative' }}
                     xs={9}
-                    border={'2px solid green'} p={2}
-
+                    border={'2px solid green'}
                 >
+                    <ViewControlBar />
+                    <Box position={'relative'} pt={4} display={'flex'}>
 
-                    {ViewConfig.selected_output === InputsTypeEnum.size_full && <OutputVers1 store={RootStore.stores.size_full!.store} />}
-                    <Output2 />
+                        {ViewConfig.selected_output === InputsTypeEnum.size_full && <OutputVers1 store={RootStore.stores.size_full!.store} />}
+                        {ViewConfig.selected_output === InputsTypeEnum.offset5 && <Output2 />}
+                    </Box>
                     {/* <NetsOutput /> */}
 
                 </Grid>
             </Grid>
 
-        </Grid>
+        </Grid >
     )
 })
 

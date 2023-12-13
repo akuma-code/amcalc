@@ -19,7 +19,7 @@ export const _deg2rad = (deg: number) => (deg * Math.PI) / 180.0
 
 export const _rad2deg = (rad: number) => (rad * 180) / Math.PI
 
-export const _isArr = (obj: any) => Array.isArray(obj)
+export const _isArr = (obj: any): obj is any[] => Array.isArray(obj)
 
 export const getFormFields = <Args extends IC_FuncArgs>(args: Args): { fields: keyof Args[] } => {
     const keys = Object.keys(args) as unknown as keyof Args[]

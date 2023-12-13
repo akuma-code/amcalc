@@ -1,15 +1,15 @@
 import { action, computed, makeAutoObservable, observable, toJS } from "mobx";
-import { _ID, _log } from "../Helpers/HelpersFns";
+import { Fn_Args_offset5, Fn_Output_offset5 } from "../ActionComponents/ActionTypes/Types";
+import { _ID } from "../Helpers/HelpersFns";
 import { AnyArg } from "../Hooks/useDynamicInputs";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
+import { Calc } from "../Hooks/useFuncs";
+import { A_InputArgs, ISizeFull, ISizeShort, _ArgsMaker } from "../Interfaces/CommonTypes";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
-import { IDSObserver } from "./DataStoreObserver";
-import { RootArgsStore_v1 } from "./RootStore";
-import { Calc, FnCalculatorList, ICalcPropNames } from "../Hooks/useFuncs";
-import { Fn_Args_offset5, Fn_Output_offset5 } from "../ActionComponents/ActionTypes/Types";
-import { A_InputArgs, ISizeFull, ISizeShort, SizeFull, _ArgsMaker } from "../Interfaces/CommonTypes";
 import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
 import { DataOutput } from "./DataOutputBlock";
+import { IDSObserver } from "./DataStoreObserver";
+import { RootArgsStore_v1 } from "./RootStore";
 
 interface IDS_Subject {
     store_name: InputsTypeEnum
@@ -23,7 +23,7 @@ interface IDS_Subject {
 export class DataStore<D extends AnyArg> {
     private saved: Array<A_InputArgs>;
     private rootStore?: RootArgsStore_v1;
-    output: DataOutput<A_InputArgs>['blocks']
+    output: DataOutput
     store_id!: string | ArgsTypes
     uniqueID: string = _ID()
 
@@ -43,7 +43,7 @@ export class DataStore<D extends AnyArg> {
         )
         this.saved = [];
         this.rootStore = root;
-        this.output = []
+        this.output = new DataOutput(this)
         this.setName(name)
     }
 
@@ -77,11 +77,8 @@ export class DataStore<D extends AnyArg> {
     }
 
     updateOutput() {
-        const out = new DataOutput(this).blocks
-        this.output = out
-
-        console.log('out', out)
-
+        this.output = new DataOutput(this)
+        console.log('out', this.output)
     }
 
 
@@ -264,4 +261,3 @@ interface SortedFnCalculatorList {
     }
 }
 
-type Calcs = Record<keyof SortedFnCalculatorList, SortedFnCalculatorList[keyof SortedFnCalculatorList]>

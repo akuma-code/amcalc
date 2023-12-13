@@ -16,7 +16,7 @@ export type ViewNetsState = { [Key in 'skf' | 'simple']: boolean }
 
 
 export const NetsCard: React.FC<NetCardProps> = observer((props) => {
-    const { ThemeView } = useStoresContext()
+    // const { ThemeView } = useStoresContext()
 
     const [color, setColor] = useState<string>('#fff');
     // const [viewNet, setViewNet] = useState({ ...show, mode, desc: NetViewEn[mode] });

@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { IStoresContext, StoresContext } from './Hooks/useStoresContext';
 import { RootArgsStore_v1 } from './Context/RootStore';
-import { OutputViewConfig, ThemeView } from './Context/ThemeView'
+import { OutputViewConfig } from './Context/ThemeView'
 
 import { configure } from "mobx"
 

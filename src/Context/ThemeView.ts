@@ -4,6 +4,7 @@ import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { observer } from "mobx-react-lite";
 import { StringsIterator } from "../ActionComponents/ActionModels/FnGenerator";
+import { _log } from "../Helpers/HelpersFns";
 
 interface OutputNetsOptions {
     mode: 'skf' | 'simple' | 'both'
@@ -15,7 +16,7 @@ interface IThemeView {
 }
 
 
-export class ThemeView implements IThemeView {
+class ThemeView implements IThemeView {
     Options_Nets_out: OutputNetsOptions
     constructor() {
         makeAutoObservable(this)
@@ -57,13 +58,21 @@ export class OutputViewConfig {
             selected_store: observable,
             selected_output: observable,
             visible: observable,
-            toggle: action,
+            toggleSizeView: action,
             selectOut: action,
             selectStore: action,
+            toggleVisible: action,
         }, { name: 'ViewConfig' })
-        this.visible = { showSkf: false, showSimple: true }
+        this.visible = {
+            showSkf: false,
+            showSimple: true,
+            showOtkosi: true,
+            showOffset5: true,
+            devtools: false
+
+        }
     }
-    toggle(mode: 'skf' | 'simple' | 'both') {
+    toggleSizeView(mode: 'skf' | 'simple' | 'both') {
 
         switch (mode) {
             case "skf": { this.visible = { ...this.visible, showSkf: true, showSimple: false }; break }
@@ -77,5 +86,12 @@ export class OutputViewConfig {
     }
     selectOut(store_id: InputsTypeEnum) {
         this.selected_output = store_id
+    }
+
+    toggleVisible(view_item: string) {
+        const item = this.visible[view_item]
+        if (!item) { _log("No such params: ", view_item) }
+        this.visible[view_item] = !item
+
     }
 }

@@ -9,12 +9,12 @@ import { DataStore } from "./DataStore";
 
 
 
-export class DataOutput<A extends AnyArg>{
-    root: DataStore<A>
+export class DataOutput {
+    root: DataStore<AnyArg>
     argType: ArgsTypes | string
-    saved_args: A_InputArgs[] = []
+    saved_args: A_InputArgs[]
     blocks: unknown[] = []
-    constructor(data_store: DataStore<A>) {
+    constructor(data_store: DataStore<AnyArg>) {
         this.root = data_store
         this.argType = data_store.store_id
         this.saved_args = data_store.store
@@ -28,7 +28,7 @@ export class DataOutput<A extends AnyArg>{
 
 
             const _b = mapfn.length > 0 ? mapfn.map(fn => fn.fn(rest)) : []
-            return [..._b] as const
+            return _b
         }
 
         const blocks = this.saved_args.map(_c)
@@ -43,8 +43,7 @@ export class DataOutput<A extends AnyArg>{
                 break
             case "offset5": mapfn.push(...CalcControl.offset5.funcs)
                 break
-            default: notReachable(this.argType as never)
-                break
+            default: return []
         }
         return mapfn
     }

@@ -1,13 +1,27 @@
 import CalcControl, { notReachable } from "../ActionComponents/Calculators/CalcBoxFn";
 import { AnyArg } from "../Hooks/useDynamicInputs";
-import { A_InputArgs } from "../Interfaces/CommonTypes";
+import { GetReturnFnList } from "../Hooks/useFuncs";
+import { A_InputArgs, A_Offset5, A_Size } from "../Interfaces/CommonTypes";
 import { ArgsTypes } from "../Models/ArgsTypeModel";
 import { DataStore } from "./DataStore";
 
 
 
+type SR = GetReturnFnList<A_Size>
+type OR = GetReturnFnList<A_Offset5>
 
+interface OutputDTO<T> {
+    blocks: readonly T[]
+    argType: ArgsTypes
+    store_id: ArgsTypes
 
+}
+type SO_DTO = OutputDTO<typeof CalcControl.size_full.funcs>
+type OR_DTO = OutputDTO<OR>
+
+type SizeOffsetDTO =
+    | SO_DTO
+    | OR_DTO
 
 export class DataOutput {
     root: DataStore<AnyArg>
@@ -38,7 +52,9 @@ export class DataOutput {
 
     get calcFuncs() {
         const mapfn = []
+
         switch (this.argType) {
+
             case "size_full": mapfn.push(...CalcControl.size_full.funcs)
                 break
             case "offset5": mapfn.push(...CalcControl.offset5.funcs)

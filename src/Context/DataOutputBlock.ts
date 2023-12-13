@@ -39,13 +39,11 @@ export class DataOutput {
     getBlocks() {
         const mapfn = this.calcFuncs
         function _c({ argType, ...rest }: A_InputArgs) {
-
-
             const _b = mapfn.length > 0 ? mapfn.map(fn => fn.fn(rest)) : []
             return _b
         }
 
-        const blocks = this.saved_args.map(_c)
+        const blocks = this.saved_args.map(_c) as SR[][]
         return blocks
 
     }

@@ -1,7 +1,9 @@
 import CalcControl, { notReachable } from "../ActionComponents/Calculators/CalcBoxFn";
+import { _log } from "../Helpers/HelpersFns";
 import { AnyArg } from "../Hooks/useDynamicInputs";
 import { GetReturnFnList } from "../Hooks/useFuncs";
 import { A_InputArgs, A_Offset5, A_Size } from "../Interfaces/CommonTypes";
+import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes } from "../Models/ArgsTypeModel";
 import { DataStore } from "./DataStore";
 
@@ -23,14 +25,19 @@ type SizeOffsetDTO =
     | SO_DTO
     | OR_DTO
 
+
+type OutItem = {
+    arg: A_InputArgs
+    out: SR[] | OR[]
+}
 export class DataOutput {
     root: DataStore<AnyArg>
     argType: ArgsTypes | string
     saved_args: A_InputArgs[]
-    blocks: unknown[] = []
+    blocks: any[] = []
     constructor(data_store: DataStore<AnyArg>) {
-        this.root = data_store
         this.argType = data_store.store_id
+        this.root = data_store
         this.saved_args = data_store.store
         this.blocks = this.getBlocks()
     }
@@ -43,11 +50,42 @@ export class DataOutput {
             return _b
         }
 
-        const blocks = this.saved_args.map(_c) as SR[][]
+        const blocks = this.saved_args.map(_c) as SR[][] | OR[][]
         return blocks
 
     }
+    out() {
 
+        const outItem = (arg: A_InputArgs, out: SR[] | OR[]) => ({
+            arg,
+            out
+        })
+        let r: ReturnType<typeof outItem>[] = [];
+        if (this.argType) {
+            if (this.saved_args.length === 0) {
+                _log("no saved args")
+                return []
+            } else
+
+                switch (this.argType) {
+                    case "size_full": {
+
+                        r = this.blocks.map((b, idx) => outItem(this.saved_args[idx] as A_Size, b as SR[]))
+                        break
+                    }
+                    case "offset5": {
+                        r = this.blocks.map((b, idx) => outItem(this.saved_args[idx] as A_Offset5, b as OR[]))
+                        break
+                    }
+                    case "undefined": {
+                        _log("ARGS TYPE MISSED!", this.argType)
+                        break
+                    }
+                    default: throw new Error("Something gone wrong")
+                }
+        }
+        return r
+    }
     get calcFuncs() {
         const mapfn = []
 

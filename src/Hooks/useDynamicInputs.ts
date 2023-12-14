@@ -1,5 +1,5 @@
 import { IFormFieldsValues, InputsTypeEnum } from "./useFormStateSelector";
-import { ArgsTypesList } from "../Models/ArgsTypeModel";
+import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
 import { dto_formStates } from "../Components/FlexForm/DTO_Forms";
 import { useForm } from "react-hook-form";
 import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes";
@@ -22,9 +22,9 @@ const GetFieldsArray = <T extends AnyArg>(o: T) => {
     return k
 }
 
-const dto_formSelector = (store_id: InputsTypeEnum) => {
+const dto_formSelector = (store_id: ArgsTypes) => {
 
-    const compute_form = (state_id: InputsTypeEnum) => dto_formStates[state_id]
+    const compute_form = (state_id: ArgsTypes) => dto_formStates[state_id]
 
 
     switch (store_id) {
@@ -43,7 +43,7 @@ const dto_formSelector = (store_id: InputsTypeEnum) => {
 
 }
 
-export function useDynamicInputs(state_id: InputsTypeEnum) {
+export function useDynamicInputs(state_id: ArgsTypes) {
     const { init } = dto_formSelector(state_id)
     const methods = useForm<typeof init>()
 
@@ -67,7 +67,7 @@ const MakeInputs = <T extends AnyArg>(args: T) => {
 
 
 
-export function useDinamicFields_(store_id: InputsTypeEnum) {
+export function useDinamicFields_(store_id: ArgsTypes) {
 
     const { fields, init } = state_list(store_id)
 
@@ -78,7 +78,7 @@ export function useDinamicFields_(store_id: InputsTypeEnum) {
 
 
 }
-const state_list = (store_id: InputsTypeEnum) => {
+const state_list = (store_id: ArgsTypes) => {
     const dto: GetFormInstaceState<AnyArg> = { ...dto_formStates[store_id], store_id: dto_formStates[store_id].type }
     switch (store_id) {
 

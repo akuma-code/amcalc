@@ -1,25 +1,22 @@
-import { Box, Button, ButtonGroup, Grid, Stack } from '@mui/material'
-import React, { useMemo, useCallback } from 'react'
+import { Button, ButtonGroup, Grid, Stack } from '@mui/material'
+import React, { FC, useCallback, useMemo } from 'react'
 
-import { _log, _toJSON } from '../../Helpers/HelpersFns'
-import { FactoryDiv } from '../Templates/Factory'
-import { useStoresContext } from '../../Hooks/useStoresContext'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { toJS } from 'mobx'
 import { observer, } from 'mobx-react-lite'
+import { _log } from '../../Helpers/HelpersFns'
 import { InputsTypeEnum } from '../../Hooks/useFormStateSelector'
-import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
-import NetsOutput from '../FlexForm/Output/NetsOutput'
-import { InfoBox } from './InfoBox'
-import { CardViewState } from '../../Hooks/useOutputCtx'
-import { MockServer } from '../Templates/FakeServer'
-import OutputVers1 from '../FlexForm/Output/Output_v1'
-import Icons from '../Icons/SvgIcons'
-import { ANYobj } from '../../Interfaces/MathActionsTypes'
-import Output2 from '../FlexForm/Output/Output_v2'
-import { ViewControlBar } from '../UI/ViewControlBar'
-import { ArgsTypes } from '../../Models/ArgsTypeModel'
+import { useStoresContext } from '../../Hooks/useStoresContext'
 import { LABELS_LIST } from '../../Interfaces/Enums'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import { ArgsTypes } from '../../Models/ArgsTypeModel'
+import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
+import OutputVers1 from '../FlexForm/Output/Output_v1'
+import Output2 from '../FlexForm/Output/Output_v2'
+import { FactoryDiv } from '../Templates/Factory'
+import { OutputTabs } from '../UI/OutputTabs'
+import { InfoBox } from './InfoBox'
+import { FormControlButtons } from '../UI/FormControlButtons'
+import { FCButtonsGroup } from '../UI/FCButtonGroup'
 
 
 
@@ -39,21 +36,19 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { RootStore, ViewConfig } = useStoresContext()
 
-    const logStores = () => {
+    const logStores = useCallback(() => {
         const s = RootStore.select(ViewConfig.selected_store)
         if (!s) return
         _log({ ...toJS(s) })
-    }
-    const SelectStore = useCallback((type: InputsTypeEnum) => {
-        ViewConfig.selectStore(type)
+    }, [RootStore, ViewConfig.selected_store])
 
+    const SelectStore = useCallback((type: InputsTypeEnum) => {
+        ViewConfig.selectForm(type)
     }, [ViewConfig])
-    const ToggleViewOut = useCallback(() => {
-        const type = ViewConfig.selected_output === 'size_full' ? InputsTypeEnum.offset5 : InputsTypeEnum.size_full
-        ViewConfig.selectOut(type)
-    }, [ViewConfig])
+
     const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === ViewConfig.selected_store,
         [ViewConfig.selected_store])
+
     const ControlButtonsGroup = useMemo(() => {
         const ButtonControlGroup = () => <ButtonGroup sx={{ gap: 1, width: 150, height: 'fit-content' }}
             variant="contained"
@@ -84,9 +79,14 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
         </ButtonGroup>
 
         return ButtonControlGroup
-    }, [SelectStore, isSelected])
-    const clearStore = (store_id: ArgsTypes) => RootStore.select(store_id).clear()
-    const info_items = RootStore.storesSize()
+    }, [SelectStore, isSelected, logStores])
+
+
+
+    const clearStore = useCallback((store_id: ArgsTypes) => RootStore.select(store_id).clear(), [RootStore])
+
+
+
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
     return (
         <Grid container spacing={2} minHeight={160} maxWidth={'85vw'} key={'MainGridContainer'}
@@ -103,7 +103,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 >
 
 
-                    <InfoBox items={info_items} />
+                    <InfoBox items={RootStore.storesSize()} />
 
                 </Grid>
                 <Grid key={'selector'}
@@ -117,43 +117,32 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     justifyContent={'space-between'}
                 >
 
-                    <ControlButtonsGroup />
-                    <ButtonGroup
-                        sx={{ alignSelf: 'end', display: 'flex', maxWidth: 'fit-content' }}
-                        orientation='vertical'
-                        variant="contained" >
-
-                        <Button sx={{ display: 'flex', gap: 1, fontFamily: 'Fira Code' }}
-                            onClick={() => clearStore(ViewConfig.selected_store)}
-                        >
-                            Очистить {LABELS_LIST[ViewConfig.selected_store]}
-                            <DeleteOutlinedIcon color='warning' />
-                        </Button>
-                    </ButtonGroup>
+                    {/* <ControlButtonsGroup /> */}
+                    {/* {ViewControlButtonGroup(clearStore, ViewConfig)} */}
+                    <ViewControlButtonGroup clearStore={clearStore} />
                 </Grid>
             </Grid>
 
 
             <Grid container item spacing={2} >
                 <Grid item key={'form'} xs={3} border={'2px solid red'} >
-
+                    <FCButtonsGroup />
                     <DynamicInputsForm />
 
 
                 </Grid>
                 <Grid item={true} maxWidth={'fit-content'}
                     key={'output'}
-                    sx={{ bgcolor: '#a9f135', position: 'relative' }}
+                    sx={{ bgcolor: '#a9f135', position: 'relative', p: 0, m: 0 }}
                     xs={9}
                     border={'2px solid green'}
                 >
-                    <ViewControlBar />
-                    <Box position={'relative'} pt={4} display={'flex'}>
+                    <OutputTabs
+                        size_elem={<OutputVers1 store={RootStore.stores.size_full!.store} />}
+                        offset_elem={<Output2 />}
+                    />
 
-                        {ViewConfig.selected_output === InputsTypeEnum.size_full && <OutputVers1 store={RootStore.stores.size_full!.store} />}
-                        {ViewConfig.selected_output === InputsTypeEnum.offset5 && <Output2 />}
-                    </Box>
-                    {/* <NetsOutput /> */}
+
 
                 </Grid>
             </Grid>
@@ -165,3 +154,24 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
 
 BentoLayoutPage.displayName = "____BENTO_____"
 export default BentoLayoutPage
+type BtnGroupProps = {
+    clearStore: (store_id: ArgsTypes) => void,
+
+}
+
+const ViewControlButtonGroup: FC<BtnGroupProps> = observer(({ clearStore }) => {
+    const { ViewConfig } = useStoresContext()
+    return (<ButtonGroup
+        sx={{ alignSelf: 'end', display: 'flex', maxWidth: 'fit-content' }}
+        orientation='vertical'
+        variant="contained">
+
+        <Button sx={{ display: 'flex', gap: 1, fontFamily: 'Fira Code' }}
+            onClick={() => clearStore(ViewConfig.selected_output)}
+        >
+            Очистить {LABELS_LIST[ViewConfig.selected_output]}
+            <DeleteOutlinedIcon color='warning' />
+        </Button>
+    </ButtonGroup>)
+})
+

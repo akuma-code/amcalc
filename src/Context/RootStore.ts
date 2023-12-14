@@ -5,7 +5,7 @@ import { AnyArg } from "../Hooks/useDynamicInputs";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { ISizeFull, ISizeShort } from "../Interfaces/CommonTypes";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
-import { ArgsTypesList } from "../Models/ArgsTypeModel";
+import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
 import { DataStore } from "./DataStore";
 
 export type IRootStores_v1 = {
@@ -92,7 +92,7 @@ export class RootArgsStore_v1 {
     select(store_id: keyof typeof this.stores) {
         return this.stores[store_id]!
     }
-    saveTostore<T extends AnyArg>(store_id: InputsTypeEnum, data: T) {
+    saveTostore<T extends AnyArg>(store_id: ArgsTypes, data: T) {
         // if (!this.stores) return
 
         const s = this.select(store_id)

@@ -2,7 +2,7 @@ import { FormState, UseFormReturn } from "react-hook-form"
 import { DTO_ARGS, InputsTypeEnum } from "../../Hooks/useFormStateSelector"
 import { ISizeShort, ISizeFull, SizeShort, SizeFull } from "../../Interfaces/CommonTypes"
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes"
-import { ArgsTypesList } from "../../Models/ArgsTypeModel"
+import { ArgsTypes, ArgsTypesList } from "../../Models/ArgsTypeModel"
 
 import { Fn_Args_offset5 } from "./Types"
 import { AnyArg } from "../../Hooks/useDynamicInputs"
@@ -66,7 +66,7 @@ export type FormStateInit<Arg extends AnyArg> = Arg
 
 
 export type GetFormState__<T extends DTO_ARGS> = {
-    type: InputsTypeEnum
+    type: ArgsTypes
     fields: FormState_Fields<T>
     // placeholder: FormStatePlaceHolder<T>
     // saved?: FormState_Saved<T>
@@ -80,7 +80,7 @@ export type GetFormState__<T extends DTO_ARGS> = {
 export type GetFormInstaceState<T> = T extends ANYobj ?
     T extends AnyArg ?
     {
-        store_id: InputsTypeEnum
+        store_id: ArgsTypes
         fields: ReadonlyArray<keyof T>
         init: T
         desc?: string

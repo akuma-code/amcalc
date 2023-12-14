@@ -33,6 +33,9 @@ export const ViewControlBar = observer(() => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         ViewConfig setup
                     </Typography>
+                    <Typography variant="h6" component="div" sx={{ alignSelf: 'flex-end', justifyItems: 'center', my: 'auto', mr: 1 }}>
+                        Output:
+                    </Typography>
 
                     <ToggleViewOutputButton />
                 </Toolbar>
@@ -66,7 +69,7 @@ const ToggleViewOutputButton: React.FC<ToggleViewProps> = observer((props) => {
             onChange={handleView}
 
         >
-            <b className='m-auto px-2'>Output:</b>
+
             <ToggleButton value={InputsTypeEnum.size_full} color='warning' selected={isSelected(InputsTypeEnum.size_full)} >
                 <b>Sizes </b>
             </ToggleButton>

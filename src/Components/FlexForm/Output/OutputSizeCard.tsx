@@ -5,9 +5,11 @@ import { ISize, ISizeShort } from '../../../Interfaces/CommonTypes';
 import { _log, _sizeTuppler } from '../../../Helpers/HelpersFns';
 import Icons from '../../Icons/SvgIcons';
 import { OutputSizeBlock } from '../../../Context/DataStoreObserver';
+import { Text } from '../../UI/Text';
+import { DataOutput } from '../../../Context/DataOutputBlock';
 type OutputCardProps = {
     savedSize: ISize
-    outblock?: OutputSizeBlock
+    outblock?: DataOutput
     viewOptions?: { [x: string]: boolean }
 }
 
@@ -20,7 +22,9 @@ const OutputSizeCard = ({ savedSize, outblock }: OutputCardProps) => {
 
         return { netSimple, netSkf, Otk }
     }, [savedSize])
-    const InitSizeHeader = useMemo(() => getHeader(initW, initH), [initH, initW])
+
+
+    const InitSizeHeader = useCallback(() => getHeader(initW, initH), [initH, initW])
 
 
 
@@ -57,12 +61,12 @@ const SkfOut = (net: ISizeShort) => {
     return (
         <Stack flexDirection={'row'} justifyContent={'space-between'}>
 
-            <Typography variant='h6'>
+            <Text styles={''}>
                 СКФ:
-            </Typography>
-            <Typography variant='h6' align='justify'>
+            </Text>
+            <Text>
                 {w} x {h} mm
-            </Typography>
+            </Text>
         </Stack>
     )
 }
@@ -70,14 +74,14 @@ const SimpleOut = (net: ISizeShort) => {
     const { w, h } = net
 
     return (
-        <Stack flexDirection={'row'} justifyContent={'space-between'}>
+        <Stack flexDirection={'row'} justifyContent={'space-between'} >
 
-            <Typography variant='h6'>
+            <Text >
                 Простая:
-            </Typography>
-            <Typography variant='h6' align='justify'>
+            </Text>
+            <Text >
                 {w} x {h} mm
-            </Typography>
+            </Text>
         </Stack>
     )
 }
@@ -86,12 +90,12 @@ const OtkOut = (otk: { pm: number }) => {
     return (
         <Stack flexDirection={'row'} justifyContent={'space-between'}>
 
-            <Typography variant='h6'>
+            <Text>
                 Откосы:
-            </Typography>
-            <Typography variant='h6' align='justify'>
+            </Text>
+            <Text >
                 {otk.pm} п.м.
-            </Typography>
+            </Text>
         </Stack>
     )
 }
@@ -101,15 +105,9 @@ export default OutputSizeCard
 
 
 
+const getHeader = (initW: number, initH: number) => {
 
-
-
-
-
-
-function getHeader(initW: number, initH: number) {
-
-    const HEADER = () => <Stack flexDirection={'row'} justifyContent={'space-between'} columnGap={1}
+    return (<Stack flexDirection={'row'} justifyContent={'space-between'} columnGap={1}
         sx={{
             bgcolor: "#ff8000",
             minWidth: 'fit-content',
@@ -118,54 +116,25 @@ function getHeader(initW: number, initH: number) {
         }}
     >
 
-        <Stack direction={'row'} columnGap={1} alignItems={'center'} useFlexGap>
+        <Stack direction={'row'} columnGap={1} alignItems={'center'} useFlexGap >
             <Icon>{Icons.WidthIcon}</Icon>
-            <Typography variant='h6' align='right'>
+
+
+            <Text >
                 {initW} мм
-            </Typography>
+            </Text>
+
         </Stack>
         <Divider orientation='vertical' flexItem sx={{ bgcolor: 'white' }} />
-        <Stack direction={'row'} columnGap={1} alignItems={'center'} useFlexGap>
+        <Stack direction={'row'} columnGap={1} alignItems={'center'} useFlexGap >
             <Icon>{Icons.HeightIcon} </Icon>
-            <Typography variant='h6' align='right'>
+
+
+            <Text >
                 {initH} мм
-            </Typography>
+            </Text>
         </Stack>
-    </Stack>;
-    return HEADER;
+    </Stack>)
+
 
 }
-// type HeaderProps = {
-//     inpW: number,
-//     inpH: number
-// }
-
-// const HeaderTable = (props: HeaderProps) => <TableContainer component={Paper} >
-//     <Table sx={{ minWidth: 100, }} aria-label="simple table" size='small' >
-//         <TableHead>
-//             <TableRow sx={{ bgcolor: "rgb(150, 150, 150)", borderRadius: 3 }}>
-//                 <TableCell sx={{ fontWeight: 'bold', borderRight: 1 }} >
-//                     <Stack direction={'row'} columnGap={1} alignItems={'center'} useFlexGap>
-//                         <Icon >{Icons.WidthIcon}</Icon>
-//                         <Typography variant='h6' align='right'>
-//                             {props.inpW} мм
-//                         </Typography>
-//                     </Stack>
-//                 </TableCell>
-//                 <TableCell align='center' sx={{ fontWeight: 'bold', }}>
-//                     <Stack direction={'row'} columnGap={1} alignItems={'center'}>
-//                         <Icon >{Icons.HeightIcon}</Icon>
-//                         <Typography variant='h6' align='right'>
-//                             {props.inpH} мм
-//                         </Typography>
-//                     </Stack>
-
-//                 </TableCell>
-//             </TableRow>
-//         </TableHead>
-//         {/* <TableBody>
-
-//         </TableBody> */}
-//     </Table>
-// </TableContainer>
-

@@ -6,6 +6,7 @@ import { useStoresContext } from '../../../Hooks/useStoresContext'
 import { A_Offset5 } from '../../../Interfaces/CommonTypes'
 import { OffsetOutCard } from './OffsetOutCard'
 import { _log } from '../../../Helpers/HelpersFns'
+import { OffsetResult } from '../../../Context/DataOutputBlock'
 
 type OutputProps = {}
 
@@ -29,7 +30,7 @@ const Output2 = observer((props: OutputProps) => {
             overflow={'auto'} >
 
             {
-                blocks.map((b, idx) => <OffsetOutCard blockOut={b.out as unknown as Fn_Output_offset5[]} blockIn={b.arg} key={idx} />)
+                blocks.map((b, idx) => <OffsetOutCard blockOut={b.out as any} blockIn={b.arg} key={idx} />)
             }
         </Stack>
     )

@@ -1,3 +1,4 @@
+import { Fn_Output_offset5 } from "../ActionComponents/ActionTypes/Types";
 import CalcControl, { notReachable } from "../ActionComponents/Calculators/CalcBoxFn";
 import { _log } from "../Helpers/HelpersFns";
 import { AnyArg } from "../Hooks/useDynamicInputs";
@@ -9,32 +10,31 @@ import { DataStore } from "./DataStore";
 
 
 
-type SR = GetReturnFnList<A_Size>
-type OR = GetReturnFnList<A_Offset5>
+export type SizeResult = GetReturnFnList<A_Size>
+export type OffsetResult = GetReturnFnList<A_Offset5>
 
-interface OutputDTO<T> {
-    blocks: readonly T[]
-    argType: ArgsTypes
-    store_id: ArgsTypes
-
+export type OutItem<T extends A_InputArgs> = {
+    arg: T
+    out: SizeResult[] | OffsetResult[]
 }
-type SO_DTO = OutputDTO<typeof CalcControl.size_full.funcs>
-type OR_DTO = OutputDTO<OR>
 
-type SizeOffsetDTO =
-    | SO_DTO
-    | OR_DTO
-
-
-type OutItem = {
-    arg: A_InputArgs
-    out: SR[] | OR[]
+export type SizeOutItem = {
+    arg: A_Size
+    out: SizeResult[]
 }
+export type OffsetOutItem = {
+    arg: A_Offset5
+    out: OffsetResult[]
+}
+
+type A_Out =
+    | SizeOutItem
+    | OffsetOutItem
 export class DataOutput {
     root: DataStore<AnyArg>
     argType: ArgsTypes | string
     saved_args: A_InputArgs[]
-    blocks: any[] = []
+    blocks: any[]
     constructor(data_store: DataStore<AnyArg>) {
         this.argType = data_store.store_id
         this.root = data_store
@@ -46,17 +46,28 @@ export class DataOutput {
     getBlocks() {
         const mapfn = this.calcFuncs
         function _c({ argType, ...rest }: A_InputArgs) {
-            const _b = mapfn.length > 0 ? mapfn.map(fn => fn.fn(rest)) : []
-            return _b
-        }
+            const _b = mapfn.length > 0 ? mapfn.map(fn => fn.fn({ ...rest, argType })) : []
+            switch (argType) {
+                case "size_full": return _b as unknown as SizeOutItem['out']
+                case "offset5": return _b as unknown as OffsetOutItem['out']
+                default: return notReachable(argType)
+            }
 
-        const blocks = this.saved_args.map(_c) as SR[][] | OR[][]
+        }
+        const outItem = (arg: A_InputArgs, out: SizeOutItem['out'] | OffsetOutItem['out']) => ({
+            arg,
+            out
+        })
+        const blocks = this.saved_args.map(a => outItem(a, _c(a)))
+
+
+
         return blocks
 
     }
     out() {
 
-        const outItem = (arg: A_InputArgs, out: SR[] | OR[]) => ({
+        const outItem = (arg: A_InputArgs, out: SizeResult[] | OffsetResult[]) => ({
             arg,
             out
         })
@@ -70,11 +81,11 @@ export class DataOutput {
                 switch (this.argType) {
                     case "size_full": {
 
-                        r = this.blocks.map((b, idx) => outItem(this.saved_args[idx] as A_Size, b as SR[]))
+                        r = this.blocks.map((b, idx) => outItem(this.saved_args[idx] as A_Size, b as unknown as SizeResult[]))
                         break
                     }
                     case "offset5": {
-                        r = this.blocks.map((b, idx) => outItem(this.saved_args[idx] as A_Offset5, b as OR[]))
+                        r = this.blocks.map((b, idx) => outItem(this.saved_args[idx] as A_Offset5, b as unknown as OffsetResult[]))
                         break
                     }
                     case "undefined": {
@@ -100,13 +111,6 @@ export class DataOutput {
         return mapfn
     }
 }
-
-
-
-
-
-
-
 
 
 

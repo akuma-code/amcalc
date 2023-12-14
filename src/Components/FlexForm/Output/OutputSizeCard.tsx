@@ -9,19 +9,14 @@ import { Text } from '../../UI/Text';
 import { DataOutput } from '../../../Context/DataOutputBlock';
 type OutputCardProps = {
     savedSize: ISize
-    outblock?: DataOutput
+    outblock: any
     viewOptions?: { [x: string]: boolean }
 }
 
 const OutputSizeCard = ({ savedSize, outblock }: OutputCardProps) => {
     const [initW, initH] = _sizeTuppler(savedSize)
+    const [skf, simple, otk] = outblock.out
 
-    const output = useMemo(() => {
-        const block = new OutputSizeBlock(savedSize)
-        const { netSkf, netSimple, Otk } = block.out
-
-        return { netSimple, netSkf, Otk }
-    }, [savedSize])
 
 
     const InitSizeHeader = useCallback(() => getHeader(initW, initH), [initH, initW])
@@ -45,9 +40,9 @@ const OutputSizeCard = ({ savedSize, outblock }: OutputCardProps) => {
                 flexDirection={'column'}
                 margin={1}
             >
-                <SkfOut {...output.netSkf.skf} />
-                <SimpleOut {...output.netSimple.simple as ISizeShort} />
-                <OtkOut {...output.Otk as { pm: number }} />
+                <SkfOut {...skf} />
+                <SimpleOut {...simple} />
+                <OtkOut {...otk} />
             </Box>
 
 

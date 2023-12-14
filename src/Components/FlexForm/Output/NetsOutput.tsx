@@ -72,10 +72,11 @@ const NetsOutput: React.FC<NetOutputProps> = observer(() => {
                 {/* <OutputCard savedSize={new SizeShort(300, 550)} viewOptions={{ showSkf: true, showSimple: false }} /> */}
                 {
                     // saved && 
-                    testsaved.map((size, idx) =>
-                        // <NetsCard size={size} idxCounter={idx} key={_ID()} />
-                        <OutputSizeCard savedSize={size} key={idx} />
-                    )}
+                    // testsaved.map((size, idx) =>
+                    //     // <NetsCard size={size} idxCounter={idx} key={_ID()} />
+                    //     <OutputSizeCard savedSize={size} key={idx} />
+                    // )
+                }
             </Stack>
 
         </Box>

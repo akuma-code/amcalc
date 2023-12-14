@@ -14,15 +14,13 @@ const fakeInit = [
     new SizeFull(300, 400),
 ]
 
-type ResultArray = [SizeShort, SizeShort, { pm: number }][]
+type ResultArray = [SizeShort, SizeShort, { pm: number }]
 
 const OutputVers1 = observer((props: OutputProps) => {
     const { RootStore } = useStoresContext()
     const outblock = RootStore.select('size_full').output
     const BLIST = outblock.out()
-    // console.log('BLIST', BLIST)
-    // const init = BLIST.map((b, idx) => b.map(i => ({ arg: outblock.saved_args[idx], out: i })))
-    console.log('init', BLIST)
+
     const saved = props.store || []
 
 
@@ -35,7 +33,7 @@ const OutputVers1 = observer((props: OutputProps) => {
             overflow={'auto'}>
 
             {
-                [...saved].map(s => (('width' in s) ? <OutputSizeCard savedSize={s} key={_ID()} outblock={outblock} /> : null))
+                [...BLIST].map(s => (('width' in s.arg) ? <OutputSizeCard key={_ID()} savedSize={s.arg} outblock={s.out} /> : null))
 
             }
         </Stack>

@@ -36,51 +36,6 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
     const { RootStore, ViewConfig } = useStoresContext()
 
-    const logStores = useCallback(() => {
-        const s = RootStore.select(ViewConfig.selected_store)
-        if (!s) return
-        _log({ ...toJS(s) })
-    }, [RootStore, ViewConfig.selected_store])
-
-    const SelectStore = useCallback((type: InputsTypeEnum) => {
-        ViewConfig.selectForm(type)
-    }, [ViewConfig])
-
-    const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === ViewConfig.selected_store,
-        [ViewConfig.selected_store])
-
-    const ControlButtonsGroup = useMemo(() => {
-        const ButtonControlGroup = () => <ButtonGroup sx={{ gap: 1, width: 150, height: 'fit-content' }}
-            variant="contained"
-            size='large'
-            component={Stack}
-            orientation='vertical'
-        >
-            <Button
-                onClick={() => SelectStore(InputsTypeEnum.size_full)}
-                color={isSelected(InputsTypeEnum.size_full) ? 'primary' : 'success'}
-                sx={isSelected(InputsTypeEnum.size_full) ? { outline: '2px solid red' } : { outline: 'none' }}
-            >
-                Size Full
-            </Button>
-
-            <Button onClick={() => SelectStore(InputsTypeEnum.offset5)}
-                color={isSelected(InputsTypeEnum.offset5) ? 'primary' : 'success'}
-                sx={isSelected(InputsTypeEnum.offset5) ? { outline: '2px solid red' } : { outline: 'none' }}>
-                Offset5
-            </Button>
-            <Button onClick={logStores}
-
-                color='error'
-                sx={{}}
-            >
-                Log stores
-            </Button>
-        </ButtonGroup>
-
-        return ButtonControlGroup
-    }, [SelectStore, isSelected, logStores])
-
 
 
     const clearStore = useCallback((store_id: ArgsTypes) => RootStore.select(store_id).clear(), [RootStore])
@@ -161,7 +116,8 @@ type BtnGroupProps = {
 
 const ViewControlButtonGroup: FC<BtnGroupProps> = observer(({ clearStore }) => {
     const { ViewConfig } = useStoresContext()
-    return (<ButtonGroup
+    return (
+    <ButtonGroup
         sx={{ alignSelf: 'end', display: 'flex', maxWidth: 'fit-content' }}
         orientation='vertical'
         variant="contained">
@@ -175,3 +131,50 @@ const ViewControlButtonGroup: FC<BtnGroupProps> = observer(({ clearStore }) => {
     </ButtonGroup>)
 })
 
+// const ControlButtonsGroup = useMemo(() => {
+    
+    // const logStores = useCallback(() => {
+    //     const s = RootStore.select(ViewConfig.selected_store)
+    //     if (!s) return
+    //     _log({ ...toJS(s) })
+    // }, [RootStore, ViewConfig.selected_store])
+
+    // const SelectStore = useCallback((type: InputsTypeEnum) => {
+    //     ViewConfig.selectForm(type)
+    // }, [ViewConfig])
+
+    // const isSelected = useCallback((input_store: InputsTypeEnum) => input_store === ViewConfig.selected_store,
+    //     [ViewConfig.selected_store])
+
+    // 
+
+//     const ButtonControlGroup = () => <ButtonGroup sx={{ gap: 1, width: 150, height: 'fit-content' }}
+//         variant="contained"
+//         size='large'
+//         component={Stack}
+//         orientation='vertical'
+//     >
+//         <Button
+//             onClick={() => SelectStore(InputsTypeEnum.size_full)}
+//             color={isSelected(InputsTypeEnum.size_full) ? 'primary' : 'success'}
+//             sx={isSelected(InputsTypeEnum.size_full) ? { outline: '2px solid red' } : { outline: 'none' }}
+//         >
+//             Size Full
+//         </Button>
+
+//         <Button onClick={() => SelectStore(InputsTypeEnum.offset5)}
+//             color={isSelected(InputsTypeEnum.offset5) ? 'primary' : 'success'}
+//             sx={isSelected(InputsTypeEnum.offset5) ? { outline: '2px solid red' } : { outline: 'none' }}>
+//             Offset5
+//         </Button>
+//         <Button onClick={logStores}
+
+//             color='error'
+//             sx={{}}
+//         >
+//             Log stores
+//         </Button>
+//     </ButtonGroup>
+
+//     return ButtonControlGroup
+// }, [SelectStore, isSelected, logStores])

@@ -1,7 +1,7 @@
-import { FnProperties, FnPropertyNames } from "../ActionComponents/ActionTypes/FnProperties"
+import { FnProperties, FnPropertyNames, NonFnProperties } from "../ActionComponents/ActionTypes/FnProperties"
 import { Fn_Args_offset5, Fn_Output_offset5, Fn_nets, Fn_offset5 } from "../ActionComponents/ActionTypes/Types"
 import { _log, _rad2deg } from "../Helpers/HelpersFns"
-import { A_Size, Arg_Size, ISizeFull, ISizeShort } from "../Interfaces/CommonTypes"
+import { A_Offset5, A_Size, Arg_Size, ISizeFull, ISizeShort } from "../Interfaces/CommonTypes"
 import { ArgsTypes } from "../Models/ArgsTypeModel"
 
 export interface FnCalculatorList {
@@ -10,8 +10,9 @@ export interface FnCalculatorList {
     otkosi(args: ISizeFull): { pm: number }
     offset5(args: Fn_Args_offset5): Fn_Output_offset5
 }
-export type GetReturnFnList<T> = { [Key in keyof FnCalculatorList]: FnCalculatorList[Key] extends (args: T) => infer R ? R : never }
-export type SizeCalcReturn = GetReturnFnList<ISizeFull>
+export type GetReturnFnList<T> = NonFnProperties<{ [Key in keyof FnCalculatorList]: FnCalculatorList[Key] extends (args: T) => infer R ? R : never }>
+export type SizeCalcReturn = GetReturnFnList<A_Size>
+export type OffsetCalcReturn = GetReturnFnList<A_Offset5>
 export const useFuncs = () => {
     const nets: Fn_nets = ({ width, height }: ISizeFull) => {
         // if (!width || !height) throw new Error("ARGS ERROR!")

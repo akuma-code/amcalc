@@ -31,8 +31,8 @@ type A_Out =
     | SizeOutItem
     | OffsetOutItem
 export class DataOutput {
-    root: DataStore<AnyArg>
-    argType: ArgsTypes | string
+    root: DataStore<A_InputArgs>
+    argType: A_InputArgs['argType'] | string
     saved_args: A_InputArgs[]
     blocks: any[]
     constructor(data_store: DataStore<AnyArg>) {

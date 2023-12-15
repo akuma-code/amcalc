@@ -2,9 +2,9 @@ import { Fn_Output_offset5 } from "../ActionComponents/ActionTypes/Types";
 import CalcControl, { notReachable } from "../ActionComponents/Calculators/CalcBoxFn";
 import { _log } from "../Helpers/HelpersFns";
 import { AnyArg } from "../Hooks/useDynamicInputs";
-import { GetReturnFnList } from "../Hooks/useFuncs";
-import { A_InputArgs, A_Offset5, A_Size } from "../Interfaces/CommonTypes";
-import { ANYobj } from "../Interfaces/MathActionsTypes";
+import { FnCalculatorList, GetReturnFnList } from "../Hooks/useFuncs";
+import { A_InputArgs, A_InputArgs2, A_Offset5, A_Size } from "../Interfaces/CommonTypes";
+import { ANYfn, ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes } from "../Models/ArgsTypeModel";
 import { DataStore } from "./DataStore";
 
@@ -27,9 +27,20 @@ export type OffsetOutItem = {
     out: OffsetResult[]
 }
 
-type A_Out =
-    | SizeOutItem
-    | OffsetOutItem
+type A_Out<T extends A_InputArgs> =
+    |
+    {
+        argType: T['argType']
+        arg: T
+        payload: SizeOutItem['out']
+    }
+    | {
+        argType: T['argType']
+        arg: T
+        payload: OffsetOutItem['out']
+    }
+
+
 export class DataOutput {
     root: DataStore<A_InputArgs>
     argType: A_InputArgs['argType'] | string
@@ -44,6 +55,7 @@ export class DataOutput {
 
 
     getBlocks() {
+        if (!this.argType) return []
         const mapfn = this.calcFuncs
         function _c({ argType, ...rest }: A_InputArgs) {
             const _b = mapfn.length > 0 ? mapfn.map(fn => fn.fn({ ...rest, argType })) : []
@@ -58,7 +70,26 @@ export class DataOutput {
             arg,
             out
         })
+
+        const oi = <T extends A_InputArgs2>(item: T, fn?: FnCalculatorList[keyof FnCalculatorList]) => {
+
+            switch (item.argType) {
+                case "size_full": {
+                    const funcs = this.calcFuncs.map(f => f.fn)
+                    const calced = funcs.map(f => f(item))
+                    return { argType: item.argType, payload: calced }
+                }
+                case "offset5": {
+                    const funcs = this.calcFuncs.map(f => f.fn)
+                    const calced = funcs.map(f => f(item))
+                    return { argType: item.argType, payload: calced }
+                }
+            }
+        }
         const blocks = this.saved_args.map(a => outItem(a, _c(a)))
+        const b = this.saved_args.map(a => oi(a))
+        console.log('b', b)
+
 
 
 
@@ -106,7 +137,7 @@ export class DataOutput {
                 break
             case "offset5": mapfn.push(...CalcControl.offset5.funcs)
                 break
-            default: return []
+            default: notReachable(this.argType as never)
         }
         return mapfn
     }

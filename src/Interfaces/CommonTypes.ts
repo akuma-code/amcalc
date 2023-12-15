@@ -32,7 +32,8 @@ export class SizeFull {
 export class A_Size {
     argType: ArgsTypes = 'size_full'
     constructor(
-        public width: number, public height: number
+        public width: number,
+        public height: number
     ) { }
 }
 export class A_Offset5 {
@@ -45,11 +46,15 @@ export class A_Offset5 {
         public db: number) { }
 }
 export type WithArgType = { argType: ArgsTypes }
+
+type UnpackArray<T> = T extends (infer R)[] ? R : T
+
+
 export function _isFullSize(size: ISize): size is ISizeFull {
     if ('width' in size) return true
     else return false
 }
-export function _ArgsMaker(args: AnyArg): any {
+export function _ArgsMaker(args: AnyArg) {
     if ('width' in args) { return new A_Size(args.width, args.height) }
     if ('da' in args) { return new A_Offset5(args.W, args.H, args.h, args.da, args.db) }
     return args
@@ -64,10 +69,18 @@ export interface Arg_Offset5 {
     args: Fn_Args_offset5
 }
 
-export type ArgsUnion =
+type ArgsUnion =
     | Arg_Offset5
     | Arg_Size
 
 export type A_InputArgs =
     | A_Size
     | A_Offset5
+
+export type A_InputArgs2 = |
+    {
+        argType: ArgsTypes
+    } & Omit<A_Size, 'argType'>
+    | {
+        argType: ArgsTypes
+    } & Omit<A_Offset5, 'argType'>

@@ -1,32 +1,54 @@
 import { _isArr, _log } from "../../Helpers/HelpersFns"
+import { AnyArg } from "../../Hooks/useDynamicInputs"
 import { InputsTypeEnum } from "../../Hooks/useFormStateSelector"
 import { Calc } from "../../Hooks/useFuncs"
 import { A_InputArgs, A_Offset5, A_Size, ISizeFull, ISizeShort, SizeFull } from "../../Interfaces/CommonTypes"
+import { ANYfn } from "../../Interfaces/MathActionsTypes"
+import { ArgsTypes } from "../../Models/ArgsTypeModel"
 import { Fn_Args_offset5 } from "../ActionTypes/Types"
 
-interface CalcFn {
-    fn_id: string
-    fn(payload: any): unknown
+
+interface WithTypeId<T> {
+    _type?: T;
 }
+interface WithArgType<T> {
+    argType?: T
+}
+export type AddTypeId<T, FlavorT> = T & WithArgType<FlavorT>;
+
+
+export interface CalcFn {
+    fn_id: string
+    fn: ANYfn
+}
+type CalcFnsList = Record<ArgsTypes, readonly CalcFn['fn'][]>
 
 class CalcSkf implements CalcFn {
     fn_id: string = 'skf'
+    constructor(arg?: A_Size) {
+        arg && this.fn(arg)
+    }
     fn(payload: A_Size) {
-        const out = Calc.skf(payload).skf
+        const out = Calc.skf(payload)
         return out
     }
-
 }
 
 class CalcSimple implements CalcFn {
     fn_id: string = 'simple'
+    constructor(arg?: A_Size) {
+        arg && this.fn(arg)
+    }
     fn(payload: A_Size) {
-        return Calc.simple(payload).simple
+        return Calc.simple(payload)
     }
 }
 
 class CalcOtkosi implements CalcFn {
     fn_id: string = 'otkosi'
+    constructor(arg?: A_Size) {
+        arg && this.fn(arg)
+    }
     fn(payload: A_Size) {
         return Calc.otkosi(payload)
     }
@@ -34,19 +56,27 @@ class CalcOtkosi implements CalcFn {
 
 class CalcOffset5 implements CalcFn {
     fn_id: string = 'offset5'
+    constructor(arg?: A_Offset5) {
+        arg && this.fn(arg)
+    }
     fn(payload: A_Offset5) {
         return Calc.offset5(payload).offset5
     }
 }
 
 
-class CalcBoxFn<A extends A_InputArgs>{
+class CalcBoxFn {
     funcs: CalcFn[] = []
+    argType: ArgsTypes
+    constructor(arg_type: ArgsTypes) {
+        this.argType = arg_type
+    }
+
     addFn(fn: CalcFn) {
         this.funcs.push(fn)
     }
 
-    calcMap({ argType, ...rest }: A) {
+    calcMap({ argType, ...rest }: A_InputArgs) {
         // return this.funcs.map(c => c.fn(payload))
         switch (argType) {
             case InputsTypeEnum.size_full: { return this.funcs.map(c => c.fn(rest)) }
@@ -64,8 +94,8 @@ export function notReachable(_: never): never {
 
 
 
-const SizeCalculator = new CalcBoxFn<A_Size>()
-const Offset5Calculator = new CalcBoxFn<A_Offset5>()
+const SizeCalculator = new CalcBoxFn('size_full')
+const Offset5Calculator = new CalcBoxFn('offset5')
 
 SizeCalculator.addFn(new CalcSkf())
 SizeCalculator.addFn(new CalcSimple())
@@ -73,20 +103,23 @@ SizeCalculator.addFn(new CalcOtkosi())
 
 Offset5Calculator.addFn(new CalcOffset5())
 
-const CalcControl = {
+const CalcControl: Record<ArgsTypes, CalcBoxFn> = {
     size_full: SizeCalculator,
     offset5: Offset5Calculator,
-}
+} as const
+
+export const CalcList = {
+    size_full: [new CalcSkf(), new CalcSimple(), new CalcOtkosi()].map(f => f.fn),
+    offset5: [new CalcOffset5()].map(f => f.fn)
+} as const
 
 
 export default CalcControl
 
-type FnType<T extends CalcFn> = ReturnType<T['fn']>
-type rr = FnType<typeof CalcControl['size_full']['funcs'][number]>
-type UnpackArray<T> = T extends (infer R)[] ? R : T
+type CalcBoxReturn<T extends CalcFn> = ReturnType<T['fn']>
+type yy = CalcBoxReturn<CalcOtkosi>
 
-type tt = UnpackArray<typeof SizeCalculator.funcs>
-type uu = FnType<tt>
+
 // class CalcBox<A> {
 //     fns: Record<string, CalcFn> = {}
 //     use(name: string, fn: CalcFn) {

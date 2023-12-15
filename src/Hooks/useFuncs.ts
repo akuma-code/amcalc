@@ -1,15 +1,17 @@
 import { FnProperties, FnPropertyNames, NonFnProperties } from "../ActionComponents/ActionTypes/FnProperties"
 import { Fn_Args_offset5, Fn_Output_offset5, Fn_nets, Fn_offset5 } from "../ActionComponents/ActionTypes/Types"
+import { OffsetResult, SizeResult } from "../Context/DataOutputBlock"
 import { _log, _rad2deg } from "../Helpers/HelpersFns"
 import { A_Offset5, A_Size, Arg_Size, ISizeFull, ISizeShort } from "../Interfaces/CommonTypes"
 import { ArgsTypes } from "../Models/ArgsTypeModel"
-
+export type OtkResult = { pm: number }
 export interface FnCalculatorList {
     skf(args: ISizeFull): ISizeShort
     simple(args: ISizeFull): ISizeShort
-    otkosi(args: ISizeFull): { pm: number }
+    otkosi(args: ISizeFull): OtkResult
     offset5(args: Fn_Args_offset5): Fn_Output_offset5
 }
+
 export type GetReturnFnList<T> = NonFnProperties<{ [Key in keyof FnCalculatorList]: FnCalculatorList[Key] extends (args: T) => infer R ? R : never }>
 export type SizeCalcReturn = GetReturnFnList<A_Size>
 export type OffsetCalcReturn = GetReturnFnList<A_Offset5>
@@ -66,7 +68,7 @@ interface ResultOffset5 {
 }
 
 export class Calc {
-    static offset5(payload: Fn_Args_offset5) {
+    static offset5(payload: Fn_Args_offset5): OffsetResult {
         const { H, W, da, db, h } = payload
         let x: number, y: number;
         const dh = H - h
@@ -88,23 +90,23 @@ export class Calc {
 
         return result
     }
-    static skf(payload: ISizeFull) {
+    static skf(payload: ISizeFull): SizeResult['skf'] {
         const { width, height } = payload
         const skf = {
             w: +width - 45,
             h: +height - 47
         }
-        return { skf }
+        return { ...skf }
     }
-    static simple(payload: ISizeFull) {
+    static simple(payload: ISizeFull): SizeResult['simple'] {
         const { width, height } = payload
         const simple = {
             w: +width + 24,
             h: +height + 45
         }
-        return { simple }
+        return { ...simple }
     }
-    static otkosi(payload: ISizeFull) {
+    static otkosi(payload: ISizeFull): SizeResult['otkosi'] {
         const pm = +(payload.width / 1000 + 2 * payload.height / 1000 + 0.3).toFixed(4)
         return { pm }
     }

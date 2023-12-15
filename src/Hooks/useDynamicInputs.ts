@@ -58,8 +58,8 @@ const MakeInputs = <T extends AnyArg>(args: T) => {
     const fields = GetFieldsArray(args)
 
 
-    const inputsArray = fields.map(f => {
-        return { field: f, label: FieldsLabelEnum[f as keyof AnyArg] }
+    const inputsArray = fields.map((f, idx) => {
+        return { field: f, label: FieldsLabelEnum[f as keyof AnyArg], order: idx }
     })
     return inputsArray
 }
@@ -72,7 +72,7 @@ export function useDinamicFields_(store_id: ArgsTypes) {
     const { fields, init } = state_list(store_id)
 
     const methods = useForm<typeof init>()
-    let updatedFields = fields.map(f => ({ fieldName: f }))
+    let updatedFields = fields.map((f, idx) => ({ fieldName: f, order: idx }))
     return [updatedFields, methods] as const
 
 

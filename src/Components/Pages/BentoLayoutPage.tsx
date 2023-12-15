@@ -1,11 +1,8 @@
-import { Button, ButtonGroup, Grid, Stack } from '@mui/material'
-import React, { FC, useCallback, useMemo } from 'react'
+import { Box, Button, ButtonGroup, Grid } from '@mui/material'
+import React, { FC, useCallback } from 'react'
 
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
-import { toJS } from 'mobx'
 import { observer, } from 'mobx-react-lite'
-import { _log } from '../../Helpers/HelpersFns'
-import { InputsTypeEnum } from '../../Hooks/useFormStateSelector'
 import { useStoresContext } from '../../Hooks/useStoresContext'
 import { LABELS_LIST } from '../../Interfaces/Enums'
 import { ArgsTypes } from '../../Models/ArgsTypeModel'
@@ -13,10 +10,10 @@ import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
 import OutputVers1 from '../FlexForm/Output/Output_v1'
 import Output2 from '../FlexForm/Output/Output_v2'
 import { FactoryDiv } from '../Templates/Factory'
-import { OutputTabs } from '../UI/OutputTabs'
-import { InfoBox } from './InfoBox'
-import { FormControlButtons } from '../UI/FormControlButtons'
 import { FCButtonsGroup } from '../UI/FCButtonGroup'
+import { OutputTabs } from '../UI/OutputTabs'
+import VisibleControlBotton from '../UI/VisibleControlButton'
+import { InfoBox } from './InfoBox'
 
 
 
@@ -59,6 +56,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
 
 
                     <InfoBox items={RootStore.storesSize()} />
+                   
 
                 </Grid>
                 <Grid key={'selector'}
@@ -70,11 +68,14 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     pb={2}
                     pr={2}
                     justifyContent={'space-between'}
+                    
                 >
-
+                    <Box sx={{position:'relative' ,display:'flex', flexDirection:'row', alignItems:'center'}}>
+<ViewControlButtonGroup clearStore={clearStore} />
+<VisibleControlBotton />
+                    </Box>
                     {/* <ControlButtonsGroup /> */}
                     {/* {ViewControlButtonGroup(clearStore, ViewConfig)} */}
-                    <ViewControlButtonGroup clearStore={clearStore} />
                 </Grid>
             </Grid>
 
@@ -92,11 +93,12 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     xs={9}
                     border={'2px solid green'}
                 >
+ 
                     <OutputTabs
                         size_elem={<OutputVers1 store={RootStore.stores.size_full!.store} />}
                         offset_elem={<Output2 />}
                     />
-
+                    
 
 
                 </Grid>
@@ -118,16 +120,20 @@ const ViewControlButtonGroup: FC<BtnGroupProps> = observer(({ clearStore }) => {
     const { ViewConfig } = useStoresContext()
     return (
     <ButtonGroup
-        sx={{ alignSelf: 'end', display: 'flex', maxWidth: 'fit-content' }}
-        orientation='vertical'
-        variant="contained">
+        sx={{ alignSelf: 'end', display: 'flex', maxWidth: 'fit-content'}}
+        orientation='horizontal'
+        variant="contained" >
 
+        <span>
         <Button sx={{ display: 'flex', gap: 1, fontFamily: 'Fira Code' }}
             onClick={() => clearStore(ViewConfig.selected_output)}
         >
             Очистить {LABELS_LIST[ViewConfig.selected_output]}
             <DeleteOutlinedIcon color='warning' />
         </Button>
+
+        </span>
+        
     </ButtonGroup>)
 })
 

@@ -1,14 +1,13 @@
-import { UseFormRegister, UseFormReturn } from 'react-hook-form'
-import { observer } from 'mobx-react-lite'
-import { useStoresContext } from '../../../Hooks/useStoresContext'
-import { Box, Button, FormControl, Input, InputLabel } from '@mui/material'
-import { _ID, _log } from '../../../Helpers/HelpersFns'
-import { ANYobj } from '../../../Interfaces/MathActionsTypes'
-import { InputsTypeEnum } from '../../../Hooks/useFormStateSelector'
-import { AnyArg, useDinamicFields_ } from '../../../Hooks/useDynamicInputs'
-import { FieldsLabelEnum } from '../../../ActionComponents/ActionTypes/ReducerTypes'
 import { DevTool } from '@hookform/devtools'
-import { A_InputArgs, A_Size, ArgsUnion, _ArgsMaker, _isFullSize } from '../../../Interfaces/CommonTypes'
+import { Box, Button, FormControl, Input, InputLabel } from '@mui/material'
+import { observer } from 'mobx-react-lite'
+import { UseFormRegister, UseFormReturn } from 'react-hook-form'
+import { FieldsLabelEnum } from '../../../ActionComponents/ActionTypes/ReducerTypes'
+import { _log } from '../../../Helpers/HelpersFns'
+import { AnyArg, useDinamicFields_ } from '../../../Hooks/useDynamicInputs'
+import { useStoresContext } from '../../../Hooks/useStoresContext'
+import { _ArgsMaker } from '../../../Interfaces/CommonTypes'
+import { ANYobj } from '../../../Interfaces/MathActionsTypes'
 // import { SizeObserver } from '../../../Context/DataStore'
 
 
@@ -20,7 +19,7 @@ type Props = {
 
 const DynamicInputsForm = observer((props: Props) => {
     const { ViewConfig, RootStore } = useStoresContext()
-    const AS = ViewConfig.selected_store
+    const AS = ViewConfig.active.store
 
 
     const [flist, control] = useDinamicFields_(AS)
@@ -66,8 +65,13 @@ export type IRegInput<T extends ANYobj> = {
     name: string
     label?: string
 }
+type InputFieldBlock = {
+    fieldName: string
+    order?: number
+}
+
 type ListOfInputsProps = {
-    fields: { fieldName: string }[]
+    fields: InputFieldBlock[]
     methods: UseFormReturn<AnyArg>
 }
 const ControlBtns: React.FC<{ form_id: string }> = (props) => {
@@ -107,14 +111,15 @@ export function UnControlledInput({ register, name, ...rest }: IRegInput<AnyArg>
 }
 
 const ListOfInputs: React.FC<ListOfInputsProps> = ({ fields, methods }) => {
-
+    const sortFields = (fields_: InputFieldBlock[]) => fields_.sort((a, b) => a.order! - b.order!)
+    const sorted = sortFields(fields)
 
     return (
         <Box justifyContent={'space-evenly'} display={'flex'} flexDirection={'column'}>
             {
-                fields.map(item =>
+                sorted.map(item =>
                     <UnControlledInput name={item.fieldName} register={methods.register} key={item.fieldName} />
-                ).reverse()}
+                )}
         </Box>)
 }
 

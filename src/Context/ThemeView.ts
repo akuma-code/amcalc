@@ -3,7 +3,7 @@ import { _log } from "../Helpers/HelpersFns";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { ArgsTypes } from "../Models/ArgsTypeModel";
 
-interface IVisibileItems {
+export interface IVisibileItems {
     showSkf: boolean,
     showSimple: boolean,
     showOtkosi: boolean,
@@ -12,13 +12,13 @@ interface IVisibileItems {
 }
 export interface IOutputView {
     active: { store: ArgsTypes, output: ArgsTypes }
-    visible: Record<string, boolean> & IVisibileItems
+    visible: IVisibileItems
 }
 
 export class OutputViewConfig implements IOutputView {
     selected_store: ArgsTypes = InputsTypeEnum.size_full
     selected_output: ArgsTypes = InputsTypeEnum.size_full
-    visible: Record<string, boolean> & IVisibileItems
+    visible: IVisibileItems
     active: { store: ArgsTypes; output: ArgsTypes; }
     constructor() {
         makeObservable(this, {
@@ -62,10 +62,11 @@ export class OutputViewConfig implements IOutputView {
         this.active.output = store_id
     }
 
-    toggleVisible(view_item: string) {
-        const item = this.visible[view_item]
-        if (!item) { _log("No such params: ", view_item) }
-        this.visible[view_item] = !item
+    toggleVisible(view_item: keyof IVisibileItems) {
+
+        const value = this.visible[view_item]
+
+        this.visible = { ...this.visible, [view_item]: !value }
 
     }
 }

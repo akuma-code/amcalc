@@ -10,6 +10,6 @@ type TextProps = {
 export const Text: React.FC<TextProps> = ({ styles, children }) => {
     const _style = _styleSet(styles || "")
     return (
-        <div className={"text-lg" + _style}>{children}</div>
+        <div className={"text-lg " + _style}>{children}</div>
     )
 }

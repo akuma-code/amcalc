@@ -12,7 +12,7 @@ import Output2 from '../FlexForm/Output/Output_v2'
 import { FactoryDiv } from '../Templates/Factory'
 import { FCButtonsGroup } from '../UI/FCButtonGroup'
 import { OutputTabs } from '../UI/OutputTabs'
-import VisibleControlBotton from '../UI/VisibleControlButton'
+import {VisibleControlBotton} from '../UI/VisibleControlButton'
 import { InfoBox } from './InfoBox'
 
 
@@ -72,7 +72,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 >
                     <Box sx={{position:'relative' ,display:'flex', flexDirection:'row', alignItems:'center'}}>
 <ViewControlButtonGroup clearStore={clearStore} />
-<VisibleControlBotton />
+
                     </Box>
                     {/* <ControlButtonsGroup /> */}
                     {/* {ViewControlButtonGroup(clearStore, ViewConfig)} */}
@@ -100,7 +100,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     />
                     
 
-
+<VisibleControlBotton />
                 </Grid>
             </Grid>
 

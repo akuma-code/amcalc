@@ -94,13 +94,13 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     border={'2px solid green'}
                 >
  
+<VisibleControlBotton />
                     <OutputTabs
                         size_elem={<OutputVers1 store={RootStore.stores.size_full!.store} />}
                         offset_elem={<Output2 />}
                     />
                     
 
-<VisibleControlBotton />
                 </Grid>
             </Grid>
 

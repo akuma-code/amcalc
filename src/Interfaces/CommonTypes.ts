@@ -59,6 +59,17 @@ export function _ArgsMaker(args: AnyArg) {
     if ('da' in args) { return new A_Offset5(args.W, args.H, args.h, args.da, args.db) }
     return args
 }
+export function _ArgsMaker2(args: AnyArg) {
+    if ('width' in args) {
+        const argType: ArgsTypes = 'size_full'
+        return { argType, ...args }
+    }
+    if ('da' in args) {
+        const argType: ArgsTypes = 'offset5'
+        return { argType, ...args }
+    }
+    return args
+}
 export interface Arg_Size {
     argType: InputsTypeEnum.size_full
     args: ISizeFull

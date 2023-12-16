@@ -6,8 +6,9 @@ import { FieldsLabelEnum } from '../../../ActionComponents/ActionTypes/ReducerTy
 import { _log } from '../../../Helpers/HelpersFns'
 import { AnyArg, useDinamicFields_ } from '../../../Hooks/useDynamicInputs'
 import { useStoresContext } from '../../../Hooks/useStoresContext'
-import { _ArgsMaker } from '../../../Interfaces/CommonTypes'
+import { _ArgsMaker, _ArgsMaker2 } from '../../../Interfaces/CommonTypes'
 import { ANYobj } from '../../../Interfaces/MathActionsTypes'
+import { CalcReducer, DiscriminatedArgs } from '../../../ActionComponents/Calculators/SingleArgCalc'
 // import { SizeObserver } from '../../../Context/DataStore'
 
 
@@ -27,10 +28,11 @@ const DynamicInputsForm = observer((props: Props) => {
 
 
     const save = (data: AnyArg) => {
-
+        const payload = _ArgsMaker2(data)
+        _log(CalcReducer(payload))
         _log("saved ", _ArgsMaker(data))
         // if ('width' in data) { SizeObserver.notify(data) }
-        RootStore.saveTostore(AS, _ArgsMaker(data))
+        RootStore.saveTostore(AS, _ArgsMaker2(data))
         control.reset()
     }
     return (

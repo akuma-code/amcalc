@@ -49,8 +49,8 @@ function a11yProps(index: number) {
     };
 }
 type TabProps = {
-    size_elem?: React.ReactNode
-    offset_elem?: React.ReactNode
+    size_tab?: React.ReactNode
+    offset_tab?: React.ReactNode
 }
 export const OutputTabs: FC<TabProps> = observer((props) => {
     const { ViewConfig } = useStoresContext()
@@ -85,10 +85,10 @@ export const OutputTabs: FC<TabProps> = observer((props) => {
             </AppBar>
 
             <TabPanel value={value} index={0} >
-                {props.size_elem ? props.size_elem : "No ELEM!"}
+                {props.size_tab ? props.size_tab : <div>"No ELEM!"</div>}
             </TabPanel>
             <TabPanel value={value} index={1} >
-                {props.offset_elem ? props.offset_elem : "No ELEM!"}
+                {props.offset_tab ? props.offset_tab : <div>"No ELEM!"</div>}
             </TabPanel>
             {/* <TabPanel value={value} index={2} dir={theme.direction}>
                 Item Three

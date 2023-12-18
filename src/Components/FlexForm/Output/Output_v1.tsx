@@ -17,7 +17,7 @@ const fakeInit = [
 type ResultArray = [SizeShort, SizeShort, { pm: number }]
 
 const OutputVers1 = observer((props: OutputProps) => {
-    const { RootStore } = useStoresContext()
+    const { RootStore, ViewConfig } = useStoresContext()
     const outblock = RootStore.select('size_full').output
     const BLIST = outblock.out()
 
@@ -33,7 +33,7 @@ const OutputVers1 = observer((props: OutputProps) => {
             overflow={'auto'}>
 
             {
-                [...BLIST].map(s => (('width' in s.arg) ? <OutputSizeCard key={_ID()} savedSize={s.arg} outblock={s.out} /> : null))
+                [...BLIST].map(s => (('width' in s.arg) ? <OutputSizeCard key={_ID()} savedSize={s.arg} outblock={s.out} viewOptions={{ ...ViewConfig.visible }} /> : null))
 
             }
         </Stack>

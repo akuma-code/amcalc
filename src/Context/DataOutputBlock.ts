@@ -105,7 +105,7 @@ export class DataOutput {
         let r: ReturnType<typeof outItem>[] = [];
         if (this.argType) {
             if (this.saved_args.length === 0) {
-                _log("no saved args")
+                // _log("no saved args")
                 return []
             } else
 

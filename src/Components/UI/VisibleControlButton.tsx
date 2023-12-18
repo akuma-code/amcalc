@@ -64,15 +64,6 @@ export const VisibleControlBotton = observer(() => {
         const styleView = actualState[action.view] ? { opacity: 1, color: 'green' } : { opacity: 0.7, color: '#e00f0f' }
         const Icon = action.icon
 
-        // const Ni = <CustomTT
-        //     title={action.name}
-        //     sx={{ fontSize: 20, mr: 2, pr: 1 }}
-        //     open={open}
-        //     placement='left'
-
-        // >
-        //     <span> <Icon sx={{ ...styleView }} /></span>
-        // </CustomTT>
         return { ...action, icon: <Icon sx={{ ...styleView }} /> }
     }, [actualState])
     const updatedActions = React.useMemo(() => actions.map(updateAction), [updateAction])

@@ -114,6 +114,11 @@ export class RootArgsStore_v1 {
             }
         }
     }
+
+    clearStore(store_id: ArgsTypes) {
+        const current = this.select(store_id)
+        current.clear()
+    }
 }
 
 export const RootArgsStore = new RootArgsStore_v1()

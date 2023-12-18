@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import { observer } from 'mobx-react-lite';
-import { useStoresContext } from '../../Hooks/useStoresContext';
-import { Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, Paper, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { Cloud, ContentCopy, ContentCut, ContentPaste } from '@mui/icons-material';
+import React from 'react';
 import { InputsTypeEnum } from '../../Hooks/useFormStateSelector';
+import { useStoresContext } from '../../Hooks/useStoresContext';
 
 export const ViewControlBar = observer(() => {
 
@@ -80,3 +78,4 @@ const ToggleViewOutputButton: React.FC<ToggleViewProps> = observer((props) => {
         </ToggleButtonGroup>
     )
 })
+

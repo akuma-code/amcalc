@@ -10,21 +10,21 @@ type SingleCalcFns = Pick<FnCalculatorList, 'skf' | 'simple' | 'otkosi'>
 
 export class SizeCalc {
 
-    Skf: ISizeShort
-    Simple: ISizeShort
-    Otkosi: OtkResult
+    skf: ISizeShort
+    simple: ISizeShort
+    otkosi: OtkResult
     constructor(args: A_Size) {
-        this.Skf = this.skf(args)
-        this.Otkosi = this.otkosi(args)
-        this.Simple = this.simple(args)
+        this.skf = this.calcSkf(args)
+        this.otkosi = this.calcOtkosi(args)
+        this.simple = this.calcSimple(args)
     }
-    private otkosi(args: ISizeFull): OtkResult {
+    private calcOtkosi(args: ISizeFull): OtkResult {
         return Calc.otkosi(args)
     }
-    private simple(args: ISizeFull): ISizeShort {
+    private calcSimple(args: ISizeFull): ISizeShort {
         return Calc.simple(args)
     }
-    private skf(args: ISizeFull): ISizeShort {
+    private calcSkf(args: ISizeFull): ISizeShort {
         return Calc.skf(args)
     }
 
@@ -40,12 +40,12 @@ export class OffsetCalc {
         return Calc.offset5(args)
     }
 }
-type D_Size = ISizeFull & { argType: 'size_full' }
-type D_Offset = Fn_Args_offset5 & { argType: 'offset5' }
+type D_Size = ISizeFull & { argType: 'size_full' } & A_Size
+type D_Offset = Fn_Args_offset5 & { argType: 'offset5' } & A_Offset5
 export type DiscriminatedArgs = | D_Size | D_Offset
 
 
-export function CalcReducer(arg: DiscriminatedArgs) {
+export function SingleCalcReducer(arg: DiscriminatedArgs) {
     switch (arg.argType) {
         case "size_full": { return new SizeCalc(arg) }
         case "offset5": { return new OffsetCalc(arg) }

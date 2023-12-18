@@ -13,7 +13,7 @@ type OutputCardProps = {
     viewOptions?: { [x: string]: boolean }
 }
 
-const OutputSizeCard = ({ savedSize, outblock }: OutputCardProps) => {
+const OutputSizeCard = ({ savedSize, outblock, viewOptions }: OutputCardProps) => {
     const [initW, initH] = _sizeTuppler(savedSize)
     const [skf, simple, otk] = outblock.out
 
@@ -40,9 +40,9 @@ const OutputSizeCard = ({ savedSize, outblock }: OutputCardProps) => {
                 flexDirection={'column'}
                 margin={1}
             >
-                <SkfOut {...skf} />
-                <SimpleOut {...simple} />
-                <OtkOut {...otk} />
+                {viewOptions && viewOptions.showSkf && <SkfOut {...skf} />}
+                {viewOptions && viewOptions.showSimple && <SimpleOut {...simple} />}
+                {viewOptions && viewOptions.showOtkosi && <OtkOut {...otk} />}
             </Box>
 
 

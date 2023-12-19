@@ -1,28 +1,24 @@
-import { Box, Grid } from '@mui/material'
-import React, { useCallback } from 'react'
+import { Grid } from '@mui/material'
+import React from 'react'
 
 import { observer, } from 'mobx-react-lite'
+import { _log } from '../../Helpers/HelpersFns'
 import { useStoresContext } from '../../Hooks/useStoresContext'
-import { ArgsTypes } from '../../Models/ArgsTypeModel'
 import DynamicInputsForm from '../FlexForm/MultiForms/DynamicInputsForm'
 import OutputVers1 from '../FlexForm/Output/Output_v1'
 import Output2 from '../FlexForm/Output/Output_v2'
 import { FactoryDiv } from '../Templates/Factory'
 import { FCButtonsGroup } from '../UI/FCButtonGroup'
 import { OutputTabs } from '../UI/OutputTabs'
-import { VisibleControlBotton } from '../UI/VisibleControlButton'
-import { InfoBox } from './InfoBox'
-import { ViewControlButtonGroup } from '../UI/ViewControlButtonGroup'
 import OutputSizeTab from '../UI/Tabs/OutputSizeTab'
+import { ViewControlButtonGroup } from '../UI/ViewControlButtonGroup'
+import { InfoBox } from './InfoBox'
 
 
 
 
 type PageProps = {}
 
-const test_div = (w: number, h: number, count?: number) => {
-    return <div className={`w-[${w}em] h-[${h}em] bg-gray-500`}> |{count ?? 'BLANK'}| </div>
-}
 
 const d = FactoryDiv
 
@@ -31,11 +27,10 @@ const d = FactoryDiv
 
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
     d.logging = false
-    const { RootStore, ViewConfig } = useStoresContext()
+    const { RootStore } = useStoresContext()
 
 
 
-    const clearStore = useCallback((store_id: ArgsTypes) => RootStore.select(store_id).clear(), [RootStore])
 
 
 

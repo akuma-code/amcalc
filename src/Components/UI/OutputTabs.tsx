@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -6,9 +6,10 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { InputsTypeEnum } from '../../Hooks/useFormStateSelector';
 import { useStoresContext } from '../../Hooks/useStoresContext';
-import { ArgsTypes } from '../../Models/ArgsTypeModel';
+import { ArgsTypes, ArgsTypesList } from '../../Models/ArgsTypeModel';
 import { Text } from './Text';
 import { observer } from 'mobx-react-lite';
+import { A_InputArgs, A_InputArgsList } from '../../Interfaces/CommonTypes';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -48,13 +49,22 @@ function a11yProps(index: number) {
 
     };
 }
+export type SortedArgs = { [Key in keyof A_InputArgsList]?: A_InputArgsList[Key][] | [] }
 type TabProps = {
     size_tab?: React.ReactNode
     offset_tab?: React.ReactNode
     size2_tab?: React.ReactNode
 }
 export const OutputTabs: FC<TabProps> = observer((props) => {
-    const { ViewConfig } = useStoresContext()
+    const { ViewConfig, RootStore } = useStoresContext()
+
+    const stores = useMemo(() => {
+        const strs = RootStore.list()
+        console.log('stores', strs)
+
+        return { ...strs }
+    }, [RootStore])
+    console.log('stores:::', stores)
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {

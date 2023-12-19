@@ -1,9 +1,9 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
 import { _log } from "../Helpers/HelpersFns";
 import { AnyArg } from "../Hooks/useDynamicInputs";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
-import { A_Sill, ISizeFull, ISizeShort } from "../Interfaces/CommonTypes";
+import { A_InputArgsList, A_Sill, ISizeFull, ISizeShort } from "../Interfaces/CommonTypes";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
 import { DataStore } from "./DataStore";
@@ -79,6 +79,18 @@ export class RootArgsStore_v1 {
             arr.push(st)
         }
         return [...arr] as const
+    }
+
+    list(options = { ignoreEmpty: false }) {
+        const stores = this.traverse()
+        const keys = this.storeKeys
+        const sort = stores.reduce((sort, st) => {
+            const TT = st.store_id as unknown as ArgsTypes
+            if (st.storeSize === 0 && options.ignoreEmpty === true) return toJS(sort)
+            return toJS({ ...sort, [TT]: { saved: st.store, type: TT } })
+
+        }, {} as { [Key in ArgsTypes]?: { saved: A_InputArgsList[Key][], key: Key } })
+        return sort
     }
     public storesSize() {
         const getsize = (ds: DataStore<AnyArg>) => {

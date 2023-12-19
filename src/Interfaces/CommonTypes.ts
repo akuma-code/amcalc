@@ -104,6 +104,11 @@ export type A_InputArgs =
     | A_Offset5
     | A_Sill
 
+export type A_InputArgsList = {
+    size_full: A_Size
+    sill: A_Sill
+    offset5: A_Offset5
+}
 export type A_InputArgs2 = |
     {
         argType: ArgsTypes

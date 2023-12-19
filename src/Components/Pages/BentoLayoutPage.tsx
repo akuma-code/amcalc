@@ -92,8 +92,8 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
 
                     {/* <VisibleControlBotton /> */}
                     <OutputTabs
-                        size_elem={<OutputVers1 store={RootStore.stores.size_full!.store} />}
-                        offset_elem={<Output2 />}
+                        size_tab={<OutputVers1 store={RootStore.stores.size_full!.store} />}
+                        offset_tab={<Output2 />}
                     />
 
 

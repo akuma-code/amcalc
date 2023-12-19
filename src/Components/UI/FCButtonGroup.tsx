@@ -12,7 +12,7 @@ export const FCButtonsGroup = observer(() => {
 
     return (
         <ButtonGroup
-
+            sx={{ maxWidth: 'fit-content' }}
             variant="contained"
             aria-label="Disabled elevation buttons"
         >
@@ -20,6 +20,7 @@ export const FCButtonsGroup = observer(() => {
                 onClick={() => V.selectForm(InputsTypeEnum.size_full)}>
                 {LABELS_LIST['size_full']}
             </Button>
+            <Button disabled variant='text' sx={{ fontSize: 10, fontStyle: 'italic' }}>{LABELS_LIST[V.active.store]}</Button>
             <Button color='info'
                 onClick={() => V.selectForm(InputsTypeEnum.offset5)}>
                 {LABELS_LIST['offset5']}
@@ -28,4 +29,4 @@ export const FCButtonsGroup = observer(() => {
     );
 })
 
-FCButtonsGroup.displayName = '*** Form Control ***'
+FCButtonsGroup.displayName = '*** Form Control ButtonGroup***'

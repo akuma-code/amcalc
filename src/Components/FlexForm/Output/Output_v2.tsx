@@ -30,7 +30,7 @@ const Output2 = observer((props: OutputProps) => {
             overflow={'auto'} >
 
             {
-                blocks.map((b, idx) => <OffsetOutCard blockOut={b.out as any} blockIn={b.arg} key={idx} />)
+                blocks.map((b, idx) => <OffsetOutCard blockOut={b.out as any} blockIn={b.arg} key={idx} index={idx + 1} />)
             }
         </Stack>
     )

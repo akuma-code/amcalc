@@ -9,8 +9,9 @@ import { OffsetResult, OutItem } from '../../../Context/DataOutputBlock';
 type OutputOffsetProps = {
     blockOut: OutItem<A_Offset5>
     blockIn: A_InputArgs;
+    index?: number
 };
-export const OffsetOutCard: React.FC<OutputOffsetProps> = observer(({ blockOut, blockIn }) => {
+export const OffsetOutCard: React.FC<OutputOffsetProps> = observer(({ blockOut, blockIn, index }) => {
 
     let init = {} as A_InputArgs
     let out = []
@@ -22,7 +23,7 @@ export const OffsetOutCard: React.FC<OutputOffsetProps> = observer(({ blockOut, 
         case 'offset5': {
             init = { ...blockIn as A_Offset5 }
             out = blockOut.out as unknown as Fn_Output_offset5[]
-            console.log('blockout', blockOut.out)
+            // console.log('blockout', blockOut.out)
             break
         }
     }
@@ -39,7 +40,7 @@ export const OffsetOutCard: React.FC<OutputOffsetProps> = observer(({ blockOut, 
         >
             <Stack display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
                 <Stack flexDirection={'column'}>
-                    <span className='text-left font-bold border-b-2 border-black px-1'>Inputs</span>
+                    <span className='text-left font-bold border-b-2 border-black px-1'>{index && index}) Inputs</span>
                     <div>
 
                         <ul className='px-2 mx-1'>

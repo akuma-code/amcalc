@@ -33,7 +33,8 @@ const OutputVers1 = observer((props: OutputProps) => {
             overflow={'auto'}>
 
             {
-                [...BLIST].map(s => (('width' in s.arg) ? <OutputSizeCard key={_ID()} savedSize={s.arg} outblock={s.out} viewOptions={{ ...ViewConfig.visible }} /> : null))
+                [...BLIST].map((s, idx) => (('width' in s.arg) ?
+                    <OutputSizeCard key={_ID()} savedSize={s.arg} outblock={s.out} viewOptions={{ ...ViewConfig.visible }} index={idx + 1} /> : null))
 
             }
         </Stack>

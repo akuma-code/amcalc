@@ -88,7 +88,7 @@ export class DataOutput {
         }
         const blocks = this.saved_args.map(a => outItem(a, _c(a)))
         const b = this.saved_args.map(a => oi(a))
-        console.log('b', b)
+        // console.log('b', b)
 
 
 

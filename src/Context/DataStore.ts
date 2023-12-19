@@ -1,15 +1,16 @@
 import { action, computed, makeAutoObservable, observable, toJS } from "mobx";
 import { Fn_Args_offset5, Fn_Output_offset5 } from "../ActionComponents/ActionTypes/Types";
-import { _ID } from "../Helpers/HelpersFns";
+import { _ID, _log } from "../Helpers/HelpersFns";
 import { AnyArg } from "../Hooks/useDynamicInputs";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { Calc } from "../Hooks/useFuncs";
-import { A_InputArgs, ISizeFull, ISizeShort, _ArgsMaker } from "../Interfaces/CommonTypes";
+import { A_InputArgs, ISizeFull, ISizeShort, _ArgsMaker, _ArgsMaker2 } from "../Interfaces/CommonTypes";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
 import { DataOutput } from "./DataOutputBlock";
 import { IDSObserver } from "./DataStoreObserver";
 import { RootArgsStore_v1 } from "./RootStore";
+import { SingleCalcReducer } from "../ActionComponents/Calculators/SingleArgCalc";
 
 interface IDS_Subject {
     store_name: InputsTypeEnum
@@ -112,11 +113,11 @@ export class DataOutputBlock<A extends A_InputArgs> {
 
     initFuncs(block: IOutBlock) {
         const type = block.type
-
         const BC = new BlockCalculator(block)
         switch (type) {
             case InputsTypeEnum.size_full: {
-
+                const SC = SingleCalcReducer(_ArgsMaker2(block.payload))
+                _log("SC: ", SC)
 
                 this.out.push(...BC.calced)
                 // _log(BC)

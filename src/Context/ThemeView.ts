@@ -32,7 +32,7 @@ export class OutputViewConfig implements IOutputView {
             toggleVisible: action,
         }, { name: 'ViewConfig' })
         this.visible = {
-            showSkf: false,
+            showSkf: true,
             showSimple: true,
             showOtkosi: true,
             showOffset5: true,

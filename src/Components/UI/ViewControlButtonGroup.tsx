@@ -34,7 +34,8 @@ const toggleBtns: BtnItem[] = [
 ]
 const outView = {
     [InputsTypeEnum.size_full]: ['devtools', 'skf', 'simple', 'otkosi'],
-    [InputsTypeEnum.offset5]: ['devtools', 'offset']
+    [InputsTypeEnum.offset5]: ['devtools', 'offset'],
+    [InputsTypeEnum.sill]: ['devtools']
 }
 
 export const ViewControlButtonGroup: FC<BtnGroupProps> = observer(() => {

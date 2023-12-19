@@ -1,8 +1,9 @@
 import { GetFormState__ } from "../../ActionComponents/ActionTypes/ReducerTypes"
 import { Fn_Args_offset5 } from "../../ActionComponents/ActionTypes/Types"
 import { IFormFieldsValues, InputsTypeEnum } from "../../Hooks/useFormStateSelector"
-import { ISizeFull } from "../../Interfaces/CommonTypes"
+import { A_Sill, ISizeFull } from "../../Interfaces/CommonTypes"
 import { ANYobj } from "../../Interfaces/MathActionsTypes"
+import { Args_Sill } from "./MultiForms/MultiFieldsForm"
 
 
 export interface DTO_state<O extends ANYobj> {
@@ -20,6 +21,12 @@ const dto_state_FullSize: GetFormState__<ISizeFull> = {
     fields: ['width', "height"] as const,
     init: { height: 0, width: 0 },
     desc: "Ширина и высота",
+}
+const dto_state_Sill: GetFormState__<Args_Sill> = {
+    type: InputsTypeEnum.size_full,
+    fields: ['L', "B", "count"] as const,
+    init: { L: 0, B: 0, count: 1 },
+    desc: "Отливы",
 }
 const dto_state_Offse5: GetFormState__<Fn_Args_offset5> = {
     type: InputsTypeEnum.offset5,
@@ -39,6 +46,7 @@ const dto_state_Offse5: GetFormState__<Fn_Args_offset5> = {
 export const dto_formStates: IFormFieldsValues = {
     size_full: dto_state_FullSize,
     offset5: dto_state_Offse5,
+    sill: dto_state_Sill
 
 }
 //! *** DTO Forms Data ***

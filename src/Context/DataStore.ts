@@ -60,7 +60,7 @@ export class DataStore<D extends AnyArg> {
         return this
     }
     add(data: D) {
-        this.saved = [...this.saved, _ArgsMaker(data)];
+        this.saved = [...this.saved, _ArgsMaker2(data)];
         this.updateOutput()
     }
     get store() {

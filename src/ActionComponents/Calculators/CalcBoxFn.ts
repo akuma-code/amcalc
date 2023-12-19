@@ -81,6 +81,7 @@ class CalcBoxFn {
         switch (argType) {
             case InputsTypeEnum.size_full: { return this.funcs.map(c => c.fn(rest)) }
             case InputsTypeEnum.offset5: { return this.funcs.map(c => c.fn(rest)) }
+            case InputsTypeEnum.sill: { return [] }
             default: return notReachable(argType as never)
         }
         // return this.funcs.map(c => c.fn(payload))
@@ -96,16 +97,17 @@ export function notReachable(_: never): never {
 
 const SizeCalculator = new CalcBoxFn('size_full')
 const Offset5Calculator = new CalcBoxFn('offset5')
-
+const SillCalculator = new CalcBoxFn('sill')
 SizeCalculator.addFn(new CalcSkf())
 SizeCalculator.addFn(new CalcSimple())
 SizeCalculator.addFn(new CalcOtkosi())
 
 Offset5Calculator.addFn(new CalcOffset5())
 
-const CalcControl: Record<ArgsTypes, CalcBoxFn> = {
+const CalcControl = {
     size_full: SizeCalculator,
     offset5: Offset5Calculator,
+    sill: SillCalculator
 } as const
 
 export const CalcList = {

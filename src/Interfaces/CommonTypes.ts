@@ -1,4 +1,5 @@
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types"
+import { Args_Sill } from "../Components/FlexForm/MultiForms/MultiFieldsForm"
 import { AnyArg } from "../Hooks/useDynamicInputs"
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector"
 import { ArgsTypes } from "../Models/ArgsTypeModel"
@@ -45,6 +46,15 @@ export class A_Offset5 {
         public da: number,
         public db: number) { }
 }
+export class A_Sill implements Args_Sill {
+    argType: ArgsTypes = 'sill'
+    constructor(public L: number,
+        public B: number,
+        public count: number = 1
+    ) { }
+}
+export type Brand<T, B> = T & B
+export type BrandType<T, BType> = Brand<T, { argType: BType }>
 export type WithArgType = { argType: ArgsTypes }
 
 type UnpackArray<T> = T extends (infer R)[] ? R : T
@@ -57,16 +67,21 @@ export function _isFullSize(size: ISize): size is ISizeFull {
 export function _ArgsMaker(args: AnyArg) {
     if ('width' in args) { return new A_Size(args.width, args.height) }
     if ('da' in args) { return new A_Offset5(args.W, args.H, args.h, args.da, args.db) }
+    if ('L' in args) { return new A_Sill(args.L, args.B, args.count) }
     return args
 }
 export function _ArgsMaker2(args: AnyArg) {
     if ('width' in args) {
-        const argType: ArgsTypes = 'size_full'
-        return { argType, ...args }
+        const type: ArgsTypes = 'size_full'
+        return { argType: type, ...args }
     }
     if ('da' in args) {
-        const argType: ArgsTypes = 'offset5'
-        return { argType, ...args }
+        const type: ArgsTypes = 'offset5'
+        return { argType: type, ...args }
+    }
+    if ('L' in args) {
+        const type: ArgsTypes = 'sill'
+        return { argType: type, ...args }
     }
     return args
 }
@@ -87,6 +102,7 @@ type ArgsUnion =
 export type A_InputArgs =
     | A_Size
     | A_Offset5
+    | A_Sill
 
 export type A_InputArgs2 = |
     {

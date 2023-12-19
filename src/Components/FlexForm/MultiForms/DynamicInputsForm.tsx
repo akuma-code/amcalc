@@ -6,9 +6,10 @@ import { FieldsLabelEnum } from '../../../ActionComponents/ActionTypes/ReducerTy
 import { _log } from '../../../Helpers/HelpersFns'
 import { AnyArg, useDinamicFields_ } from '../../../Hooks/useDynamicInputs'
 import { useStoresContext } from '../../../Hooks/useStoresContext'
-import { _ArgsMaker, _ArgsMaker2 } from '../../../Interfaces/CommonTypes'
+import { ISizeFull, _ArgsMaker, _ArgsMaker2 } from '../../../Interfaces/CommonTypes'
 import { ANYobj } from '../../../Interfaces/MathActionsTypes'
 import { SingleCalcReducer, DiscriminatedArgs } from '../../../ActionComponents/Calculators/SingleArgCalc'
+import { Fn_Args_nets, Fn_Args_offset5 } from '../../../ActionComponents/ActionTypes/Types'
 // import { SizeObserver } from '../../../Context/DataStore'
 
 
@@ -74,7 +75,7 @@ type InputFieldBlock = {
 
 type ListOfInputsProps = {
     fields: InputFieldBlock[]
-    methods: UseFormReturn<AnyArg>
+    methods: UseFormReturn<ISizeFull | Fn_Args_offset5>
 }
 const ControlBtns: React.FC<{ form_id: string }> = (props) => {
     const { form_id } = props
@@ -99,7 +100,7 @@ const ControlBtns: React.FC<{ form_id: string }> = (props) => {
 }
 
 
-export function UnControlledInput({ register, name, ...rest }: IRegInput<AnyArg>) {
+export function UnControlledInput({ register, name, ...rest }: IRegInput<ISizeFull | Fn_Args_offset5>) {
 
     return (
         <FormControl variant="standard" margin='dense' >

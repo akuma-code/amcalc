@@ -13,4 +13,8 @@ export enum LABELS_LIST {
     size = 'Размеры (w,h)',
     size_full = 'Размеры',
     offset5 = 'Смещение',
+    sill = 'Отливы',
+    L = 'длина',
+    B = 'ширина',
+    count = 'количество',
 }

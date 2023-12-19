@@ -1,16 +1,19 @@
 import { StringifyProps } from "../ActionComponents/ActionTypes/FnProperties"
 import { FormStatePlaceHolder } from "../ActionComponents/ActionTypes/ReducerTypes"
 import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types"
+import { Args_Sill } from "../Components/FlexForm/MultiForms/MultiFieldsForm"
+
 import { ISizeShort, ISizeFull } from "../Interfaces/CommonTypes"
 import { ANYobj } from "../Interfaces/MathActionsTypes"
 
 export enum ArgsTypesEn {
     size_full = 'size_full',
     offset5 = 'offset5',
+    sill = 'sill'
 }
 export interface ArgsTypesList {
     size_full: ISizeFull
-
+    sill: Args_Sill
     offset5: Fn_Args_offset5
 }
 
@@ -20,6 +23,7 @@ export interface ArgsTypesList {
 export type ArgsTypes =
     | 'size_full'
     | 'offset5'
+    | 'sill'
 
 
 export type DTO_InputsProp = {

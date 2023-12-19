@@ -3,10 +3,11 @@ import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
 import { _log } from "../Helpers/HelpersFns";
 import { AnyArg } from "../Hooks/useDynamicInputs";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
-import { ISizeFull, ISizeShort } from "../Interfaces/CommonTypes";
+import { A_Sill, ISizeFull, ISizeShort } from "../Interfaces/CommonTypes";
 import { ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes, ArgsTypesList } from "../Models/ArgsTypeModel";
 import { DataStore } from "./DataStore";
+
 
 export type IRootStores_v1 = {
     [Key in keyof ArgsTypesList]?: DataStore<ArgsTypesList[Key]>
@@ -62,9 +63,10 @@ export class RootArgsStore_v1 {
     private initStores() {
         const FullSIZE = new DataStore<ISizeFull>({ name: InputsTypeEnum.size_full })
         const OFFSET5 = new DataStore<Fn_Args_offset5>({ name: InputsTypeEnum.offset5 })
-
+        const Sill = new DataStore<A_Sill>({ name: 'sill' })
         this.use(InputsTypeEnum.size_full, FullSIZE)
         this.use(InputsTypeEnum.offset5, OFFSET5)
+        this.use(InputsTypeEnum.sill, Sill)
 
         return this.stores
     }

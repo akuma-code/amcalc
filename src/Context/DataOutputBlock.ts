@@ -62,6 +62,7 @@ export class DataOutput {
             switch (argType) {
                 case "size_full": return _b as unknown as SizeOutItem['out']
                 case "offset5": return _b as unknown as OffsetOutItem['out']
+                case "sill": return _b
                 default: return notReachable(argType)
             }
 
@@ -87,7 +88,7 @@ export class DataOutput {
             }
         }
         const blocks = this.saved_args.map(a => outItem(a, _c(a)))
-        const b = this.saved_args.map(a => oi(a))
+        // const b = this.saved_args.map(a => oi(a))
         // console.log('b', b)
 
 

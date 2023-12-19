@@ -20,6 +20,7 @@ export const OffsetOutCard: React.FC<OutputOffsetProps> = observer(({ blockOut, 
             // init = {...blockIn} as A_Size
             return
         }
+        case 'sill': { return }
         case 'offset5': {
             init = { ...blockIn as A_Offset5 }
             out = blockOut.out as unknown as Fn_Output_offset5[]

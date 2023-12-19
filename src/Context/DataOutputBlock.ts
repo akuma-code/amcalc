@@ -2,8 +2,9 @@ import { Fn_Output_offset5 } from "../ActionComponents/ActionTypes/Types";
 import CalcControl, { notReachable } from "../ActionComponents/Calculators/CalcBoxFn";
 import { _log } from "../Helpers/HelpersFns";
 import { AnyArg } from "../Hooks/useDynamicInputs";
+import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { FnCalculatorList, GetReturnFnList } from "../Hooks/useFuncs";
-import { A_InputArgs, A_InputArgs2, A_Offset5, A_Size } from "../Interfaces/CommonTypes";
+import { A_InputArgs, A_InputArgs2, A_Offset5, A_Sill, A_Size } from "../Interfaces/CommonTypes";
 import { ANYfn, ANYobj } from "../Interfaces/MathActionsTypes";
 import { ArgsTypes } from "../Models/ArgsTypeModel";
 import { DataStore } from "./DataStore";
@@ -26,20 +27,28 @@ export type OffsetOutItem = {
     arg: A_Offset5
     out: OffsetResult[]
 }
-
+export type SillOutItem = {
+    arg: A_Sill
+    out: any
+}
+type AOUT = | SillOutItem | OffsetOutItem | SizeOutItem
 type A_Out<T extends A_InputArgs> =
     |
     {
-        argType: T['argType']
+        argType: InputsTypeEnum.size_full
         arg: T
         payload: SizeOutItem['out']
     }
     | {
-        argType: T['argType']
+        argType: InputsTypeEnum.offset5
         arg: T
         payload: OffsetOutItem['out']
     }
-
+    | {
+        argType: InputsTypeEnum.sill
+        arg: T
+        payload: A_Sill[]
+    }
 
 export class DataOutput {
     root: DataStore<A_InputArgs>
@@ -62,31 +71,20 @@ export class DataOutput {
             switch (argType) {
                 case "size_full": return _b as unknown as SizeOutItem['out']
                 case "offset5": return _b as unknown as OffsetOutItem['out']
-                case "sill": return _b
+                case "sill": return {
+                    arg: { argType, ...rest },
+                    out: []
+                }
                 default: return notReachable(argType)
             }
 
         }
-        const outItem = (arg: A_InputArgs, out: SizeOutItem['out'] | OffsetOutItem['out']) => ({
+        const outItem = (arg: A_InputArgs, out: AOUT['out']) => ({
             arg,
             out
         })
 
-        const oi = <T extends A_InputArgs2>(item: T, fn?: FnCalculatorList[keyof FnCalculatorList]) => {
 
-            switch (item.argType) {
-                case "size_full": {
-                    const funcs = this.calcFuncs.map(f => f.fn)
-                    const calced = funcs.map(f => f(item))
-                    return { argType: item.argType, payload: calced }
-                }
-                case "offset5": {
-                    const funcs = this.calcFuncs.map(f => f.fn)
-                    const calced = funcs.map(f => f(item))
-                    return { argType: item.argType, payload: calced }
-                }
-            }
-        }
         const blocks = this.saved_args.map(a => outItem(a, _c(a)))
         // const b = this.saved_args.map(a => oi(a))
         // console.log('b', b)
@@ -118,6 +116,10 @@ export class DataOutput {
                     }
                     case "offset5": {
                         r = this.blocks.map((b, idx) => outItem(this.saved_args[idx] as A_Offset5, b as unknown as OffsetResult[]))
+                        break
+                    }
+                    case "sill": {
+
                         break
                     }
                     case "undefined": {

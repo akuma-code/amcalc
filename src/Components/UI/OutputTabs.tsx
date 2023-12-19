@@ -51,13 +51,14 @@ function a11yProps(index: number) {
 type TabProps = {
     size_tab?: React.ReactNode
     offset_tab?: React.ReactNode
+    size2_tab?: React.ReactNode
 }
 export const OutputTabs: FC<TabProps> = observer((props) => {
     const { ViewConfig } = useStoresContext()
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        const types = [InputsTypeEnum.size_full, InputsTypeEnum.offset5]
+        const types = [InputsTypeEnum.size_full, InputsTypeEnum.offset5, InputsTypeEnum.size_full]
         setValue(newValue);
         handleChangeIndex(newValue)
         ViewConfig.selectOut(types[newValue])
@@ -80,6 +81,7 @@ export const OutputTabs: FC<TabProps> = observer((props) => {
                 >
                     <Tab label="Size" {...a11yProps(0)} sx={{ fontWeight: 'bold', color: '#a80606' }} />
                     <Tab label="Offset" {...a11yProps(1)} sx={{ fontWeight: 'bold', color: '#a80606' }} />
+                    <Tab label="Size2" {...a11yProps(2)} sx={{ fontWeight: 'bold', color: '#a80606' }} />
 
                 </Tabs>
             </AppBar>
@@ -90,9 +92,9 @@ export const OutputTabs: FC<TabProps> = observer((props) => {
             <TabPanel value={value} index={1} >
                 {props.offset_tab ? props.offset_tab : <div>"No ELEM!"</div>}
             </TabPanel>
-            {/* <TabPanel value={value} index={2} dir={theme.direction}>
-                Item Three
-            </TabPanel> */}
+            <TabPanel value={value} index={2} >
+                {props.size2_tab && props.size2_tab}
+            </TabPanel>
 
         </Box>
     );

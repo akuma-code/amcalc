@@ -12,6 +12,17 @@ import { Fn_Args_offset5 } from "../ActionComponents/ActionTypes/Types";
 export type AnyArg = ArgsTypesList[keyof ArgsTypesList]
 
 
+export function useDinamicFields_(store_id: ArgsTypes) {
+
+    const { fields, init } = state_list(store_id)
+
+    const methods = useForm<typeof init>()
+    let updatedFields = fields.map((f, idx) => ({ fieldName: f, order: idx }))
+    return [updatedFields, methods] as const
+
+
+
+}
 
 
 const GetFieldsArray = <T extends AnyArg>(o: T) => {
@@ -43,17 +54,6 @@ const dto_formSelector = (store_id: ArgsTypes) => {
 
 }
 
-export function useDynamicInputs(state_id: ArgsTypes) {
-    const { init } = dto_formSelector(state_id)
-    const methods = useForm<typeof init>()
-
-    const inputPropArray = MakeInputs<typeof init>(init)
-
-    // return inputPropArray.map(p => ({ ...p, register }))
-    return [inputPropArray, methods] as const
-}
-
-
 const MakeInputs = <T extends AnyArg>(args: T) => {
     const fields = GetFieldsArray(args)
 
@@ -67,17 +67,6 @@ const MakeInputs = <T extends AnyArg>(args: T) => {
 
 
 
-export function useDinamicFields_(store_id: ArgsTypes) {
-
-    const { fields, init } = state_list(store_id)
-
-    const methods = useForm<typeof init>()
-    let updatedFields = fields.map((f, idx) => ({ fieldName: f, order: idx }))
-    return [updatedFields, methods] as const
-
-
-
-}
 const state_list = (store_id: ArgsTypes) => {
     const dto: GetFormInstaceState<AnyArg> = { ...dto_formStates[store_id], store_id: dto_formStates[store_id].type }
     switch (store_id) {

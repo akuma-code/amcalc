@@ -13,6 +13,7 @@ import { OutputTabs } from '../UI/OutputTabs'
 import { VisibleControlBotton } from '../UI/VisibleControlButton'
 import { InfoBox } from './InfoBox'
 import { ViewControlButtonGroup } from '../UI/ViewControlButtonGroup'
+import OutputSizeTab from '../UI/Tabs/OutputSizeTab'
 
 
 
@@ -94,6 +95,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                     <OutputTabs
                         size_tab={<OutputVers1 store={RootStore.stores.size_full!.store} />}
                         offset_tab={<Output2 />}
+                        size2_tab={<OutputSizeTab size_args={RootStore.stores.size_full!.store} />}
                     />
 
 

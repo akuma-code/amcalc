@@ -1,8 +1,8 @@
 export enum LABELS_LIST {
     width = 'Ширина',
     height = 'Высота',
-    skf = 'сетка СКФ',
-    simple = 'сетка Простая',
+    skf = 'СКФ',
+    simple = 'Простая',
     both = 'Общий вид',
     w = 'ширина',
     h = 'высота мин',

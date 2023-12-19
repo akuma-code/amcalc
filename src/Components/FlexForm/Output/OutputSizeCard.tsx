@@ -2,20 +2,21 @@ import { useCallback } from 'react';
 
 import { Box, Card, Divider, Icon, Stack } from '@mui/material';
 import { _sizeTuppler } from '../../../Helpers/HelpersFns';
-import { ISize, ISizeShort } from '../../../Interfaces/CommonTypes';
+import { ISize, ISizeFull, ISizeShort, _ArgsMaker2 } from '../../../Interfaces/CommonTypes';
 import Icons from '../../Icons/SvgIcons';
 import { Text } from '../../UI/Text';
+import { SingleCalcReducer, SizeCalc } from '../../../ActionComponents/Calculators/SingleArgCalc';
 type OutputCardProps = {
-    savedSize: ISize
-    outblock: any
+    savedSize: ISizeFull
+    outblock?: any
     viewOptions?: { [x: string]: boolean }
     index?: number
 }
 
 const OutputSizeCard = ({ savedSize, outblock, viewOptions, index }: OutputCardProps) => {
     const [initW, initH] = _sizeTuppler(savedSize)
-    const [skf, simple, otk] = outblock.out
-
+    // const [skf, simple, otk] = outblock.out
+    const { skf, otkosi, simple } = SingleCalcReducer(_ArgsMaker2(savedSize)) as SizeCalc
 
 
     const InitSizeHeader = useCallback(() => getHeader(initW, initH, index && index), [index, initH, initW])
@@ -41,7 +42,7 @@ const OutputSizeCard = ({ savedSize, outblock, viewOptions, index }: OutputCardP
             >
                 {viewOptions && viewOptions.showSkf && <SkfOut {...skf} />}
                 {viewOptions && viewOptions.showSimple && <SimpleOut {...simple} />}
-                {viewOptions && viewOptions.showOtkosi && <OtkOut {...otk} />}
+                {viewOptions && viewOptions.showOtkosi && <OtkOut {...otkosi} />}
             </Box>
 
 

@@ -48,7 +48,7 @@ export const ViewControlButtonGroup: FC<BtnGroupProps> = observer(() => {
     }
     const isSelected = (item: keyof IVisibileItems) => ViewConfig.visible[item]
     return (
-        <ButtonGroup
+        <ButtonGroup size='small'
             sx={{ alignSelf: 'end', display: 'flex', maxWidth: 'fit-content' }}
             orientation='horizontal'
             variant="contained">

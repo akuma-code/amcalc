@@ -11,7 +11,7 @@ export const FCButtonsGroup = observer(() => {
     const { ViewConfig: V } = useStoresContext()
 
     return (
-        <ButtonGroup
+        <ButtonGroup size='small'
             sx={{ maxWidth: 'fit-content' }}
             variant="contained"
             aria-label="Disabled elevation buttons"

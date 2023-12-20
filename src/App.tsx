@@ -1,13 +1,10 @@
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
-import './input.css'
-import Homepage from './Components/Pages/Homepage';
-import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
-import { _log } from './Helpers/HelpersFns';
 import { SelectorPanel } from './Components/Layout/SelectorPanel';
-import { LayoutSelector } from './Components/Layout/LayoutSelector';
-import { AppRouter } from './Components/Pages/Router/AppRouter';
-import { BrowserRouter, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
 import ErrorPage from './Components/Pages/ErrorPage';
+import Homepage from './Components/Pages/Homepage';
+import './input.css';
 
 export const router = createBrowserRouter([
   {

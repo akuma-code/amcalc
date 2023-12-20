@@ -1,8 +1,10 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, toJS } from "mobx";
 import { _log } from "../Helpers/HelpersFns";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { ArgsTypes } from "../Models/ArgsTypeModel";
 
+
+export type ILayoutTypes = { path: 'bento' } | { path: 'sill' } | { path: 'home' }
 export interface IVisibileItems {
     showSkf: boolean,
     showSimple: boolean,
@@ -12,7 +14,8 @@ export interface IVisibileItems {
 }
 export interface IOutputView {
     active: { store: ArgsTypes, output: ArgsTypes }
-    visible: IVisibileItems
+    visible: IVisibileItems,
+    layout: ILayoutTypes
 }
 
 export class OutputViewConfig implements IOutputView {
@@ -20,12 +23,15 @@ export class OutputViewConfig implements IOutputView {
     selected_output: ArgsTypes = InputsTypeEnum.size_full
     visible: IVisibileItems
     active: { store: ArgsTypes; output: ArgsTypes; }
+    layout: ILayoutTypes = { path: 'bento' }
     constructor() {
         makeObservable(this, {
             selected_store: observable,
             selected_output: observable,
             visible: observable,
             active: observable,
+            layout: observable,
+            setLayout: action,
             toggleSizeView: action,
             selectOut: action,
             selectForm: action,
@@ -43,6 +49,8 @@ export class OutputViewConfig implements IOutputView {
             store: 'size_full',
             output: 'size_full'
         }
+
+
     }
     toggleSizeView(mode: 'skf' | 'simple' | 'both') {
 
@@ -68,6 +76,11 @@ export class OutputViewConfig implements IOutputView {
 
         this.visible = { ...this.visible, [view_item]: !value }
 
+    }
+
+    setLayout(p: ILayoutTypes['path']) {
+        _log(toJS(this.layout.path))
+        this.layout = { ...this.layout, path: p }
     }
 }
 

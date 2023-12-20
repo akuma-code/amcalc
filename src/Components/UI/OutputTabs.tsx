@@ -60,11 +60,11 @@ export const OutputTabs: FC<TabProps> = observer((props) => {
 
     const stores = useMemo(() => {
         const strs = RootStore.list()
-        console.log('stores', strs)
+
 
         return { ...strs }
     }, [RootStore])
-    console.log('stores:::', stores)
+
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {

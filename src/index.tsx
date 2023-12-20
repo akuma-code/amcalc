@@ -8,12 +8,14 @@ import { RootArgsStore_v1 } from './Context/RootStore';
 import { OutputViewConfig } from './Context/ThemeView'
 
 import { configure } from "mobx"
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
+import Homepage from './Components/Pages/Homepage';
 
 configure({
   useProxies: "always",
   enforceActions: 'observed'
 });
-
 
 
 const Stores: IStoresContext = {
@@ -36,6 +38,8 @@ root.render(
       }}
       key={'Store Provider'}
     >
+      {/* <RouterProvider router={router} /> */}
+
 
       <App />
     </StoresContext.Provider>

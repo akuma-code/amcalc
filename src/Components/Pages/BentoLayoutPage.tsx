@@ -55,7 +55,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
 
                 </Grid>
                 <Grid key={'selector'}
-                    sx={{ bgcolor: '#86a4a5a7' }}
+                    sx={{ bgcolor: '#7b8b8ba7' }}
                     xs={9}
                     item
                     container
@@ -81,7 +81,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
                 </Grid>
                 <Grid item={true} maxWidth={'fit-content'}
                     key={'output'}
-                    sx={{ bgcolor: '#a9f135', position: 'relative', p: 0, m: 0 }}
+                    sx={{ bgcolor: '#d4e0c0', position: 'relative', p: 0, m: 0 }}
                     xs={9}
                     border={'2px solid green'}
                 >

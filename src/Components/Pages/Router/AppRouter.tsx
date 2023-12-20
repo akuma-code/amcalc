@@ -1,35 +1,32 @@
 import React, { PropsWithChildren } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, createBrowserRouter } from 'react-router-dom'
 import BentoLayoutPage from '../BentoLayoutPage'
 import Homepage from '../Homepage'
+import ErrorPage from '../ErrorPage'
+import Root from './Root'
+
+const APP_ROUTES = [
+
+    {
+        path: '/',
+        element: <Root />,
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: '/bento',
+                element: <BentoLayoutPage />,
+
+            },
+            {
+                path: '/sill',
+                element: <Homepage />,
+
+            },
+        ]
+    },
 
 
+]
 
-export const AppRouter: React.FC<PropsWithChildren> = ({ children }) => {
-    const APP_ROUTES = [
 
-        {
-            path: '/bento',
-            elem: <BentoLayoutPage />
-        },
-        {
-            path: '/sill',
-            elem: <Homepage />
-        },
-        {
-            path: '/',
-            elem: <BentoLayoutPage />
-        },
-
-    ]
-
-    return <Routes >
-        {
-            APP_ROUTES.map(r =>
-                <Route element={r.elem} path={r.path} key={r.path} />
-            )
-        }
-
-    </Routes>
-
-}
+// export const AppRouter = createBrowserRouter(APP_ROUTES, { basename: '/' })

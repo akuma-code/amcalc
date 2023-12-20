@@ -5,34 +5,40 @@ import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
 import ErrorPage from './Components/Pages/ErrorPage';
 import Homepage from './Components/Pages/Homepage';
 import './input.css';
+import Root from './Components/Pages/Router/Root';
+
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <BentoLayoutPage />,
-    errorElement: <ErrorPage />
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: 'bento',
+        element: <BentoLayoutPage />,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: '/sill',
+        element: <Homepage />,
+        errorElement: <ErrorPage />
+      },
+    ]
   },
-  {
-    path: '/bento',
-    element: <BentoLayoutPage />,
-    errorElement: <ErrorPage />
-  },
-  {
-    path: '/sill',
-    element: <Homepage />,
-    errorElement: <ErrorPage />
-  },
+
+
 ])
 
 function App() {
 
   return (
-    <div className='pt-10'>
+    <div id='$app'>
 
 
-      {/* <BrowserRouter > */}
-      <SelectorPanel />
       <RouterProvider router={router} />
+      {/* <BrowserRouter > */}
+      {/* <SelectorPanel /> */}
       {/* <AppRouter /> */}
       {/* <LayoutSelector /> */}
       {/* </BrowserRouter> */}

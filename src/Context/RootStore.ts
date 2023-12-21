@@ -135,7 +135,7 @@ export class RootArgsStore_v1 {
     }
 }
 
-export const RootArgsStore = new RootArgsStore_v1()
+export const ROOTSTORE = new RootArgsStore_v1()
 
 
 // RAS.stores!.size_full!.add({ width: 4, height: 19 })

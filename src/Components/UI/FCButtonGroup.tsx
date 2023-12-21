@@ -11,10 +11,11 @@ export const FCButtonsGroup = observer(() => {
     const { ViewConfig: V } = useStoresContext()
 
     return (
-        <ButtonGroup size='small'
-            sx={{ maxWidth: 'fit-content' }}
+        <ButtonGroup
+            sx={{ display: 'flex', flexGrow: 1, flexDirection: 'column', alignContent: 'stretch' }}
             variant="contained"
             aria-label="Disabled elevation buttons"
+
         >
             <Button color='success'
                 onClick={() => V.selectForm(InputsTypeEnum.size_full)}>
@@ -30,3 +31,4 @@ export const FCButtonsGroup = observer(() => {
 })
 
 FCButtonsGroup.displayName = '*** Form Control ButtonGroup***'
+

@@ -20,13 +20,13 @@ import { InfoBox } from './InfoBox'
 type PageProps = {}
 
 
-const d = FactoryDiv
+
 
 
 
 
 const BentoLayoutPage: React.FC<PageProps> = observer(() => {
-    d.logging = false
+
     const { RootStore } = useStoresContext()
 
 
@@ -36,7 +36,7 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
 
     // const clearFn = () => { RootStore.stores && RootStore.stores[InputStore.inpType]?.clear() }
     return (
-        <Grid container spacing={2} minHeight={160} maxWidth={'85vw'} key={'MainGridContainer'}
+        <Grid container spacing={2} minHeight={160} maxWidth={'90vw'} key={'MainGridContainer'}
             sx={{
                 bgcolor: '#cffafc',
                 m: 2,
@@ -72,27 +72,31 @@ const BentoLayoutPage: React.FC<PageProps> = observer(() => {
             </Grid>
 
 
-            <Grid container item spacing={2} >
+            <Grid container item spacing={2} sx={{ '& .MuiGrid-container.MuiGrid-item': { p: 0, m: 0 } }}>
                 <Grid item key={'form'} xs={3} border={'2px solid red'} >
-                    <FCButtonsGroup />
+
                     <DynamicInputsForm />
 
 
                 </Grid>
-                <Grid item={true} maxWidth={'fit-content'}
+
+
+
+                <Grid width={'100%'} xs={9} item container
                     key={'output'}
-                    sx={{ bgcolor: '#d4e0c0', position: 'relative', p: 0, m: 0 }}
-                    xs={9}
+                    sx={{
+                        bgcolor: '#d4e0c0',
+                    }}
                     border={'2px solid green'}
                 >
 
                     {/* <VisibleControlBotton /> */}
+
                     <OutputTabs
                         size_tab={<OutputVers1 store={RootStore.stores.size_full!.store} />}
                         offset_tab={<Output2 />}
                         size2_tab={<OutputSizeTab size_args={RootStore.stores.size_full!.store} />}
                     />
-
 
                 </Grid>
             </Grid>

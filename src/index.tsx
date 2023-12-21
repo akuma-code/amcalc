@@ -1,16 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { ROOTSTORE } from './Context/RootStore';
+import { OutputViewConfig } from './Context/ThemeView';
 import { IStoresContext, StoresContext } from './Hooks/useStoresContext';
-import { RootArgsStore_v1 } from './Context/RootStore';
-import { OutputViewConfig } from './Context/ThemeView'
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
-import { configure } from "mobx"
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
-import Homepage from './Components/Pages/Homepage';
+import { configure } from "mobx";
+import { ArgStorage } from './Context/ArgStorage';
+import { A_Sill, A_Size } from './Interfaces/CommonTypes';
+import { ThemeProvider } from '@mui/material';
+import theme from './AppTheme';
 
 configure({
   useProxies: "always",
@@ -19,10 +20,11 @@ configure({
 
 
 const Stores: IStoresContext = {
-  RootStore: new RootArgsStore_v1(),
-  ViewConfig: new OutputViewConfig()
+  RootStore: ROOTSTORE,
+  ViewConfig: new OutputViewConfig(),
+  SizeStore: new ArgStorage<A_Size>(),
+  SillStore: new ArgStorage<A_Sill>(),
 }
-
 
 
 const root = ReactDOM.createRoot(
@@ -32,16 +34,16 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
+
     <StoresContext.Provider
       value={{
         ...Stores
       }}
       key={'Store Provider'}
     >
-      {/* <RouterProvider router={router} /> */}
-
-
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </StoresContext.Provider>
 
   </React.StrictMode>

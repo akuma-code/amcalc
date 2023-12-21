@@ -7,6 +7,7 @@ import { A_Offset5 } from '../../../Interfaces/CommonTypes'
 import { OffsetOutCard } from './OffsetOutCard'
 import { _log } from '../../../Helpers/HelpersFns'
 import { OffsetResult } from '../../../Context/DataOutputBlock'
+import { SingleCalcReducer } from '../../../ActionComponents/Calculators/SingleArgCalc'
 
 type OutputProps = {}
 
@@ -18,6 +19,8 @@ const Output2 = observer((props: OutputProps) => {
 
     const DataOUT = RS.select(InputsTypeEnum.offset5).output
     const blocks = DataOUT.out() || []
+    const b = blocks.map(b => b.arg)
+
     // const init = blocks.map((b, idx) => b.map(i => ({ arg: DataOUT.saved_args[idx] as A_Offset5, out: i })))
     // _log(DataOUT.out)
 

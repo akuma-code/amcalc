@@ -41,7 +41,7 @@ const OutputSizeTab: React.FC<SizeTabProps> = observer((props) => {
 
             {
                 blocks.map((b, idx) =>
-                    <CardSizesOut calcedBlock={b} index={idx + 1} viewOptions={{ ...V.visible }} />
+                    <CardSizesOut calcedBlock={b} index={idx + 1} viewOptions={{ ...V.visible }} key={idx} />
                 )
             }
         </Stack>

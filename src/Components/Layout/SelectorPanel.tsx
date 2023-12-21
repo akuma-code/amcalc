@@ -39,6 +39,8 @@ export const SelectorPanel = observer((props: Props) => {
                         <RouterLink to={'/'}>Home</RouterLink>
                         <RouterLink to={'/bento'}>Bento</RouterLink>
                         <RouterLink to={'/sill'}>Sill</RouterLink>
+                        <RouterLink to={'/tabs'}>Tabs</RouterLink>
+                        <RouterLink to={'/offset'}>Offset</RouterLink>
 
                     </Breadcrumbs>
                     <Text>Layout: {toJS(params)}</Text>

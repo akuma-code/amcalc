@@ -10,6 +10,7 @@ import { ArgsTypes, ArgsTypesList } from '../../Models/ArgsTypeModel';
 import { Text } from './Text';
 import { observer } from 'mobx-react-lite';
 import { A_InputArgs, A_InputArgsList } from '../../Interfaces/CommonTypes';
+import { useLoaderData } from 'react-router-dom';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -55,15 +56,13 @@ type TabProps = {
     offset_tab?: React.ReactNode
     size2_tab?: React.ReactNode
 }
+
+
 export const OutputTabs: FC<TabProps> = observer((props) => {
     const { ViewConfig, RootStore } = useStoresContext()
 
-    const stores = useMemo(() => {
-        const strs = RootStore.list()
 
 
-        return { ...strs }
-    }, [RootStore])
 
     const [value, setValue] = React.useState(0);
 
@@ -80,7 +79,7 @@ export const OutputTabs: FC<TabProps> = observer((props) => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <AppBar position='absolute' sx={{ bgcolor: '#0aa8d8', }} >
+            <AppBar position='relative' sx={{ bgcolor: '#0aa8d8', }} >
                 <Tabs
                     value={value}
                     onChange={handleChange}

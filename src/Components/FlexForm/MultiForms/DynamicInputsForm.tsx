@@ -10,6 +10,7 @@ import { AnyArg, useDinamicFields_ } from '../../../Hooks/useDynamicInputs'
 import { useStoresContext } from '../../../Hooks/useStoresContext'
 import { ISizeFull, _ArgsMaker, _ArgsMaker2 } from '../../../Interfaces/CommonTypes'
 import { ANYobj } from '../../../Interfaces/MathActionsTypes'
+import { FCButtonsGroup } from '../../UI/FCButtonGroup'
 // import { SizeObserver } from '../../../Context/DataStore'
 
 
@@ -20,7 +21,7 @@ type Props = {
 }
 
 const DynamicInputsForm = observer((props: Props) => {
-    const { ViewConfig, RootStore } = useStoresContext()
+    const { ViewConfig, RootStore, SizeStore: ArgStore } = useStoresContext()
     const AS = ViewConfig.active.store
 
 
@@ -30,11 +31,12 @@ const DynamicInputsForm = observer((props: Props) => {
 
     const save = (data: AnyArg) => {
         const payload = _ArgsMaker2(data)
-        _log(SingleCalcReducer(payload))
-        _log("saved ", _ArgsMaker(data))
-        // if ('width' in data) { SizeObserver.notify(data) }
+        if (payload.argType === 'size_full') { ArgStore?.add(payload) }
         RootStore.saveTostore(AS, payload)
         control.reset()
+        // _log(SingleCalcReducer(payload))
+        // _log("saved ", _ArgsMaker2(data))
+        // if ('width' in data) { SizeObserver.notify(data) }
     }
     return (
         <Box
@@ -49,8 +51,9 @@ const DynamicInputsForm = observer((props: Props) => {
             flexDirection={'column'}
             height={'fit-content'}
             margin={1}
+            alignItems={'stretch'}
         >
-
+            <FCButtonsGroup />
             <ListOfInputs fields={flist} methods={control} />
 
             <ControlBtns form_id='dform' />

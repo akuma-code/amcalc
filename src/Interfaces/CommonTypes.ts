@@ -48,7 +48,8 @@ export class A_Offset5 {
 }
 export class A_Sill implements Args_Sill {
     argType: ArgsTypes = 'sill'
-    constructor(public L: number,
+    constructor(
+        public L: number,
         public B: number,
         public count: number = 1
     ) { }

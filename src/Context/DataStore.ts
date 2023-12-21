@@ -79,7 +79,7 @@ export class DataStore<D extends AnyArg> {
 
     updateOutput() {
         this.output = new DataOutput(this)
-        console.log('out', this.output)
+        // console.log('out', this.output)
     }
 
 
@@ -212,44 +212,44 @@ function outCalcSelector(block: Partial<IOutBlock>) {
 
 // const ttt = new BlockCalculator({ type: InputsTypeEnum.size_full, payload: new SizeFull(800, 1300) })
 // console.log('ttt', ttt)
-function test(block: IOutBlock) {
-    const { payload, type } = block
-    const funcs_ = [
-        { skf: Calc.skf },
-        { simple: Calc.simple },
-        { otkosi: Calc.otkosi },
-        { offset5: Calc.offset5 },
-    ]
-    const funcs = {
-        size_full: [
-            Calc.skf,
-            Calc.simple,
-            Calc.otkosi
-        ],
-        offset5: [
-            Calc.offset5,
-        ]
-    }
+// function test(block: IOutBlock) {
+//     const { payload, type } = block
+//     const funcs_ = [
+//         { skf: Calc.skf },
+//         { simple: Calc.simple },
+//         { otkosi: Calc.otkosi },
+//         { offset5: Calc.offset5 },
+//     ]
+//     const funcs = {
+//         size_full: [
+//             Calc.skf,
+//             Calc.simple,
+//             Calc.otkosi
+//         ],
+//         offset5: [
+//             Calc.offset5,
+//         ]
+//     }
 
-    const output = []
-    switch (type) {
-        case InputsTypeEnum.size_full: {
-            const outfuncs = funcs[type]
-            const arg = block.payload
-            const out = outfuncs.map(f => f(arg))
-            output.push(out)
-            break
-        }
-        case InputsTypeEnum.offset5: {
-            const outfuncs = funcs[type]
-            const out = outfuncs.map(f => f(payload))
-            output.push(out)
-            break
-        }
-    }
-    // console.log('output', output)
-    return output
-}
+//     const output = []
+//     switch (type) {
+//         case InputsTypeEnum.size_full: {
+//             const outfuncs = funcs[type]
+//             const arg = block.payload
+//             const out = outfuncs.map(f => f(arg))
+//             output.push(out)
+//             break
+//         }
+//         case InputsTypeEnum.offset5: {
+//             const outfuncs = funcs[type]
+//             const out = outfuncs.map(f => f(payload))
+//             output.push(out)
+//             break
+//         }
+//     }
+//     // console.log('output', output)
+//     return output
+// }
 
 interface SortedFnCalculatorList {
     size_full: {

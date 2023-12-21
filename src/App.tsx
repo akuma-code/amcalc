@@ -11,6 +11,7 @@ import { OutputTabs } from './Components/UI/OutputTabs';
 import OutputVers1 from './Components/FlexForm/Output/Output_v1';
 import Output2 from './Components/FlexForm/Output/Output_v2';
 import { ROOTSTORE } from './Context/RootStore';
+import SillForm from './Components/FlexForm/SillForm';
 
 export const tabLoader = async () => {
 
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
 
     children: [
       {
-        path: 'bento',
+        path: '/bento',
         element: <BentoLayoutPage />,
 
 
@@ -36,11 +37,23 @@ export const router = createBrowserRouter([
       {
         path: '/sill',
         element: <SillPage />,
+        children: [
+          {
+            path: 'sill_form',
+            element: <SillForm />,
+
+          },
+          {
+            path: '/sill_out',
+
+          }
+        ],
+        errorElement: <ErrorPage />
 
       },
       {
         path: '/tabs',
-        element: <OutputTabs size_tab={<OutputVers1 />} />,
+        element: <OutputTabs />,
         loader: tabLoader
       },
       {

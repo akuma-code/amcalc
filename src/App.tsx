@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
         element: <SillPage />,
         children: [
           {
-            path: 'sill_form',
+            path: '/sill_form',
             element: <SillForm />,
 
           },

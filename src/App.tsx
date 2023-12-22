@@ -23,26 +23,29 @@ export const tabLoader = async () => {
 
 export const router = createBrowserRouter([
   {
+    // loader: ({ request }) => {
+    //   console.log('loader req:', request)
+    //   const url = new URL(request.url)
+
+    //   return { url }
+    // },
+    // action: ({ request }) => {
+    //   console.log('action req:', request)
+    //   const url = new URL(request.url)
+    //   return { url }
+    // },
     path: '/',
     element: <Root />,
     errorElement: <ErrorPage />,
-
     children: [
       {
         path: '/bento',
         element: <BentoLayoutPage />,
-
-
       },
       {
         path: '/sill',
         element: <SillPage />,
         children: [
-          {
-            path: '/sill_form',
-            element: <SillForm />,
-
-          },
           {
             path: '/sill_out',
 
@@ -54,7 +57,7 @@ export const router = createBrowserRouter([
       {
         path: '/tabs',
         element: <OutputTabs />,
-        loader: tabLoader
+        // loader: tabLoader
       },
       {
         path: '/offset',
@@ -62,25 +65,12 @@ export const router = createBrowserRouter([
       }
     ]
   }
-]
-
-)
+])
 
 function App() {
 
   return (
-    <div id='$app'>
-
-
-      <RouterProvider router={router} />
-      {/* <BrowserRouter > */}
-      {/* <SelectorPanel /> */}
-      {/* <AppRouter /> */}
-      {/* <LayoutSelector /> */}
-      {/* </BrowserRouter> */}
-
-
-    </div>
+    <RouterProvider router={router} />
   );
 }
 

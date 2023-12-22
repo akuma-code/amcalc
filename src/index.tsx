@@ -10,7 +10,7 @@ import reportWebVitals from './reportWebVitals';
 import { configure } from "mobx";
 import { ArgStorage } from './Context/ArgStorage';
 import { A_Sill, A_Size } from './Interfaces/CommonTypes';
-import { ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './AppTheme';
 
 configure({
@@ -35,16 +35,17 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
 
-    <StoresContext.Provider
-      value={{
-        ...Stores
-      }}
-      key={'Store Provider'}
-    >
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <StoresContext.Provider
+        value={{
+          ...Stores
+        }}
+        key={'Store Provider'}
+      >
+        <CssBaseline />
         <App />
-      </ThemeProvider>
-    </StoresContext.Provider>
+      </StoresContext.Provider>
+    </ThemeProvider>
 
   </React.StrictMode>
 );

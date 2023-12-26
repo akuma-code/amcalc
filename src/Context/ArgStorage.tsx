@@ -1,18 +1,19 @@
 import { _ID } from "../Helpers/HelpersFns"
+import { ANYobj } from "../Interfaces/MathActionsTypes"
 export type AddTypeProp<A, T> = A & { _type: T }
-interface StoreItem<T> {
+interface StoreItem<T extends ANYobj> {
     _id: string
     _type?: unknown
     data: T
 }
 
-export function makeStoreItem<T>(data: T) {
+export function makeStoreItem<T extends ANYobj>(data: T) {
     let si: StoreItem<T> = { _id: _ID(), data }
-    if (typeof data === 'object' && 'argType' in data!) { si._type = data.argType }
+    if ('argType' in data!) { si._type = data.argType }
     else { si._type = 'none' }
     return si satisfies StoreItem<T>
 }
-export class ArgStorage<T>{
+export class ArgStorage<T extends ANYobj>{
     store: StoreItem<T>[]
     constructor() {
         this.store = []

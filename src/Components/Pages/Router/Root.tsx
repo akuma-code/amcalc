@@ -8,7 +8,7 @@ const Root = (props: Props) => {
 
     const data = useLoaderData()
     const [url, seturl] = useState("")
-
+    data && console.log('data: ', data)
     // useEffect(() => {
     //     let dataURL: URL;
     //     if (data && typeof data === 'object' && 'url' in data) dataURL = data.url as URL

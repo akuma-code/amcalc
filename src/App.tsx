@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, redirect } from 'react-router-dom';
 import './App.css';
 import { SelectorPanel } from './Components/Layout/SelectorPanel';
 import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
@@ -6,12 +6,13 @@ import ErrorPage from './Components/Pages/ErrorPage';
 import SillPage from './Components/Pages/SillPage';
 import './input.css';
 import Root from './Components/Pages/Router/Root';
-import { _log } from './Helpers/HelpersFns';
+import { _ID, _log } from './Helpers/HelpersFns';
 import { OutputTabs } from './Components/UI/OutputTabs';
 import OutputVers1 from './Components/FlexForm/Output/Output_v1';
 import Output2 from './Components/FlexForm/Output/Output_v2';
 import { ROOTSTORE } from './Context/RootStore';
-import SillForm from './Components/FlexForm/SillForm';
+import SillForm from './Components/Pages/Router/SillForm';
+import SillFormGroups from './Components/Pages/Router/SillFormGroups';
 
 export const tabLoader = async () => {
 
@@ -23,31 +24,39 @@ export const tabLoader = async () => {
 
 export const router = createBrowserRouter([
   {
-    // loader: ({ request }) => {
-    //   console.log('loader req:', request)
-    //   const url = new URL(request.url)
-
-    //   return { url }
-    // },
-    // action: ({ request }) => {
-    //   console.log('action req:', request)
-    //   const url = new URL(request.url)
-    //   return { url }
-    // },
     path: '/',
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/bento',
+        path: 'bento',
         element: <BentoLayoutPage />,
       },
       {
-        path: '/sill',
+        path: 'sill',
         element: <SillPage />,
+        loader: async ({ params, request }) => {
+          const data = await request
+          const par = params
+          console.log('request', data)
+          console.log('params', par)
+          return null
+        },
         children: [
           {
-            path: '/sill_out',
+            path: 'groups',
+            element: <SillFormGroups />,
+            action: async ({ request, params }) => {
+              const fd = await request.formData()
+
+
+              const groupId = _ID()
+              const groups = { _groupId: groupId, grs: Object.fromEntries(fd) }
+              console.log('groups: ', groups)
+
+              redirect('/sill/groups')
+              return { groups }
+            },
 
           }
         ],

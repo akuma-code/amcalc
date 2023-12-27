@@ -58,7 +58,7 @@ const DynamicInputsForm = observer((props: Props) => {
 
             <ControlBtns form_id='dform' />
 
-            {ViewConfig.visible.devtools && <DevTool control={control.control} />}
+            {/* {ViewConfig.visible.devtools && <DevTool control={control.control} />} */}
         </Box>
     )
 })

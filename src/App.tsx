@@ -13,6 +13,7 @@ import Output2 from './Components/FlexForm/Output/Output_v2';
 import { ROOTSTORE } from './Context/RootStore';
 import SillForm from './Components/Pages/Router/SillForm';
 import SillFormGroups from './Components/Pages/Router/SillFormGroups';
+import { useLayoutEffect } from 'react';
 
 export const tabLoader = async () => {
 
@@ -35,28 +36,29 @@ export const router = createBrowserRouter([
       {
         path: 'sill',
         element: <SillPage />,
-        loader: async ({ params, request }) => {
-          const data = await request
-          const par = params
-          console.log('request', data)
-          console.log('params', par)
-          return null
-        },
+        // loader: async ({ params, request }) => {
+        //   const data = await request
+        //   const par = params
+        //   console.log('request', data)
+        //   console.log('params', par)
+        //   return null
+        // },
         children: [
           {
             path: 'groups',
             element: <SillFormGroups />,
-            action: async ({ request, params }) => {
-              const fd = await request.formData()
+            // action: async ({ request, params }) => {
+            //   const fd = await request.formData()
 
+            //   console.log('fd', fd)
 
-              const groupId = _ID()
-              const groups = { _groupId: groupId, grs: Object.fromEntries(fd) }
-              console.log('groups: ', groups)
+            //   const groupId = _ID()
+            //   const groups = { _groupId: groupId, grs: Object.fromEntries(fd) }
+            //   console.log('groups: ', groups)
 
-              redirect('/sill/groups')
-              return { groups }
-            },
+            //   redirect('/sill/groups')
+            //   return { fd }
+            // },
 
           }
         ],
@@ -77,7 +79,10 @@ export const router = createBrowserRouter([
 ])
 
 function App() {
-
+  // useLayoutEffect(() => {
+  //   setTimeout(console.clear, 0)
+  //   return () => console.clear()
+  // }, [])
   return (
     <RouterProvider router={router} />
   );

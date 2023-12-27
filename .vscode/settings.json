@@ -1,3 +1,4 @@
 {
-    "terminal.integrated.defaultProfile.osx": ""
+    "terminal.integrated.defaultProfile.osx": "",
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }

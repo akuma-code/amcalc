@@ -22,7 +22,8 @@ const SillPage = () => {
                 <div className='min-w-[25inch] min-h-[10em] grid-flow-col-dense'>
                     <SillForm />
                 </div>
-                <div><Outlet /></div>
+                <div className='grid'>
+                    <Outlet /></div>
             </div>
         </div>
 

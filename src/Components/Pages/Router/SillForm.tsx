@@ -1,11 +1,12 @@
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { A_Sill } from '../../../Interfaces/CommonTypes';
-import { Form, useActionData, useSubmit } from 'react-router-dom';
+import { Form as DomForm, Params, redirect, useActionData, useFetcher, useNavigation, useSubmit } from 'react-router-dom';
 import { ANYobj } from '../../../Interfaces/MathActionsTypes';
 import { _ID, _log } from '../../../Helpers/HelpersFns';
-import { Avatar, Button, Divider, Stack, TextField } from '@mui/material';
+import { Avatar, Box, Button, Divider, Stack, TextField, useFormControl } from '@mui/material';
 import { useFieldSet } from '../../../Hooks/useFieldSet';
+import { Form as HookForm } from 'react-hook-form';
 
 type SillFormProps = {}
 
@@ -20,7 +21,7 @@ type IDataGroup<T extends ANYobj> = {
 }
 
 type InputRowValues = {
-    _id: string
+    id: string
     L: string
     B: string
     count: string
@@ -43,39 +44,87 @@ const initFields = {
     B: "",
     L: "",
     count: "",
+}
 
+export type FActionLoaderProps = { request: Request, params: Params }
+//__ action                                                                      
+export const form_action = async ({ request, params }: FActionLoaderProps) => {
+    const fd = await request.formData()
+    params && _log('params: ', params)
+    // console.log('fd', Object.fromEntries(fd.entries()))
+    const grp_id = _ID()
+    const groups = { grp_id, group: Object.fromEntries(fd) }
 
+    // const groups = { _groupId: groupId, grs:  }
+    console.log('groups(action): ', groups)
+
+    redirect(`/groups/${grp_id}`)
+    return groups
+}
+//__ loader                                                                     
+export const form_loader = async ({ request, params }: FActionLoaderProps) => {
+    const data = await request.formData()
+    const { gr_id } = params
+    _log("form: ", data)
+    _log("groupID: ", gr_id)
+    return Object.fromEntries(data)
 }
 
 
-
+//! FORM                                                 
 const SillForm: React.FC<SillFormProps> = observer(() => {
 
     const [fields, control] = useFieldSet(initFields)
     const [groups, setGroups] = useState<FormValuesGroup[]>([])
-    const submit = useSubmit()
+
+
+    const SUB = useSubmit()
     const submitFn = (e: React.FormEvent<HTMLFormElement>) => {
+
+        // e.preventDefault()
         const fd = new FormData()
-        const grp_id = _ID()
-        const group = JSON.stringify({ grp_id, fields }, null, 2)
-        _log(group)
-        fd.append('form', group)
-        submit(fd)
+        fd.append('grp:', JSON.stringify(groups, null, 2))
+        // const grp_id = _ID()
+        // const grp = { grp_id, group: fields }
+
+        // fd.append('f', JSON.stringify(grp))
+        // console.log('fd', Object.fromEntries(fd))
+        saveGroup()
+        SUB(fd)
+        // submit(fd)
     }
-    const save = () => {
-        const fd = new FormData()
+    const saveGroup = () => {
+        const f = new FormData()
         const grp_id = _ID()
-        const group = JSON.stringify({ grp_id, fields }, null, 2)
-        fd.append('form', group)
-        return fd
+        const grp = { grp_id, group: fields }
+        setGroups(prev => [...prev, grp])
+
+        return grp
     }
+
+    const addInputsRow = async (e: React.FormEvent<HTMLFormElement>, inputRow: InputRowValues) => {
+
+        const rfd = new FormData()
+        const newRow = {}
+        rfd.append(inputRow.id, JSON.stringify(inputRow))
+        await fetch('/sill/groups', {
+            method: 'post',
+            body: rfd
+        })
+
+    }
+
+
     return (
-        <Form name='sill-form' onSubmit={submitFn}
+        // <Box component={'form'} onSubmit={submitFn} action='/sill/groups' method='post' id='sf' name='sill_form'>
+
+
+        <DomForm name='sill-form' action='groups' method='post' id='sf' onSubmit={submitFn}
 
         >
             {fields.map((f, idx) =>
 
-                <Stack flexDirection={'row'} key={f._id}
+                <Stack flexDirection={'row'} key={f.id}
                     useFlexGap gap={1}
                     alignItems={'stretch'} p={1}
                 >
@@ -83,33 +132,37 @@ const SillForm: React.FC<SillFormProps> = observer(() => {
                     <TextField sx={{ flexGrow: 0 }} name={`${idx}-L`}
                         id={"LInput" + idx}
                         label="Длина"
-                        value={f.L || ""}
-                        onChange={(e) => control.edit(f._id, 'L', e.target.value)}
+                        defaultValue={f.L}
+                        // value={f.L || ""}
+                        // onChange={(e) => control.edit(f._id, 'L', e.target.value)}
                         variant='filled'
                         size='small' />
                     <TextField sx={{ flexGrow: 0 }} name={`${idx}-B`}
                         id={"BInput" + idx}
                         label="Ширина"
-                        value={f.B || ""}
-                        onChange={(e) => control.edit(f._id, 'B', e.target.value)}
+                        defaultValue={f.B}
+                        // value={f.B || ""}
+                        // onChange={(e) => control.edit(f._id, 'B', e.target.value)}
                         size='small'
                         variant='filled' />
                     <TextField sx={{ flexGrow: 0 }} name={`${idx}-count`}
                         id={"CountInput" + idx}
                         label="Кол-во"
-                        value={f.count || ""}
-                        onChange={(e) => control.edit(f._id, 'count', e.target.value)}
+                        defaultValue={f.count}
+                        // value={f.count || ""}
+                        // onChange={(e) => control.edit(f._id, 'count', e.target.value)}
                         size='small'
                         variant='filled' />
                     <Button variant='contained' onClick={control.add}>Add</Button>
-                    <Button variant='contained' onClick={() => control.delete(f._id)}>Delete</Button>
+                    <Button variant='contained' onClick={() => control.delete(f.id)}>Delete</Button>
                 </Stack>
+
             )}
             <Divider>
-                <Button type='submit' variant='outlined' sx={{ px: 1, mx: 1 }} > Submit</Button>
+                <Button type='submit' variant='outlined' sx={{ px: 1, mx: 1, }} form={'sf'}> Submit</Button>
             </Divider>
-
-        </Form>
+        </DomForm>
+        // </Box>
     )
 
 

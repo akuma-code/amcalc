@@ -1,8 +1,9 @@
 import React from 'react'
-import { Form, Outlet } from 'react-router-dom'
+import { Form, Outlet, useNavigation } from 'react-router-dom'
 import SillForm from './Router/SillForm'
 import { _log } from '../../Helpers/HelpersFns'
 import { _ConvertToStrings } from '../../Hooks/useFieldSet'
+import { SillFormHooked } from './Router/SillFormHooked'
 
 
 
@@ -11,19 +12,21 @@ export const action = () => {
 }
 
 const SillPage = () => {
-
+    const nav = useNavigation()
+    const { formAction, formData, formEncType } = nav
     // _log(_ConvertToStrings({ L: 0, B: 900 }))
 
     return (
 
 
         <div className='bg-slate-100'>
-            <div className="grid-cols-2">
-                <div className='min-w-[25inch] min-h-[10em] grid-flow-col-dense'>
-                    <SillForm />
+            <div className="flex flex-col">
+                <div className='w-[60vw]'>
+                    <SillFormHooked />
                 </div>
-                <div className='grid'>
-                    <Outlet /></div>
+                <div className='w-[100vw]'>
+                    <Outlet />
+                </div>
             </div>
         </div>
 

@@ -1,5 +1,6 @@
 import { Outlet, useNavigation } from 'react-router-dom'
 import { SillFormHooked } from './Router/SillFormHooked'
+import { SortSillBy_B } from '../../Hooks/useSortByB'
 
 
 
@@ -11,7 +12,7 @@ const SillPage = () => {
     const nav = useNavigation()
     const { formAction, formData, formEncType } = nav
     // _log(_ConvertToStrings({ L: 0, B: 900 }))
-
+    SortSillBy_B([])
     return (
 
 

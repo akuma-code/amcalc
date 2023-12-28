@@ -1,6 +1,6 @@
 import { v4 } from 'uuid'
 import { DTO_EXPORT, IC_FuncArgs, IC_FuncsList } from '../ActionComponents/ActionTypes/Types'
-import { ISize, ISizeTuple, _isFullSize } from '../Interfaces/CommonTypes'
+import { Brand, ISize, ISizeTuple, _isFullSize } from '../Interfaces/CommonTypes'
 import { ANYobj } from '../Interfaces/MathActionsTypes'
 
 
@@ -37,9 +37,12 @@ export const dto_Export = (fn: IC_FuncsList, initState: IC_FuncArgs): DTO_EXPORT
     return dto
 }
 
-
-
 export function _sizeTuppler(size: ISize): ISizeTuple {
     if (_isFullSize(size)) return [size.width, size.height] as const
     else return [size.w, size.h] as const
+}
+
+export const _addProp = <T, P>(obj: T | T[], prop: P): Brand<T, P> | Brand<T, P>[] => {
+    if (_isArr(obj)) return obj.map(o => ({ ...o, ...prop }))
+    else return { ...obj, ...prop }
 }

@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
 
         children: [
           {
-            path: 'groups',
+            path: 'groups/:groupId',
             element: <SillFormGroups />,
             errorElement: <ErrorPage />,
             action: form_action,

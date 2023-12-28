@@ -31,7 +31,7 @@ const defVals: SillFormValues = {
 //! Hook FORM                                                 
 export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
     const { SillStore } = useStoresContext()
-    const { register, handleSubmit, control, watch, formState: { errors } } = useForm<SillFormValues>({
+    const { register, handleSubmit, control, watch, formState: { errors }, reset } = useForm<SillFormValues>({
         defaultValues:
             { row: [{ L: "", B: "", count: 1 }] }
     });
@@ -53,13 +53,17 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
         const newLine = defVals.row
         append(newLine)
     }
+    const groupId = _ID()
     const saveData = (data: SillFormValues) => {
         const d = data.row.map(r => ({ ...r, L: +r.L, B: +r.B }))
         const conv = d.map(v => new A_Sill(v.L, v.B, v.count))
+
         SillStore && SillStore.add(conv)
+        console.log('store: ', SillStore?.store)
+        reset()
     }
     return (
-        <HookForm name='sill-form' action='groups' method='post' id='sf' control={control}
+        <HookForm name='sill-form' action={`groups/${groupId}`} method='post' id='sf' control={control}
             onSubmit={({ data }) => saveData(data)}
         >
 

@@ -4,12 +4,12 @@ import Output2 from './Components/FlexForm/Output/Output_v2';
 import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
 import ErrorPage from './Components/Pages/ErrorPage';
 import Root from './Components/Pages/Router/Root';
-import SillFormGroups, { group_loader } from './Components/Pages/Router/SillFormGroups';
+import SillFormGroups from './Components/Pages/Router/SillFormGroups';
 import SillPage from './Components/Pages/SillPage';
 import { OutputTabs } from './Components/UI/OutputTabs';
 import { ROOTSTORE } from './Context/RootStore';
 import { _ID, _log } from './Helpers/HelpersFns';
-import { form_action, form_loader } from './Components/Pages/Router/SillForm';
+import { form_action, form_loader } from './Components/Pages/Router/SillFormHooked';
 
 
 export const tabLoader = async () => {
@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
           {
             path: 'groups',
             element: <SillFormGroups />,
-
+            errorElement: <ErrorPage />,
             action: form_action,
             // action: form_action,
             //             loader:({request,params})=>{
@@ -50,7 +50,7 @@ export const router = createBrowserRouter([
           {
             path: 'groups/:group_id',
             element: <SillFormGroups />,
-            loader: group_loader,
+
 
           }
         ],

@@ -14,7 +14,7 @@ type FieldSetHookProps = <T extends ANYobj>(initField: T) => readonly [TField_<T
 
 
 //!                                                               
-export const useFieldSet = <T extends ANYobj>(initState: T) => {
+const useFieldSet = <T extends ANYobj>(initState: T) => {
     const init = _ConvertToStrings(initState) as unknown as TField_<T>
 
     const [fields, setFields] = useState<TField_<T>[]>([init])
@@ -88,7 +88,7 @@ const FormPreset: IFormPreset = {
     sill: { row: [{ L: 0, B: 0, count: 1 }], _name: "row" },
     sillRi: { rowInput: [{ L: 0, B: 0, count: 1 }], _name: "rowInput" }
 }
-export const useControlledFieldSet = <Type extends IFPType = 'sill'>(form_preset: IFormPreset['sill'] = FormPreset.sill) => {
+const useControlledFieldSet = <Type extends IFPType = 'sill'>(form_preset: IFormPreset['sill'] = FormPreset.sill) => {
     const _name = `${form_preset._name}` as const
 
     const { register, handleSubmit, control, watch } = useForm<IFormPreset['sill']>({ defaultValues: form_preset });

@@ -3,14 +3,14 @@ import { ANYobj } from "../Interfaces/MathActionsTypes"
 export type AddTypeProp<A, T> = A & { _type: T }
 interface StoreItem<T extends ANYobj> {
     _id: string
-    _type?: unknown
-    data: T
+    _type?: string
+    data: T[]
 }
 
-export function makeStoreItem<T extends ANYobj>(data: T) {
+export function makeStoreItem<T extends ANYobj>(data: T[]) {
     let si: StoreItem<T> = { _id: _ID(), data }
-    if ('argType' in data!) { si._type = data.argType }
-    else { si._type = 'none' }
+    // if ('argType' in data!) { si._type = data.argType }
+    // else { si._type = 'none' }
     return si satisfies StoreItem<T>
 }
 export class ArgStorage<T extends ANYobj>{
@@ -19,7 +19,7 @@ export class ArgStorage<T extends ANYobj>{
         this.store = []
     }
 
-    add(data: T) {
+    add(data: T[]) {
 
         const storeItem = makeStoreItem(data)
         this.store.push(storeItem)

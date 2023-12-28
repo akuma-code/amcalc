@@ -31,7 +31,7 @@ const DynamicInputsForm = observer((props: Props) => {
 
     const save = (data: AnyArg) => {
         const payload = _ArgsMaker2(data)
-        if (payload.argType === 'size_full') { ArgStore?.add(payload) }
+        // if (payload.argType === 'size_full') { ArgStore?.add(payload) }
         RootStore.saveTostore(AS, payload)
         control.reset()
         // _log(SingleCalcReducer(payload))

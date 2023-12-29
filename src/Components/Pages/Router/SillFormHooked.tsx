@@ -1,7 +1,7 @@
 import { Avatar, Button, Divider, Stack, TextField } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import React from 'react';
-import { Form as HookForm, useFieldArray, useForm } from 'react-hook-form';
+import React, { FormEvent } from 'react';
+import { Form as HookForm, SubmitHandler, UseFormHandleSubmit, useFieldArray, useForm } from 'react-hook-form';
 import { Params, redirect } from 'react-router-dom';
 import { _ID, _log } from '../../../Helpers/HelpersFns';
 import { useStoresContext } from '../../../Hooks/useStoresContext';
@@ -12,7 +12,13 @@ type SillFormProps = {}
 
 
 export type FActionLoaderProps = { request: Request, params: Params }
-
+export type SubmitFnArgumentType = {
+    data: SillFormValues;
+    event?: React.BaseSyntheticEvent<HTMLButtonElement, any, any> | undefined;
+    formData: FormData;
+    formDataJson: string;
+    method?: "post" | "put" | "delete" | undefined;
+}
 
 type SillFormRow = {
     L: string,
@@ -22,7 +28,9 @@ type SillFormRow = {
 export type SillFormValues = {
     row: SillFormRow[]
 }
+type TTT = SubmitHandler<SillFormValues>
 
+type CCC = UseFormHandleSubmit<SillFormValues>
 const defVals: SillFormValues = {
     row: [
         { L: "" as const, B: "" as const, count: 1 }
@@ -33,9 +41,10 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
     const { SillStore } = useStoresContext()
     const { register, handleSubmit, control, watch, formState: { errors }, reset } = useForm<SillFormValues>({
         defaultValues:
-            { row: [{ L: "", B: "", count: 1 }] }
+            { row: [{ L: "", B: "", count: 1 }] },
+        mode: 'onSubmit'
     });
-    const { fields, append, remove, update } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control,
         name: 'row'
 
@@ -43,6 +52,7 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
 
     const watchFieldArray = watch('row');
     const CFields = fields.map((field, index) => {
+        // _log(watchFieldArray[index])
         return {
             ...field,
             ...watchFieldArray[index]
@@ -54,19 +64,41 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
         append(newLine)
     }
     const groupId = _ID()
-    const saveData = (data: SillFormValues) => {
-        const d = data.row.map(r => ({ ...r, L: +r.L, B: +r.B }))
+
+    const saveData = (sill_group: SillFormValues) => {
+        console.log('sill_group', sill_group)
+        const d = sill_group.row.map(r => ({ ...r, L: +r.L, B: +r.B }))
         const conv = d.map(v => new A_Sill(v.L, v.B, v.count))
 
         SillStore && SillStore.add(conv)
         console.log('store: ', SillStore?.store)
+
+    }
+
+    const saveToStore = (data: SillFormValues) => {
+        console.log('data', data)
+        saveData(data)
         reset()
     }
+        ;
     return (
-        <HookForm name='sill-form' action={`groups/${groupId}`} method='post' id='sf' control={control}
-            onSubmit={({ data }) => saveData(data)}
+        <HookForm name='sf'
+            action={`/groups/save`}
+            //  method='post' 
+            id='sf'
+            control={control}
+            onSubmit={
+                ({ data, formDataJson, formData, method, event }): void => {
+                    // const { data, formDataJson, formData, method, event } = payload
+                    // console.log('event', event)
+                    // console.log('method: ', method)
+                    // handleSubmit((data) => , (e) => _log("error!", e?.root?.message))
+                    saveToStore(data)
+                    console.log('formData', JSON.parse(formDataJson))
+                    reset()
+                }
+            }
         >
-
 
 
             {CFields.map((f, idx) =>
@@ -96,13 +128,14 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
                         size='small'
                         variant='filled' />
                     <Button variant='contained' onClick={add}>Add</Button>
-                    <Button variant='contained' onClick={() => remove(idx)}>Delete</Button>
+                    <Button disabled={idx < 1}
+                        variant='contained' onClick={() => remove(idx)}>Delete</Button>
 
                 </Stack>
             )}
 
-            <Divider>
-                <span>ControlledInputsForm =&gt; </span> <Button type='submit' variant='outlined' sx={{ px: 1, mx: 1, }} form={'sf'}> Submit</Button>
+            <Divider sx={{ fontFamily: 'Fira Code' }}>
+                <span>ControlledInputsForm </span> <Button type='submit' variant='outlined' sx={{ px: 1, mx: 1, }} form={'sf'}> Submit</Button>
             </Divider>
             {/* <DevTool control={control} /> */}
         </HookForm>

@@ -41,15 +41,17 @@ export const router = createBrowserRouter([
             path: 'groups/:groupId',
             element: <SillFormGroups />,
             errorElement: <ErrorPage />,
-            action: form_action,
+
             // action: form_action,
             //             loader:({request,params})=>{
             // const {gr_id} = params
             //             }
           },
           {
-            path: 'groups/:group_id',
+            path: 'groups/save',
             element: <SillFormGroups />,
+            action: form_action,
+
 
 
           }

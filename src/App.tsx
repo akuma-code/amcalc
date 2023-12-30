@@ -9,7 +9,7 @@ import SillPage from './Components/Pages/SillPage';
 import { OutputTabs } from './Components/UI/OutputTabs';
 import { ROOTSTORE } from './Context/RootStore';
 import { _ID, _log } from './Helpers/HelpersFns';
-import { form_action, form_loader } from './Components/Pages/Router/SillFormHooked';
+import { SillFormHooked, form_action, form_loader } from './Components/Pages/Router/SillFormHooked';
 
 
 export const tabLoader = async () => {
@@ -26,7 +26,13 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    id: 'root_elem',
     errorElement: <ErrorPage />,
+    loader: ({ request, params }) => {
+      const data = request
+      // console.log('req', data)
+      return data
+    },
     children: [
       {
         path: 'bento',
@@ -35,28 +41,33 @@ export const router = createBrowserRouter([
       {
         path: 'sill',
         element: <SillPage />,
+        errorElement: <ErrorPage />,
+        action: async ({ request, params }) => {
+          const act = params.action
+          console.log('act', act)
+          const fd = await request.formData()
+          console.log('body: ', fd)
+          return redirect('/sill/form')
 
+        },
+        loader: async ({ request }) => {
+
+          const data = request
+          return data
+        },
         children: [
+          // {
+          //   path: '/sill/groups/',
+          //   element: <SillFormGroups />,
+          //   errorElement: <ErrorPage />,
+          // },
           {
-            path: 'groups/:groupId',
+            path: 'form/:action',
             element: <SillFormGroups />,
-            errorElement: <ErrorPage />,
 
-            // action: form_action,
-            //             loader:({request,params})=>{
-            // const {gr_id} = params
-            //             }
           },
-          {
-            path: 'groups/save',
-            element: <SillFormGroups />,
-            action: form_action,
 
-
-
-          }
         ],
-        errorElement: <ErrorPage />
 
       },
       {
@@ -78,7 +89,7 @@ function App() {
   //   return () => console.clear()
   // }, [])
   return (
-    <RouterProvider router={router} />
+    <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
   );
 }
 

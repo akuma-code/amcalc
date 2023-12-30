@@ -1,11 +1,12 @@
 import { Avatar, Button, Divider, Stack, TextField } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import React, { FormEvent } from 'react';
-import { Form as HookForm, SubmitHandler, UseFormHandleSubmit, useFieldArray, useForm } from 'react-hook-form';
+import { Form, FormSubmitHandler, SubmitHandler, UseFormHandleSubmit, useFieldArray, useForm } from 'react-hook-form';
 import { Params, redirect } from 'react-router-dom';
 import { _ID, _log } from '../../../Helpers/HelpersFns';
 import { useStoresContext } from '../../../Hooks/useStoresContext';
 import { A_Sill } from '../../../Interfaces/CommonTypes';
+import { DevTool } from '@hookform/devtools';
 
 type SillFormProps = {}
 
@@ -28,9 +29,7 @@ type SillFormRow = {
 export type SillFormValues = {
     row: SillFormRow[]
 }
-type TTT = SubmitHandler<SillFormValues>
 
-type CCC = UseFormHandleSubmit<SillFormValues>
 const defVals: SillFormValues = {
     row: [
         { L: "" as const, B: "" as const, count: 1 }
@@ -39,7 +38,7 @@ const defVals: SillFormValues = {
 //! Hook FORM                                                 
 export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
     const { SillStore } = useStoresContext()
-    const { register, handleSubmit, control, watch, formState: { errors }, reset } = useForm<SillFormValues>({
+    const { register, handleSubmit, control, watch, formState: { errors }, reset } = useForm<SillFormValues, any, SillFormValues>({
         defaultValues:
             { row: [{ L: "", B: "", count: 1 }] },
         mode: 'onSubmit'
@@ -65,39 +64,34 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
     }
     const groupId = _ID()
 
-    const saveData = (sill_group: SillFormValues) => {
-        console.log('sill_group', sill_group)
+    const saveData: SubmitHandler<SillFormValues> = async (sill_group: SillFormValues) => {
+        // console.log('sill_group', sill_group)
         const d = sill_group.row.map(r => ({ ...r, L: +r.L, B: +r.B }))
         const conv = d.map(v => new A_Sill(v.L, v.B, v.count))
 
         SillStore && SillStore.add(conv)
-        console.log('store: ', SillStore?.store)
+        console.log('store: ', ...SillStore?.store || [])
 
     }
 
-    const saveToStore = (data: SillFormValues) => {
-        console.log('data', data)
-        saveData(data)
+
+    const onSubmitFn: FormSubmitHandler<SillFormValues> = (payload) => {
+        const { data } = payload
+        handleSubmit((s) => saveData(s), e => _log(e.root?.message || "error!"))
+        // saveData(data)
         reset()
     }
-        ;
     return (
-        <HookForm name='sf'
-            action={`/groups/save`}
-            //  method='post' 
+        <Form name='sf'
+            action='form/save'
+            method='post'
             id='sf'
             control={control}
-            onSubmit={
-                ({ data, formDataJson, formData, method, event }): void => {
-                    // const { data, formDataJson, formData, method, event } = payload
-                    // console.log('event', event)
-                    // console.log('method: ', method)
-                    // handleSubmit((data) => , (e) => _log("error!", e?.root?.message))
-                    saveToStore(data)
-                    console.log('formData', JSON.parse(formDataJson))
-                    reset()
-                }
-            }
+            onSubmit={({ data }) => {
+                saveData(data)
+                reset()
+            }}
+
         >
 
 
@@ -108,7 +102,6 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
                 >
                     <Avatar variant='square' sx={{ alignSelf: 'center' }}>{idx + 1}</Avatar>
                     <TextField sx={{ flexGrow: 0 }}
-                        // id={"LInput" + idx}
                         label="Длина"
                         placeholder={'L'}
                         {...register(`row.${idx}.L` as const, { required: true, shouldUnregister: true, valueAsNumber: true })}
@@ -116,18 +109,16 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
                         size='small'
                         helperText={errors ? errors?.root?.message : ""} />
                     <TextField sx={{ flexGrow: 0 }}
-                        // id={"BInput" + idx}
                         label="Ширина"
                         {...register(`row.${idx}.B` as const, { required: true, shouldUnregister: true, valueAsNumber: true })}
                         size='small'
                         variant='filled' />
                     <TextField sx={{ flexGrow: 0 }}
-                        // id={"CountInput" + idx}
                         label="Кол-во"
                         {...register(`row.${idx}.count` as const, { required: true, shouldUnregister: true, valueAsNumber: true })}
                         size='small'
                         variant='filled' />
-                    <Button variant='contained' onClick={add}>Add</Button>
+
                     <Button disabled={idx < 1}
                         variant='contained' onClick={() => remove(idx)}>Delete</Button>
 
@@ -135,10 +126,13 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
             )}
 
             <Divider sx={{ fontFamily: 'Fira Code' }}>
-                <span>ControlledInputsForm </span> <Button type='submit' variant='outlined' sx={{ px: 1, mx: 1, }} form={'sf'}> Submit</Button>
+                <span>ControlledInputsForm </span>
+                <Button type='submit' variant='outlined' sx={{ px: 1, mx: 1, }} form={'sf'}> Submit</Button>
+                <span>Add row</span>
+                <Button variant='contained' onClick={add} sx={{ px: 1, mx: 1, }}>Add</Button>
             </Divider>
-            {/* <DevTool control={control} /> */}
-        </HookForm>
+            <DevTool control={control} />
+        </Form>
         // </Box>
     )
 
@@ -160,7 +154,7 @@ export const form_action = async ({ request, params }: FActionLoaderProps) => {
     // const groups = { _groupId: groupId, grs:  }
     console.log('groups(action): ', groups)
 
-    redirect(`/groups/:${grp_id}`)
+    redirect(`/sill/groups`)
     return groups
 }
 //__ loader                                                                     
@@ -171,3 +165,15 @@ export const form_loader = async ({ request, params }: FActionLoaderProps) => {
     _log("groupID: ", gr_id)
     return Object.fromEntries(data)
 }
+
+//* submitFn
+// ({ data, formDataJson, formData, method, event }) => {
+//     // const { data, formDataJson, formData, method, event } = payload
+//     // console.log('event', event)
+//     // console.log('method: ', method)
+//     // handleSubmit((data) => , (e) => _log("error!", e?.root?.message))
+//     saveToStore(data)
+//     console.log('formData', JSON.parse(formDataJson))
+//     return data
+//     // reset()
+// }

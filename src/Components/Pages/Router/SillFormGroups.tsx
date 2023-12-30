@@ -1,15 +1,18 @@
+import { observer } from "mobx-react-lite"
+import { useStoresContext } from "../../../Hooks/useStoresContext"
+import SillStoreCard from "../../UI/SillGroupCard"
 
 type Props = {}
 
 
-const SillFormGroups = (props: Props) => {
-
+const SillFormGroups = observer((props: Props) => {
+    const { SillStore } = useStoresContext()
     return (
         <div className='m-1'>
-            Sill Form Submit result
+            <SillStoreCard data={SillStore} />
 
         </div>
     )
-}
-
+})
+SillFormGroups.displayName = '*** Savedgroup'
 export default SillFormGroups

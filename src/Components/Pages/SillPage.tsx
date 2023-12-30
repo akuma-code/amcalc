@@ -1,6 +1,8 @@
 import { Outlet, useNavigation } from 'react-router-dom'
 import { SillFormHooked } from './Router/SillFormHooked'
-import { SortSillBy_B } from '../../Hooks/useSortByB'
+import SillFormGroups from './Router/SillFormGroups'
+import { observer } from 'mobx-react-lite'
+
 
 
 
@@ -8,11 +10,11 @@ export const action = () => {
 
 }
 
-const SillPage = () => {
+const SillPage = observer(() => {
     const nav = useNavigation()
     const { formAction, formData, formEncType } = nav
     // _log(_ConvertToStrings({ L: 0, B: 900 }))
-    SortSillBy_B([])
+
     return (
 
 
@@ -22,13 +24,14 @@ const SillPage = () => {
                     <SillFormHooked />
                 </div>
                 <div className='w-[100vw]'>
+                    <SillFormGroups />
                     <Outlet />
                 </div>
             </div>
         </div>
 
     )
-}
+})
 
 export default SillPage
 

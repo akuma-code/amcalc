@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter, redirect } from 'react-router-dom';
+import { Params, RouterProvider, createBrowserRouter, redirect } from 'react-router-dom';
 
 import Output2 from './Components/FlexForm/Output/Output_v2';
 import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
@@ -10,8 +10,15 @@ import { OutputTabs } from './Components/UI/OutputTabs';
 import { ROOTSTORE } from './Context/RootStore';
 import { _ID, _log } from './Helpers/HelpersFns';
 import { SillFormHooked, form_action, form_loader } from './Components/Pages/Router/SillFormHooked';
+import { GroupIdCard, GroupList } from './Components/UI/SillGroupCard';
 
+export const logLoader = async ({ request, params }: { request: Request, params: Params }) => {
 
+  const data = request.bodyUsed ? request : request.body
+  console.log('params_sill ', params)
+  console.log('data_sill', data)
+  return data
+}
 export const tabLoader = async () => {
 
 
@@ -41,30 +48,45 @@ export const router = createBrowserRouter([
       {
         path: 'sill',
         element: <SillPage />,
-        errorElement: <ErrorPage />,
-        action: async ({ request, params }) => {
+        // errorElement: <ErrorPage />,
+        // action: async ({ request, params }) => {
+        //   const act = params.action
+        //   console.log('act', act)
+        //   const fd = await request.formData()
+        //   console.log('body: ', fd)
+        //   return redirect('/sill/form')
+
+        // },
+        action: ({ request, params }) => {
           const act = params.action
           console.log('act', act)
-          const fd = await request.formData()
+          const fd = request.formData()
           console.log('body: ', fd)
-          return redirect('/sill/form')
+          return redirect('/sill')
 
         },
-        loader: async ({ request }) => {
+        loader: async ({ request, params }) => {
 
           const data = request
+          // console.log('params_sill ', params)
+          // console.log('data_sill', data)
           return data
         },
         children: [
           // {
-          //   path: '/sill/groups/',
-          //   element: <SillFormGroups />,
+          //   path: '/sill',
+          //   element: <SillFormHooked />,
           //   errorElement: <ErrorPage />,
+
           // },
           {
-            path: 'form/:action',
-            element: <SillFormGroups />,
-
+            path: '/sill/groups/:groupId',
+            loader: ({ params }) => {
+              const group_id = params.group_id
+              // console.log('group_id', group_id)
+              return group_id ? group_id : null
+            },
+            element: <GroupIdCard />,
           },
 
         ],

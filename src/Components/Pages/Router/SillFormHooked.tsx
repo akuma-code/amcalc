@@ -7,6 +7,7 @@ import { _ID, _log } from '../../../Helpers/HelpersFns';
 import { useStoresContext } from '../../../Hooks/useStoresContext';
 import { A_Sill } from '../../../Interfaces/CommonTypes';
 import { DevTool } from '@hookform/devtools';
+import { toJS } from 'mobx';
 
 type SillFormProps = {}
 
@@ -37,8 +38,8 @@ const defVals: SillFormValues = {
 }
 //! Hook FORM                                                 
 export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
-    const { SillStore } = useStoresContext()
-    const { register, handleSubmit, control, watch, formState: { errors }, reset } = useForm<SillFormValues, any, SillFormValues>({
+    const { SillStore, ViewConfig } = useStoresContext()
+    const { register, control, watch, formState: { errors }, reset } = useForm<SillFormValues, any, SillFormValues>({
         defaultValues:
             { row: [{ L: "", B: "", count: 1 }] },
         mode: 'onSubmit'
@@ -48,7 +49,7 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
         name: 'row'
 
     });
-
+    const { handleSubmit } = control
     const watchFieldArray = watch('row');
     const CFields = fields.map((field, index) => {
         // _log(watchFieldArray[index])
@@ -70,7 +71,7 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
         const conv = d.map(v => new A_Sill(v.L, v.B, v.count))
 
         SillStore && SillStore.add(conv)
-        console.log('store: ', ...SillStore?.store || [])
+        console.log('store: ', ...toJS(SillStore?.store) || [])
 
     }
 
@@ -83,18 +84,21 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
     }
     return (
         <Form name='sf'
-            action='form/save'
-            method='post'
+            // action='/sill'
+            // method='post'
             id='sf'
             control={control}
-            onSubmit={({ data }) => {
+            onSubmit={({ data, formDataJson }) => {
                 saveData(data)
                 reset()
+                return formDataJson
             }}
 
         >
 
-
+            <Divider>
+                <Button variant='contained' onClick={add} sx={{ px: 1, mx: 1, }}>Add Row</Button>
+            </Divider>
             {CFields.map((f, idx) =>
                 <Stack flexDirection={'row'} key={f.id}
                     useFlexGap gap={1}
@@ -126,12 +130,11 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
             )}
 
             <Divider sx={{ fontFamily: 'Fira Code' }}>
-                <span>ControlledInputsForm </span>
+                {/* <span>ControlledInputsForm </span> */}
                 <Button type='submit' variant='outlined' sx={{ px: 1, mx: 1, }} form={'sf'}> Submit</Button>
-                <span>Add row</span>
-                <Button variant='contained' onClick={add} sx={{ px: 1, mx: 1, }}>Add</Button>
+
             </Divider>
-            <DevTool control={control} />
+            {ViewConfig.visible.devtools && <DevTool control={control} />}
         </Form>
         // </Box>
     )

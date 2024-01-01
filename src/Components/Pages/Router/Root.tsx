@@ -19,7 +19,7 @@ const Root = (props: Props) => {
         <div>
 
             <SelectorPanel />
-            <Divider sx={{ py: 1 }}>{state}</Divider>
+            <Divider sx={{ py: 1, my: 1 }}></Divider>
             <Outlet />
         </div>
     )

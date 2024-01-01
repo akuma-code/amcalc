@@ -1,16 +1,9 @@
-import { AppBar, Box, Breadcrumbs, Divider, IconButton, Link, ToggleButton, ToggleButtonGroup, Toolbar, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import { Text } from '../UI/Text'
+import AndroidIcon from '@mui/icons-material/Android'
+import BentoIcon from '@mui/icons-material/Bento'
+import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt'
+import { AppBar, Box, Breadcrumbs, Toolbar } from '@mui/material'
 import { observer } from 'mobx-react-lite'
-import { useStoresContext } from '../../Hooks/useStoresContext'
-import { ILayoutTypes } from '../../Context/ThemeView'
-import BentoLayoutPage from '../Pages/BentoLayoutPage'
-import { toJS } from 'mobx'
-import { Link as RouterLink, useParams } from 'react-router-dom'
-import AndroidIcon from '@mui/icons-material/Android';
-import BentoIcon from '@mui/icons-material/Bento';
-import DensitySmallIcon from '@mui/icons-material/DensitySmall';
-import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import { Link as RouterLink } from 'react-router-dom'
 type Props = {}
 
 export const SelectorPanel = observer((props: Props) => {

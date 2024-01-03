@@ -34,9 +34,9 @@ const SillPage = () => {
                 </div>
                 <div className='w-[100vw] flex flex-row flex-grow'>
                     <SillFormGroups />
+
                     <div className="flex-grow">
                         <Outlet />
-
                     </div>
                 </div>
             </div>

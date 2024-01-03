@@ -1,6 +1,6 @@
 import { Divider } from '@mui/material'
-import { PropsWithChildren, useEffect, useLayoutEffect, useState } from 'react'
-import { Outlet, useLoaderData, useNavigation, useRouteLoaderData } from 'react-router-dom'
+import { PropsWithChildren } from 'react'
+import { Outlet, useNavigation, useRouteLoaderData } from 'react-router-dom'
 import { SelectorPanel } from '../../Layout/SelectorPanel'
 
 type Props = {} & PropsWithChildren
@@ -12,7 +12,7 @@ const Root = (props: Props) => {
     const nav = useNavigation()
     const { formData, location, state, json } = nav
 
-    data && console.log('rdata: ', data)
+    data && console.log('root_data: ', data)
     const s = location?.state
 
     return (

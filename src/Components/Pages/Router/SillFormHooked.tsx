@@ -39,7 +39,7 @@ const defVals: SillFormValues = {
 //! Hook FORM                                                 
 export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
     const { SillStore, ViewConfig } = useStoresContext()
-    const { register, control, watch, formState: { errors }, reset } = useForm<SillFormValues, any, SillFormValues>({
+    const { register, control, watch, formState: { errors }, reset, handleSubmit } = useForm<SillFormValues, any, SillFormValues>({
         defaultValues:
             { row: [{ L: "", B: "", count: 1 }] },
         mode: 'onSubmit'
@@ -49,7 +49,7 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
         name: 'row'
 
     });
-    const { handleSubmit } = control
+    // const { handleSubmit } = control
     const watchFieldArray = watch('row');
     const CFields = fields.map((field, index) => {
         // _log(watchFieldArray[index])
@@ -91,7 +91,7 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
             onSubmit={({ data, formDataJson }) => {
                 saveData(data)
                 reset()
-                return formDataJson
+                // return formDataJson
             }}
 
         >
@@ -111,7 +111,7 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
                         {...register(`row.${idx}.L` as const, { required: true, shouldUnregister: true, valueAsNumber: true })}
                         variant='filled'
                         size='small'
-                        helperText={errors ? errors?.root?.message : ""} />
+                        helperText={<> {errors && errors?.root?.message}</>} />
                     <TextField sx={{ flexGrow: 0 }}
                         label="Ширина"
                         {...register(`row.${idx}.B` as const, { required: true, shouldUnregister: true, valueAsNumber: true })}
@@ -123,17 +123,19 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
                         size='small'
                         variant='filled' />
 
-                    <Button disabled={idx < 1}
+                    <Button disabled={idx < 1} size='small'
                         variant='contained' onClick={() => remove(idx)}>Delete</Button>
 
                 </Stack>
             )}
 
             <Divider sx={{ fontFamily: 'Fira Code' }}>
-                {/* <span>ControlledInputsForm </span> */}
+
                 <Button type='submit' variant='outlined' sx={{ px: 1, mx: 1, }} form={'sf'}> Submit</Button>
+                <Button type='reset' variant='outlined' sx={{ px: 1, mx: 1, }} form={'sf'} color='secondary'> Reset</Button>
 
             </Divider>
+            <p>{errors?.root?.server && 'Server error'}</p>
             {ViewConfig.visible.devtools && <DevTool control={control} />}
         </Form>
         // </Box>

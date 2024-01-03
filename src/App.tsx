@@ -11,6 +11,7 @@ import { ROOTSTORE } from './Context/RootStore';
 import { _ID, _log } from './Helpers/HelpersFns';
 import { SillFormHooked, form_action, form_loader } from './Components/Pages/Router/SillFormHooked';
 import { GroupIdCard, GroupList } from './Components/UI/SillGroupCard';
+import { SelectorPanel } from './Components/Layout/SelectorPanel';
 
 export const logLoader = async ({ request, params }: { request: Request, params: Params }) => {
 
@@ -48,15 +49,7 @@ export const router = createBrowserRouter([
       {
         path: 'sill',
         element: <SillPage />,
-        // errorElement: <ErrorPage />,
-        // action: async ({ request, params }) => {
-        //   const act = params.action
-        //   console.log('act', act)
-        //   const fd = await request.formData()
-        //   console.log('body: ', fd)
-        //   return redirect('/sill/form')
 
-        // },
         action: ({ request, params }) => {
           const act = params.action
           console.log('act', act)
@@ -80,7 +73,7 @@ export const router = createBrowserRouter([
 
           // },
           {
-            path: '/sill/groups/:groupId',
+            path: '/sill/groups/:group_id',
             loader: ({ params }) => {
               const group_id = params.group_id
               // console.log('group_id', group_id)
@@ -111,7 +104,10 @@ function App() {
   //   return () => console.clear()
   // }, [])
   return (
-    <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    <div>
+      {/* <SelectorPanel /> */}
+      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    </div>
   );
 }
 

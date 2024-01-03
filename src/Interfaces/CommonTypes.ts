@@ -53,6 +53,7 @@ export class A_Sill implements Args_Sill {
         public B: number,
         public count: number = 1
     ) { }
+
 }
 export type Brand<T, B> = T & B
 export type BrandType<T, BType> = Brand<T, { argType: BType }>

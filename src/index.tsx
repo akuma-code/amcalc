@@ -12,18 +12,24 @@ import { ArgStorage } from './Context/ArgStorage';
 import { A_Sill, A_Size } from './Interfaces/CommonTypes';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './AppTheme';
+import { _log } from './Helpers/HelpersFns';
 
 configure({
   useProxies: "always",
   enforceActions: 'observed'
 });
 
-
+const tempStore = new ArgStorage<A_Sill>()
+tempStore.add([
+  new A_Sill(1800, 190, 1),
+  new A_Sill(800, 140, 3),
+  new A_Sill(800, 190, 1),
+  new A_Sill(800, 140, 2),
+])
 const Stores: IStoresContext = {
   RootStore: ROOTSTORE,
   ViewConfig: new OutputViewConfig(),
-  SizeStore: new ArgStorage<A_Size>(),
-  SillStore: new ArgStorage<A_Sill>(),
+  SillStore: tempStore,
 }
 
 

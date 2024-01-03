@@ -8,22 +8,33 @@ export function isEqualSills<T extends { L: number, B: number }>(s1: T, s2: T) {
     else return false
 }
 
-export function sumCounters<T extends A_Sill>(group: T[]) {
-    const res = group.reduce((prev, curr) => {
-        // _log(prev, curr)
-        if (!prev.count) return prev = curr
-        if (!isEqualSills(prev, curr)) return {} as T
-        prev.count += curr.count
-        return prev
-    }, {} as T)
-    console.log('group_sum', res)
-    return res
+function isSameSills<T extends A_Sill>(group: T[]) {
+    const [first, ...rest] = group
+    const condition = rest.every(r => isEqualSills(r, first))
+
+    return condition
 }
 
-_log(sumCounters([
-    new A_Sill(800, 150, 2),
-    new A_Sill(800, 150, 4),
-]))
+export function sumCounters<T extends A_Sill>(group: T[]) {
+    if (isSameSills(group)) {
+        const res = group.reduce((prev, curr) => {
+
+            if (!prev.count) return prev = curr
+
+            // prev.count += curr.count
+            joinSills(prev, curr)
+            return prev
+        }, {} as T)
+        console.log('group_sum', res)
+        return res
+    }
+    else {
+        _log("Invalid group")
+        return group
+    }
+}
+
+
 
 export function joinSills<T extends { L: number, B: number, count: number }>(s1: T, s2: T): T | undefined {
 
@@ -42,14 +53,17 @@ export function mergeSills(sills: A_Sill[]) {
     const sorted = arr.sort((a, b) => a.L - b.L)
     sorted.sort((a, b) => a.B - b.B)
 
-    sumCounters(sorted)
+    sumCounters([
+        new A_Sill(100, 10, 3),
+        new A_Sill(100, 10, 7),
+    ])
 
     const m = sorted.reduce((merged, current, idx, baseArr) => {
         if (merged.length === 0) merged.push(current)
         const f = baseArr.filter(s => isEqualSills(current, s))
 
         if (f.length > 1) {
-            console.log('f', f)
+            // console.log('f', f)
             let summary = f.reduce((sum, c) => {
                 sum = { ...current, count: +c.count + sum.count }
                 return sum

@@ -25,6 +25,7 @@ tempStore.add([
   new A_Sill(800, 140, 3),
   new A_Sill(800, 190, 1),
   new A_Sill(800, 140, 2),
+  new A_Sill(750, 140, 1),
 ])
 const Stores: IStoresContext = {
   RootStore: ROOTSTORE,

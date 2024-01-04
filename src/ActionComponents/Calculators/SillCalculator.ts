@@ -3,6 +3,7 @@ import { _ID, _log } from "../../Helpers/HelpersFns"
 import { A_Sill } from "../../Interfaces/CommonTypes"
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes"
 import { findNextStep } from "../../Hooks/useSortByB"
+import { useState } from "react"
 
 const fakegroup = [
     new A_Sill(500, 140, 2),
@@ -19,8 +20,8 @@ export function addProp<T, P extends ANYobj | ((item?: T) => ANYobj)>(item: T, p
     }
 }
 
-const proppedSills = (gr: A_Sill[]) => gr.map(s => addProp(s, { _id: _ID(), _step: findNextStep(s.B) }))
-_log(...proppedSills(fakegroup))
+// const proppedSills = (gr: A_Sill[]) => gr.map(s => addProp(s, { _id: _ID(), _step: findNextStep(s.B) }))
+// _log(...proppedSills(fakegroup))
 export function isEqualSills<T extends { L: number, B: number }>(s1: T, s2: T) {
     if (s1.L === s2.L && s1.B === s2.B) return true
     else return false
@@ -87,4 +88,67 @@ export function mergeSills(sills: A_Sill[]) {
     }, [] as A_Sill[])
     // _log("sorted:", sorted)
     // _log("merged: ", m)
+    MakeSillGroups(sills)
 }
+
+export function sortByField<T, P extends keyof T>(array: T[], numberField: P) {
+    return array.sort((a, b) => +a[numberField] - (+b[numberField]))
+}
+
+export const sill_tag = (sill: A_Sill): A_Sill & { _step: number, _id: string } => {
+    const _id = _ID()
+    const _step = findNextStep(sill.B)
+    return addProp(sill, { _step, _id })
+}
+
+export type TaggedSill = A_Sill & { _step: number; _id: string }
+export type ISillGroups = ReturnType<typeof MakeSillGroups>
+
+
+export const MakeSillGroups = <T extends A_Sill>(group: T[]) => {
+
+    const init = sortByField(group.map(sill_tag), 'L')
+
+    const sortStepInit = sortByField(init, '_step')
+    const active_steps = Array.from(new Set(sortStepInit.map(i => i._step)))
+
+    const stepGroups = active_steps.map(s => sortStepInit.filter(i => i._step === s))
+    const wi = stepGroups.map(gr =>
+        gr.map(s =>
+        (
+            {
+                ...s,
+                matchIds: findMatchIds(gr, s)
+            }
+        )))
+
+
+
+    console.log('groups: ', wi)
+    return wi
+}
+
+
+
+
+function findMatchIds(group: TaggedSill[], current: TaggedSill): string[] {
+    const res = group.filter(ss => isEqualSills(current, ss))
+        .map(i => i._id)
+    // .filter(r => r !== current._id)
+    return res
+}
+
+
+
+// {
+//     const updateGrp = (group: typeof wi[number]) => {
+//         const match = group.map(i => i.matchIds.length > 1 && i.matchIds).filter(i => typeof i != 'boolean')
+//         const sills = group.map(g => ({ L: g.L, B: g.B, count: g.count, _id: g._id, _step: g._step }))
+//         const res = { sills, match }
+
+//         // console.log('match', match)
+//         return res
+//     }
+
+
+//     const u = wi.map(updateGrp).map(f => f.match)}

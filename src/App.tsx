@@ -10,7 +10,8 @@ import { OutputTabs } from './Components/UI/OutputTabs';
 import { ROOTSTORE } from './Context/RootStore';
 import { _ID, _log } from './Helpers/HelpersFns';
 import { SillFormHooked, form_action, form_loader } from './Components/Pages/Router/SillFormHooked';
-import { GroupIdCard, GroupList } from './Components/UI/SillGroupCard';
+import { GroupList } from './Components/UI/SillStoreCard';
+import { GroupIdCard } from './Components/UI/SillGroupView';
 import { SelectorPanel } from './Components/Layout/SelectorPanel';
 
 export const logLoader = async ({ request, params }: { request: Request, params: Params }) => {

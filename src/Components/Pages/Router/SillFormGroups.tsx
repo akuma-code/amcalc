@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import { useStoresContext } from "../../../Hooks/useStoresContext"
-import SillStoreCard from "../../UI/SillGroupCard"
+import SillStoreCard from "../../UI/SillStoreCard"
 
 type Props = {}
 

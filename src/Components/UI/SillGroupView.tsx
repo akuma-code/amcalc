@@ -1,9 +1,10 @@
 import React, { PropsWithChildren, useMemo, useState } from 'react';
-import { Button } from '@mui/material';
+import { Box, Button, ButtonGroup, Divider, Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { Link, useParams } from 'react-router-dom';
+import { Link, redirect, useParams } from 'react-router-dom';
 import { useStoresContext } from '../../Hooks/useStoresContext';
 import { MakeSillGroups, mergeSills, sill_tag } from '../../ActionComponents/Calculators/SillCalculator';
+import { _log } from '../../Helpers/HelpersFns';
 
 
 export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
@@ -14,7 +15,7 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
 
 
     const STORE = SillStore?.store
-    if (!STORE) return <div className='text-center text-3xl'>Invalid ID!</div>;
+    if (!STORE || !group_id) return <div className='text-center text-3xl'>Invalid ID!</div>;
 
 
     const _groups = useMemo(() => {
@@ -23,7 +24,10 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
         return grs
     }
         , [STORE, group_id])
+    const del = () => {
+        SillStore.delete(group_id)
 
+    }
 
     return (
         <div className="flex flex-col bg-slate-400  m-1 p-1 max-w-[30vw]">
@@ -42,15 +46,18 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                 </div>
 
             </div>
-            <div className="flex flex-col m-1">
+            <div className="flex flex-col m-1 ">
 
                 {_groups.map((g, index) =>
-                    <div key={index} className='border-b-2'>
+                    <Stack key={index} >
                         {
                             g.map((row, idx) =>
-                                <div key={row._id}
-                                    className={`flex flex-row gap-2   justify-around hover:bg-slate-100 `}
+                                <Box key={row._id} component={Stack} flexDirection={'row'} justifyContent={'space-around'}
                                     onClick={() => setHl(row.matchIds)}
+                                    sx={{
+                                        bgcolor: isHighlited(row._id) ? '#fc00009b' : 'inherit',
+                                        // my: '5px'
+                                    }}
                                 >
                                     <div className="text-center flex-shrink">
                                         {idx + 1})
@@ -64,10 +71,11 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                                     <div className='text-center flex-grow '>
                                         <b className='bg-green-200'>{row.count}</b>
                                     </div>
-                                </div>
+                                </Box>
                             )
                         }
-                    </div>
+                        <Divider ></Divider>
+                    </Stack>
 
                 )
 
@@ -75,12 +83,21 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                 }
             </div>
             <div className="text-end">
-                <Button onClick={() => { }}>
-                    Merge
-                </Button>
-                <Button variant='contained' color='error'>
-                    <Link to={'/sill'}>Close </Link>
-                </Button>
+                <ButtonGroup>
+
+                    <Button onClick={() => _log(..._groups.reduce((s, c) => [...s, ...c]))}>
+                        Merge
+                    </Button>
+                    {
+                        group_id &&
+                        <Button variant='contained' color='warning'
+                            onClick={del}>
+                            <Link to={'/sill'}>Delete </Link>
+                        </Button>}
+                    <Button variant='contained' color='error'>
+                        <Link to={'/sill'}>Close </Link>
+                    </Button>
+                </ButtonGroup>
             </div>
         </div>
 

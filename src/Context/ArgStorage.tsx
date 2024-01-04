@@ -27,7 +27,7 @@ export class ArgStorage<T extends ANYobj>{
     }
 
     delete(itemId: string) {
-        this.store.filter(s => s.group_id !== itemId)
+        this.store = this.store.filter(s => s.group_id !== itemId)
     }
 
 

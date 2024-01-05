@@ -6,16 +6,19 @@ import { useStoresContext } from '../../Hooks/useStoresContext';
 import { MakeSillGroups, mergeSills, sill_tag } from '../../ActionComponents/Calculators/SillCalculator';
 import { _log } from '../../Helpers/HelpersFns';
 
+const isMergePossible = (arr: any[]) => arr.length > 1
 
 export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
-    const { group_id } = useParams() as { group_id?: string; };
+    const group_id = useParams().group_id as string;
+
     const [hl, setHl] = useState<string[]>([]);
+    const { SillStore, ViewConfig } = useStoresContext();
     const isHighlited = (id: string) => hl.includes(id);
-    const { SillStore } = useStoresContext();
+    const isHighlightPossible = ViewConfig.visible.showPossibleMerge
 
 
     const STORE = SillStore?.store
-    if (!STORE || !group_id) return <div className='text-center text-3xl'>Invalid ID!</div>;
+    if (!group_id || !STORE) return <div className='text-center text-3xl'>Invalid ID!</div>;
 
 
     const _groups = useMemo(() => {
@@ -25,8 +28,15 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
     }
         , [STORE, group_id])
     const del = () => {
-        SillStore.delete(group_id)
+        group_id && SillStore.delete(group_id)
 
+    }
+
+    const mergeFn = () => {
+        // const { group_data } = STORE.find(g => g.group_id === group_id)!
+        // const m = group_data.map(g => mergeSills(g)).filter(t => !!t && t)
+        // console.log('merged', m)
+        // _log("all", ..._groups.reduce((s, c) => [...s, ...c]))
     }
 
     return (
@@ -55,21 +65,33 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                                 <Box key={row._id} component={Stack} flexDirection={'row'} justifyContent={'space-around'}
                                     onClick={() => setHl(row.matchIds)}
                                     sx={{
+                                        outline: row._mergePossible && isHighlightPossible ? '2px dotted red' : 'none',
                                         bgcolor: isHighlited(row._id) ? '#fc00009b' : 'inherit',
+                                        [`& :hover `]: {
+                                            bgcolor: isHighlited(row._id) ? '#fc00f09a' : 'inherit',
+
+                                        }
                                         // my: '5px'
+
                                     }}
                                 >
-                                    <div className="text-center flex-shrink">
+                                    <div className={"text-center flex-shrink "}>
                                         {idx + 1})
                                     </div>
                                     <div className='text-center flex-grow'>
-                                        <b className='bg-green-200'>{row.L}</b>
+                                        <div >
+                                            <b >{row.L}</b>
+                                        </div>
                                     </div>
                                     <div className='text-center flex-grow'>
-                                        <b className='bg-green-200'>{row.B}</b>
+                                        <div >
+                                            <b >{row.B}</b>
+                                        </div>
                                     </div>
                                     <div className='text-center flex-grow '>
-                                        <b className='bg-green-200'>{row.count}</b>
+                                        <div >
+                                            <b >{row.count}</b>
+                                        </div>
                                     </div>
                                 </Box>
                             )
@@ -85,7 +107,7 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
             <div className="text-end">
                 <ButtonGroup>
 
-                    <Button onClick={() => _log(..._groups.reduce((s, c) => [...s, ...c]))}>
+                    <Button onClick={mergeFn}>
                         Merge
                     </Button>
                     {

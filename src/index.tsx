@@ -21,11 +21,14 @@ configure({
 
 const tempStore = new ArgStorage<A_Sill>()
 tempStore.add([
-  new A_Sill(1800, 190, 1),
-  new A_Sill(800, 140, 3),
+  new A_Sill(900, 190, 1),
+  new A_Sill(900, 190, 3),
   new A_Sill(800, 190, 1),
-  new A_Sill(800, 140, 2),
-  new A_Sill(750, 140, 1),
+  new A_Sill(900, 190, 2),
+  new A_Sill(1000, 200, 1),
+  new A_Sill(1650, 90, 1),
+  new A_Sill(1680, 90, 1),
+  new A_Sill(1000, 200, 1),
 ])
 const Stores: IStoresContext = {
   RootStore: ROOTSTORE,
@@ -49,7 +52,7 @@ root.render(
         }}
         key={'Store Provider'}
       >
-        <CssBaseline />
+        <CssBaseline enableColorScheme />
         <App />
       </StoresContext.Provider>
     </ThemeProvider>

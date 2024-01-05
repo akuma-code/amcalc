@@ -4,6 +4,7 @@ import { A_Sill } from "../../Interfaces/CommonTypes"
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes"
 import { findNextStep } from "../../Hooks/useSortByB"
 import { useState } from "react"
+import { ArgsTypes } from "../../Models/ArgsTypeModel"
 
 const fakegroup = [
     new A_Sill(500, 140, 2),
@@ -53,45 +54,33 @@ export function sumCounters<T extends A_Sill>(group: T[]) {
 
 
 
-export function joinSills<T extends { L: number, B: number, count: number }>(s1: T, s2: T): T | undefined {
+export function joinSills<T extends { L: number, B: number, count: number }>(...equal_sills: T[]) {
 
-    if (isEqualSills(s1, s2)) return { ...s1, count: s1.count += s2.count }
+    return equal_sills.reduce((p, c) => {
 
-    else {
-        _log("Sills not equal!")
-        return
-    }
-
-}
-
-export function mergeSills(sills: A_Sill[]) {
-    if (sills.length <= 1) return sills
-    const arr = toJS(sills)
-    const sorted = arr.sort((a, b) => a.L - b.L)
-    sorted.sort((a, b) => a.B - b.B)
-
-    const m = sorted.reduce((merged, current, idx, baseArr) => {
-        if (merged.length === 0) merged.push(current)
-        const f = baseArr.filter(s => isEqualSills(current, s))
-
-        if (f.length > 1) {
-            // console.log('f', f)
-            let summary = f.reduce((sum, c) => {
-                sum = { ...current, count: +c.count + sum.count }
-                return sum
-            }, {} as A_Sill)
-            // console.log('summary', summary)
-            merged.push(summary)
+        return {
+            ...p,
+            L: p.L < c.L ? c.L : p.L,
+            B: p.B < c.B ? c.B : p.B,
+            count: p.count += c.count,
         }
 
-        return merged
-    }, [] as A_Sill[])
-    // _log("sorted:", sorted)
-    // _log("merged: ", m)
-    MakeSillGroups(sills)
+
+    })
 }
 
-export function sortByField<T, P extends keyof T>(array: T[], numberField: P) {
+export function mergeSills<T extends A_Sill>(bgroup: T[]) {
+    const tagged = MakeSillGroups(bgroup)
+
+
+
+
+
+
+
+}
+
+export function sortByField<T, P extends keyof T>(array: T[], numberField: P): T[] {
     return array.sort((a, b) => +a[numberField] - (+b[numberField]))
 }
 
@@ -102,25 +91,37 @@ export const sill_tag = (sill: A_Sill): A_Sill & { _step: number, _id: string } 
 }
 
 export type TaggedSill = A_Sill & { _step: number; _id: string }
-export type ISillGroups = ReturnType<typeof MakeSillGroups>
-
-
-export const MakeSillGroups = <T extends A_Sill>(group: T[]) => {
+export type IMakeSillGroupReturn = ReturnType<typeof MakeSillGroups>
+export type ISillGroup = {
+    matchIds: string[];
+    _mergePossible: boolean;
+    argType: ArgsTypes;
+    L: number;
+    B: number;
+    count: number;
+    _step: number;
+    _id: string
+}
+/**
+ * @function создает DTO для данных из стора типа Sill
+ */
+export function MakeSillGroups<T extends A_Sill>(group: T[]) {
 
     const init = sortByField(group.map(sill_tag), 'L')
-
     const sortStepInit = sortByField(init, '_step')
+    // _log(sortStepInit.map(Object.values))
     const active_steps = Array.from(new Set(sortStepInit.map(i => i._step)))
 
     const stepGroups = active_steps.map(s => sortStepInit.filter(i => i._step === s))
-    const wi = stepGroups.map(gr =>
-        gr.map(s =>
-        (
-            {
-                ...s,
-                matchIds: findMatchIds(gr, s)
-            }
-        )))
+    const wi = stepGroups.map(gr => gr.map(s => (
+        {
+            ...s,
+            matchIds: findMatchIds(gr, s),
+            _mergePossible: findMatchIds(gr, s).length > 1 ? true : false
+        }
+    ))
+
+    )
 
 
 
@@ -130,15 +131,29 @@ export const MakeSillGroups = <T extends A_Sill>(group: T[]) => {
 
 
 
-
-function findMatchIds(group: TaggedSill[], current: TaggedSill): string[] {
-    const res = group.filter(ss => isEqualSills(current, ss))
+/**
+ * @function 
+ * __Фильтрует группу по равнозначности елементу current
+ * @returns  id:string []
+ */
+export function findMatchIds(group: TaggedSill[], current: TaggedSill): string[] {
+    const res = group.filter(ss => SillComparator.compareStrict(current, ss))
         .map(i => i._id)
     // .filter(r => r !== current._id)
     return res
 }
-
-
+type CompareType = { L: number, B: number }
+class SillComparator {
+    static compareStrict<T extends CompareType>(...args: [T, T]) {
+        const [s1, s2] = args
+        const l1 = s1.L
+        const l2 = s2.L
+        const b1 = s1.B
+        const b2 = s2.B
+        const [dl, db] = [l1 - l2, b1 - b2]
+        return dl === 0 && db === 0
+    }
+}
 
 // {
 //     const updateGrp = (group: typeof wi[number]) => {

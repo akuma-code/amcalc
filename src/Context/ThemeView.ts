@@ -10,7 +10,9 @@ export interface IVisibileItems {
     showSimple: boolean,
     showOtkosi: boolean,
     showOffset5: boolean,
-    devtools: boolean
+
+    devtools: boolean,
+    showPossibleMerge: boolean
 }
 export interface IOutputView {
     active: { store: ArgsTypes, output: ArgsTypes }
@@ -36,13 +38,15 @@ export class OutputViewConfig implements IOutputView {
             selectOut: action,
             selectForm: action,
             toggleVisible: action,
+
         }, { name: 'ViewConfig' })
         this.visible = {
             showSkf: true,
             showSimple: true,
             showOtkosi: true,
             showOffset5: true,
-            devtools: false
+            devtools: false,
+            showPossibleMerge: true,
 
         }
         this.active = {

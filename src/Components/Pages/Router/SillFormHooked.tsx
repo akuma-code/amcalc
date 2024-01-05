@@ -96,8 +96,8 @@ export const SillFormHooked: React.FC<SillFormProps> = observer(() => {
 
         >
 
-            <Divider>
-                <Button variant='contained' onClick={add} sx={{ px: 1, mx: 1, }}>Add Row</Button>
+            <Divider textAlign='left'>
+                <Button variant='contained' onClick={add} sx={{ px: 1, mx: 1 }} >Add Row</Button>
             </Divider>
             {CFields.map((f, idx) =>
                 <Stack flexDirection={'row'} key={f.id}

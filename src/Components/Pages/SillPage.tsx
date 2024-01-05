@@ -3,6 +3,7 @@ import { Outlet, useNavigation } from 'react-router-dom'
 import { useStoresContext } from '../../Hooks/useStoresContext'
 import SillFormGroups from './Router/SillFormGroups'
 import { SillFormHooked } from './Router/SillFormHooked'
+import { observer } from 'mobx-react-lite'
 
 
 
@@ -11,7 +12,7 @@ export const action = () => {
 
 }
 
-const SillPage = () => {
+const SillPage = observer(() => {
     const nav = useNavigation()
     const { ViewConfig } = useStoresContext()
     const { formAction, formData, formEncType } = nav
@@ -21,15 +22,23 @@ const SillPage = () => {
 
 
         <div className='bg-slate-100'>
-            <div className="flex flex-col">
-                <div className='w-[60vw]'>
-                    <ButtonGroup variant='contained' >
+            <div className="w-[60vw] flex flex-col gap-2">
+                <div className=' py-1 self-end'>
+                    <ButtonGroup variant='contained' size='small' >
                         <Button onClick={() => ViewConfig.toggleVisible('devtools')}
                             variant='outlined' color='success'
-                        >Toggle Form DevTools</Button>
+                            sx={ViewConfig.visible.devtools ? { bgcolor: '#e09d37', fontWeight: 'bold' } : { bgcolor: 'transparent' }}
+                        >show DevTools
+                        </Button>
+                        <Button onClick={() => ViewConfig.toggleVisible('showPossibleMerge')}
+                            variant='outlined' color='success'
+                            sx={ViewConfig.visible.showPossibleMerge ? { bgcolor: '#e09d37', fontWeight: 'bold' } : { bgcolor: 'transparent' }}
+                        >
+                            Show possible
+                        </Button>
                     </ButtonGroup>
-                    <SillFormHooked />
                 </div>
+                <SillFormHooked />
                 <div className='w-[100vw] flex flex-row flex-grow'>
                     <SillFormGroups />
 
@@ -41,7 +50,7 @@ const SillPage = () => {
         </div>
 
     )
-}
-
+})
+SillPage.displayName = '*Sill Page'
 export default SillPage
 

@@ -47,7 +47,7 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
 
             </div>
             <div className="flex flex-col m-1 ">
-
+                { }
                 {_groups.map((g, index) =>
                     <Stack key={index} >
                         {

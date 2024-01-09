@@ -5,6 +5,8 @@ import { Link, redirect, useParams } from 'react-router-dom';
 import { useStoresContext } from '../../Hooks/useStoresContext';
 import { MakeSillGroups, mergeSills, sill_tag } from '../../ActionComponents/Calculators/SillCalculator';
 import { _log } from '../../Helpers/HelpersFns';
+import { A_Sill } from '../../Interfaces/CommonTypes';
+import { toJS } from 'mobx';
 
 const isMergePossible = (arr: any[]) => arr.length > 1
 
@@ -24,19 +26,23 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
     const _groups = useMemo(() => {
         const data = STORE.find(g => g.group_id === group_id)
         const grs = data ? MakeSillGroups(data.group_data) : []
-        return grs
+
+        return data
     }
         , [STORE, group_id])
+
+    const _proxyGroup = (group?: { group_data: A_Sill[] }) => group ? MakeSillGroups(group.group_data) : []
+
     const del = () => {
         group_id && SillStore.delete(group_id)
 
     }
 
     const mergeFn = () => {
-        // const { group_data } = STORE.find(g => g.group_id === group_id)!
-        // const m = group_data.map(g => mergeSills(g)).filter(t => !!t && t)
-        // console.log('merged', m)
-        // _log("all", ..._groups.reduce((s, c) => [...s, ...c]))
+
+        console.log('_groups', toJS(_groups?.group_data))
+        const d = toJS(_groups?.group_data)
+        mergeSills(d)
     }
 
     return (
@@ -58,48 +64,49 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
             </div>
             <div className="flex flex-col m-1 ">
 
-                {_groups.map((g, index) =>
-                    <Stack key={index} >
-                        {
-                            g.map((row, idx) =>
-                                <Box key={row._id} component={Stack} flexDirection={'row'} justifyContent={'space-around'}
-                                    onClick={() => setHl(row.matchIds)}
-                                    sx={{
-                                        outline: row._mergePossible && isHighlightPossible ? '2px dotted red' : 'none',
-                                        bgcolor: isHighlited(row._id) ? '#fc00009b' : 'inherit',
-                                        [`& :hover `]: {
-                                            bgcolor: isHighlited(row._id) ? '#fc00f09a' : 'inherit',
+                {
+                    _proxyGroup(_groups).map((g, index) =>
+                        <Stack key={index} >
+                            {
+                                g.map((row, idx) =>
+                                    <Box key={row._id} component={Stack} flexDirection={'row'} justifyContent={'space-around'}
+                                        onClick={() => setHl(row.matchIds)}
+                                        sx={{
+                                            outline: row._mergePossible && isHighlightPossible ? '2px dotted red' : 'none',
+                                            bgcolor: isHighlited(row._id) ? '#fc00009b' : 'inherit',
+                                            [`& :hover `]: {
+                                                bgcolor: isHighlited(row._id) ? '#fc00f09a' : 'inherit',
 
-                                        }
-                                        // my: '5px'
+                                            }
+                                            // my: '5px'
 
-                                    }}
-                                >
-                                    <div className={"text-center flex-shrink "}>
-                                        {idx + 1})
-                                    </div>
-                                    <div className='text-center flex-grow'>
-                                        <div >
-                                            <b >{row.L}</b>
+                                        }}
+                                    >
+                                        <div className={"text-center flex-shrink "}>
+                                            {idx + 1})
                                         </div>
-                                    </div>
-                                    <div className='text-center flex-grow'>
-                                        <div >
-                                            <b >{row.B}</b>
+                                        <div className='text-center flex-grow'>
+                                            <div >
+                                                <b >{row.L}</b>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className='text-center flex-grow '>
-                                        <div >
-                                            <b >{row.count}</b>
+                                        <div className='text-center flex-grow'>
+                                            <div >
+                                                <b >{row.B}</b>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Box>
-                            )
-                        }
-                        <Divider ></Divider>
-                    </Stack>
+                                        <div className='text-center flex-grow '>
+                                            <div >
+                                                <b >{row.count}</b>
+                                            </div>
+                                        </div>
+                                    </Box>
+                                )
+                            }
+                            <Divider ></Divider>
+                        </Stack>
 
-                )
+                    )
 
 
                 }

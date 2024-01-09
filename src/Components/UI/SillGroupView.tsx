@@ -3,7 +3,7 @@ import { Box, Button, ButtonGroup, Divider, Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { Link, redirect, useParams } from 'react-router-dom';
 import { useStoresContext } from '../../Hooks/useStoresContext';
-import { MakeSillGroups, arrReducer, mergeSills, sill_tag, sumCount } from '../../ActionComponents/Calculators/SillCalculator';
+import { MakeSillGroups, _filterSillGroups, _itemsFieldSet, arrReducer, mergeSills, sill_tag, sumCount } from '../../ActionComponents/Calculators/SillCalculator';
 import { _log } from '../../Helpers/HelpersFns';
 import { A_Sill, _ArgsMaker } from '../../Interfaces/CommonTypes';
 import { toJS } from 'mobx';
@@ -40,14 +40,16 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
     const mergeFn = useCallback(() => {
         if (!_groups?.group_data) return
         const { group_data } = _groups
-        const _data = group_data ? [...group_data] : []
-        const res = arrReducer(_data) as A_Sill[]
-        console.log('reducer: ', res)
-        // mergeSills(_data)
+        const _data = group_data
+        const res = arrReducer(_data)
+        const fg = _filterSillGroups(_data)
+
+        console.log('res', res)
+
     }, [_groups])
 
     return (
-        <div className="flex flex-col bg-slate-400  m-1 p-1 max-w-[30vw]">
+        <div className="flex flex-col bg-slate-400  m-1 p-1 max-w-[40vw]">
             <div className="flex flex-row  justify-around">
                 <div className='  text-left flex-shrink px-1 border-2'>
                     #

@@ -40,7 +40,7 @@ export function sumCounters<T extends A_Sill>(group: T[]) {
     // const _f = [...group].reduce((prev, current) => ({ ...prev, count: prev.count += current.count }))
     // console.log('_f', _f)
     if (isSameSills(group)) {
-        const res = group.reduce((prev, curr) => ({ ...prev, count: prev.count += curr.count }))
+        const res = group.reduce((prev, curr) => ({ ...prev, count: prev.count + curr.count }))
 
         console.log('group_sum', res)
         return res
@@ -51,7 +51,51 @@ export function sumCounters<T extends A_Sill>(group: T[]) {
     }
 }
 
+export function arrReducer(items: CompareType[]) {
 
+    const r = items.reduce(function (res, item) {
+
+        const idx = res.findIndex(r => _equal(r, item))
+
+        if (idx < 0) res.push(item)
+        else {
+            const f = res[idx] as CompareType
+            const addItem: CompareType = { ...f, count: f.count + item.count }
+            res.splice(idx, 1, addItem as CompareType)
+            return res
+        }
+        return res
+
+    }, [] as CompareType[])
+    const result = r.map(rr => ({ ...rr }))
+
+
+    // _log(_filterGroups(r, 'B'))
+    return result
+}
+
+export const _itemsFieldSet = <T extends ANYobj, F extends keyof T & string>(items: T[], field: F) => { return Array.from(new Set(items.map(item => item[field]))) }
+export const _filterGroups = <T extends ANYobj, F extends keyof T & string>(items: T[], field: F) => {
+    const fset = _itemsFieldSet(items, field)
+    return fset.map(f => items.filter(i => i[field] === f))
+}
+
+export const _filterSillGroups = <T extends A_Sill, F extends keyof T & string>(items: T[], field?: F) => {
+    const _tag_strsize = (item: T) => ({ ...item, _size: `${item.B}_${item.L}` as const })
+
+    const _sizes = items.map(_tag_strsize)
+    if (field) {
+
+        const _sillgroup = _filterGroups(_sizes, field)
+        console.log('_sillgroup', _sillgroup)
+        return _sillgroup
+    }
+
+
+    // const sizeset = [..._itemsFieldSet(_sizes, '_size')] as const
+    const sizemap = _filterGroups(_sizes, '_size')
+    return sizemap
+}
 
 export function joinSills<T extends { L: number, B: number, count: number }>(...equal_sills: T[]) {
 
@@ -68,24 +112,12 @@ export function joinSills<T extends { L: number, B: number, count: number }>(...
     })
 }
 const StrictEqualCondition = <T extends { L: number, B: number }>(a: T, b: T) => (a.L === b.L && a.B === b.B)
-const consumeCount = (...sills: A_Sill[]) => sills.reduce((prev, curr) => ({ ...prev, count: prev.count += curr.count }))
+const consumeCount = (...sills: A_Sill[]) => sills.reduce((prev, curr) => ({ ...prev, count: prev.count + curr.count }))
 export const sumCount = <T extends { count: number }>(array: T[]) => array.reduce((prev, curr) => { return prev += curr.count }, 0)
-function consumeNext(...sills: A_Sill[]) {
-    const [first, second, ...rest] = sills
-    let _temp: any;
-    const result = []
-    if (isEqualSills(first, second)) _temp = [first, second].reduce((prev, curr) => ({ ...prev, count: prev.count += curr.count }))
-    if (!rest) {
-        result.push(_temp)
-        return result
-    }
 
-    if (rest.length > 0) return consumeNext(...rest)
-    return [first, second].reduce((prev, curr) => ({ ...prev, count: prev.count += curr.count }))
-}
 export function mergeSills<T extends A_Sill>(group_data?: T[]) {
     if (!group_data) return []
-    const copy = [...group_data].slice().map(c => c)
+    const copy = [...group_data].slice().map(c => ({ ...c }))
     const AllCount = sumCount(group_data)
     console.log('AllCount', AllCount)
     const result: A_Sill[] = []
@@ -95,7 +127,7 @@ export function mergeSills<T extends A_Sill>(group_data?: T[]) {
         const hasEq = (item: A_Sill) => _equal(d, item)
         if (result.length === 0) return result.push(d)
         if (result.some(hasEq)) {
-            result.map(r => _equal(r, d) ? { ...r, count: r.count += d.count } : r)
+            result.map(r => _equal(r, d) ? { ...r, count: r.count + d.count } : r)
             // _log("proxy: ", result)
             return result
         }
@@ -220,25 +252,7 @@ const arrrr = [
     { L: 200, count: 3, B: 100, argType: 'sill' },
     { L: 200, count: 1, B: 100, argType: 'sill' },
 ] as A_Sill[]
-export function arrReducer(items: CompareType[]) {
 
-    const r = items.reduce(function (res, item) {
-
-        const idx = res.findIndex(r => _equal(r, item))
-
-        if (idx < 0) res.push(item)
-        else {
-            const f = res[idx] as CompareType
-            const addItem: CompareType = { ...f, count: f.count + item.count }
-            res.splice(idx, 1, addItem as CompareType)
-            return res
-        }
-        return res
-
-    }, [] as CompareType[])
-
-    return r.map(_ArgsMaker)
-}
 // arrReducer(arrrr)
 // {
 //     const updateGrp = (group: typeof wi[number]) => {

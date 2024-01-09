@@ -23,11 +23,10 @@ export function addProp<T, P extends ANYobj | ((item?: T) => ANYobj)>(item: T, p
 
 // const proppedSills = (gr: A_Sill[]) => gr.map(s => addProp(s, { _id: _ID(), _step: findNextStep(s.B) }))
 // _log(...proppedSills(fakegroup))
-export function isEqualSills<T extends { L: number, B: number }>(s1: T, s2: T) {
-    if (s1.L === s2.L && s1.B === s2.B) return true
-    else return false
-}
-const equal = (target: A_Sill) => (current: A_Sill) => isEqualSills(target, current)
+export function isEqualSills<T extends { L: number, B: number }>(s1: T, s2: T) { return (s1.L === s2.L && s1.B === s2.B) }
+const _equal = (target: A_Sill) => (current: A_Sill) => isEqualSills(target, current)
+
+
 function isSameSills<T extends A_Sill>(group: T[]) {
     const [first, ...rest] = group
 
@@ -68,10 +67,37 @@ export function joinSills<T extends { L: number, B: number, count: number }>(...
 
     })
 }
+const StrictEqualCondition = <T extends { L: number, B: number }>(a: T, b: T) => (a.L === b.L && a.B === b.B)
 
-export function mergeSills<T extends A_Sill>(bgroup: T[]) {
-    const tagged = MakeSillGroups(bgroup)
+function consumeNext(...sills: A_Sill[]) {
+    const [first, second, ...rest] = sills
+    let _temp: any;
+    const result = []
+    if (isEqualSills(first, second)) _temp = [first, second].reduce((prev, curr) => ({ ...prev, count: prev.count += curr.count }))
+    if (!rest) {
+        result.push(_temp)
+        return result
+    }
 
+    if (rest.length > 0) return consumeNext(...rest)
+    return [first, second].reduce((prev, curr) => ({ ...prev, count: prev.count += curr.count }))
+}
+export function mergeSills<T extends A_Sill>(group_data?: T[]) {
+    if (!group_data) return []
+    // consumeNext(...group_data)
+    let sorted = sortByField(group_data, 'L')
+    sorted = sortByField(sorted, 'B')
+    _log(consumeNext(...sorted))
+    // const merged = sorted.reduce((sum, current) => {
+    //     if (!sum._prev) {
+    //         sum._prev = current
+    //         sum.m.push(sum._prev)
+    //     }
+    //     return sum
+    // }, {} as { _prev: A_Sill, m: A_Sill[] })
+
+
+    // console.log('merged', merged)
 
 
 

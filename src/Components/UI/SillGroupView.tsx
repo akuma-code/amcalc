@@ -63,6 +63,7 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
 
             </div>
             <div className="flex flex-col m-1 ">
+<<<<<<< HEAD
 
                 {
                     _proxyGroup(_groups).map((g, index) =>
@@ -107,6 +108,39 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                         </Stack>
 
                     )
+=======
+                { }
+                {_groups.map((g, index) =>
+                    <Stack key={index} >
+                        {
+                            g.map((row, idx) =>
+                                <Box key={row._id} component={Stack} flexDirection={'row'} justifyContent={'space-around'}
+                                    onClick={() => setHl(row.matchIds)}
+                                    sx={{
+                                        bgcolor: isHighlited(row._id) ? '#fc00009b' : 'inherit',
+                                        // my: '5px'
+                                    }}
+                                >
+                                    <div className="text-center flex-shrink">
+                                        {idx + 1})
+                                    </div>
+                                    <div className='text-center flex-grow'>
+                                        <b className='bg-green-200'>{row.L}</b>
+                                    </div>
+                                    <div className='text-center flex-grow'>
+                                        <b className='bg-green-200'>{row.B}</b>
+                                    </div>
+                                    <div className='text-center flex-grow '>
+                                        <b className='bg-green-200'>{row.count}</b>
+                                    </div>
+                                </Box>
+                            )
+                        }
+                        <Divider ></Divider>
+                    </Stack>
+
+                )
+>>>>>>> 2e79603ad01e80520052e492968b4c632786c727
 
 
                 }

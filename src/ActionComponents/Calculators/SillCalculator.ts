@@ -24,7 +24,7 @@ export function addProp<T, P extends ANYobj | ((item?: T) => ANYobj)>(item: T, p
 // const proppedSills = (gr: A_Sill[]) => gr.map(s => addProp(s, { _id: _ID(), _step: findNextStep(s.B) }))
 // _log(...proppedSills(fakegroup))
 export function isEqualSills<T extends { L: number, B: number }>(s1: T, s2: T) { return (s1.L === s2.L && s1.B === s2.B) }
-const _equal = (target: A_Sill) => (current: A_Sill) => isEqualSills(target, current)
+const _equal = <T extends CompareType>(a: T, b: T) => SillComparator.compareStrict(a, b)
 
 
 function isSameSills<T extends A_Sill>(group: T[]) {
@@ -68,7 +68,8 @@ export function joinSills<T extends { L: number, B: number, count: number }>(...
     })
 }
 const StrictEqualCondition = <T extends { L: number, B: number }>(a: T, b: T) => (a.L === b.L && a.B === b.B)
-
+const consumeCount = (...sills: A_Sill[]) => sills.reduce((prev, curr) => ({ ...prev, count: prev.count += curr.count }))
+export const sumCount = <T extends { count: number }>(array: T[]) => array.reduce((prev, curr) => { return prev += curr.count }, 0)
 function consumeNext(...sills: A_Sill[]) {
     const [first, second, ...rest] = sills
     let _temp: any;
@@ -84,21 +85,33 @@ function consumeNext(...sills: A_Sill[]) {
 }
 export function mergeSills<T extends A_Sill>(group_data?: T[]) {
     if (!group_data) return []
-    // consumeNext(...group_data)
-    let sorted = sortByField(group_data, 'L')
-    sorted = sortByField(sorted, 'B')
-    _log(consumeNext(...sorted))
-    // const merged = sorted.reduce((sum, current) => {
-    //     if (!sum._prev) {
-    //         sum._prev = current
-    //         sum.m.push(sum._prev)
-    //     }
-    //     return sum
-    // }, {} as { _prev: A_Sill, m: A_Sill[] })
+    const copy = group_data.slice()
+    console.log('group_data', copy)
+    const AllCount = sumCount(group_data)
+    console.log('AllCount', AllCount)
+    const result: A_Sill[] = []
 
+    copy.map(d => {
+        const hasEq = (item: A_Sill) => _equal(d, item)
+        if (result.length === 0) return result.push(d)
+        if (result.some(hasEq)) {
+            result.map(r => _equal(r, d) ? { ...r, count: r.count += d.count } : r)
+            _log("proxy: ", result)
+            return result
+        }
+        else {
+            result.push(d)
+            _log("proxy: ", result)
+            return result
+        }
+    })
+    console.log('result', sortByField(result, 'L'))
+    // const bSet = new Set(group_data.map(d => d.B))
+    // const Barray = Array.from(bSet.values())
 
-    // console.log('merged', merged)
+    // const _groups = Barray.map(b => group_data.filter(d => d.B === b))
 
+    return result
 
 
 
@@ -151,7 +164,7 @@ export function MakeSillGroups<T extends A_Sill>(group: T[]) {
 
 
 
-    console.log('groups: ', wi)
+    // console.log('groups: ', wi)
     return wi
 }
 

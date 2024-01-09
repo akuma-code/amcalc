@@ -3,7 +3,7 @@ import { Box, Button, ButtonGroup, Divider, Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { Link, redirect, useParams } from 'react-router-dom';
 import { useStoresContext } from '../../Hooks/useStoresContext';
-import { MakeSillGroups, mergeSills, sill_tag } from '../../ActionComponents/Calculators/SillCalculator';
+import { MakeSillGroups, mergeSills, sill_tag, sumCount } from '../../ActionComponents/Calculators/SillCalculator';
 import { _log } from '../../Helpers/HelpersFns';
 import { A_Sill } from '../../Interfaces/CommonTypes';
 import { toJS } from 'mobx';
@@ -25,11 +25,10 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
 
     const _groups = useMemo(() => {
         const data = STORE.find(g => g.group_id === group_id)
-        const grs = data ? MakeSillGroups(data.group_data) : []
+
 
         return data
-    }
-        , [STORE, group_id])
+    }, [STORE, group_id])
 
     const _proxyGroup = (group?: { group_data: A_Sill[] }) => group ? MakeSillGroups(group.group_data) : []
 
@@ -39,10 +38,13 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
     }
 
     const mergeFn = () => {
+        if (!_groups?.group_data) return
+        const { group_data } = _groups
+        const _data = group_data ? group_data.slice() : []
 
-        console.log('_groups', toJS(_groups?.group_data))
-        const d = toJS(_groups?.group_data)
-        mergeSills(d)
+        const d = toJS(_data)
+        // console.log('_groups', d)
+        mergeSills(_data)
     }
 
     return (
@@ -58,64 +60,18 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                     B, мм
                 </div>
                 <div className=' w-full text-right pr-1 border-2 flex-grow'>
-                    Кол-во, шт
+                    Кол-во, шт ({_groups && sumCount(_groups?.group_data)})
                 </div>
 
             </div>
             <div className="flex flex-col m-1 ">
-<<<<<<< HEAD
 
-                {
-                    _proxyGroup(_groups).map((g, index) =>
-                        <Stack key={index} >
-                            {
-                                g.map((row, idx) =>
-                                    <Box key={row._id} component={Stack} flexDirection={'row'} justifyContent={'space-around'}
-                                        onClick={() => setHl(row.matchIds)}
-                                        sx={{
-                                            outline: row._mergePossible && isHighlightPossible ? '2px dotted red' : 'none',
-                                            bgcolor: isHighlited(row._id) ? '#fc00009b' : 'inherit',
-                                            [`& :hover `]: {
-                                                bgcolor: isHighlited(row._id) ? '#fc00f09a' : 'inherit',
-
-                                            }
-                                            // my: '5px'
-
-                                        }}
-                                    >
-                                        <div className={"text-center flex-shrink "}>
-                                            {idx + 1})
-                                        </div>
-                                        <div className='text-center flex-grow'>
-                                            <div >
-                                                <b >{row.L}</b>
-                                            </div>
-                                        </div>
-                                        <div className='text-center flex-grow'>
-                                            <div >
-                                                <b >{row.B}</b>
-                                            </div>
-                                        </div>
-                                        <div className='text-center flex-grow '>
-                                            <div >
-                                                <b >{row.count}</b>
-                                            </div>
-                                        </div>
-                                    </Box>
-                                )
-                            }
-                            <Divider ></Divider>
-                        </Stack>
-
-                    )
-=======
-                { }
-                {_groups.map((g, index) =>
+                {_proxyGroup(_groups).map((g, index) =>
                     <Stack key={index} >
                         {
                             g.map((row, idx) =>
                                 <Box key={row._id} component={Stack} flexDirection={'row'} justifyContent={'space-around'}
-                                    onClick={() => setHl(row.matchIds)}
+                                    // onClick={() => setHl(row.matchIds)}
                                     sx={{
                                         bgcolor: isHighlited(row._id) ? '#fc00009b' : 'inherit',
                                         // my: '5px'
@@ -136,11 +92,10 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                                 </Box>
                             )
                         }
-                        <Divider ></Divider>
+                        <Divider textAlign='right'>size: {sumCount(g)}</Divider>
                     </Stack>
 
                 )
->>>>>>> 2e79603ad01e80520052e492968b4c632786c727
 
 
                 }
@@ -156,7 +111,8 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                         <Button variant='contained' color='warning'
                             onClick={del}>
                             <Link to={'/sill'}>Delete </Link>
-                        </Button>}
+                        </Button>
+                    }
                     <Button variant='contained' color='error'>
                         <Link to={'/sill'}>Close </Link>
                     </Button>

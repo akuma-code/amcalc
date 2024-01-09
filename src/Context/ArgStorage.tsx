@@ -30,6 +30,8 @@ export class ArgStorage<T extends ANYobj>{
         this.store = this.store.filter(s => s.group_id !== itemId)
     }
 
-
+    getSize() {
+        return this.store.length
+    }
 
 }

@@ -20,14 +20,14 @@ configure({
 });
 
 const tempStore = new ArgStorage<A_Sill>()
-tempStore.add([
+tempStore.getSize() === 0 && tempStore.add([
   new A_Sill(900, 190, 1),
   new A_Sill(1650, 90, 1),
   new A_Sill(900, 190, 2),
   new A_Sill(900, 190, 3),
   new A_Sill(1680, 90, 1),
-  new A_Sill(1000, 200, 1),
-  new A_Sill(1000, 200, 1),
+  new A_Sill(1000, 150, 1),
+  new A_Sill(1000, 150, 1),
   new A_Sill(800, 190, 1),
 ])
 const Stores: IStoresContext = {

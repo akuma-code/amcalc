@@ -10,7 +10,7 @@ export interface IStoresContext {
     RootStore: RootArgsStore_v1
     SizeStore?: ArgStorage<A_Size>
     ViewConfig: OutputViewConfig
-    SillStore?: ArgStorage<A_Sill>
+    SillStore: ArgStorage<A_Sill>
 }
 
 

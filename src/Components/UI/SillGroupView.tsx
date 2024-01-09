@@ -1,11 +1,11 @@
-import React, { PropsWithChildren, useMemo, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import { Box, Button, ButtonGroup, Divider, Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { Link, redirect, useParams } from 'react-router-dom';
 import { useStoresContext } from '../../Hooks/useStoresContext';
-import { MakeSillGroups, mergeSills, sill_tag, sumCount } from '../../ActionComponents/Calculators/SillCalculator';
+import { MakeSillGroups, arrReducer, mergeSills, sill_tag, sumCount } from '../../ActionComponents/Calculators/SillCalculator';
 import { _log } from '../../Helpers/HelpersFns';
-import { A_Sill } from '../../Interfaces/CommonTypes';
+import { A_Sill, _ArgsMaker } from '../../Interfaces/CommonTypes';
 import { toJS } from 'mobx';
 
 const isMergePossible = (arr: any[]) => arr.length > 1
@@ -20,7 +20,7 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
 
 
     const STORE = SillStore?.store
-    if (!group_id || !STORE) return <div className='text-center text-3xl'>Invalid ID!</div>;
+    if (!group_id) return <div className='text-center text-3xl'>Invalid ID!</div>;
 
 
     const _groups = useMemo(() => {
@@ -37,15 +37,14 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
 
     }
 
-    const mergeFn = () => {
+    const mergeFn = useCallback(() => {
         if (!_groups?.group_data) return
         const { group_data } = _groups
-        const _data = group_data ? group_data.slice() : []
-
-        const d = toJS(_data)
-        // console.log('_groups', d)
-        mergeSills(_data)
-    }
+        const _data = group_data ? [...group_data] : []
+        const res = arrReducer(_data) as A_Sill[]
+        console.log('reducer: ', res)
+        // mergeSills(_data)
+    }, [_groups])
 
     return (
         <div className="flex flex-col bg-slate-400  m-1 p-1 max-w-[30vw]">

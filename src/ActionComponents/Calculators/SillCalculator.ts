@@ -1,6 +1,6 @@
 import { toJS } from "mobx"
 import { _ID, _log } from "../../Helpers/HelpersFns"
-import { A_Sill } from "../../Interfaces/CommonTypes"
+import { A_Sill, _ArgsMaker } from "../../Interfaces/CommonTypes"
 import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes"
 import { findNextStep } from "../../Hooks/useSortByB"
 import { useState } from "react"
@@ -85,27 +85,48 @@ function consumeNext(...sills: A_Sill[]) {
 }
 export function mergeSills<T extends A_Sill>(group_data?: T[]) {
     if (!group_data) return []
-    const copy = group_data.slice()
-    console.log('group_data', copy)
+    const copy = [...group_data].slice().map(c => c)
     const AllCount = sumCount(group_data)
     console.log('AllCount', AllCount)
     const result: A_Sill[] = []
+    console.log('group_data', copy)
 
-    copy.map(d => {
+    copy.forEach(d => {
         const hasEq = (item: A_Sill) => _equal(d, item)
         if (result.length === 0) return result.push(d)
         if (result.some(hasEq)) {
             result.map(r => _equal(r, d) ? { ...r, count: r.count += d.count } : r)
-            _log("proxy: ", result)
+            // _log("proxy: ", result)
             return result
         }
         else {
             result.push(d)
-            _log("proxy: ", result)
+            // _log("proxy: ", result)
             return result
         }
     })
-    console.log('result', sortByField(result, 'L'))
+
+
+    // const ttt = copy.reduce((result, d) => {
+    //     const hasEq = (item: A_Sill) => _equal(d, item)
+    //     // if (result) return result.push(d)
+    //     if (result.length === 0) {
+    //         result.push(d)
+    //         return result
+    //     }
+    //     if (!result.some(hasEq)) {
+    //         result.push(d)
+    //         // _log("proxy: ", result)
+    //         return result
+    //     }
+    //     else {
+
+    //         result.map(r => hasEq(r) ? { ...r, count: r.count += d.count } : r)
+    //         return result
+    //     }
+
+    // }, [] as any[])
+    console.log('result', result)
     // const bSet = new Set(group_data.map(d => d.B))
     // const Barray = Array.from(bSet.values())
 
@@ -181,7 +202,7 @@ export function findMatchIds(group: TaggedSill[], current: TaggedSill): string[]
     // .filter(r => r !== current._id)
     return res
 }
-type CompareType = { L: number, B: number }
+type CompareType = { L: number, B: number, count: number }
 class SillComparator {
     static compareStrict<T extends CompareType>(...args: [T, T]) {
         const [s1, s2] = args
@@ -193,7 +214,32 @@ class SillComparator {
         return dl === 0 && db === 0
     }
 }
+const arrrr = [
+    { L: 300, count: 1, B: 100, argType: 'sill' },
+    { L: 100, count: 1, B: 100, argType: 'sill' },
+    { L: 200, count: 3, B: 100, argType: 'sill' },
+    { L: 200, count: 1, B: 100, argType: 'sill' },
+] as A_Sill[]
+export function arrReducer(items: CompareType[]) {
 
+    const r = items.reduce(function (res, item) {
+
+        const idx = res.findIndex(r => _equal(r, item))
+
+        if (idx < 0) res.push(item)
+        else {
+            const f = res[idx] as CompareType
+            const addItem: CompareType = { ...f, count: f.count + item.count }
+            res.splice(idx, 1, addItem as CompareType)
+            return res
+        }
+        return res
+
+    }, [] as CompareType[])
+
+    return r.map(_ArgsMaker)
+}
+// arrReducer(arrrr)
 // {
 //     const updateGrp = (group: typeof wi[number]) => {
 //         const match = group.map(i => i.matchIds.length > 1 && i.matchIds).filter(i => typeof i != 'boolean')

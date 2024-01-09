@@ -13,10 +13,8 @@ export const action = () => {
 }
 
 const SillPage = observer(() => {
-    const nav = useNavigation()
     const { ViewConfig } = useStoresContext()
-    const { formAction, formData, formEncType } = nav
-    // _log(_ConvertToStrings({ L: 0, B: 900 }))
+
 
     return (
 

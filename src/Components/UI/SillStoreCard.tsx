@@ -8,19 +8,17 @@ import { _log } from '../../Helpers/HelpersFns'
 import { isEqualSills } from '../../ActionComponents/Calculators/SillCalculator'
 
 type SillCardProps = {
-    data?: ArgStorage<A_Sill>
+    data: ArgStorage<A_Sill>
 }
 
 const SillStoreCard: React.FC<SillCardProps> = observer((props) => {
-    const load_data = useLoaderData() as { data?: ArgStorage<A_Sill> }
-    // load_data && _log(load_data)
     const { data } = props
-    if (!data) return <div>No Storage</div>
-    const { store } = data
 
+    const { store } = data
     return (
         <div >
-            {store.length >= 1 &&
+            {
+                store.length >= 1 &&
                 <div className='border-2 w-[15em] border-slate-950'>
 
                     <div className="flex flex-row gap-2 justify-around">

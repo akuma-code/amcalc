@@ -1,5 +1,5 @@
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import { Box, Stack } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { sortByField } from '../../ActionComponents/Calculators/SillCalculator';
 import { _ID } from '../../Helpers/HelpersFns';
@@ -42,10 +42,12 @@ export const MergedGroup = (props: MergedGrProps) => {
     const headStyle = ` flex flex-row w-full text-center justify-center border-2 hover:cursor-pointer hover:bg-orange-400 `;
     return (
         <div>
-            <Stack direction={'row'} gap={2} justifyContent={'right'} mb={1}>
+            <Stack direction={'row'} gap={2} justifyContent={'right'} mb={1} alignItems={'center'}>
 
                 <div>L: {Summary.L} п.м </div>
                 <div>Всего: {Summary.count} шт.</div>
+                <Button onClick={() => window.print()}
+                >Print</Button>
             </Stack>
             <div className="flex flex-row  justify-around">
 

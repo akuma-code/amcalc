@@ -46,7 +46,7 @@ export const MergedGroup = (props: MergedGrProps) => {
 
                 <div>L: {Summary.L} п.м </div>
                 <div>Всего: {Summary.count} шт.</div>
-                <Button onClick={() => window.print()}
+                <Button onClick={() => window.print()} variant='outlined'
                 >Print</Button>
             </Stack>
             <div className="flex flex-row  justify-around">

@@ -1,18 +1,9 @@
-import { toJS } from "mobx"
 import { _ID, _log } from "../../Helpers/HelpersFns"
-import { A_Sill, _ArgsMaker } from "../../Interfaces/CommonTypes"
-import { ANYfn, ANYobj } from "../../Interfaces/MathActionsTypes"
 import { findNextStep } from "../../Hooks/useSortByB"
-import { useState } from "react"
+import { A_Sill } from "../../Interfaces/CommonTypes"
+import { ANYobj } from "../../Interfaces/MathActionsTypes"
 import { ArgsTypes } from "../../Models/ArgsTypeModel"
 
-const fakegroup = [
-    new A_Sill(500, 140, 2),
-    new A_Sill(700, 160, 2),
-    new A_Sill(700, 70, 2),
-    new A_Sill(700, 70, 2),
-    new A_Sill(500, 140, 2),
-]
 export function addProp<T, P extends ANYobj | ((item?: T) => ANYobj)>(item: T, props: P) {
     if (typeof props === 'function') {
         return { ...item, ...props(item) }
@@ -21,8 +12,7 @@ export function addProp<T, P extends ANYobj | ((item?: T) => ANYobj)>(item: T, p
     }
 }
 
-// const proppedSills = (gr: A_Sill[]) => gr.map(s => addProp(s, { _id: _ID(), _step: findNextStep(s.B) }))
-// _log(...proppedSills(fakegroup))
+
 export function isEqualSills<T extends { L: number, B: number }>(s1: T, s2: T) { return (s1.L === s2.L && s1.B === s2.B) }
 const _equal = <T extends CompareType>(a: T, b: T) => SillComparator.compareStrict(a, b)
 
@@ -111,8 +101,7 @@ export function joinSills<T extends { L: number, B: number, count: number }>(...
 
     })
 }
-const StrictEqualCondition = <T extends { L: number, B: number }>(a: T, b: T) => (a.L === b.L && a.B === b.B)
-const consumeCount = (...sills: A_Sill[]) => sills.reduce((prev, curr) => ({ ...prev, count: prev.count + curr.count }))
+
 export const sumCount = <T extends { count: number }>(array: T[]) => array.reduce((prev, curr) => { return prev += curr.count }, 0)
 
 export function mergeSills<T extends A_Sill>(group_data?: T[]) {
@@ -206,7 +195,7 @@ export function findMatchIds(group: TaggedSill[], current: TaggedSill): string[]
     return res
 }
 type CompareType = { L: number, B: number, count: number }
-class SillComparator {
+export class SillComparator {
     static compareStrict<T extends CompareType>(...args: [T, T]) {
         const [s1, s2] = args
         const l1 = s1.L
@@ -217,26 +206,5 @@ class SillComparator {
         return dl === 0 && db === 0
     }
 }
-const arrrr = [
-    { L: 300, count: 1, B: 100, argType: 'sill' },
-    { L: 100, count: 1, B: 100, argType: 'sill' },
-    { L: 200, count: 3, B: 100, argType: 'sill' },
-    { L: 200, count: 1, B: 100, argType: 'sill' },
-] as A_Sill[]
 
 
-
-
-// arrReducer(arrrr)
-// {
-//     const updateGrp = (group: typeof wi[number]) => {
-//         const match = group.map(i => i.matchIds.length > 1 && i.matchIds).filter(i => typeof i != 'boolean')
-//         const sills = group.map(g => ({ L: g.L, B: g.B, count: g.count, _id: g._id, _step: g._step }))
-//         const res = { sills, match }
-
-//         // console.log('match', match)
-//         return res
-//     }
-
-
-//     const u = wi.map(updateGrp).map(f => f.match)}

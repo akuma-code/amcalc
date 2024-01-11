@@ -1,4 +1,4 @@
-import { Params, RouterProvider, createBrowserRouter, redirect } from 'react-router-dom';
+import { Params, RouteObject, RouterProvider, createBrowserRouter, redirect } from 'react-router-dom';
 
 import Output2 from './Components/FlexForm/Output/Output_v2';
 import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
@@ -26,8 +26,10 @@ export const tabLoader = async () => {
 }
 
 
+//__                               router               
 
-export const router = createBrowserRouter([
+
+export const CommonRoutes: RouteObject[] = [
   {
     path: '/',
     element: <Root />,
@@ -91,7 +93,8 @@ export const router = createBrowserRouter([
       }
     ]
   }
-])
+]
+export const router = createBrowserRouter(CommonRoutes)
 
 function App() {
 

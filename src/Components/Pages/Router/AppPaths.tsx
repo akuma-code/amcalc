@@ -1,7 +1,13 @@
 import { Box } from '@mui/material';
+import { CommonRoutes } from '../../../App';
+import { Link as RouterLink, LinkProps as RLinkPorps } from 'react-router-dom';
+import { Link } from '@mui/icons-material';
+
+
+type T = RLinkPorps
+
 
 export const AppPaths = () => {
-
 
 
     return <Box sx={{
@@ -23,40 +29,42 @@ export const AppPaths = () => {
                     </div>
 
                     <div className='flex-grow-0'>
-                        Root
+                        <RouterLink to={'/'} >Root</RouterLink>
                     </div>
                 </li>
                 <li>
                     <div className='flex-grow'>
                         <b>/bento</b>
                     </div>
-                    <div className='flex-grow-0'> Bento</div>
+                    <div className='flex-grow-0'><RouterLink to={'bento'} >Bento</RouterLink>  </div>
                 </li>
                 <li>
                     <div className='flex-grow-0'>
                         <b>/sill</b>
                     </div>
-                    <div className='flex-grow-0'> Sill Form</div>
+                    <div className='flex-grow-0'><RouterLink to={'sill'} >Sill Form</RouterLink>  </div>
                 </li>
                 <li>
                     <div className='flex-grow'>
                         <b>/sill/groups/:group_id</b>
                     </div>
 
-                    <div className='flex-grow-0'> Sill groups</div>
+                    <div className='flex-grow-0'><RouterLink to={'sill/groups'}>  Sill groups</RouterLink> </div>
 
                 </li>
                 <li>
                     <div className='flex-grow'>
                         <b>/tabs</b>
                     </div>
-                    <div className="flex-grow-0"> Tabs</div>
+                    <div className="flex-grow-0">
+                        <RouterLink to={'/tabs'} >Tabs</RouterLink>
+                    </div>
                 </li>
                 <li>
                     <div>
                         <b>/offset</b>
                     </div>
-                    <div className="flex-grow-0"> Offset</div>
+                    <div className="flex-grow-0"> <RouterLink to={'/offset'} >Offset</RouterLink></div>
                 </li>
             </ul>
         </div>

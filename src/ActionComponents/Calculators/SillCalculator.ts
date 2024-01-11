@@ -138,39 +138,9 @@ export function mergeSills<T extends A_Sill>(group_data?: T[]) {
         }
     })
 
-
-    // const ttt = copy.reduce((result, d) => {
-    //     const hasEq = (item: A_Sill) => _equal(d, item)
-    //     // if (result) return result.push(d)
-    //     if (result.length === 0) {
-    //         result.push(d)
-    //         return result
-    //     }
-    //     if (!result.some(hasEq)) {
-    //         result.push(d)
-    //         // _log("proxy: ", result)
-    //         return result
-    //     }
-    //     else {
-
-    //         result.map(r => hasEq(r) ? { ...r, count: r.count += d.count } : r)
-    //         return result
-    //     }
-
-    // }, [] as any[])
-    console.log('result', result)
-    // const bSet = new Set(group_data.map(d => d.B))
-    // const Barray = Array.from(bSet.values())
-
-    // const _groups = Barray.map(b => group_data.filter(d => d.B === b))
-
     return result
-
-
-
-
-
 }
+
 
 export function sortByField<T, P extends keyof T>(array: T[], numberField: P): T[] {
     return array.sort((a, b) => +a[numberField] - (+b[numberField]))
@@ -196,8 +166,9 @@ export type ISillGroup = {
 }
 /**
  * @function создает DTO для данных из стора типа Sill
+ * @returns ISillGroup
  */
-export function MakeSillGroups<T extends A_Sill>(group: T[]) {
+export function MakeSillGroups<T extends A_Sill>(group: T[]): ISillGroup[][] {
 
     const init = sortByField(group.map(sill_tag), 'L')
     const sortStepInit = sortByField(init, '_step')
@@ -252,6 +223,9 @@ const arrrr = [
     { L: 200, count: 3, B: 100, argType: 'sill' },
     { L: 200, count: 1, B: 100, argType: 'sill' },
 ] as A_Sill[]
+
+
+
 
 // arrReducer(arrrr)
 // {

@@ -2,6 +2,7 @@ import { Divider } from '@mui/material'
 import { PropsWithChildren } from 'react'
 import { Outlet, useNavigation, useRouteLoaderData } from 'react-router-dom'
 import { SelectorPanel } from '../../Layout/SelectorPanel'
+import { AppPaths } from './AppPaths'
 
 type Props = {} & PropsWithChildren
 const Root = (props: Props) => {
@@ -19,6 +20,7 @@ const Root = (props: Props) => {
         <div>
 
             <SelectorPanel />
+
             <Divider sx={{ py: 1, my: 1 }}></Divider>
             <Outlet />
         </div>

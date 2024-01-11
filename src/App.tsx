@@ -8,6 +8,7 @@ import SillPage from './Components/Pages/SillPage';
 import { OutputTabs } from './Components/UI/OutputTabs';
 import { GroupIdCard } from './Components/UI/SillGroupView';
 import { ROOTSTORE } from './Context/RootStore';
+import { AppPaths } from './Components/Pages/Router/AppPaths';
 
 export const logLoader = async ({ request, params }: { request: Request, params: Params }) => {
 
@@ -38,6 +39,11 @@ export const router = createBrowserRouter([
       return data
     },
     children: [
+      {
+        path: '/',
+        element: <AppPaths />,
+
+      },
       {
         path: 'bento',
         element: <BentoLayoutPage />,

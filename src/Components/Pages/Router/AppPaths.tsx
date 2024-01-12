@@ -17,6 +17,11 @@ export const AppPaths = () => {
             justifyContent: 'space-between',
             maxWidth: '25em'
         },
+        [`& a:hover`]: {
+            color: 'red',
+
+        },
+        [`& a:visited`]: { color: 'green' }
         // maxWidth: '22em'
     }}>
 

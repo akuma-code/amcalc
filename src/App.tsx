@@ -42,9 +42,8 @@ export const CommonRoutes: RouteObject[] = [
     },
     children: [
       {
-        path: '/',
+        index: true,
         element: <AppPaths />,
-
       },
       {
         path: 'bento',

@@ -8,13 +8,13 @@ type Props = {} & PropsWithChildren
 const Root = (props: Props) => {
 
     // const { data } = useLoaderData() as { data: Request }
-    const { data } = useRouteLoaderData('root_elem') as { data: Request }
+    // const { data } = useRouteLoaderData('root_elem') as { data: Request }
 
-    const nav = useNavigation()
-    const { formData, location, state, json } = nav
+    // const nav = useNavigation()
+    // const { formData, location, state, json } = nav
 
-    data && console.log('root_data: ', data)
-    const s = location?.state
+    // data && console.log('root_data: ', data)
+    // const s = location?.state
 
     return (
         <div>

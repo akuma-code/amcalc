@@ -9,6 +9,7 @@ import { OutputTabs } from './Components/UI/OutputTabs';
 import { GroupIdCard } from './Components/UI/SillGroupView';
 import { ROOTSTORE } from './Context/RootStore';
 import { AppPaths } from './Components/Pages/Router/AppPaths';
+import { BlankDataPage, scriptAppLoader } from './Components/Pages/BlankDataPage';
 
 export const logLoader = async ({ request, params }: { request: Request, params: Params }) => {
 
@@ -35,11 +36,11 @@ export const CommonRoutes: RouteObject[] = [
     element: <Root />,
     id: 'root_elem',
     errorElement: <ErrorPage />,
-    loader: ({ request, params }) => {
-      const data = request
-      // console.log('req', data)
-      return data
-    },
+    // loader: ({ request, params }) => {
+    //   const data = request
+    //   // console.log('req', data)
+    //   return data
+    // },
     children: [
       {
         index: true,
@@ -80,6 +81,11 @@ export const CommonRoutes: RouteObject[] = [
 
         ],
 
+      },
+      {
+        path: '/getapp',
+        element: <BlankDataPage />,
+        loader: scriptAppLoader
       },
       {
         path: '/tabs',

@@ -4,7 +4,7 @@ import { Link as RouterLink, LinkProps as RLinkPorps } from 'react-router-dom';
 import { Link } from '@mui/icons-material';
 
 
-type T = RLinkPorps
+
 
 
 export const AppPaths = () => {
@@ -67,9 +67,11 @@ export const AppPaths = () => {
                 </li>
                 <li>
                     <div>
-                        <b>/offset</b>
+                        <b>/getapp</b>
                     </div>
-                    <div className="flex-grow-0"> <RouterLink to={'/offset'} >Offset</RouterLink></div>
+                    <div className="flex-grow-0">
+                        <RouterLink to={'/getapp'} >AppScript</RouterLink>
+                    </div>
                 </li>
             </ul>
         </div>

@@ -4,26 +4,35 @@ import { _log } from '../../Helpers/HelpersFns';
 import { Button } from '@mui/material';
 
 type BlankPageProps = {} & PropsWithChildren
+const URL_dev = `https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev`
+const URL_script = `https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec`
 
-export const scriptAppLoader = async ({ request, params }: { request: Request, params: Params }) => {
-    let myHeaders = new Headers();
-    myHeaders.set('Content-type', 'text/html');
-    myHeaders.set('Access-Control-Allow-Origin', '*');
-    try {
+const _headers = {
+    'Content-Type': `application/json`,
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Headers': "*"
+}
 
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec',
-            {
-                headers: {
-                    'Content-Type': `application/json`,
-                    'Access-Control-Allow-Origin': 'http://localhost:3000',
-                    'Access-Control-Allow-Headers': "*"
-                }
-            })
-        return { data: response }
-    } catch (error) {
-        console.log('Load error: ', error)
-    }
-    return null
+export const scriptAppLoader = async () => {
+
+    const response = await fetch(URL_script, { headers: _headers, mode: 'no-cors' }).then(res => {
+        let data: { data: any } = { data: [] };
+        if (typeof res === 'string') {
+            try {
+                data.data = JSON.parse(res)
+                return data
+            } catch (error) {
+                _log("resError! ", error)
+            }
+
+        } else {
+            data.data = res
+            return data
+        }
+        return data
+    })
+    return response
+
 }
 
 export const BlankDataPage: React.FC<BlankPageProps> = () => {

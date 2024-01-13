@@ -7,7 +7,8 @@ import { observer } from 'mobx-react-lite'
 
 
 
-const SillPage = observer(() => {
+const SillPage = observer(() =>
+{
     const { ViewConfig } = useStoresContext()
 
 
@@ -18,14 +19,14 @@ const SillPage = observer(() => {
             <div className="w-[60vw] flex flex-col gap-2">
                 <div className=' py-1 self-end'>
                     <ButtonGroup variant='contained' size='small' >
-                        <Button onClick={() => ViewConfig.toggleVisible('devtools')}
+                        <Button onClick={ () => ViewConfig.toggleVisible('devtools') }
                             variant='outlined' color='success'
-                            sx={ViewConfig.visible.devtools ? { bgcolor: '#e09d37', fontWeight: 'bold' } : { bgcolor: 'transparent' }}
+                            sx={ ViewConfig.visible.devtools ? { bgcolor: '#e09d37', fontWeight: 'bold' } : { bgcolor: 'transparent' } }
                         >show DevTools
                         </Button>
-                        <Button onClick={() => ViewConfig.toggleVisible('showPossibleMerge')}
+                        <Button onClick={ () => ViewConfig.toggleVisible('showPossibleMerge') }
                             variant='outlined' color='success'
-                            sx={ViewConfig.visible.showPossibleMerge ? { bgcolor: '#e09d37', fontWeight: 'bold' } : { bgcolor: 'transparent' }}
+                            sx={ ViewConfig.visible.showPossibleMerge ? { bgcolor: '#e09d37', fontWeight: 'bold' } : { bgcolor: 'transparent' } }
                         >
                             Show possible
                         </Button>

@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react'
 import { Link, Params, useLoaderData } from 'react-router-dom';
 import { _log } from '../../Helpers/HelpersFns';
 import { Button } from '@mui/material';
+import { getGoogleSS } from '../../HTTP/axios';
 
 type BlankPageProps = {} & PropsWithChildren
 const URL_dev = `https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev`
@@ -15,22 +16,19 @@ const _headers = {
 
 export const scriptAppLoader = async () => {
 
-    const response = await fetch(URL_script, { headers: _headers, mode: 'no-cors' }).then(res => {
-        let data: { data: any } = { data: [] };
-        if (typeof res === 'string') {
-            try {
-                data.data = JSON.parse(res)
-                return data
-            } catch (error) {
-                _log("resError! ", error)
-            }
+    // const response = await fetch(URL_script, { headers: _headers, }).then(res => {
+    //     let data: { data: any } = { data: [] };
 
-        } else {
-            data.data = res
-            return data
-        }
-        return data
-    })
+    //         try {
+    //             data.data = res
+    //             return data
+    //         } catch (error) {
+    //             _log("resError! ", error)
+    //         }
+    // })
+    const response = await getGoogleSS()
+    console.log('response', response)
+
     return response
 
 }
@@ -62,30 +60,31 @@ export const BlankDataPage: React.FC<BlankPageProps> = () => {
         }
     }
     const clickFn = () => {
-        F().then(_log)
+        const data = getGoogleSS()
+        console.log('data in clickFn', data)
     }
 
     return (
         <div>
             <Button variant='contained'>
 
-                <Link to={'https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev'}
-                    target='_self' referrerPolicy='origin-when-cross-origin' rel="noreferrer"
+                <Link to={ 'https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev' }
+                    target='_blank' referrerPolicy='origin-when-cross-origin'
                 >GoogleApp-Dev</Link>
             </Button>
             <Button variant='contained'>
 
-                <Link to={'https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec'}
+                <Link to={ 'https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec' }
                     target='_self' referrerPolicy='unsafe-url' rel="noreferrer"
                 >Google App</Link>
             </Button>
             <Button>
 
-                <Link to={'https://script.google.com/macros/library/d/1Fsvj2W_Xw670xMQRrz23V4w_Ll_VC3vOF6XX27hS8oKNVSlvleVdaTvi/1'}
+                <Link to={ 'https://script.google.com/macros/library/d/1Fsvj2W_Xw670xMQRrz23V4w_Ll_VC3vOF6XX27hS8oKNVSlvleVdaTvi/1' }
                     target='_blank' referrerPolicy='no-referrer' rel="noreferrer"
                 >Lib</Link>
             </Button>
-            <Button onClick={clickFn}>FFF</Button>
+            <Button onClick={ clickFn }>FFF</Button>
         </div>
     )
 }

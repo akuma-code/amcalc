@@ -87,6 +87,7 @@ export const CommonRoutes: RouteObject[] = [
       {
         path: '/getapp',
         element: <BlankDataPage />,
+        loader: scriptAppLoader
 
       },
       {
@@ -110,7 +111,7 @@ export const router = createBrowserRouter(CommonRoutes)
 function App() {
 
   return (
-    <RouterProvider router={ router } fallbackElement={ <p>Loading...</p> } />
+    <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
   );
 }
 

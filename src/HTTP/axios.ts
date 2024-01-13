@@ -3,9 +3,9 @@ import { _log } from "../Helpers/HelpersFns";
 
 
 
-export const URL_dev = `https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev`
-export const URL_script = `https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec`
-const dev1 = `https://script.googleusercontent.com/macros/echo?user_content_key=eleB7j-YyBg76PpivvGp2CkUFPIuSd0HIMGVVvpzR80CrGy6Lgdb2hoefSp2CQTgYQo_L1onswS_j5BgIm0nGiDOUOyMFE7Um5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnDlLMQz84xePb_tIuqqNKtnVjf5p85YP-yCDKdsoZ9V2GG-66mdM_MKM7QXb_K3E0A&lib=MShuNsqchtlcgi9scdT3LeHvq73vH79U2`
+export const URL_dev = `https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev`
+export const URL_script = `https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycbwXPBV66vrnLuHyBo-dtO46jPJvMHAuPMvhMCahub_8EBidiupF1sZ7lvsoJI0oi7_T/exec`
+const dev1 = `https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev`
 export const _headers = {
 
     'Content-Type': 'application/json' as const,
@@ -42,11 +42,11 @@ export const $host = axios.create({
 export const getGoogleSS = async () => {
     try {
         const response = await $host.get(URL_script, {
-            // headers: _headers,
-            // responseType: 'json',
+            headers: _headers,
+            responseType: 'json',
 
         })
-        return response.data
+        return response
     } catch (error) {
         _log("AXIOS ERROR: ", error)
     }

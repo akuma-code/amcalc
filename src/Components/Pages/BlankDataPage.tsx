@@ -1,10 +1,12 @@
-import React, { PropsWithChildren } from 'react'
+
 import { Link, Params, useLoaderData } from 'react-router-dom';
 import { _log } from '../../Helpers/HelpersFns';
-import { Button } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { URL_dev, URL_script, getGoogleSS } from '../../HTTP/axios';
+import React, { useState } from 'react';
+import { AxiosResponse } from 'axios';
 
-type BlankPageProps = {} & PropsWithChildren
+type BlankPageProps = {}
 
 export const scriptAppLoader = async () => {
 
@@ -19,41 +21,74 @@ export const scriptAppLoader = async () => {
     //         }
     // })
     const response = await getGoogleSS()
-    console.log('response: ', response)
+    console.log('response: ', response?.data?.result)
 
-    return { data: response }
+    return response
 
 }
 
 export const BlankDataPage: React.FC<BlankPageProps> = () => {
-
+    const response = useLoaderData() as { data: any }
+    const { data } = response
+    const [resp, setResp] = useState<any | null>(data)
 
     const recievedData = []
 
 
 
-    const clickFn = () => {
-        const data = getGoogleSS()
-        console.log('data in clickFn', data)
+    const clickFn = async () => {
+        console.log('data in clickFn', data.result.map((row: string[]) => row.map(i => parseFloat(i))))
+        const parsed = data.result.map((row: string[]) => row.map(i => i))
+        console.log('parsed', parsed.map((row: string[]) => row.map(s => typeof s === 'string' ? s : s)))
+        setResp(data)
+        try {
+            JSON.parse(response.data.result)
+        } catch (error) {
+            _log(error)
+        }
+        // const parsed = data.result.map((row: string) => JSON.parse(row))
+        // console.log('parsed', parsed)
     }
 
     return (
-        <div className='flex flex-row gap-2'>
-            <Button variant='contained'>
+        <Stack>
 
-                <Link to={ URL_dev }
-                    target='_blank' referrerPolicy='origin-when-cross-origin'
-                >GoogleApp-Dev</Link>
-            </Button>
-            <Button variant='contained'>
+            <div className='flex flex-row gap-2'>
+                <Button variant='contained'>
+                    <Link to={URL_dev}
+                        target='_blank' referrerPolicy='origin-when-cross-origin'
+                    >GoogleApp-Dev</Link>
+                </Button>
+                <Button variant='contained'>
 
-                <Link to={ URL_script }
-                    target='_blank' referrerPolicy='origin-when-cross-origin'
-                >Google App</Link>
-            </Button>
+                    <Link to={URL_script}
+                        target='_blank' referrerPolicy='origin-when-cross-origin'
+                    >Google App</Link>
+                </Button>
 
-            <Button onClick={ clickFn }>FFF</Button>
-        </div>
+                <Button onClick={clickFn}>FFF</Button>
+            </div>
+            <Box
+                sx={{
+                    [`& ol>div>li`]: { border: '1px solid black' },
+                    maxWidth: '70vw'
+                }}
+            >
+                {resp &&
+                    <ol>
+                        {
+                            resp.result.map((p: string[], idx: number) => (
+                                <div key={idx} className='flex flex-row '>
+                                    {
+                                        p.map((s, i) =>
+                                            <li key={i} className='flex-grow'>{s}</li>
+                                        )}
+                                </div>))
+                        }
+                    </ol>
+                }
+            </Box>
+        </Stack>
     )
 }
 

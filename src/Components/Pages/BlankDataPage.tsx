@@ -27,8 +27,7 @@ export const scriptAppLoader = async () => {
 
 export const BlankDataPage: React.FC<BlankPageProps> = () => {
 
-    const data = useLoaderData()
-    console.log('data: ', data)
+
     const recievedData = []
 
 

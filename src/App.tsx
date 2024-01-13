@@ -10,6 +10,7 @@ import { GroupIdCard } from './Components/UI/SillGroupView';
 import { ROOTSTORE } from './Context/RootStore';
 import { AppPaths } from './Components/Pages/Router/AppPaths';
 import { BlankDataPage, scriptAppLoader } from './Components/Pages/BlankDataPage';
+import { PrintPage } from './Components/Pages/Router/PrintPage';
 
 export const logLoader = async ({ request, params }: { request: Request, params: Params }) => {
 
@@ -79,13 +80,18 @@ export const CommonRoutes: RouteObject[] = [
             element: <GroupIdCard />,
           },
 
+
         ],
 
       },
       {
         path: '/getapp',
         element: <BlankDataPage />,
-        loader: scriptAppLoader
+
+      },
+      {
+        path: '/sill/groups/print',
+        element: <PrintPage />
       },
       {
         path: '/tabs',
@@ -104,7 +110,7 @@ export const router = createBrowserRouter(CommonRoutes)
 function App() {
 
   return (
-    <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    <RouterProvider router={ router } fallbackElement={ <p>Loading...</p> } />
   );
 }
 

@@ -2,17 +2,9 @@ import React, { PropsWithChildren } from 'react'
 import { Link, Params, useLoaderData } from 'react-router-dom';
 import { _log } from '../../Helpers/HelpersFns';
 import { Button } from '@mui/material';
-import { getGoogleSS } from '../../HTTP/axios';
+import { URL_dev, URL_script, getGoogleSS } from '../../HTTP/axios';
 
 type BlankPageProps = {} & PropsWithChildren
-const URL_dev = `https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev`
-const URL_script = `https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec`
-
-const _headers = {
-    'Content-Type': `application/json`,
-    'Access-Control-Allow-Origin': 'http://localhost:3000',
-    'Access-Control-Allow-Headers': "*"
-}
 
 export const scriptAppLoader = async () => {
 
@@ -27,9 +19,9 @@ export const scriptAppLoader = async () => {
     //         }
     // })
     const response = await getGoogleSS()
-    console.log('response', response)
+    console.log('response: ', response)
 
-    return response
+    return { data: response }
 
 }
 
@@ -40,52 +32,48 @@ export const BlankDataPage: React.FC<BlankPageProps> = () => {
     const recievedData = []
 
 
-    async function F() {
-        let res: Response | null = null
-        const headers = {
-            'Content-Type': `application/json`,
-            'Access-Control-Allow-Origin': 'http://localhost:3000',
-            'Access-Control-Allow-Headers': "*"
-        }
-        try {
 
-            const response = await fetch('https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec',
-                { headers, mode: 'cors' })
-            res = response
-            return { data: res }
-        } catch (error) {
-            console.log('Load error: ', error)
-        } finally {
-            return res ? res : { data: `error!!` }
-        }
-    }
     const clickFn = () => {
         const data = getGoogleSS()
         console.log('data in clickFn', data)
     }
 
     return (
-        <div>
+        <div className='flex flex-row gap-2'>
             <Button variant='contained'>
 
-                <Link to={ 'https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev' }
+                <Link to={ URL_dev }
                     target='_blank' referrerPolicy='origin-when-cross-origin'
                 >GoogleApp-Dev</Link>
             </Button>
             <Button variant='contained'>
 
-                <Link to={ 'https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec' }
-                    target='_self' referrerPolicy='unsafe-url' rel="noreferrer"
+                <Link to={ URL_script }
+                    target='_blank' referrerPolicy='origin-when-cross-origin'
                 >Google App</Link>
             </Button>
-            <Button>
 
-                <Link to={ 'https://script.google.com/macros/library/d/1Fsvj2W_Xw670xMQRrz23V4w_Ll_VC3vOF6XX27hS8oKNVSlvleVdaTvi/1' }
-                    target='_blank' referrerPolicy='no-referrer' rel="noreferrer"
-                >Lib</Link>
-            </Button>
             <Button onClick={ clickFn }>FFF</Button>
         </div>
     )
 }
 
+// async function F() {
+//         let res: Response | null = null
+//         const headers = {
+//             'Content-Type': `application/json`,
+//             'Access-Control-Allow-Origin': 'http://localhost:3000',
+//             'Access-Control-Allow-Headers': "*"
+//         }
+//         try {
+
+//             const response = await fetch('https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec',
+//                 { headers, mode: 'cors' })
+//             res = response
+//             return { data: res }
+//         } catch (error) {
+//             console.log('Load error: ', error)
+//         } finally {
+//             return res ? res : { data: `error!!` }
+//         }
+//     }

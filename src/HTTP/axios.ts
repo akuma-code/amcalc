@@ -43,7 +43,7 @@ export const getGoogleSS = async () => {
     try {
         const response = await $host.get(URL_script, {
             headers: _headers,
-            responseType: 'json',
+            // responseType: 'json',
 
         })
         return response

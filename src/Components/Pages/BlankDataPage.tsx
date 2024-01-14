@@ -5,6 +5,7 @@ import { Box, Button, Stack } from '@mui/material';
 import { URL_dev, URL_script, getGoogleSS } from '../../HTTP/axios';
 import React, { useState } from 'react';
 import { AxiosResponse } from 'axios';
+import { sheetDataParser } from '../../HTTP/SheetDataParser';
 
 type BlankPageProps = {}
 
@@ -26,6 +27,15 @@ export const scriptAppLoader = async () => {
     return response
 
 }
+const _trim = (str: string | number) => {
+    if (typeof str === 'number') return str.toString()
+    else return str.split(' ').join('')
+}
+
+const _strparse = (str: string) => {
+    return str.replace(',', '.')
+}
+const resultParser = (row: string[]) => row.map(i => +_strparse(_trim(i)))
 
 export const BlankDataPage: React.FC<BlankPageProps> = () => {
     const response = useLoaderData() as { data: any }
@@ -37,12 +47,16 @@ export const BlankDataPage: React.FC<BlankPageProps> = () => {
 
 
     const clickFn = async () => {
-        console.log('data in clickFn', data.result.map((row: string[]) => row.map(i => parseFloat(i))))
-        const parsed = data.result.map((row: string[]) => row.map(i => i))
-        console.log('parsed', parsed.map((row: string[]) => row.map(s => typeof s === 'string' ? s : s)))
-        setResp(data)
+        _log(_trim('123 123'))
+        console.log('data in clickFn', data.result.map(resultParser))
+        const parsed = data.result as string[][]
+        const result = parsed.map(resultParser)
+        // _log(parsed.map(_log))
+        // sheetDataParser<{ result: string[][] }>(data)
+        // console.log('parsed', JSON.parse(response as unknown as string))
+        setResp({ result })
         try {
-            JSON.parse(response.data.result)
+
         } catch (error) {
             _log(error)
         }

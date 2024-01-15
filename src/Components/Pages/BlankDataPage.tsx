@@ -2,7 +2,7 @@
 import { Link, Params, useLoaderData } from 'react-router-dom';
 import { _log, _trim } from '../../Helpers/HelpersFns';
 import { Box, Button, Stack } from '@mui/material';
-import { SheetResponse, URL_dev, URL_script, getGoogleSS } from '../../HTTP/axios';
+import { SheetResponse, URL_script, getGoogleSS, postGoogleSS } from '../../HTTP/axios';
 import React, { useMemo, useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { sheetDataParser } from '../../HTTP/SheetDataParser';
@@ -13,8 +13,8 @@ type BlankPageProps = {}
 export const scriptAppLoader = async (): Promise<{ data: AxiosResponse<{ result: string[][] }, any> } | null> => {
 
 
-    const response = await getGoogleSS()
-    console.log('response: ', response?.data?.result)
+    const response = await getGoogleSS('v_2')
+    console.log('response: ', response?.data)
 
     return response
 
@@ -25,21 +25,18 @@ const resultParser = (row: string[]) => row.map(i => +_trim(i))
 
 export const BlankDataPage: React.FC<BlankPageProps> = () => {
     const response = useLoaderData() as AxiosResponse<{ result: string[][] }>
-    const { data } = response
-    const [resp, setResp] = useState<string[][] | null>(null)
 
-    const recievedData = []
 
 
 
     const clickFn = async () => {
 
 
-
-        const result = data.result
-
-        setResp(result)
         try {
+
+            const result = await postGoogleSS('v_2')
+
+            console.log('result', result)
 
         } catch (error) {
             _log(error)
@@ -84,8 +81,8 @@ export const BlankDataPage: React.FC<BlankPageProps> = () => {
         </Stack>
     )
 }
-const wsize = [.3, .4, .5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4]
-const hsize = [.3, .4, .5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2]
+const wsize = [.4, .5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5]
+const hsize = [.5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4]
 
 const SSTable = ({ sdata }: { sdata: number[][] }) => {
     const THEAD = <div className='flex flex-row max-w-[70wv] self-end'>
@@ -101,28 +98,9 @@ const SSTable = ({ sdata }: { sdata: number[][] }) => {
                 <div>{ hsize[idx] }</div>
                 {
                     row.map((s, i) =>
-                        <li key={ i } className='flex-grow'>{ Math.round(s) }</li>
+                        <li key={ i } className='flex-grow'>{ s.toFixed(2) }</li>
                     )
                 }
             </div>)) }
     </ol>
 }
-// async function F() {
-//         let res: Response | null = null
-//         const headers = {
-//             'Content-Type': `application/json`,
-//             'Access-Control-Allow-Origin': 'http://localhost:3000',
-//             'Access-Control-Allow-Headers': "*"
-//         }
-//         try {
-
-//             const response = await fetch('https://script.google.com/macros/s/AKfycbwbz2dzJ2yL6L-9RkCbKeC8zfxg0xg8UmG8fOik-MUiLtrsQ6mpRY_5f1bGC0kw5XOR/exec',
-//                 { headers, mode: 'cors' })
-//             res = response
-//             return { data: res }
-//         } catch (error) {
-//             console.log('Load error: ', error)
-//         } finally {
-//             return res ? res : { data: `error!!` }
-//         }
-//     }

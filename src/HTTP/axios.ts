@@ -11,8 +11,6 @@ type ResponseDataNum = {
 }
 export type SheetResponse = ResponseDataStr['result']
 
-export const URL_dev = `https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev`
-const dev1 = `https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycbzDwO9fxSndxIjRChCOlclJ5Le0J_mJ2HK8r0Lbg1c/dev`
 export const URL_script = `https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycbwXPBV66vrnLuHyBo-dtO46jPJvMHAuPMvhMCahub_8EBidiupF1sZ7lvsoJI0oi7_T/exec`
 export const _headers = {
 
@@ -27,12 +25,27 @@ export const $host = axios.create({
 })
 
 
-export const getGoogleSS = async () => {
+export const getGoogleSS = async (sheetId?: string) => {
+    const url = sheetId ? URL_script + `?sheetid=${sheetId}` : URL_script
+
     try {
-        const response = await $host.get(URL_script, {
+        const response = await $host.get(url, {
             headers: _headers,
             // responseType: 'json',
 
+        })
+        return response
+    } catch (error) {
+        _log("AXIOS ERROR: ", error)
+    }
+    return null
+}
+export const postGoogleSS = async (sheetId?: string) => {
+    const ver3 = 'https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycby0HM7hFZTuiQ3-W0oNXpNVhkPwN1cde3BpGYsNy8l49R-m5WwAMD_AKO52EsJyYVg/exec'
+
+    try {
+        const response = await $host.post(ver3, {
+            sheetid: sheetId
         })
         return response
     } catch (error) {

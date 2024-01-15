@@ -7,8 +7,10 @@ type ResponseDataType<T> = {
     type: 'promise'
     response: Promise<T>
 }
+type SSResponse = {
 
+}
 
-export const sheetDataParser = <T>(responseData: ResponseDataType<T>) => {
-    _log("data:", responseData)
+export const sheetDataParser = <T>() => {
+
 }

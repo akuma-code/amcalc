@@ -46,3 +46,10 @@ export const _addProp = <T, P>(obj: T | T[], prop: P): Brand<T, P> | Brand<T, P>
     if (_isArr(obj)) return obj.map(o => ({ ...o, ...prop }))
     else return { ...obj, ...prop }
 }
+
+export const _trim = (str: string | number) => {
+    if (typeof str === 'number') return str.toString()
+    else return str.split(' ')
+        .join('')
+        .replace(',', '.')
+}

@@ -1,111 +1,112 @@
 
 import { Link, Params, useLoaderData } from 'react-router-dom';
-import { _log } from '../../Helpers/HelpersFns';
+import { _log, _trim } from '../../Helpers/HelpersFns';
 import { Box, Button, Stack } from '@mui/material';
-import { URL_dev, URL_script, getGoogleSS } from '../../HTTP/axios';
-import React, { useState } from 'react';
+import { SheetResponse, URL_dev, URL_script, getGoogleSS } from '../../HTTP/axios';
+import React, { useMemo, useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { sheetDataParser } from '../../HTTP/SheetDataParser';
 
 type BlankPageProps = {}
 
-export const scriptAppLoader = async () => {
 
-    // const response = await fetch(URL_script, { headers: _headers, }).then(res => {
-    //     let data: { data: any } = { data: [] };
+export const scriptAppLoader = async (): Promise<{ data: AxiosResponse<{ result: string[][] }, any> } | null> => {
 
-    //         try {
-    //             data.data = res
-    //             return data
-    //         } catch (error) {
-    //             _log("resError! ", error)
-    //         }
-    // })
+
     const response = await getGoogleSS()
     console.log('response: ', response?.data?.result)
 
     return response
 
 }
-const _trim = (str: string | number) => {
-    if (typeof str === 'number') return str.toString()
-    else return str.split(' ').join('')
-}
 
-const _strparse = (str: string) => {
-    return str.replace(',', '.')
-}
-const resultParser = (row: string[]) => row.map(i => +_strparse(_trim(i)))
+
+const resultParser = (row: string[]) => row.map(i => +_trim(i))
 
 export const BlankDataPage: React.FC<BlankPageProps> = () => {
-    const response = useLoaderData() as { data: any }
+    const response = useLoaderData() as AxiosResponse<{ result: string[][] }>
     const { data } = response
-    const [resp, setResp] = useState<any | null>(data)
+    const [resp, setResp] = useState<string[][] | null>(null)
 
     const recievedData = []
 
 
 
     const clickFn = async () => {
-        _log(_trim('123 123'))
-        console.log('data in clickFn', data.result.map(resultParser))
-        const parsed = data.result as string[][]
-        const result = parsed.map(resultParser)
-        // _log(parsed.map(_log))
-        // sheetDataParser<{ result: string[][] }>(data)
-        // console.log('parsed', JSON.parse(response as unknown as string))
-        setResp({ result })
+
+
+
+        const result = data.result
+
+        setResp(result)
         try {
 
         } catch (error) {
             _log(error)
         }
-        // const parsed = data.result.map((row: string) => JSON.parse(row))
-        // console.log('parsed', parsed)
+
     }
+    const MemozData = useMemo(() => {
+        const { data } = response
+        const sheet = data.result.map(resultParser)
+        return sheet
+    }, [response])
 
     return (
-        <Stack>
+        <Stack p={ 1 }>
 
-            <div className='flex flex-row gap-2'>
-                <Button variant='contained'>
-                    <Link to={URL_dev}
+            <div className='flex flex-row gap-2 my-2'>
+                {/* <Button variant='contained'>
+                    <Link to={ URL_dev }
                         target='_blank' referrerPolicy='origin-when-cross-origin'
                     >GoogleApp-Dev</Link>
                 </Button>
                 <Button variant='contained'>
 
-                    <Link to={URL_script}
+                    <Link to={ URL_script }
                         target='_blank' referrerPolicy='origin-when-cross-origin'
                     >Google App</Link>
-                </Button>
+                </Button> */}
 
-                <Button onClick={clickFn}>FFF</Button>
+                <Button onClick={ clickFn } variant='contained' color='info'>Update</Button>
             </div>
             <Box
-                sx={{
-                    [`& ol>div>li`]: { border: '1px solid black' },
+                sx={ {
+                    [`& div>div`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px', fontWeight: 'bold' },
+                    [`& ol>div>li`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px' },
                     maxWidth: '70vw'
-                }}
-            >
-                {resp &&
-                    <ol>
-                        {
-                            resp.result.map((p: string[], idx: number) => (
-                                <div key={idx} className='flex flex-row '>
-                                    {
-                                        p.map((s, i) =>
-                                            <li key={i} className='flex-grow'>{s}</li>
-                                        )}
-                                </div>))
-                        }
-                    </ol>
+                } }
+            >{ MemozData &&
+                <SSTable sdata={ MemozData } />
                 }
+
             </Box>
         </Stack>
     )
 }
+const wsize = [.3, .4, .5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4]
+const hsize = [.3, .4, .5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2]
 
+const SSTable = ({ sdata }: { sdata: number[][] }) => {
+    const THEAD = <div className='flex flex-row max-w-[70wv] self-end'>
+        <div>w/h</div>
+        { wsize.map((s, i) =>
+            <div key={ i }>{ s }</div>
+        ) }
+    </div>
+    return <ol>
+        { THEAD }
+        { sdata && sdata.map((row, idx) => (
+            <div key={ idx } className='flex flex-row '>
+                <div>{ hsize[idx] }</div>
+                {
+                    row.map((s, i) =>
+                        <li key={ i } className='flex-grow'>{ Math.round(s) }</li>
+                    )
+                }
+            </div>)) }
+    </ol>
+}
 // async function F() {
 //         let res: Response | null = null
 //         const headers = {

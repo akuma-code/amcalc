@@ -42,12 +42,14 @@ export const getGoogleSS = async (sheetId?: string) => {
 }
 export const postGoogleSS = async (sheetId?: string) => {
     const ver3 = 'https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycby0HM7hFZTuiQ3-W0oNXpNVhkPwN1cde3BpGYsNy8l49R-m5WwAMD_AKO52EsJyYVg/exec'
-
+    const params = `?sheetName=${sheetId}`
     try {
-        const response = await $host.post(ver3, {
-            sheetid: sheetId
+        const response = await fetch(ver3 + params, {
+            method: 'post',
+
+
         })
-        return response
+        return response.json()
     } catch (error) {
         _log("AXIOS ERROR: ", error)
     }

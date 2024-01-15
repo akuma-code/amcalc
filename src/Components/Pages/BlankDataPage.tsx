@@ -34,7 +34,7 @@ export const BlankDataPage: React.FC<BlankPageProps> = () => {
 
         try {
 
-            const result = await postGoogleSS('v_2')
+            const result = await postGoogleSS('v_6')
 
             console.log('result', result)
 

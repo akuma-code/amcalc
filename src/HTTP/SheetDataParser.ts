@@ -11,6 +11,6 @@ type SSResponse = {
 
 }
 
-export const sheetDataParser = <T>() => {
+export class sheetDataParser<T> {
 
 }

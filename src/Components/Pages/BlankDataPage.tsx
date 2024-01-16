@@ -13,7 +13,7 @@ type BlankPageProps = {}
 export const scriptAppLoader = async () => {
 
 
-    const response = await getGoogleSS('1')
+    const response = await getGoogleSS()
     console.log('response: ', response)
 
     return response
@@ -34,9 +34,14 @@ export const BlankDataPage: React.FC<BlankPageProps> = () => {
 
         try {
 
-            const result = await postGoogleSS()
+            const Aresponse = await postGoogleSS()
+            // as Promise<{ result: string[], title: string, version: string }[]>
+            const { result, sheetId, version } = Aresponse
 
-            console.log('postresult', result.result.map(resultParser))
+            // console.log('data:', Aresponse.forEach(_log))
+
+            console.log('postresult', Aresponse)
+
 
         } catch (error) {
             _log(error)
@@ -45,15 +50,15 @@ export const BlankDataPage: React.FC<BlankPageProps> = () => {
     }
     const MemozData = useMemo(() => {
         const { data } = response
-        const { result, version } = data
+        const { result } = data
 
-        _log(version)
+
         const sheet = result.map(resultParser)
         return sheet
     }, [response])
 
     return (
-        <Stack p={1}>
+        <Stack p={ 1 }>
 
             <div className='flex flex-row gap-2 my-2'>
                 {/* <Button variant='contained'>
@@ -68,16 +73,16 @@ export const BlankDataPage: React.FC<BlankPageProps> = () => {
                     >Google App</Link>
                 </Button> */}
 
-                <Button onClick={clickFn} variant='contained' color='info'>Update</Button>
+                <Button onClick={ clickFn } variant='contained' color='info'>Update</Button>
             </div>
             <Box
-                sx={{
+                sx={ {
                     [`& div>div`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px', fontWeight: 'bold' },
                     [`& ol>div>li`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px' },
                     maxWidth: '70vw'
-                }}
-            >{MemozData &&
-                <SSTable sdata={MemozData} />
+                } }
+            >{ MemozData &&
+                <SSTable sdata={ MemozData } />
                 }
 
             </Box>
@@ -90,20 +95,20 @@ const hsize = [.5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.
 const SSTable = ({ sdata }: { sdata: number[][] }) => {
     const THEAD = <div className='flex flex-row max-w-[70wv] self-end'>
         <div>w/h</div>
-        {wsize.map((s, i) =>
-            <div key={i}>{s}</div>
-        )}
+        { wsize.map((s, i) =>
+            <div key={ i }>{ s }</div>
+        ) }
     </div>
     return <ol>
-        {THEAD}
-        {sdata && sdata.map((row, idx) => (
-            <div key={idx} className='flex flex-row '>
-                <div>{hsize[idx]}</div>
+        { THEAD }
+        { sdata && sdata.map((row, idx) => (
+            <div key={ idx } className='flex flex-row '>
+                <div>{ hsize[idx] }</div>
                 {
                     row.map((s, i) =>
-                        <li key={i} className='flex-grow'>{s.toFixed(2)}</li>
+                        <li key={ i } className='flex-grow'>{ s.toFixed(2) }</li>
                     )
                 }
-            </div>))}
+            </div>)) }
     </ol>
 }

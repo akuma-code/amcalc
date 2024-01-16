@@ -12,8 +12,10 @@ type ResponseDataNum = {
 }
 export type SheetResponse = ResponseDataStr
 
-export const URL_script = `https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycbwXPBV66vrnLuHyBo-dtO46jPJvMHAuPMvhMCahub_8EBidiupF1sZ7lvsoJI0oi7_T/exec`
-const ver3 = `https://thingproxy.freeboard.io/fetch/https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec`
+const _proxy = `https://thingproxy.freeboard.io/fetch/`
+export const URL_script = _proxy + `https://script.google.com/macros/s/AKfycbwXPBV66vrnLuHyBo-dtO46jPJvMHAuPMvhMCahub_8EBidiupF1sZ7lvsoJI0oi7_T/exec`
+const ver3 = _proxy + `https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec`
+const script_v7 = _proxy + `https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec`
 export const _headers = {
 
     'Content-Type': 'application/json' as const,
@@ -28,7 +30,7 @@ export const $host = axios.create({
 
 
 export const getGoogleSS = async (sheetId?: string) => {
-    const url = sheetId ? ver3 : URL_script
+    const url = sheetId ? script_v7 : URL_script
 
     try {
         const response = await $host.get(url, {
@@ -43,12 +45,13 @@ export const getGoogleSS = async (sheetId?: string) => {
     return null
 }
 export const postGoogleSS = async (sheetId?: string) => {
-
+    const url = _proxy + "https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec"
     try {
-        const params = `?sheetName=${sheetId}`
-        const response = await $host.get(ver3, {
+
+        const response = await $host.get(url, {
             headers: _headers,
             responseType: 'json',
+            params: { sheetid: 'v_1' }
 
         })
         return response.data

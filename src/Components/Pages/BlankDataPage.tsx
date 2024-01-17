@@ -72,10 +72,10 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
         return <Box><b className="text-3xl text-center">Error! </b></Box>
     }
     return (
-        <Stack p={ 1 }>
+        <Stack p={1}>
 
-            { data &&
-                <div> sheetName: { selectedGroup }</div>
+            {data &&
+                <div> sheetName: {selectedGroup}</div>
             }
             <div className='flex flex-row gap-2 my-2'>
                 {/* <Button variant='contained'>
@@ -90,18 +90,18 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
                     >Google App</Link>
                 </Button> */}
 
-                <Button onClick={ clickFn } variant='contained' color='info'>Update</Button>
-                <GroupSelector getState={ getSelectedState } />
+                <Button onClick={clickFn} variant='contained' color='info'>Update</Button>
+                <GroupSelector getState={getSelectedState} />
             </div>
             <Box
-                sx={ {
+                sx={{
                     [`& div>div`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px', fontWeight: 'bold' },
                     [`& ol>div>li`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px' },
                     maxWidth: '70vw'
-                } }
+                }}
             >
-                { view &&
-                    <PriceTable ssData={ view } />
+                {view &&
+                    <PriceTable ssData={view} />
                 }
                 {
                     //  MemozData &&
@@ -120,25 +120,25 @@ const GroupSelector = ({ getState }: { getState: (state: string) => void }) => {
         getState(e.target.value)
     }
 
-    return (<FormControl variant="filled" sx={ { m: 1, minWidth: 120 } }>
+    return (<FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
         <InputLabel id="demo-simple-select-filled-label">Viteogroup</InputLabel>
         <Select
             labelId="demo-simple-select-filled-label"
             id="demo-simple-select-filled"
-            value={ group }
-            onChange={ handleChange }
+            value={group}
+            onChange={handleChange}
             variant='filled'
         >
             <MenuItem value="">
-                {/* <em>None</em> */ }
+                {/* <em>None</em> */}
             </MenuItem>
-            <MenuItem value={ 'viteo_Е' }>Viteo E</MenuItem>
-            <MenuItem value={ 'viteo_1' }>Viteo 1</MenuItem>
-            <MenuItem value={ 'viteo_2' }>Viteo 2</MenuItem>
-            <MenuItem value={ 'viteo_3' }>Viteo 3</MenuItem>
-            <MenuItem value={ 'viteo_4' }>Viteo 4</MenuItem>
-            <MenuItem value={ 'viteo_5' }>Viteo 5</MenuItem>
-            <MenuItem value={ 'viteo_6' }>Viteo 6</MenuItem>
+            <MenuItem value={'viteo_Е'}>Viteo E</MenuItem>
+            <MenuItem value={'viteo_1'}>Viteo 1</MenuItem>
+            <MenuItem value={'viteo_2'}>Viteo 2</MenuItem>
+            <MenuItem value={'viteo_3'}>Viteo 3</MenuItem>
+            <MenuItem value={'viteo_4'}>Viteo 4</MenuItem>
+            <MenuItem value={'viteo_5'}>Viteo 5</MenuItem>
+            <MenuItem value={'viteo_6'}>Viteo 6</MenuItem>
         </Select>
     </FormControl>)
 }
@@ -150,21 +150,21 @@ const hsize = [.5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.
 const SSTable = ({ sdata }: { sdata: number[][] }) => {
     const THEAD = <div className='flex flex-row max-w-[70wv] self-end'>
         <div>w/h</div>
-        { wsize.map((s, i) =>
-            <div key={ i }>{ s }</div>
-        ) }
+        {wsize.map((s, i) =>
+            <div key={i}>{s}</div>
+        )}
     </div>
     return <ol>
-        { THEAD }
-        { sdata && sdata.map((row, idx) => (
-            <div key={ idx } className='flex flex-row '>
-                <div>{ hsize[idx] }</div>
+        {THEAD}
+        {sdata && sdata.map((row, idx) => (
+            <div key={idx} className='flex flex-row '>
+                <div>{hsize[idx]}</div>
                 {
                     row.map((s, i) =>
-                        <li key={ i } className='flex-grow'>{ s.toFixed(2) }</li>
+                        <li key={i} className='flex-grow'>{s.toFixed(2)}</li>
                     )
                 }
-            </div>)) }
+            </div>))}
     </ol>
 }
 

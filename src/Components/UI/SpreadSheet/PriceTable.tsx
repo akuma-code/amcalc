@@ -19,7 +19,9 @@ export const PriceTable = (props: PriceTableProps) => {
     const data = props.ssData
 
     return (
-        <Box>
+        <Box sx={ {
+            [`& tbody>tr>td`]: { border: '2px solid black' }
+        } }>
             <table>
                 <thead>
                     <tr>
@@ -28,7 +30,8 @@ export const PriceTable = (props: PriceTableProps) => {
                 </thead>
                 <tbody>
                     { data.map((row, idx) =>
-                        <td key={ idx }>{ row.toString() }</td>
+                        <tr key={ idx }>{ row.map((c, i) =>
+                            <td key={ i }>{ c }</td>) }</tr>
                     ) }
                 </tbody>
             </table>

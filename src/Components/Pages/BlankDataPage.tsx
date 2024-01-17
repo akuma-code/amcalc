@@ -6,9 +6,9 @@ import { SheetResponse, URL_script, getGoogleSS, postGoogleSS } from '../../HTTP
 import React, { useMemo, useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { sheetDataParser } from '../../HTTP/SheetDataParser';
-
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 type BlankPageProps = {}
-
+type SSResponse = AxiosResponse<{ result: string[][], version: string }>
 
 export const scriptAppLoader = async () => {
 
@@ -24,28 +24,23 @@ export const scriptAppLoader = async () => {
 const resultParser = (row: string[]) => Array.isArray(row) ? row.map(i => +_trim(i)) : row
 
 export const BlankDataPage: React.FC<BlankPageProps> = () => {
-    const response = useLoaderData() as AxiosResponse<{ result: string[][], version: string }>
+    const response = useLoaderData() as SSResponse
+    const { data, isLoading, isError, error } = useQuery('ssheet', () => postGoogleSS())
+
 
 
 
 
     const clickFn = async () => {
+        console.log('querydata', data.data)
 
-
-        try {
-
-            const Aresponse = await postGoogleSS()
-            // as Promise<{ result: string[], title: string, version: string }[]>
-            const { result, sheetId, version } = Aresponse
-
-            // console.log('data:', Aresponse.forEach(_log))
-
-            console.log('postresult', Aresponse)
-
-
-        } catch (error) {
-            _log(error)
-        }
+        // try {
+        //     const Aresponse = await postGoogleSS()
+        //     const { result, sheetId, version } = Aresponse
+        //     console.log('postresult', Aresponse)
+        // } catch (error) {
+        //     _log(error)
+        // }
 
     }
     const MemozData = useMemo(() => {
@@ -56,7 +51,8 @@ export const BlankDataPage: React.FC<BlankPageProps> = () => {
         const sheet = result.map(resultParser)
         return sheet
     }, [response])
-
+    if (isLoading) return <Box><b className="text-3xl text-center">Loading...</b></Box>
+    if (isError) return <Box><b className="text-3xl text-center">Error! </b></Box>
     return (
         <Stack p={ 1 }>
 

@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { CommonRoutes } from '../../../App';
+import { CommonRoutes } from '../../../AppRouter';
 import { Link as RouterLink, LinkProps as RLinkPorps } from 'react-router-dom';
 import { Link } from '@mui/icons-material';
 
@@ -10,7 +10,7 @@ import { Link } from '@mui/icons-material';
 export const AppPaths = () => {
 
 
-    return <Box sx={{
+    return <Box sx={ {
         [`& ul>li`]: {
             fontFamily: 'Fira Code',
             display: 'flex',
@@ -23,7 +23,7 @@ export const AppPaths = () => {
         },
         [`& a:visited`]: { color: 'green' }
         // maxWidth: '22em'
-    }}>
+    } }>
 
         <div className='text-center w-[25em]'> <b>App Paths</b></div>
         <div className='px-2 font-serif'>
@@ -34,27 +34,27 @@ export const AppPaths = () => {
                     </div>
 
                     <div className='flex-grow-0'>
-                        <RouterLink to={'/'} >Root</RouterLink>
+                        <RouterLink to={ '/' } >Root</RouterLink>
                     </div>
                 </li>
                 <li>
                     <div className='flex-grow'>
                         <b>/bento</b>
                     </div>
-                    <div className='flex-grow-0'><RouterLink to={'bento'} >Bento</RouterLink>  </div>
+                    <div className='flex-grow-0'><RouterLink to={ 'bento' } >Bento</RouterLink>  </div>
                 </li>
                 <li>
                     <div className='flex-grow-0'>
                         <b>/sill</b>
                     </div>
-                    <div className='flex-grow-0'><RouterLink to={'sill'} >Sill Form</RouterLink>  </div>
+                    <div className='flex-grow-0'><RouterLink to={ 'sill' } >Sill Form</RouterLink>  </div>
                 </li>
                 <li>
                     <div className='flex-grow'>
                         <b>/sill/groups/:group_id</b>
                     </div>
 
-                    <div className='flex-grow-0'><RouterLink to={'sill/groups'}>  Sill groups</RouterLink> </div>
+                    <div className='flex-grow-0'><RouterLink to={ 'sill/groups' }>  Sill groups</RouterLink> </div>
 
                 </li>
                 <li>
@@ -62,7 +62,7 @@ export const AppPaths = () => {
                         <b>/tabs</b>
                     </div>
                     <div className="flex-grow-0">
-                        <RouterLink to={'/tabs'} >Tabs</RouterLink>
+                        <RouterLink to={ '/tabs' } >Tabs</RouterLink>
                     </div>
                 </li>
                 <li>
@@ -70,7 +70,7 @@ export const AppPaths = () => {
                         <b>/getapp</b>
                     </div>
                     <div className="flex-grow-0">
-                        <RouterLink to={'/getapp'} >AppScript</RouterLink>
+                        <RouterLink to={ '/getapp' } >AppScript</RouterLink>
                     </div>
                 </li>
             </ul>

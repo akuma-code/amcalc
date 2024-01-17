@@ -83,7 +83,7 @@ export const CommonRoutes: RouteObject[] = [
             {
                 path: '/getapp',
                 element: <BlankDataPage />,
-                loader: scriptAppLoader
+                // loader: scriptAppLoader
             },
             {
                 path: '/sill/groups/print',

@@ -26,6 +26,7 @@ export class OutputViewConfig implements IOutputView {
     visible: IVisibileItems
     active: { store: ArgsTypes; output: ArgsTypes; }
     layout: ILayoutTypes = { path: 'bento' }
+    globalFetching: boolean
     constructor() {
         makeObservable(this, {
             selected_store: observable,
@@ -33,6 +34,8 @@ export class OutputViewConfig implements IOutputView {
             visible: observable,
             active: observable,
             layout: observable,
+            globalFetching: observable,
+            statusFetching: action,
             setLayout: action,
             toggleSizeView: action,
             selectOut: action,
@@ -53,7 +56,7 @@ export class OutputViewConfig implements IOutputView {
             store: 'size_full',
             output: 'size_full'
         }
-
+        this.globalFetching = false
 
     }
     toggleSizeView(mode: 'skf' | 'simple' | 'both') {
@@ -81,7 +84,22 @@ export class OutputViewConfig implements IOutputView {
         this.visible = { ...this.visible, [view_item]: !value }
 
     }
+    statusFetching(status: "error" | "idle" | "loading" | "success") {
+        switch (status) {
+            case "error": this.globalFetching = false; break
+            case "idle": this.globalFetching = false; break
+            case "loading": this.globalFetching = true; break
+            case "success": this.globalFetching = false; break
+        }
+    }
+    toggleIsFetching(state?: boolean) {
+        if (state) {
+            this.globalFetching = state
+            return
+        }
+        this.globalFetching = !this.globalFetching
 
+    }
     setLayout(p: ILayoutTypes['path']) {
         _log(toJS(this.layout.path))
         this.layout = { ...this.layout, path: p }

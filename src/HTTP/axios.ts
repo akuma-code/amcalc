@@ -44,19 +44,18 @@ export const getGoogleSS = async (sheetId?: string) => {
     }
     return null
 }
-export const postGoogleSS = async (sheetId?: string) => {
-    const url = _proxy + "https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec"
+export async function postGoogleSS(): Promise<{ data: string[][], groupId: string }[] | null> {
+    const url = _proxy + "https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec?sheetId=v_2";
     try {
 
         const response = await $host.get(url, {
             headers: _headers,
             responseType: 'json',
-            params: { sheetid: 'v_1' }
 
-        })
-        return response.data
+        });
+        return response.data;
     } catch (error) {
-        _log("AXIOS ERROR: ", error)
+        _log("AXIOS ERROR: ", error);
     }
-    return null
+    return null;
 }

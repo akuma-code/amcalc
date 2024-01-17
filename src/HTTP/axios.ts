@@ -14,8 +14,8 @@ export type SheetResponse = ResponseDataStr
 
 const _proxy = `https://thingproxy.freeboard.io/fetch/`
 export const URL_script = _proxy + `https://script.google.com/macros/s/AKfycbwXPBV66vrnLuHyBo-dtO46jPJvMHAuPMvhMCahub_8EBidiupF1sZ7lvsoJI0oi7_T/exec`
-const ver3 = _proxy + `https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec`
-const script_v7 = _proxy + `https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec`
+
+const script_v7 = `https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec?ztype=viteo`
 export const _headers = {
 
     'Content-Type': 'application/json' as const,
@@ -30,7 +30,7 @@ export const $host = axios.create({
 
 
 export const getGoogleSS = async (sheetId?: string) => {
-    const url = sheetId ? script_v7 : URL_script
+    const url = sheetId ? _proxy + script_v7 : URL_script
 
     try {
         const response = await $host.get(url, {
@@ -45,7 +45,7 @@ export const getGoogleSS = async (sheetId?: string) => {
     return null
 }
 export async function postGoogleSS(): Promise<{ data: string[][], groupId: string }[] | null> {
-    const url = _proxy + "https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec?sheetId=v_2";
+    const url = _proxy + script_v7;
     try {
 
         const response = await $host.get(url, {

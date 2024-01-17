@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider, useIsFetching, useQuery } from 'react
 import { useStoresContext } from '../../Hooks/useStoresContext';
 import { Loading } from './Loading';
 import { observer } from 'mobx-react-lite';
+import { PriceTable, _numberArray } from '../UI/SpreadSheet/PriceTable';
 type BlankPageProps = {}
 type SSResponse = AxiosResponse<{ result: string[][], version: string, sheetId: string }>
 
@@ -30,7 +31,7 @@ const resultParser = (row: string[]) => Array.isArray(row) ? row.map(i => +_trim
 export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
     const { ViewConfig } = useStoresContext();
     const [selectedGroup, setSelectedGroup] = useState<string | null>(null)
-    const [view, setView] = useState<any | null>(null)
+    const [view, setView] = useState<string[][] | null | undefined>(null)
     // const response = useLoaderData() as SSResponse
     const { data, isLoading, isError, error } = useQuery('ssheet', postGoogleSS,
         {
@@ -99,6 +100,9 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
                     maxWidth: '70vw'
                 } }
             >
+                { view &&
+                    <PriceTable ssData={ view } />
+                }
                 {
                     //  MemozData &&
                     // <SSTable sdata={ MemozData } />
@@ -163,3 +167,5 @@ const SSTable = ({ sdata }: { sdata: number[][] }) => {
             </div>)) }
     </ol>
 }
+
+

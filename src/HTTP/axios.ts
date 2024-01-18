@@ -112,12 +112,12 @@ export const $api = {
         const _url = _proxy + url_viteo;
         try {
 
-            const response = await $host.get(url, {
+            const response = await $host.get<GoogleResponse>(url, {
                 headers: _headers,
                 responseType: 'json',
 
             });
-            return response;
+            return response.data;
         } catch (error) {
             _log("___Fetch ERROR: ", error);
         }

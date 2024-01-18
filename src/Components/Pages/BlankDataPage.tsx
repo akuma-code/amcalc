@@ -29,7 +29,7 @@ const resultParser = (row: string[]) => Array.isArray(row) ? row.map(i => +_trim
 
 export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
     const { ViteoStore, ViewConfig } = useStoresContext();
-    const { data, isLoading, error, isError } = useFetch<{ data: number[][] }>(_proxy + url_isolite, {},)
+    const { data, isLoading, error, isError } = useFetch<{ data: number[][] }>(_proxy + url_viteo)
     // const { data, isLoading, isError, error } = useQuery('viteo', fetchViteoData,)
     // const [selectedGroup, setSelectedGroup] = useState<string | null>(null)
     // const response = useLoaderData() as SSResponse
@@ -53,23 +53,23 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
         return <Box><b className="text-3xl text-center">Error! </b></Box>
     }
     return (
-        <Stack p={ 1 }>
+        <Stack p={1}>
 
             <div className='flex flex-row gap-2 my-2'>
 
-                <Button onClick={ clickFn } variant='contained' color='info'>Update</Button>
+                <Button onClick={clickFn} variant='contained' color='info'>Update</Button>
                 <GroupSelector />
             </div>
             <Box
-                sx={ {
+                sx={{
                     [`& div>div`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px', fontWeight: 'bold' },
                     [`& ol>div>li`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px' },
                     maxWidth: '90vw'
-                } }
+                }}
             >
                 {
                     MemoTableData &&
-                    <PriceTable data={ MemoTableData } groupId={ ViewConfig.active.zgroup } />
+                    <PriceTable data={MemoTableData} groupId={ViewConfig.active.zgroup} />
                 }
 
             </Box>
@@ -91,23 +91,23 @@ const GroupSelector = ({ getState }: { getState?: (state: string) => void }) => 
         ViewConfig.setActive('zgroup', group)
 
     }, [ViewConfig, group])
-    return (<FormControl variant="filled" sx={ { m: 1, minWidth: 120 } }>
+    return (<FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
         <InputLabel id="demo-simple-select-filled-label">Жалюзи</InputLabel>
         <Select
             labelId="demo-simple-select-filled-label"
             id="demo-simple-select-filled"
-            value={ group }
-            onChange={ handleChange }
+            value={group}
+            onChange={handleChange}
             variant='filled'
         >
             <MenuItem value=""></MenuItem>
-            <MenuItem value={ 'viteo_E' }>Viteo E</MenuItem>
-            <MenuItem value={ 'viteo_1' }>Viteo 1</MenuItem>
-            <MenuItem value={ 'viteo_2' }>Viteo 2</MenuItem>
-            <MenuItem value={ 'viteo_3' }>Viteo 3</MenuItem>
-            <MenuItem value={ 'viteo_4' }>Viteo 4</MenuItem>
-            <MenuItem value={ 'viteo_5' }>Viteo 5</MenuItem>
-            <MenuItem value={ 'viteo_6' }>Viteo 6</MenuItem>
+            <MenuItem value={'viteo_E'}>Viteo E</MenuItem>
+            <MenuItem value={'viteo_1'}>Viteo 1</MenuItem>
+            <MenuItem value={'viteo_2'}>Viteo 2</MenuItem>
+            <MenuItem value={'viteo_3'}>Viteo 3</MenuItem>
+            <MenuItem value={'viteo_4'}>Viteo 4</MenuItem>
+            <MenuItem value={'viteo_5'}>Viteo 5</MenuItem>
+            <MenuItem value={'viteo_6'}>Viteo 6</MenuItem>
         </Select>
     </FormControl>)
 }

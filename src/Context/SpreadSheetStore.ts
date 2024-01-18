@@ -1,25 +1,32 @@
+import { $api } from "../HTTP/axios";
 import { _log, _trim } from "../Helpers/HelpersFns"
 
 type ISpreadSheetData = number[][]
 export type ZGroupName = "" | 'viteo_E' | 'viteo_1' | 'viteo_2' | 'viteo_3' | 'viteo_4' | 'viteo_5' | 'viteo_6'
 type ISheetGroupData = {
     data: string[][];
-    groupId: ZGroupName;
+    groupId: ZGroupName & string;
 }
-export class SpreadSheetStore {
+export class ViteoStore {
     store: Record<string, ISpreadSheetData> = {}
-    lsid = "_sheet_data"
+    lsid: string = "_viteo_data"
     constructor() {
 
         this.init()
     }
 
-    init() {
+    async init() {
 
         const saved = localStorage.getItem(this.lsid)
         if (!saved) {
             _log("You have to load data from google")
+            try {
+                const data = await $api.viteo()
+                if (data) this.parseData(data)
 
+            } catch (error) {
+                console.warn("___initstore error: ", error)
+            }
         }
         else {
             this.setStore(JSON.parse(saved))

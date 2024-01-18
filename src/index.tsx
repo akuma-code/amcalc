@@ -13,7 +13,7 @@ import { A_Sill, A_Size } from './Interfaces/CommonTypes';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './AppTheme';
 import { _log } from './Helpers/HelpersFns';
-import { SpreadSheetStore } from './Context/SpreadSheetStore';
+import { ViteoStore } from './Context/SpreadSheetStore';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 configure({
@@ -36,7 +36,7 @@ const Stores: IStoresContext = {
   RootStore: ROOTSTORE,
   ViewConfig: new OutputViewConfig(),
   SillStore: tempStore,
-  ViteoStore: new SpreadSheetStore(),
+  ViteoStore: new ViteoStore(),
 }
 
 const queryClient = new QueryClient({
@@ -57,14 +57,14 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
 
-    <ThemeProvider theme={ theme }>
+    <ThemeProvider theme={theme}>
       <StoresContext.Provider
-        value={ {
+        value={{
           ...Stores
-        } }
-        key={ 'Store Provider' }
+        }}
+        key={'Store Provider'}
       >
-        <QueryClientProvider client={ queryClient } contextSharing={ true }>
+        <QueryClientProvider client={queryClient} contextSharing={true}>
 
           <CssBaseline enableColorScheme />
           <App />

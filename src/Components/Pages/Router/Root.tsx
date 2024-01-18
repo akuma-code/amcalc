@@ -10,17 +10,13 @@ import { _log } from '../../../Helpers/HelpersFns'
 
 type Props = {} & PropsWithChildren
 const Root = (props: Props) => {
-    const fetchValue = useIsFetching(['ssheet'])
-    const { isLoading } = useQuery('ssheet')
-    const { ViewConfig } = useStoresContext()
+
+    // const { ViewConfig, SheetStore } = useStoresContext()
 
     // _log("fetchcount: ", fetchValue)
     return (
         <div>
-
             <SelectorPanel />
-
-            {/* { ViewConfig.globalFetching ? <Loading /> : <Divider sx={ { py: 1, my: 1 } }></Divider> } */ }
             <Outlet />
         </div>
     )

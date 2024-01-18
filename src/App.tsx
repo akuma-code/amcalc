@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider, useQuery, useIsFetching } from 'react
 import { useStoresContext } from './Hooks/useStoresContext';
 import { postGoogleSS } from './HTTP/axios';
 import { observer } from 'mobx-react-lite';
+import { SelectorPanel } from './Components/Layout/SelectorPanel';
 
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { queryFn: postGoogleSS } } })

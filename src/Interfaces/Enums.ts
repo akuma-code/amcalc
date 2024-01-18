@@ -18,3 +18,13 @@ export enum LABELS_LIST {
     B = 'ширина',
     count = 'количество',
 }
+
+export enum ZLABEL {
+    viteo_E = 'Viteo E',
+    viteo_1 = 'Viteo 1',
+    viteo_2 = 'Viteo 2',
+    viteo_3 = 'Viteo 3',
+    viteo_4 = 'Viteo 4',
+    viteo_5 = 'Viteo 5',
+    viteo_6 = 'Viteo 6',
+}

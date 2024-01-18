@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "huuums.vscode-fast-folder-structure"
+        "huuums.vscode-fast-folder-structure",
+        "reactreedev.reactree"
     ]
 }

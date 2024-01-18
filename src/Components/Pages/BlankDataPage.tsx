@@ -11,6 +11,7 @@ import { useStoresContext } from '../../Hooks/useStoresContext';
 import { Loading } from './Loading';
 import { observer } from 'mobx-react-lite';
 import { PriceTable, _numberArray } from '../UI/SpreadSheet/PriceTable';
+import { ZGroupName } from '../../Context/SpreadSheetStore';
 type BlankPageProps = {}
 type SSResponse = AxiosResponse<{ result: string[][], version: string, sheetId: string }>
 
@@ -29,9 +30,9 @@ const resultParser = (row: string[]) => Array.isArray(row) ? row.map(i => +_trim
 
 
 export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
-    const { ViewConfig } = useStoresContext();
+    const { SheetStore } = useStoresContext();
     const [selectedGroup, setSelectedGroup] = useState<string | null>(null)
-    const [view, setView] = useState<string[][] | null | undefined>(null)
+    const [view, setView] = useState<number[][] | null | undefined>(null)
     // const response = useLoaderData() as SSResponse
     const { data, isLoading, isError, error } = useQuery('ssheet', postGoogleSS,
         {
@@ -39,69 +40,42 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
         })
     const getSelectedState = (state: string) => setSelectedGroup(state)
 
-    // const MemozData = useMemo(() => {
-    //     // const { data } = response
-    //     if (!data) return null
-    //     const { result } = data
+    const clickFn = () => {
+        if (!data) return
 
 
-    //     const sheet = result.map(resultParser)
-    //     return sheet
-    // }, [data])
+        SheetStore.parseData(data)
 
-    const clickFn = async () => {
-        console.log('querydata', data)
-
-        // try {
-        //     const Aresponse = await postGoogleSS()
-        //     const { result, sheetId, version } = Aresponse
-        //     console.log('postresult', Aresponse)
-        // } catch (error) {
-        //     _log(error)
-        // }
 
     }
     useEffect(() => {
-        if (!data) return
+        if (!data || !selectedGroup) return
         const selected = data.find(d => d.groupId === selectedGroup)
-        setView(selected?.data)
-    }, [data, selectedGroup])
+        const _selected = SheetStore.store[selectedGroup]
+        setView(_selected)
+    }, [SheetStore.store, data, selectedGroup])
     if (isLoading) return <Loading />
     if (isError) {
         console.log('error: ', error)
         return <Box><b className="text-3xl text-center">Error! </b></Box>
     }
     return (
-        <Stack p={1}>
+        <Stack p={ 1 }>
 
-            {data &&
-                <div> sheetName: {selectedGroup}</div>
-            }
             <div className='flex flex-row gap-2 my-2'>
-                {/* <Button variant='contained'>
-                    <Link to={ URL_dev }
-                        target='_blank' referrerPolicy='origin-when-cross-origin'
-                    >GoogleApp-Dev</Link>
-                </Button>
-                <Button variant='contained'>
 
-                    <Link to={ URL_script }
-                        target='_blank' referrerPolicy='origin-when-cross-origin'
-                    >Google App</Link>
-                </Button> */}
-
-                <Button onClick={clickFn} variant='contained' color='info'>Update</Button>
-                <GroupSelector getState={getSelectedState} />
+                <Button onClick={ clickFn } variant='contained' color='info'>Update</Button>
+                <GroupSelector getState={ getSelectedState } />
             </div>
             <Box
-                sx={{
+                sx={ {
                     [`& div>div`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px', fontWeight: 'bold' },
                     [`& ol>div>li`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px' },
-                    maxWidth: '70vw'
-                }}
+                    maxWidth: '90vw'
+                } }
             >
-                {view &&
-                    <PriceTable ssData={view} />
+                { view &&
+                    <PriceTable data={ view } groupId={ selectedGroup } />
                 }
                 {
                     //  MemozData &&
@@ -115,30 +89,34 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
 BlankDataPage.displayName = "***Data Page"
 const GroupSelector = ({ getState }: { getState: (state: string) => void }) => {
     const [group, setGroup] = useState("")
+    const { ViewConfig } = useStoresContext()
+
     const handleChange = (e: SelectChangeEvent) => {
         setGroup(prev => e.target.value)
         getState(e.target.value)
     }
 
-    return (<FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel id="demo-simple-select-filled-label">Viteogroup</InputLabel>
+    useEffect(() => {
+        if (group === "") return
+        ViewConfig.active.zgroup = group as ZGroupName
+    }, [ViewConfig.active, group])
+    return (<FormControl variant="filled" sx={ { m: 1, minWidth: 120 } }>
+        <InputLabel id="demo-simple-select-filled-label">Жалюзи</InputLabel>
         <Select
             labelId="demo-simple-select-filled-label"
             id="demo-simple-select-filled"
-            value={group}
-            onChange={handleChange}
+            value={ group }
+            onChange={ handleChange }
             variant='filled'
         >
-            <MenuItem value="">
-                {/* <em>None</em> */}
-            </MenuItem>
-            <MenuItem value={'viteo_Е'}>Viteo E</MenuItem>
-            <MenuItem value={'viteo_1'}>Viteo 1</MenuItem>
-            <MenuItem value={'viteo_2'}>Viteo 2</MenuItem>
-            <MenuItem value={'viteo_3'}>Viteo 3</MenuItem>
-            <MenuItem value={'viteo_4'}>Viteo 4</MenuItem>
-            <MenuItem value={'viteo_5'}>Viteo 5</MenuItem>
-            <MenuItem value={'viteo_6'}>Viteo 6</MenuItem>
+            {/* <MenuItem value=""></MenuItem> */ }
+            <MenuItem value={ 'viteo_E' }>Viteo E</MenuItem>
+            <MenuItem value={ 'viteo_1' }>Viteo 1</MenuItem>
+            <MenuItem value={ 'viteo_2' }>Viteo 2</MenuItem>
+            <MenuItem value={ 'viteo_3' }>Viteo 3</MenuItem>
+            <MenuItem value={ 'viteo_4' }>Viteo 4</MenuItem>
+            <MenuItem value={ 'viteo_5' }>Viteo 5</MenuItem>
+            <MenuItem value={ 'viteo_6' }>Viteo 6</MenuItem>
         </Select>
     </FormControl>)
 }
@@ -150,21 +128,21 @@ const hsize = [.5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.
 const SSTable = ({ sdata }: { sdata: number[][] }) => {
     const THEAD = <div className='flex flex-row max-w-[70wv] self-end'>
         <div>w/h</div>
-        {wsize.map((s, i) =>
-            <div key={i}>{s}</div>
-        )}
+        { wsize.map((s, i) =>
+            <div key={ i }>{ s }</div>
+        ) }
     </div>
     return <ol>
-        {THEAD}
-        {sdata && sdata.map((row, idx) => (
-            <div key={idx} className='flex flex-row '>
-                <div>{hsize[idx]}</div>
+        { THEAD }
+        { sdata && sdata.map((row, idx) => (
+            <div key={ idx } className='flex flex-row '>
+                <div>{ hsize[idx] }</div>
                 {
                     row.map((s, i) =>
-                        <li key={i} className='flex-grow'>{s.toFixed(2)}</li>
+                        <li key={ i } className='flex-grow'>{ s.toFixed(2) }</li>
                     )
                 }
-            </div>))}
+            </div>)) }
     </ol>
 }
 

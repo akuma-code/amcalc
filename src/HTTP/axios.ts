@@ -1,5 +1,7 @@
 import axios, { AxiosPromise, HeadersDefaults } from "axios";
 import { _log } from "../Helpers/HelpersFns";
+import { ZLABEL } from "../Interfaces/Enums";
+import { ZGroupName } from "../Context/SpreadSheetStore";
 
 type ResponseDataStr = {
     type: 'string'
@@ -44,7 +46,7 @@ export const getGoogleSS = async (sheetId?: string) => {
     }
     return null
 }
-export async function postGoogleSS(): Promise<{ data: string[][], groupId: string }[] | null> {
+export async function postGoogleSS(): Promise<{ data: string[][], groupId: ZGroupName }[] | null> {
     const url = _proxy + script_v7;
     try {
 
@@ -56,6 +58,22 @@ export async function postGoogleSS(): Promise<{ data: string[][], groupId: strin
         return response.data;
     } catch (error) {
         _log("AXIOS ERROR: ", error);
+    }
+    return null;
+}
+
+export async function fetchSheetData() {
+    const url = _proxy + script_v7;
+    try {
+
+        const response = await $host.get(url, {
+            headers: _headers,
+            responseType: 'json',
+
+        });
+        return response;
+    } catch (error) {
+        _log("___Fetch ERROR: ", error);
     }
     return null;
 }

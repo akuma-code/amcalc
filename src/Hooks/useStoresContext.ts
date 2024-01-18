@@ -5,11 +5,13 @@ import { ArgStorage } from '../Context/ArgStorage'
 import { RootArgsStore_v1 } from '../Context/RootStore'
 import { OutputViewConfig } from '../Context/ThemeView'
 import { A_Sill, A_Size } from '../Interfaces/CommonTypes'
+import { SpreadSheetStore } from '../Context/SpreadSheetStore'
 export interface IStoresContext {
     RootStore: RootArgsStore_v1
     SizeStore?: ArgStorage<A_Size>
     ViewConfig: OutputViewConfig
     SillStore: ArgStorage<A_Sill>
+    SheetStore: SpreadSheetStore
 }
 
 

@@ -2,6 +2,7 @@ import { action, makeObservable, observable, toJS } from "mobx";
 import { _log } from "../Helpers/HelpersFns";
 import { InputsTypeEnum } from "../Hooks/useFormStateSelector";
 import { ArgsTypes } from "../Models/ArgsTypeModel";
+import { ZGroupName } from "./SpreadSheetStore";
 
 
 export type ILayoutTypes = { path: 'bento' } | { path: 'sill' } | { path: 'home' }
@@ -15,7 +16,7 @@ export interface IVisibileItems {
     showPossibleMerge: boolean
 }
 export interface IOutputView {
-    active: { store: ArgsTypes, output: ArgsTypes }
+    active: { store: ArgsTypes, output: ArgsTypes, zgroup: ZGroupName }
     visible: IVisibileItems,
     layout: ILayoutTypes
 }
@@ -24,7 +25,7 @@ export class OutputViewConfig implements IOutputView {
     selected_store: ArgsTypes = InputsTypeEnum.size_full
     selected_output: ArgsTypes = InputsTypeEnum.size_full
     visible: IVisibileItems
-    active: { store: ArgsTypes; output: ArgsTypes; }
+    active: { store: ArgsTypes; output: ArgsTypes, zgroup: ZGroupName }
     layout: ILayoutTypes = { path: 'bento' }
     globalFetching: boolean
     constructor() {
@@ -54,7 +55,8 @@ export class OutputViewConfig implements IOutputView {
         }
         this.active = {
             store: 'size_full',
-            output: 'size_full'
+            output: 'size_full',
+            zgroup: 'viteo_E'
         }
         this.globalFetching = false
 

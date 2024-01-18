@@ -13,6 +13,7 @@ import { A_Sill, A_Size } from './Interfaces/CommonTypes';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './AppTheme';
 import { _log } from './Helpers/HelpersFns';
+import { SpreadSheetStore } from './Context/SpreadSheetStore';
 
 configure({
   useProxies: "always",
@@ -34,6 +35,7 @@ const Stores: IStoresContext = {
   RootStore: ROOTSTORE,
   ViewConfig: new OutputViewConfig(),
   SillStore: tempStore,
+  SheetStore: new SpreadSheetStore(),
 }
 
 
@@ -45,12 +47,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
 
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={ theme }>
       <StoresContext.Provider
-        value={{
+        value={ {
           ...Stores
-        }}
-        key={'Store Provider'}
+        } }
+        key={ 'Store Provider' }
       >
         <CssBaseline enableColorScheme />
         <App />

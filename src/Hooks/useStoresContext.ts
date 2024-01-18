@@ -11,7 +11,7 @@ export interface IStoresContext {
     SizeStore?: ArgStorage<A_Size>
     ViewConfig: OutputViewConfig
     SillStore: ArgStorage<A_Sill>
-    SheetStore: SpreadSheetStore
+    ViteoStore: SpreadSheetStore
 }
 
 

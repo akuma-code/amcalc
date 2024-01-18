@@ -37,11 +37,6 @@ export const CommonRoutes: RouteObject[] = [
         element: <Root />,
         id: 'root_elem',
         errorElement: <ErrorPage />,
-        // loader: ({ request, params }) => {
-        //   const data = request
-        //   // console.log('req', data)
-        //   return data
-        // },
         children: [
             {
                 index: true,
@@ -89,15 +84,15 @@ export const CommonRoutes: RouteObject[] = [
                 path: '/sill/groups/print',
                 element: <PrintPage />
             },
-            {
-                path: '/tabs',
-                element: <OutputTabs />,
-                loader: tabLoader
-            },
-            {
-                path: '/offset',
-                element: <Output2 />
-            }
+            // {
+            //     path: '/tabs',
+            //     element: <OutputTabs />,
+            //     loader: tabLoader
+            // },
+            // {
+            //     path: '/offset',
+            //     element: <Output2 />
+            // }
         ]
     }
 ];

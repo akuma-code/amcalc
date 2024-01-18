@@ -2,13 +2,16 @@ import AndroidIcon from '@mui/icons-material/Android'
 import BentoIcon from '@mui/icons-material/Bento'
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt'
 import DescriptionIcon from '@mui/icons-material/Description';
-import { AppBar, Box, Breadcrumbs, Toolbar } from '@mui/material'
+import { AppBar, Box, Breadcrumbs, CircularProgress, Fab, LinearProgress, Toolbar } from '@mui/material'
 import { observer } from 'mobx-react-lite'
 import { Link as RouterLink } from 'react-router-dom'
+import { useIsFetching } from 'react-query';
+import { _log } from '../../Helpers/HelpersFns';
 type Props = {}
 
 export const SelectorPanel = observer((props: Props) => {
-
+    const viteoFetchCount = useIsFetching('viteo')
+    const isoFetchCount = useIsFetching('isolite')
 
     return (
         <Box sx={ { flexGrow: 1 } } top={ 0 }>
@@ -38,10 +41,13 @@ export const SelectorPanel = observer((props: Props) => {
 
                     </Breadcrumbs>
                     {/* <Divider orientation='vertical' flexItem variant='fullWidth' /> */ }
-                    <div className="flex flex-row  gap-10">
-
-                        <RouterLink to={ '/tabs' }>Tabs</RouterLink>
-                        <RouterLink to={ '/offset' }>Offset</RouterLink>
+                    <div className="flex flex-row  flex-grow">
+                        { viteoFetchCount > 0 &&
+                            <CircularFetchViewProgress counter={ viteoFetchCount } />
+                        }
+                        { isoFetchCount > 0 &&
+                            <CircularFetchViewProgress counter={ isoFetchCount } />
+                        }
                     </div>
 
 
@@ -53,3 +59,29 @@ export const SelectorPanel = observer((props: Props) => {
 })
 
 SelectorPanel.displayName = "***AppToolbar"
+
+const CircularFetchViewProgress = ({ counter }: { counter: number }) => {
+
+    return (
+        <Box sx={ { m: .3, position: 'relative' } }>
+            <Fab size='small'
+                aria-label="save"
+                sx={ { color: 'green' } }
+            >
+                <b>{ counter }</b>
+            </Fab>
+
+            <CircularProgress
+                size={ 52 }
+                sx={ {
+                    color: `red`,
+                    position: 'absolute',
+                    top: -6,
+                    left: -6,
+                    zIndex: 1,
+                } }
+            />
+
+        </Box>
+    )
+}

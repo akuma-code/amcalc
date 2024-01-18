@@ -4,7 +4,7 @@ import App from './App';
 import { ROOTSTORE } from './Context/RootStore';
 import { OutputViewConfig } from './Context/ThemeView';
 import { IStoresContext, StoresContext } from './Hooks/useStoresContext';
-import './index.css';
+
 import reportWebVitals from './reportWebVitals';
 
 import { configure } from "mobx";
@@ -14,6 +14,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './AppTheme';
 import { _log } from './Helpers/HelpersFns';
 import { SpreadSheetStore } from './Context/SpreadSheetStore';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 configure({
   useProxies: "always",
@@ -35,10 +36,19 @@ const Stores: IStoresContext = {
   RootStore: ROOTSTORE,
   ViewConfig: new OutputViewConfig(),
   SillStore: tempStore,
-  SheetStore: new SpreadSheetStore(),
+  ViteoStore: new SpreadSheetStore(),
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
 
+    }
+  }
+})
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -54,8 +64,11 @@ root.render(
         } }
         key={ 'Store Provider' }
       >
-        <CssBaseline enableColorScheme />
-        <App />
+        <QueryClientProvider client={ queryClient } contextSharing={ true }>
+
+          <CssBaseline enableColorScheme />
+          <App />
+        </QueryClientProvider>
       </StoresContext.Provider>
     </ThemeProvider>
 

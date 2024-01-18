@@ -42,7 +42,7 @@ export class OutputViewConfig implements IOutputView {
             selectOut: action,
             selectForm: action,
             toggleVisible: action,
-
+            setActive: action,
         }, { name: 'ViewConfig' })
         this.visible = {
             showSkf: true,
@@ -56,7 +56,7 @@ export class OutputViewConfig implements IOutputView {
         this.active = {
             store: 'size_full',
             output: 'size_full',
-            zgroup: 'viteo_E'
+            zgroup: ''
         }
         this.globalFetching = false
 
@@ -105,6 +105,9 @@ export class OutputViewConfig implements IOutputView {
     setLayout(p: ILayoutTypes['path']) {
         _log(toJS(this.layout.path))
         this.layout = { ...this.layout, path: p }
+    }
+    setActive(item: keyof typeof this.active, value: string) {
+        this.active = { ...this.active, [item]: value }
     }
 }
 

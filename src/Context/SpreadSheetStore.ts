@@ -1,7 +1,7 @@
 import { _log, _trim } from "../Helpers/HelpersFns"
 
 type ISpreadSheetData = number[][]
-export type ZGroupName = 'viteo_E' | 'viteo_1' | 'viteo_2' | 'viteo_3' | 'viteo_4' | 'viteo_5' | 'viteo_6'
+export type ZGroupName = "" | 'viteo_E' | 'viteo_1' | 'viteo_2' | 'viteo_3' | 'viteo_4' | 'viteo_5' | 'viteo_6'
 type ISheetGroupData = {
     data: string[][];
     groupId: ZGroupName;
@@ -38,7 +38,9 @@ export class SpreadSheetStore {
         sheet_data.forEach((sd, idx) => this.store![sd.groupId] = trimmed[idx])
         this.saveStore()
     }
-
+    clear() {
+        return this.store = {}
+    }
 
 }
 

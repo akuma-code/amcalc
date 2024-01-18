@@ -51,10 +51,13 @@ export const PriceTable = ({ data, groupId: sheetName }: PriceTableProps) => {
                     { data.map((row, idx) =>
 
                         <tr key={ idx }>
-                            <td className='w-[50px] text-center'><b>{ hsize[idx] }</b></td>
-                            { row.map((c, i) =>
-                                <td key={ i }>{ Math.round(c) }</td>)
-                            }
+                            <td className='w-[50px] text-center'>
+                                <b>{ hsize[idx] }</b>
+                            </td>
+                            {
+                                row.map((n, i) =>
+                                    <td key={ i }>{ Math.round(n) }</td>
+                                ) }
                         </tr>
                     ) }
                 </tbody>

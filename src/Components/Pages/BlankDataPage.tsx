@@ -2,7 +2,7 @@
 import { Link, Params, useLoaderData } from 'react-router-dom';
 import { _log, _trim } from '../../Helpers/HelpersFns';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
-import { SheetResponse, URL_script, getGoogleSS, postGoogleSS } from '../../HTTP/axios';
+import { SheetResponse, URL_script, fetchIsoliteData, fetchViteoData, getGoogleSS, postGoogleSS } from '../../HTTP/axios';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { sheetDataParser } from '../../HTTP/SheetDataParser';
@@ -30,30 +30,30 @@ const resultParser = (row: string[]) => Array.isArray(row) ? row.map(i => +_trim
 
 
 export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
-    const { SheetStore } = useStoresContext();
+    const { ViteoStore, ViewConfig } = useStoresContext();
     const [selectedGroup, setSelectedGroup] = useState<string | null>(null)
-    const [view, setView] = useState<number[][] | null | undefined>(null)
+
     // const response = useLoaderData() as SSResponse
-    const { data, isLoading, isError, error } = useQuery('ssheet', postGoogleSS,
+    const { data, isLoading, isError, error } = useQuery('viteo', fetchViteoData,
         {
             refetchOnWindowFocus: false, keepPreviousData: true,
         })
-    const getSelectedState = (state: string) => setSelectedGroup(state)
-
+    const query_iso = useQuery('isolite', fetchIsoliteData, {
+        refetchOnWindowFocus: false, keepPreviousData: true,
+    })
     const clickFn = () => {
         if (!data) return
-
-
-        SheetStore.parseData(data)
-
-
+        ViteoStore.clear()
     }
-    useEffect(() => {
-        if (!data || !selectedGroup) return
-        const selected = data.find(d => d.groupId === selectedGroup)
-        const _selected = SheetStore.store[selectedGroup]
-        setView(_selected)
-    }, [SheetStore.store, data, selectedGroup])
+    const MemoTableData = useMemo(() => {
+        if (!data) return null
+        const { zgroup } = ViewConfig.active
+        const _selected = ViteoStore.store[zgroup]
+        return _selected
+    }, [ViteoStore.store, ViewConfig.active, data])
+
+
+
     if (isLoading) return <Loading />
     if (isError) {
         console.log('error: ', error)
@@ -65,7 +65,7 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
             <div className='flex flex-row gap-2 my-2'>
 
                 <Button onClick={ clickFn } variant='contained' color='info'>Update</Button>
-                <GroupSelector getState={ getSelectedState } />
+                <GroupSelector />
             </div>
             <Box
                 sx={ {
@@ -74,12 +74,9 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
                     maxWidth: '90vw'
                 } }
             >
-                { view &&
-                    <PriceTable data={ view } groupId={ selectedGroup } />
-                }
                 {
-                    //  MemozData &&
-                    // <SSTable sdata={ MemozData } />
+                    MemoTableData &&
+                    <PriceTable data={ MemoTableData } groupId={ ViewConfig.active.zgroup } />
                 }
 
             </Box>
@@ -87,19 +84,20 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
     )
 })
 BlankDataPage.displayName = "***Data Page"
-const GroupSelector = ({ getState }: { getState: (state: string) => void }) => {
+const GroupSelector = ({ getState }: { getState?: (state: string) => void }) => {
     const [group, setGroup] = useState("")
     const { ViewConfig } = useStoresContext()
 
     const handleChange = (e: SelectChangeEvent) => {
         setGroup(prev => e.target.value)
-        getState(e.target.value)
+        // getState(e.target.value)
     }
 
     useEffect(() => {
         if (group === "") return
-        ViewConfig.active.zgroup = group as ZGroupName
-    }, [ViewConfig.active, group])
+        ViewConfig.setActive('zgroup', group)
+        // ViewConfig.active.zgroup = group as ZGroupName
+    }, [ViewConfig, group])
     return (<FormControl variant="filled" sx={ { m: 1, minWidth: 120 } }>
         <InputLabel id="demo-simple-select-filled-label">Жалюзи</InputLabel>
         <Select
@@ -109,7 +107,7 @@ const GroupSelector = ({ getState }: { getState: (state: string) => void }) => {
             onChange={ handleChange }
             variant='filled'
         >
-            {/* <MenuItem value=""></MenuItem> */ }
+            <MenuItem value=""></MenuItem>
             <MenuItem value={ 'viteo_E' }>Viteo E</MenuItem>
             <MenuItem value={ 'viteo_1' }>Viteo 1</MenuItem>
             <MenuItem value={ 'viteo_2' }>Viteo 2</MenuItem>

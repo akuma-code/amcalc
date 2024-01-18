@@ -1,6 +1,8 @@
 import { useQuery, useQueryClient, UseQueryOptions } from "react-query";
 import { QueryFunctionContext } from 'react-query/types/core/types';
 import { api } from "../HTTP/api";
+import { $api } from "../HTTP/axios";
+
 type QueryKeyT = [string, object | undefined];
 
 
@@ -21,16 +23,16 @@ export const useFetch = <T>(
     config?: UseQueryOptions<T, Error, T, QueryKeyT>
 ) => {
     const meta = {}
-    const context = useQuery<T, Error, T, QueryKeyT>(
+    const query = useQuery<T, Error, T, QueryKeyT>(
         [url!, params],
-        ({ queryKey }) => fetcher({ queryKey, meta }),
+        ({ queryKey }) => fetcher<T>({ queryKey, meta }),
         {
             enabled: !!url,
             ...config,
         }
     )
 
-    return context;
+    return query;
 };
 
 export const usePrefetch = <T>(url: string | null, params?: object) => {
@@ -43,7 +45,7 @@ export const usePrefetch = <T>(url: string | null, params?: object) => {
 
         queryClient.prefetchQuery<T, Error, T, QueryKeyT>(
             [url!, params],
-            ({ queryKey }) => fetcher({ queryKey, meta })
+            ({ queryKey }) => fetcher<T>({ queryKey, meta })
         );
     };
 };

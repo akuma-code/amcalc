@@ -52,7 +52,7 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
 
     return (
         <div className="flex flex-col bg-slate-400  m-1 p-1 max-w-[30vw] min-w-fit">
-            <div className='text-center text-2xl my-1'>Group_id: {group_id}</div>
+            <div className='text-center text-2xl my-1'>Group_id: { group_id }</div>
             <div className="flex flex-row  justify-around">
                 <div className='  text-left flex-shrink px-1 border-2'>
                     #
@@ -64,37 +64,37 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                     B, мм
                 </div>
                 <div className=' w-full text-right pr-1 border-2 flex-grow'>
-                    Кол-во  ({_groups && sumCount(_groups?.group_data)} шт)
+                    Кол-во  ({ _groups && sumCount(_groups?.group_data) } шт)
                 </div>
 
             </div>
             <div className="flex flex-col m-1 ">
 
-                {_proxyGroup(_groups).map((g, index) =>
-                    <Stack key={index} >
+                { _proxyGroup(_groups).map((g, index) =>
+                    <Stack key={ index } >
                         {
                             g.map((row, idx) =>
-                                <Box key={row._id} component={Stack} flexDirection={'row'} justifyContent={'space-around'}
-                                    sx={{
+                                <Box key={ row._id } component={ Stack } flexDirection={ 'row' } justifyContent={ 'space-around' }
+                                    sx={ {
                                         bgcolor: isHighlited(row._id) ? '#00dffc' : 'inherit',
-                                    }}
+                                    } }
                                 >
                                     <div className="text-center flex-shrink">
-                                        {idx + 1})
+                                        { idx + 1 })
                                     </div>
                                     <div className='text-center flex-grow'>
-                                        <b className='bg-green-200'>{row.L}</b>
+                                        <b className='bg-green-200'>{ row.L }</b>
                                     </div>
                                     <div className='text-center flex-grow'>
-                                        <b className='bg-green-200'>{row.B}</b>
+                                        <b className='bg-green-200'>{ row.B }</b>
                                     </div>
                                     <div className='text-center flex-grow '>
-                                        <b className='bg-green-200'>{row.count}</b>
+                                        <b className='bg-green-200'>{ row.count }</b>
                                     </div>
                                 </Box>
                             )
                         }
-                        <Divider textAlign='right'>size: {sumCount(g)}</Divider>
+                        <Divider textAlign='right'>size: { sumCount(g) }</Divider>
                     </Stack>
 
                 )
@@ -107,8 +107,9 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
 
                 <BasicModal title='Merged Group'
                     button_label='Show Merged'
+                    variant='button'
                 >
-                    <MergedGroup group={merged} />
+                    <MergedGroup group={ merged } />
                 </BasicModal>
 
                 <ButtonGroup>
@@ -116,12 +117,12 @@ export const GroupIdCard: React.FC<PropsWithChildren> = observer(() => {
                     {
                         group_id &&
                         <Button variant='contained' color='warning'
-                            onClick={del}>
-                            <Link to={'/sill'}>Delete </Link>
+                            onClick={ del }>
+                            <Link to={ '/sill' }>Delete </Link>
                         </Button>
                     }
                     <Button variant='contained' color='error'>
-                        <Link to={'/sill'}>Close </Link>
+                        <Link to={ '/sill' }>Close </Link>
                     </Button>
                 </ButtonGroup>
             </div>

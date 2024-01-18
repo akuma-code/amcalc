@@ -7,10 +7,13 @@ import { observer } from 'mobx-react-lite'
 import { Link as RouterLink } from 'react-router-dom'
 import { useIsFetching } from 'react-query';
 import { _log } from '../../Helpers/HelpersFns';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { BasicModal } from '../UI/BasicModal';
+import { SettingsPanel } from '../UI/SettingsPanel';
 type Props = {}
 
 export const SelectorPanel = observer((props: Props) => {
-    const viteoFetchCount = useIsFetching('viteo')
+    const viteoFetchCount = useIsFetching()
     const isoFetchCount = useIsFetching('isolite')
 
     return (
@@ -42,15 +45,20 @@ export const SelectorPanel = observer((props: Props) => {
                     </Breadcrumbs>
                     {/* <Divider orientation='vertical' flexItem variant='fullWidth' /> */ }
                     <div className="flex flex-row  flex-grow">
-                        { viteoFetchCount > 0 &&
+                        { viteoFetchCount !== 0 &&
                             <CircularFetchViewProgress counter={ viteoFetchCount } />
                         }
-                        { isoFetchCount > 0 &&
-                            <CircularFetchViewProgress counter={ isoFetchCount } />
+
+                        {
+
+                            //  isoFetchCount > 0 &&
+                            //     <CircularFetchViewProgress counter={ isoFetchCount } />
                         }
                     </div>
 
-
+                    <BasicModal title='Options' variant='icon' button_label='fff'>
+                        <SettingsPanel />
+                    </BasicModal>
 
                 </Toolbar>
             </AppBar>

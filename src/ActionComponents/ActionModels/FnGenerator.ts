@@ -30,4 +30,24 @@ export class StringsIterator<T extends string> {
         return current
     }
 }
+export class NumberIterator<T extends number, P extends { start: number, end: number, step: number }> {
+    order: T[]
+    counter: number = 0
+    constructor(numbers: T[], params?: P) {
+        this.order = numbers
+    }
+
+    next() {
+        const current = this.order[this.counter]
+        this.counter++
+        if (this.counter === this.order.length) this.counter = 0
+        return current
+    }
+
+    initParams(numbers: T[], params: P) {
+        const { start, end, step } = params
+        const steps = ~~(start - end) / step
+    }
+}
+
 

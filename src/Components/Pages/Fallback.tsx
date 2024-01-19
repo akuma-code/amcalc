@@ -10,13 +10,13 @@ export const Fallback = (props: Props) => {
                 <Skeleton variant="text" animation="wave" sx={ { bgcolor: '#ffaaff' } } />
             </Box>
             <Box mb={ 1 }>
-                <Skeleton variant="text" animation="wave" sx={ { bgcolor: '#ffaaff' } } />
+                <Skeleton variant="text" animation="wave" sx={ { bgcolor: '#ff12ff' } } />
             </Box>
             <Box mb={ 1 }>
                 <Skeleton variant="text" animation="wave" sx={ { bgcolor: '#ffaaff' } } />
             </Box>
             <Box mb={ 1 }>
-                <Skeleton variant="rectangular" animation="wave" sx={ { bgcolor: '#ffaaff' } } />
+                <Skeleton variant="text" animation="wave" sx={ { bgcolor: '#ff12ff' } } />
             </Box>
         </Box>
     )

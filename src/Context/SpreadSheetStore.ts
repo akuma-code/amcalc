@@ -3,6 +3,7 @@ import { _log, _trim } from "../Helpers/HelpersFns"
 
 type ISpreadSheetData = number[][]
 export type ZGroupName = "" | 'viteo_E' | 'viteo_1' | 'viteo_2' | 'viteo_3' | 'viteo_4' | 'viteo_5' | 'viteo_6'
+export type IGroupName = "" | 'isolite_A' | 'isolite_B' | 'isolite_C' | 'isolite_D' | 'isolite_E' | 'isolite_F' | 'isolite_G' | 'isolite_H' | 'isolite_I' | 'isolite_J' | 'isolite_K' | 'isolite_L'
 type ISheetGroupData = {
     data: string[][];
     groupId: ZGroupName & string;

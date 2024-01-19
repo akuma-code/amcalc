@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosPromise, AxiosResponse } from "axios";
 import { ZGroupName } from "../Context/SpreadSheetStore";
 import { _log } from "../Helpers/HelpersFns";
 
@@ -9,9 +9,16 @@ export type GoogleResponse = Promise<
         groupId: ZGroupName;
     }[] | null
 >
+export interface ViteoResponse {
+    data: string[][];
+    groupId: ZGroupName;
+}
 
-
-
+export interface IsoResponse {
+    data: string[][]
+    groupId: string,
+    groupName: string
+}
 export const _proxy = `https://thingproxy.freeboard.io/fetch/`
 export const URL_script = _proxy + `https://script.google.com/macros/s/AKfycbwXPBV66vrnLuHyBo-dtO46jPJvMHAuPMvhMCahub_8EBidiupF1sZ7lvsoJI0oi7_T/exec`
 
@@ -65,7 +72,7 @@ export async function fetchViteoData() {
     const url = _proxy + url_viteo;
     try {
 
-        const response = await $host.get(url, {
+        const response = await $host.get<ViteoResponse>(url, {
             headers: _headers,
             responseType: 'json',
 
@@ -80,7 +87,7 @@ export async function fetchIsoliteData() {
     const url = _proxy + url_isolite;
     try {
 
-        const response = await $host.get(url, {
+        const response = await $host.get<IsoResponse>(url, {
             headers: _headers,
             responseType: 'json',
 
@@ -89,15 +96,15 @@ export async function fetchIsoliteData() {
     } catch (error) {
         _log("___Fetch ERROR: ", error);
     }
-    return null;
+
 }
 
 export const $api = {
     iso: async (url = _proxy + url_isolite, params?: object) => {
-        const _url = _proxy + url_isolite;
+
         try {
 
-            const response = await $host.get(url, {
+            const response = await $host.get<IsoResponse[]>(url, {
                 headers: _headers,
                 responseType: 'json',
                 ...params

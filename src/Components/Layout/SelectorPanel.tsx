@@ -4,7 +4,7 @@ import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt'
 import DescriptionIcon from '@mui/icons-material/Description';
 import { AppBar, Box, Breadcrumbs, CircularProgress, Fab, LinearProgress, Toolbar } from '@mui/material'
 import { observer } from 'mobx-react-lite'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, redirect } from 'react-router-dom'
 import { useIsFetching } from 'react-query';
 import { _log } from '../../Helpers/HelpersFns';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -14,7 +14,7 @@ type Props = {}
 
 export const SelectorPanel = observer((props: Props) => {
     const viteoFetchCount = useIsFetching()
-    const isoFetchCount = useIsFetching('isolite')
+
 
     return (
         <Box sx={ { flexGrow: 1 } } top={ 0 }>
@@ -80,6 +80,7 @@ const CircularFetchViewProgress = ({ counter }: { counter: number }) => {
             </Fab>
 
             <CircularProgress
+
                 size={ 52 }
                 sx={ {
                     color: `red`,

@@ -1,11 +1,12 @@
-import { Box } from '@mui/material'
-import React from 'react'
+import { Box, Dialog, Stack } from '@mui/material'
+import React, { useState } from 'react'
 import { _ID, _log, _trim } from '../../../Helpers/HelpersFns'
 import { ZLABEL } from '../../../Interfaces/Enums'
 import { observer } from 'mobx-react-lite'
 import { useStoresContext } from '../../../Hooks/useStoresContext'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { red } from '@mui/material/colors'
+import { BasicModal } from '../BasicModal'
 type PriceTableProps = {
     data: number[][]
     groupId?: string | null
@@ -26,15 +27,19 @@ export const ZhPriceTable: React.FC<IsoTablePriceProps> = observer(({ zGroup, zt
     const end = ztype === 'viteo' ? 1.4 : 1.8
     const wsteps = _numbs(.3, end, .1)
     const hsteps = _numbs(.3, 2.4, .1)
-
+    const [open, setOpen] = useState(false)
 
     const tdClickFn = (rowIdx: number, colIdx: number) => (e: React.MouseEvent<HTMLTableCellElement>) => {
+        const rowValue = wsteps[rowIdx]
+        const colValue = hsteps[colIdx]
         const cellInfo = {
-            row: rowIdx + 1,
-            col: colIdx + 1,
-            price: +e.currentTarget.innerText
+
+            row: rowValue,
+            col: colValue,
+            price: +e.currentTarget.innerText,
         }
-        // _log("row: ", rowIdx + 1, "col: ", colIdx + 1, "price: ", e.currentTarget.innerText)
+
+
         console.log('cellData: ', cellInfo)
     }
     return (
@@ -76,6 +81,24 @@ export const ZhPriceTable: React.FC<IsoTablePriceProps> = observer(({ zGroup, zt
                     ) }
                 </tbody>
             </table>
+            <Dialog open={ open }>
+                {/* <Box component={ Stack } flexDirection={ 'row' } justifyContent={ 'space-around' }
+                    sx={ {
+                        bgcolor: 'inherit',
+                        [`& div`]: { borderBottom: '1px solid black' },
+                    } }
+                >
+                    <div className='text-center flex-grow'>
+                        <b className=''> </b>
+                    </div>
+                    <div className='text-center flex-grow'>
+                        <b className=''></b>
+                    </div>
+                    <div className='text-center flex-grow'>
+                        <b className=''></b>
+                    </div>
+                </Box> */}
+            </Dialog>
         </Box>
     )
 })
@@ -90,3 +113,5 @@ export const _numbs = (start: number, end: number, step: number) => {
     res.push(end)
     return res.map(n => +n.toFixed(1))
 }
+
+

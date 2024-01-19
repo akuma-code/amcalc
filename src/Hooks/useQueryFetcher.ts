@@ -7,10 +7,7 @@ type QueryKeyT = [string, object | undefined];
 
 
 
-export const fetcher = <T>({
-    queryKey,
-    pageParam
-}: QueryFunctionContext<QueryKeyT>): Promise<T> => {
+export const fetcher = <T>({ queryKey, pageParam }: QueryFunctionContext<QueryKeyT>): Promise<T> => {
     const [url, params] = queryKey;
     return api
         .get<T>(url, { params: { ...params, pageParam } })

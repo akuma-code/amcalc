@@ -13,6 +13,7 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { queryFn: post
 
 
 const App = observer(() => {
+  const { ViewConfig } = useStoresContext();
 
 
 
@@ -23,7 +24,7 @@ const App = observer(() => {
         <div className='text-center text-4xl'>
           <p>App Loading... Dont worry!</p>
         </div> } />
-      <ReactQueryDevtools initialIsOpen={ false } />
+      { ViewConfig.visible.devtools && <ReactQueryDevtools initialIsOpen={ false } /> }
     </>
     // </QueryClientProvider>
   );

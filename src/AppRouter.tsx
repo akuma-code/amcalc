@@ -1,15 +1,14 @@
 import { Params, RouteObject, createBrowserRouter, redirect } from 'react-router-dom';
-import Output2 from './Components/FlexForm/Output/Output_v2';
 import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
+import { BlankDataPage } from './Components/Pages/BlankDataPage';
 import ErrorPage from './Components/Pages/ErrorPage';
+import { AppPaths } from './Components/Pages/Router/AppPaths';
+import { PrintPage } from './Components/Pages/Router/PrintPage';
 import Root from './Components/Pages/Router/Root';
 import SillPage from './Components/Pages/SillPage';
-import { OutputTabs } from './Components/UI/OutputTabs';
 import { GroupIdCard } from './Components/UI/SillGroupView';
-import { AppPaths } from './Components/Pages/Router/AppPaths';
-import { BlankDataPage, scriptAppLoader } from './Components/Pages/BlankDataPage';
-import { PrintPage } from './Components/Pages/Router/PrintPage';
 import { ROOTSTORE } from './Context/RootStore';
+import { pageRoutes } from './HTTP/PATHS';
 
 
 
@@ -33,7 +32,7 @@ export const tabLoader = async () => {
 //__                               router               
 export const CommonRoutes: RouteObject[] = [
     {
-        path: '/',
+        path: pageRoutes.root,
         element: <Root />,
         id: 'root_elem',
         errorElement: <ErrorPage />,
@@ -43,11 +42,11 @@ export const CommonRoutes: RouteObject[] = [
                 element: <AppPaths />,
             },
             {
-                path: 'bento',
+                path: pageRoutes.bento,
                 element: <BentoLayoutPage />,
             },
             {
-                path: 'sill',
+                path: pageRoutes.sill,
                 element: <SillPage />,
 
                 action: ({ request, params }) => {
@@ -66,7 +65,7 @@ export const CommonRoutes: RouteObject[] = [
                 },
                 children: [
                     {
-                        path: '/sill/groups/:group_id',
+                        path: pageRoutes.groups,
                         loader: ({ params }) => {
                             const group_id = params.group_id;
                             return group_id ? group_id : null;
@@ -76,23 +75,15 @@ export const CommonRoutes: RouteObject[] = [
                 ],
             },
             {
-                path: '/getapp',
+                path: pageRoutes.getapp,
                 element: <BlankDataPage />,
                 // loader: scriptAppLoader
             },
             {
-                path: '/sill/groups/print',
+                path: pageRoutes.print,
                 element: <PrintPage />
             },
-            // {
-            //     path: '/tabs',
-            //     element: <OutputTabs />,
-            //     loader: tabLoader
-            // },
-            // {
-            //     path: '/offset',
-            //     element: <Output2 />
-            // }
+
         ]
     }
 ];

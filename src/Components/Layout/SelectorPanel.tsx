@@ -1,18 +1,18 @@
-import AndroidIcon from '@mui/icons-material/Android'
-import BentoIcon from '@mui/icons-material/Bento'
-import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt'
+import AndroidIcon from '@mui/icons-material/Android';
+import BentoIcon from '@mui/icons-material/Bento';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { AppBar, Box, Breadcrumbs, CircularProgress, Fab, LinearProgress, Toolbar } from '@mui/material'
-import { observer } from 'mobx-react-lite'
-import { Link as RouterLink, redirect } from 'react-router-dom'
+import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import { AppBar, Box, Breadcrumbs, CircularProgress, Fab, Toolbar } from '@mui/material';
+import { observer } from 'mobx-react-lite';
 import { useIsFetching } from 'react-query';
-import { _log } from '../../Helpers/HelpersFns';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { BasicModal } from '../UI/BasicModal';
-import { SettingsPanel } from '../UI/SettingsPanel';
+import { Link as RouterLink } from 'react-router-dom';
+import { SettingsDialog } from '../UI/SettingsPanel';
+import { pageRoutes } from '../../HTTP/PATHS';
+import { useStoresContext } from '../../Hooks/useStoresContext';
 type Props = {}
 
 export const SelectorPanel = observer((props: Props) => {
+    const { ViewConfig } = useStoresContext()
     const viteoFetchCount = useIsFetching()
 
 
@@ -25,40 +25,31 @@ export const SelectorPanel = observer((props: Props) => {
                 } }>
 
                     <Breadcrumbs aria-label="breadcrumb">
-                        <RouterLink to={ '/' }>
+                        <RouterLink to={ pageRoutes.root }>
                             <AndroidIcon />
                             Home
                         </RouterLink>
-                        <RouterLink to={ '/bento' }>
+                        <RouterLink to={ pageRoutes.bento }>
                             <BentoIcon />
                             Bento
                         </RouterLink>
-                        <RouterLink to={ '/sill' }>
+                        <RouterLink to={ pageRoutes.sill }>
                             <SignalCellularAltIcon />
                             Sill
                         </RouterLink>
-                        <RouterLink to={ '/getapp' }>
+                        <RouterLink to={ pageRoutes.getapp }>
                             <DescriptionIcon />
                             GetApp
                         </RouterLink>
 
                     </Breadcrumbs>
                     {/* <Divider orientation='vertical' flexItem variant='fullWidth' /> */ }
-                    <div className="flex flex-row  flex-grow">
-                        { viteoFetchCount !== 0 &&
+                    <div className="flex flex-row  flex-grow-0 gap-4">
+                        { viteoFetchCount !== 0 && ViewConfig.globalFetching &&
                             <CircularFetchViewProgress counter={ viteoFetchCount } />
                         }
-
-                        {
-
-                            //  isoFetchCount > 0 &&
-                            //     <CircularFetchViewProgress counter={ isoFetchCount } />
-                        }
+                        <SettingsDialog />
                     </div>
-
-                    <BasicModal title='Options' variant='icon' button_label='fff'>
-                        <SettingsPanel />
-                    </BasicModal>
 
                 </Toolbar>
             </AppBar>

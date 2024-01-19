@@ -12,6 +12,7 @@ export type GoogleResponse = Promise<
 export interface ViteoResponse {
     data: string[][];
     groupId: ZGroupName;
+    groupName: string
 }
 
 export interface IsoResponse {

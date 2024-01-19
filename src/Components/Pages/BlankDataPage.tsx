@@ -1,16 +1,16 @@
 
+import React, { useMemo, Suspense } from 'react';
 import { Box, Button, Stack } from '@mui/material';
 import { AxiosResponse } from 'axios';
 import { observer } from 'mobx-react-lite';
-import React, { useMemo } from 'react';
-import { useQuery } from 'react-query';
-import { $api, GoogleResponse, IsoResponse, ViteoResponse, _proxy, fetchIsoliteData, fetchViteoData, getGoogleSS, url_isolite, url_viteo } from '../../HTTP/axios';
-import { _log, _trim } from '../../Helpers/HelpersFns';
+import { IsoResponse, ViteoResponse, _proxy, getGoogleSS, url_isolite, url_viteo } from '../../HTTP/axios';
+import { _trim } from '../../Helpers/HelpersFns';
+import { useFetch } from '../../Hooks/useQueryFetcher';
 import { useStoresContext } from '../../Hooks/useStoresContext';
-import { ZhPriceTable, ViteoPriceTable, _numbs } from '../UI/SpreadSheet/PriceTable';
+import { ZhPriceTable } from '../UI/SpreadSheet/PriceTable';
 import { Loading } from './Loading';
-import { useFetch, usePrefetch } from '../../Hooks/useQueryFetcher';
-import { ZGroupSelector, _viteoOptions, _isoOptions } from './ZGroupSelector';
+import { ZGroupSelector, _isoOptions, _viteoOptions } from './ZGroupSelector';
+import { Fallback } from './Fallback';
 type BlankPageProps = {}
 type SSResponse = AxiosResponse<{ result: string[][], version: string, sheetId: string }>
 
@@ -57,7 +57,7 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
     }, [Idata, ViewConfig.active])
 
 
-    if (isLoading) return <Loading />
+    if (isLoading) return <Fallback />
     if (isError) {
         console.log('error: ', error)
         return <Box><b className="text-3xl text-center">Error! </b></Box>
@@ -71,23 +71,25 @@ export const BlankDataPage: React.FC<BlankPageProps> = observer(() => {
 
                 <ZGroupSelector options={ [..._viteoOptions, ..._isoOptions,] } title='Изолайт+Витео' />
             </div>
-            <Box
-                sx={ {
-                    [`& div>div`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px', fontWeight: 'bold' },
-                    [`& ol>div>li`]: { border: '1px solid black', textAlign: 'center', minWidth: '80px' },
-                    maxWidth: '90vw'
-                } }
-            >
-                {
-                    MemoViteoData &&
+            <Suspense fallback={ <Fallback /> }>
 
-                    <ZhPriceTable zGroup={ MemoViteoData } ztype='viteo' />
-                }
-                {
-                    MemoIsoData &&
-                    <ZhPriceTable zGroup={ MemoIsoData } ztype='isolite' />
-                }
-            </Box>
+                <Box
+                    sx={ {
+
+                        maxWidth: 'full'
+                    } }
+                >
+                    {
+                        MemoViteoData &&
+
+                        <ZhPriceTable zGroup={ MemoViteoData } ztype='viteo' />
+                    }
+                    {
+                        MemoIsoData &&
+                        <ZhPriceTable zGroup={ MemoIsoData } ztype='isolite' />
+                    }
+                </Box>
+            </Suspense>
         </Stack>
     )
 })

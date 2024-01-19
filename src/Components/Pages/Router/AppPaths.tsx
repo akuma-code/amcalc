@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { CommonRoutes } from '../../../AppRouter';
 import { Link as RouterLink, LinkProps as RLinkPorps } from 'react-router-dom';
 import { Link } from '@mui/icons-material';
+import { pageRoutes } from '../../../HTTP/PATHS';
 
 
 
@@ -51,20 +52,13 @@ export const AppPaths = () => {
                 </li>
                 <li>
                     <div className='flex-grow'>
-                        <b>/sill/groups/:group_id</b>
+                        <b>/sill/groups/print</b>
                     </div>
 
-                    <div className='flex-grow-0'><RouterLink to={ 'sill/groups' }>  Sill groups</RouterLink> </div>
+                    <div className='flex-grow-0'><RouterLink to={ pageRoutes.print }>  Print Page</RouterLink> </div>
 
                 </li>
-                <li>
-                    <div className='flex-grow'>
-                        <b>/tabs</b>
-                    </div>
-                    <div className="flex-grow-0">
-                        <RouterLink to={ '/tabs' } >Tabs</RouterLink>
-                    </div>
-                </li>
+
                 <li>
                     <div>
                         <b>/getapp</b>

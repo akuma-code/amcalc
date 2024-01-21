@@ -22,7 +22,7 @@ const Transition = React.forwardRef(function Transition(
     },
     ref: React.Ref<unknown>,
 ) {
-    return <Slide direction="left" ref={ ref } { ...props } />;
+    return <Slide direction="left" ref={ref} {...props} />;
 });
 
 export const SettingsDialog: React.FC<SettingsDialogProps> = observer((props) => {
@@ -45,36 +45,36 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = observer((props) =>
     const toggleFetchingGlobal = () => ViewConfig.toggleIsFetching()
     return (
         <React.Fragment>
-            <Button variant="contained" color='warning' onClick={ handleClickOpen }>
-                <SettingsIcon sx={ { color: 'whitesmoke' } } />
+            <Button variant="contained" color='warning' onClick={handleClickOpen}>
+                <SettingsIcon sx={{ color: 'whitesmoke' }} />
             </Button>
             <Dialog
-                open={ open }
-                TransitionComponent={ Transition }
+                open={open}
+                TransitionComponent={Transition}
                 keepMounted
-                onClose={ handleClose }
+                onClose={handleClose}
                 fullWidth
-                maxWidth={ 'sm' }
+                maxWidth={'sm'}
             >
                 <DialogTitle>Settings</DialogTitle>
                 <DialogContent>
-                    <Stack direction={ 'column' } >
+                    <Stack direction={'column'} >
                         <div className='border-b-2 border-black flex flex-row  justify-between cursor-pointer rounded-md hover:bg-amber-300 gap-3'
-                            onClick={ () => ViewConfig.toggleIsFetching() }
+                            onClick={() => ViewConfig.toggleIsFetching()}
                         >
-                            <div className='my-auto  flex-grow-0'>  { currentState.globalFetch ? 'Disable' : 'Enable' }</div>
-                            <div className='my-auto flex-grow'> global fetch display</div>
+                            <div className='my-auto flex-grow'> Global Fetch display</div>
+                            <div className='my-auto  flex-grow-0'>  {currentState.globalFetch ? 'Enabled' : 'Disabled'}</div>
                             <IconButton                             >
-                                <VpnLockIcon htmlColor={ currentColor(currentState.globalFetch) } />
+                                <VpnLockIcon htmlColor={currentColor(currentState.globalFetch)} />
                             </IconButton>
                         </div>
                         <div className='border-b-2 border-black flex flex-row  justify-between cursor-pointer rounded-md hover:bg-amber-300 gap-3'
-                            onClick={ () => ViewConfig.toggleVisible('devtools') }
+                            onClick={() => ViewConfig.toggleVisible('devtools')}
                         >
-                            <div className='my-auto  flex-grow-0'>  { currentState.devtools ? 'Disable' : 'Enable' }</div>
                             <div className='my-auto flex-grow'> DevTools component display</div>
+                            <div className='my-auto  flex-grow-0'>  {currentState.devtools ? 'Enabled' : 'Disabled'}</div>
                             <IconButton                             >
-                                <LogoDevSharpIcon htmlColor={ currentColor(currentState.devtools) } />
+                                <LogoDevSharpIcon htmlColor={currentColor(currentState.devtools)} />
                             </IconButton>
                         </div>
 
@@ -82,7 +82,7 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = observer((props) =>
                 </DialogContent>
                 <DialogActions>
 
-                    <Button onClick={ handleClose }>Agree</Button>
+                    <Button onClick={handleClose}>Agree</Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

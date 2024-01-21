@@ -43,6 +43,7 @@ export class OutputViewConfig implements IOutputView {
             selectForm: action,
             toggleVisible: action,
             setActive: action,
+            toggleIsFetching: action,
         }, { name: 'ViewConfig' })
         this.visible = {
             showSkf: true,
@@ -58,7 +59,7 @@ export class OutputViewConfig implements IOutputView {
             output: 'size_full',
             zgroup: ''
         }
-        this.globalFetching = false
+        this.globalFetching = true
 
     }
     toggleSizeView(mode: 'skf' | 'simple' | 'both') {

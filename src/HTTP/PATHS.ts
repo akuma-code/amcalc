@@ -9,6 +9,7 @@ export const pageRoutes = {
     bento: 'bento' as const,
     getapp: 'getapp' as const,
     sill: 'sill' as const,
+    test: 'test' as const,
     groups: '/sill/groups/:group_id' as const,
     print: '/sill/groups/print' as const,
 }

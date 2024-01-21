@@ -9,6 +9,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import { SettingsDialog } from '../UI/SettingsPanel';
 import { pageRoutes } from '../../HTTP/PATHS';
 import { useStoresContext } from '../../Hooks/useStoresContext';
+import BugReportIcon from '@mui/icons-material/BugReport';
+
+
+
 type Props = {}
 
 export const SelectorPanel = observer((props: Props) => {
@@ -17,36 +21,40 @@ export const SelectorPanel = observer((props: Props) => {
 
 
     return (
-        <Box sx={ { flexGrow: 1 } } top={ 0 }>
+        <Box sx={{ flexGrow: 1 }} top={0}>
             <AppBar position="sticky">
-                <Toolbar variant='dense' sx={ {
+                <Toolbar variant='dense' sx={{
                     gap: 2, justifyContent: 'space-between', bgcolor: '#7688f1',
                     [`& .MuiBreadcrumbs-li`]: { fontFamily: 'Fira Code', fontWeight: 'bold' }
-                } }>
+                }}>
 
                     <Breadcrumbs aria-label="breadcrumb">
-                        <RouterLink to={ pageRoutes.root }>
+                        <RouterLink to={pageRoutes.root}>
                             <AndroidIcon />
                             Home
                         </RouterLink>
-                        <RouterLink to={ pageRoutes.bento }>
+                        <RouterLink to={pageRoutes.bento}>
                             <BentoIcon />
                             Bento
                         </RouterLink>
-                        <RouterLink to={ pageRoutes.sill }>
+                        <RouterLink to={pageRoutes.sill}>
                             <SignalCellularAltIcon />
                             Sill
                         </RouterLink>
-                        <RouterLink to={ pageRoutes.getapp }>
+                        <RouterLink to={pageRoutes.getapp}>
                             <DescriptionIcon />
                             GetApp
                         </RouterLink>
+                        <RouterLink to={pageRoutes.test}>
+                            <BugReportIcon />
+                            <strong>Test Page</strong>
+                        </RouterLink>
 
                     </Breadcrumbs>
-                    {/* <Divider orientation='vertical' flexItem variant='fullWidth' /> */ }
+                    {/* <Divider orientation='vertical' flexItem variant='fullWidth' /> */}
                     <div className="flex flex-row  flex-grow-0 gap-4">
-                        { viteoFetchCount !== 0 && ViewConfig.globalFetching &&
-                            <CircularFetchViewProgress counter={ viteoFetchCount } />
+                        {viteoFetchCount !== 0 && ViewConfig.globalFetching &&
+                            <CircularFetchViewProgress counter={viteoFetchCount} />
                         }
                         <SettingsDialog />
                     </div>
@@ -62,24 +70,24 @@ SelectorPanel.displayName = "***AppToolbar"
 const CircularFetchViewProgress = ({ counter }: { counter: number }) => {
 
     return (
-        <Box sx={ { m: .3, position: 'relative' } }>
+        <Box sx={{ m: .3, position: 'relative' }}>
             <Fab size='small'
                 aria-label="save"
-                sx={ { color: 'green' } }
+                sx={{ color: 'green' }}
             >
-                <b>{ counter }</b>
+                <b>{counter}</b>
             </Fab>
 
             <CircularProgress
 
-                size={ 52 }
-                sx={ {
+                size={52}
+                sx={{
                     color: `red`,
                     position: 'absolute',
                     top: -6,
                     left: -6,
                     zIndex: 1,
-                } }
+                }}
             />
 
         </Box>

@@ -4,18 +4,18 @@ export const enum ZhTYPE {
 }
 
 export const enum ISOPriceGroups {
-    isolite_A = 'Isolite гр. А',
-    isolite_B = 'Isolite гр. Б',
-    isolite_C = 'Isolite гр. В',
-    isolite_D = 'Isolite гр. Г',
-    isolite_E = 'Isolite гр. Д',
-    isolite_F = 'Isolite гр. Е',
-    isolite_G = 'Isolite гр. Ж',
-    isolite_H = 'Isolite гр. З',
-    isolite_I = 'Isolite гр. И',
-    isolite_J = 'Isolite гр. К',
-    isolite_K = 'Isolite гр. Л',
-    isolite_L = 'Isolite гр. М'
+    isolite_1 = 'Isolite гр. А',
+    isolite_2 = 'Isolite гр. Б',
+    isolite_3 = 'Isolite гр. В',
+    isolite_4 = 'Isolite гр. Г',
+    isolite_5 = 'Isolite гр. Д',
+    isolite_6 = 'Isolite гр. Е',
+    isolite_7 = 'Isolite гр. Ж',
+    isolite_8 = 'Isolite гр. З',
+    isolite_9 = 'Isolite гр. И',
+    isolite_10 = 'Isolite гр. К',
+    isolite_11 = 'Isolite гр. Л',
+    isolite_12 = 'Isolite гр. М'
 
 }
 export const enum ViteoPriceGroups {

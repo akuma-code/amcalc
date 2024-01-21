@@ -9,6 +9,7 @@ import SillPage from './Components/Pages/SillPage';
 import { GroupIdCard } from './Components/UI/SillGroupView';
 import { ROOTSTORE } from './Context/RootStore';
 import { pageRoutes } from './HTTP/PATHS';
+import { TestPage } from './Components/Pages/Router/TestPage';
 
 
 
@@ -44,6 +45,10 @@ export const CommonRoutes: RouteObject[] = [
             {
                 path: pageRoutes.bento,
                 element: <BentoLayoutPage />,
+            },
+            {
+                path: pageRoutes.test,
+                element: <TestPage />,
             },
             {
                 path: pageRoutes.sill,

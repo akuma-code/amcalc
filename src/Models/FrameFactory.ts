@@ -74,8 +74,8 @@ export class FrameFactory {
             rama = { ...rama, size: { ...rama.size, ...size }, bsides: { ...rama.bsides, ...bsides } }
         }
         let frame: IFrame = {
-            nodes: [{ ...node }],
-            rama: { ...rama }
+            nodes: [node],
+            rama
         } satisfies IFrame
         this.history.push(frame)
         return frame
@@ -98,4 +98,3 @@ const FF = new FrameFactory()
 const fr = FF.createFrame()
 const fr2 = FF.createFrame(pars)
 
-console.log('FF', FF)

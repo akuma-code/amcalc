@@ -8,7 +8,7 @@ type TestPageProps = {}
 export const TestPage: React.FC<TestPageProps> = (props) => {
 
     const tt = new FrameFactory('tt')
-    const frame = tt.createFrame({ size: { w: 200, h: 400 } })
+    const frame = tt.createFrame({ size: { w: 500, h: 400 } })
 
 
     return (
@@ -16,7 +16,7 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
             sx={{ width: 1000, height: 850, border: '2px solid black', bgcolor: '#1e8fff42' }}
         >
             <Box position={'absolute'} left={20} top={20}
-                sx={{ width: 250, height: 400, bgcolor: 'turquoise' }}
+                sx={{ width: 800, height: 400, bgcolor: 'turquoise' }}
             >
 
             </Box>

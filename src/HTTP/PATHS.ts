@@ -1,6 +1,6 @@
 const _proxy = `https://thingproxy.freeboard.io/fetch/`
 export const apiRoutes = {
-    viteo: `${_proxy}https://script.google.com/macros/s/AKfycbwXPBV66vrnLuHyBo-dtO46jPJvMHAuPMvhMCahub_8EBidiupF1sZ7lvsoJI0oi7_T/exec` as const,
+    viteo: `${_proxy}https://script.google.com/macros/s/AKfycbxlyvCbfYJ2Hd9CCLVzV35WkBoV7iN4zi_3bKlLIFnoZzmoyBqS-NkX0ynSwpeop44g/exec` as const,
     iso: `${_proxy}https://script.google.com/macros/s/AKfycbwj4pgCVpKbPRdnOuLalAlpzBfRuK-Gi4EUgyjcD7Yo2lt95CkPDrxYF197M3E1n86k/exec` as const,
 }
 

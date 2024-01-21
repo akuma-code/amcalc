@@ -23,7 +23,7 @@ export interface IsoResponse {
 export const _proxy = `https://thingproxy.freeboard.io/fetch/`
 export const URL_script = _proxy + `https://script.google.com/macros/s/AKfycbwXPBV66vrnLuHyBo-dtO46jPJvMHAuPMvhMCahub_8EBidiupF1sZ7lvsoJI0oi7_T/exec`
 
-export const url_viteo = `https://script.google.com/macros/s/AKfycbyQiyGC1p6cEtrPrnr2evh67c7k2xfQMrJ3crpuQkz2r3nv6Nn0J7wqzJFvMnjRkGhw/exec?ztype=viteo`
+export const url_viteo = `https://script.google.com/macros/s/AKfycbxlyvCbfYJ2Hd9CCLVzV35WkBoV7iN4zi_3bKlLIFnoZzmoyBqS-NkX0ynSwpeop44g/exec`
 export const url_isolite = `https://script.google.com/macros/s/AKfycbwj4pgCVpKbPRdnOuLalAlpzBfRuK-Gi4EUgyjcD7Yo2lt95CkPDrxYF197M3E1n86k/exec`
 export const _headers = {
 

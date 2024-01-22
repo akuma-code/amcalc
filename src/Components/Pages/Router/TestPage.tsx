@@ -1,7 +1,10 @@
-import { Box } from '@mui/material'
+import { Box, ImageList, ImageListItem } from '@mui/material'
 import React from 'react'
 import { FrameFactory } from '../../../Models/FrameFactory'
 import { _ID, _log, _s, _ss } from '../../../Helpers/HelpersFns'
+import ff from '../../../Assets/ff.svg'
+import s1 from '../../../Assets/s1.svg'
+
 
 type TestPageProps = {}
 
@@ -42,9 +45,13 @@ export const FrameBox = ({ frame }: { frame: typeof TestFrame }) => {
 
     const nodes = frame.nodes
     return (
-        <Box sx={ { border: '2px solid #000', ...rama.size } } >
-            <img src='https://github.com/akuma-code/amcalc/blob/master/src/Assets/ff.svg' alt='ff'
-            />
+        <Box sx={ { border: '2px solid #000', ...rama.size, background: `url(${ff}) no-repeat top/100% content-box` } } position={ 'relative' } >
+
+            <img src={ s1 } width={ '50%' } alt='not found' className='absolute' />
+            <img src={ s1 } className='rotate-180 absolute left-[50%]' alt='not found' width={ '50%' } />
+            {/* <img src={ s1 } alt='not found' /> */ }
+
+
         </Box>
     )
 

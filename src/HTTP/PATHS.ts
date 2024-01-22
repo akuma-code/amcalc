@@ -12,6 +12,9 @@ export const pageRoutes = {
     getapp: 'getapp' as const,
     sill: 'sill' as const,
     test: 'test' as const,
+    drawer: 'drawer' as const,
+    imgout: '/drawer/:state' as const,
+    // assets: 'Assets' as const,
     groups: '/sill/groups/:group_id' as const,
     print: '/sill/groups/print' as const,
 }

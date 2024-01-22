@@ -10,6 +10,8 @@ import { GroupIdCard } from './Components/UI/SillGroupView';
 import { ROOTSTORE } from './Context/RootStore';
 import { pageRoutes } from './HTTP/PATHS';
 import { TestPage } from './Components/Pages/Router/TestPage';
+import DrawerPage from './Components/Pages/Router/DrawerPage';
+import { DrawerImage } from './Components/Pages/Router/DrawerImage/DrawerImage';
 
 
 
@@ -51,6 +53,20 @@ export const CommonRoutes: RouteObject[] = [
                 element: <TestPage />,
             },
             {
+                path: pageRoutes.test,
+                element: <TestPage />,
+            },
+            {
+                path: pageRoutes.drawer,
+                element: <DrawerPage />,
+                children: [
+                    {
+                        path: pageRoutes.imgout,
+                        element: <DrawerImage />
+                    }
+                ]
+            },
+            {
                 path: pageRoutes.sill,
                 element: <SillPage />,
 
@@ -90,6 +106,7 @@ export const CommonRoutes: RouteObject[] = [
             },
 
         ]
-    }
+    },
+
 ];
 export const router = createBrowserRouter(CommonRoutes);

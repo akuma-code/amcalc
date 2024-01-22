@@ -53,3 +53,19 @@ export const _trim = (str: string | number) => {
         .join('')
         .replace(',', '.')
 }
+
+class _Size {
+    constructor(
+        public w: number,
+        public h: number
+    ) { }
+}
+class _SizeF {
+    constructor(
+        public width: number,
+        public height: number
+    ) { }
+}
+
+export const _s = (w: number, h?: number) => h ? new _Size(w, h) : new _Size(w, w)
+export const _ss = (w: number, h?: number) => h ? new _SizeF(w, h) : new _SizeF(w, w)

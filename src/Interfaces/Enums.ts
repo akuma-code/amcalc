@@ -28,3 +28,7 @@ export enum ZLABEL {
     viteo_5 = 'Viteo 5',
     viteo_6 = 'Viteo 6',
 }
+
+export type TSides = readonly ['top', 'right', 'bottom', 'left']
+export type TSide = TSides[number]
+export const TSidesArray: TSides = ['top', 'right', 'bottom', 'left']

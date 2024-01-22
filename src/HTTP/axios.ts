@@ -20,6 +20,12 @@ export interface IsoResponse {
     groupId: string,
     groupName: string
 }
+
+export interface ConfigResponse {
+    version: number,
+    viteo_groups: string,
+    isolite_groups: string,
+}
 export const _proxy = `https://thingproxy.freeboard.io/fetch/`
 export const URL_script = _proxy + `https://script.google.com/macros/s/AKfycbwXPBV66vrnLuHyBo-dtO46jPJvMHAuPMvhMCahub_8EBidiupF1sZ7lvsoJI0oi7_T/exec`
 
@@ -69,36 +75,36 @@ export async function postGoogleSS(): GoogleResponse {
     return null;
 }
 
-export async function fetchViteoData() {
-    const url = _proxy + url_viteo;
-    try {
+// export async function fetchViteoData() {
+//     const url = _proxy + url_viteo;
+//     try {
 
-        const response = await $host.get<ViteoResponse>(url, {
-            headers: _headers,
-            responseType: 'json',
+//         const response = await $host.get<ViteoResponse>(url, {
+//             headers: _headers,
+//             responseType: 'json',
 
-        });
-        return response;
-    } catch (error) {
-        _log("___Fetch ERROR: ", error);
-    }
-    return null;
-}
-export async function fetchIsoliteData() {
-    const url = _proxy + url_isolite;
-    try {
+//         });
+//         return response;
+//     } catch (error) {
+//         _log("___Fetch ERROR: ", error);
+//     }
+//     return null;
+// }
+// export async function fetchIsoliteData() {
+//     const url = _proxy + url_isolite;
+//     try {
 
-        const response = await $host.get<IsoResponse>(url, {
-            headers: _headers,
-            responseType: 'json',
+//         const response = await $host.get<IsoResponse>(url, {
+//             headers: _headers,
+//             responseType: 'json',
 
-        });
-        return response;
-    } catch (error) {
-        _log("___Fetch ERROR: ", error);
-    }
+//         });
+//         return response;
+//     } catch (error) {
+//         _log("___Fetch ERROR: ", error);
+//     }
 
-}
+// }
 
 export const $api = {
     iso: async (url = _proxy + url_isolite, params?: object) => {

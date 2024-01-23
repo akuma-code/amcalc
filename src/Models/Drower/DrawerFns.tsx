@@ -21,8 +21,8 @@ export class DrawerService {
     drawpath(...pts: (_Point | _TPoint)[]) {
         const max = pts.length - 1
         const path = pts.reduce((prev, p, idx) => {
-            if (idx === 0) prev += this.concatType(p, 'M')
-            if (idx < max && idx > 0) prev += this.concatType(p, 'L')
+            if (prev === "") return prev += this.concatType(p, 'M')
+            if (idx < max) prev += this.concatType(p, 'L')
             if (idx === max) {
                 prev += this.concatType(p, 'L')
                 prev += ` Z`

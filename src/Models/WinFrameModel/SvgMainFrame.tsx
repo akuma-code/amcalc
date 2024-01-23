@@ -1,5 +1,6 @@
-import { _Point, _SizeF, _isArr, _p, _s, _ss } from "../../Helpers/HelpersFns"
+import { _Point, _SizeF, _TPoint, _isArr, _log, _p, _s, _ss } from "../../Helpers/HelpersFns"
 import { DrawerService } from "../Drower/DrawerFns"
+import { ISideDirections } from "../FrameFactory"
 
 type InnerCoords = readonly [x1: number, y1: number, x2: number, y2: number]
 type MainFrameProps = {
@@ -81,7 +82,7 @@ export const RamaBorders = (props: BordersProps) => {
         bl: _p(od, +height - od),
         br: _p(+width - od, +height - od),
     }
-    console.log('Anchors', Anchors)
+    // console.log('Anchors', Anchors)
     const Top = () => drawPath([{ x: 0, y: 0 }, Anchors.tl, Anchors.tr, { x: width, y: 0 }])
     const Right = () => drawPath([{ x: width, y: 0 }, Anchors.tr, Anchors.br, { x: width, y: height }])
     const Bottom = () => drawPath([{ x: width, y: height }, Anchors.br, Anchors.bl, { x: 0, y: height }])
@@ -111,3 +112,87 @@ export const BorderPath = (...pts: _Point[]) => {
     return ds.path(...pts)
 }
 
+const RamaFrameData = (size: _SizeF, startPos: _Point, offsetValue: number) => {
+
+    const { width, height } = size
+    const { x, y } = startPos
+    const _of = offsetValue
+    const [x1, y1, x2, y2] = [
+        x,
+        y,
+        x + width,
+        y + height
+    ]
+    const borders: Record<ISideDirections, [_TPoint, _TPoint]> = {
+        top: [[x1, y1], [x2, y1]] as const,
+        right: [[x2, y1], [x2, y2]] as const,
+        bottom: [[x2, y2], [x1, y2]] as const,
+        left: [[x1, y2], [x1, y1]] as const,
+    }
+
+    const offsetBorder: Record<ISideDirections, [_TPoint, _TPoint]> = {
+        top: [[x1 + _of, y1 + _of], [x2 - _of, y1 + _of]] as const,
+        right: [[x2 - _of, y1 + _of], [x2 - _of, y2 - _of]] as const,
+        bottom: [[x2 - _of, y2 - _of], [x1 + _of, y2 - _of]] as const,
+        left: [[x1 + _of, y2 - _of], [x1 + _of, y1 + _of]] as const,
+    }
+
+
+    return generateCoords(borders, offsetBorder)
+
+
+}
+
+export const generateCoords = (
+    borders: Record<ISideDirections, [_TPoint, _TPoint]>,
+    offset: Record<ISideDirections, [_TPoint, _TPoint]>
+): { [x: string]: readonly [_TPoint, _TPoint, _TPoint, _TPoint] }[] => {
+
+
+    const sides = ['top', 'right', 'bottom', 'left'] as const
+    const res = sides.map(s => {
+        let s1: _TPoint, s2: _TPoint, s3: _TPoint, s4: _TPoint;
+        const _b = borders[s]
+        const _o = offset[s]
+
+        switch (s) {
+            case "top": {
+                s1 = _b[0];
+                s2 = _o[0];
+                s3 = _o[1];
+                s4 = _b[1]
+                break
+            }
+            case "right": {
+                s1 = _b[0];
+                s2 = _o[0];
+                s3 = _o[1];
+                s4 = _b[1]
+                break
+            }
+            case "bottom": {
+                s1 = _b[1];
+                s2 = _o[1];
+                s3 = _o[0];
+                s4 = _b[0]
+                break
+            }
+            case "left": {
+                s1 = _b[1];
+                s2 = _o[1];
+                s3 = _o[0];
+                s4 = _b[0]
+                break
+            }
+        }
+        return { [s as ISideDirections]: [s1, s2, s3, s4] as const }
+    })
+    return res
+}
+
+const sides = ['top', 'right', 'bottom', 'left'] as const
+export const _sideIterate = sides.map
+
+
+const y = RamaFrameData(_ss(400, 600), _p(0, 0), 20)
+_log(y)

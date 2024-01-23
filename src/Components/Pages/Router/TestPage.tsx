@@ -1,33 +1,98 @@
-import { Box, ImageList, ImageListItem } from '@mui/material'
-import React from 'react'
+import { Box, Container, FormControl, FormHelperText, FormLabel, ImageList, ImageListItem, Input, InputLabel, Stack } from '@mui/material'
+import React, { useState } from 'react'
 import { FrameFactory } from '../../../Models/FrameFactory'
 import { _ID, _log, _s, _ss } from '../../../Helpers/HelpersFns'
 import ff from '../../../Assets/ff.svg'
 import s1 from '../../../Assets/s1.svg'
+import { SvgMainFrame } from '../../../Models/WinFrameModel/SvgMainFrame'
 
 
 type TestPageProps = {}
 
 export const TestPage: React.FC<TestPageProps> = (props) => {
+    const [params, setParams] = useState({ width: 300, height: 480, x1: 0, y1: 0, x2: 300, y2: 480 })
+    const changeHandler = (param: keyof typeof params) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setParams(prev => ({ ...prev, [param]: +e.target.value }))
+    }
 
     const tt = new FrameFactory('tt')
 
-
+    const { x1 = 0, y1 = 0, x2 = 0, y2 = 0 } = params
 
     return (
-        <Box position={ 'relative' }
-            sx={ { width: 1000, height: 850, border: '2px solid #000', bgcolor: '#1e8fff42' } }
-        >
-            <FrameBox frame={ TestFrame } />
+        <Container disableGutters fixed maxWidth='lg' sx={ { borderWidth: 2, borderColor: 'red' } }>
+            <Stack direction={ 'row' } useFlexGap gap={ 6 }>
+                <Stack mx={ 2 }
+                    sx={ {
+                        [`& .MuiInputBase-input`]: { maxWidth: 60, textAlign: 'center' }
+                    } }
+                >
 
-            {/* <Box position={ 'absolute' } left={ 20 } top={ 20 }
-                sx={ { width: 800, height: 400, bgcolor: 'turquoise' } }
-            >
+                    <FormControl>
+                        <FormHelperText >
+                            Width
+                        </FormHelperText>
+                        {/* <InputLabel id='inputW' > Width </InputLabel> */ }
+                        <Input onChange={ changeHandler('width') }
+                            value={ +params.width }
+                            id='inputW'
+                            placeholder='width'
 
-            </Box> */}
+                        />
 
-        </Box>
 
+                    </FormControl>
+                    <FormControl>
+                        <FormHelperText>Height</FormHelperText>
+                        <Input onChange={ changeHandler('height') }
+                            value={ +params.height }
+                            id='inputW'
+                            placeholder='height'
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormHelperText>x1</FormHelperText>
+                        <Input onChange={ changeHandler('x1') }
+                            value={ +params.x1 }
+                            id='inputW'
+                            placeholder='x1'
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormHelperText>y1</FormHelperText>
+                        <Input onChange={ changeHandler('y1') }
+                            value={ +params.y1 }
+                            id='inputW'
+                            placeholder='y1'
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormHelperText>x2</FormHelperText>
+                        <Input onChange={ changeHandler('x2') }
+                            value={ +params.x2 }
+                            id='inputW'
+                            placeholder='x2'
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormHelperText>y2</FormHelperText>
+                        <Input onChange={ changeHandler('y2') }
+                            value={ +params.y2 }
+                            id='inputW'
+                            placeholder='y2'
+                        />
+                    </FormControl>
+
+                </Stack>
+
+                <SvgMainFrame
+                    height={ +params.height }
+                    width={ +params.width }
+                    pos={ [+x1, +y1, +x2, +y2] } />
+
+            </Stack>
+
+        </Container>
     )
 }
 
@@ -57,6 +122,8 @@ export const FrameBox = ({ frame }: { frame: typeof TestFrame }) => {
 
 
 }
+
+
 
 // const testbox = <Box sx={ { ...rama.size, border: "2px solid black" } } position={ 'relative' } key={ 'rama' }>
 //         { nodes.map(n =>

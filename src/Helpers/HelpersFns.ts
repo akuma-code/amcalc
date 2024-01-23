@@ -60,12 +60,24 @@ class _Size {
         public h: number
     ) { }
 }
-class _SizeF {
+export class _SizeF {
     constructor(
         public width: number,
         public height: number
     ) { }
 }
 
+export type DrawerPointType = 'L' | 'M' | 'l' | 'm'
+export class _Point {
+
+    constructor(public x: number, public y: number) { }
+}
+export type _CPoint = { x: number, y: number }
+export type _TPoint = [x: number, y: number]
+export type _AdvPoint = {
+    point: _CPoint | _TPoint,
+    _type: DrawerPointType
+}
 export const _s = (w: number, h?: number) => h ? new _Size(w, h) : new _Size(w, w)
 export const _ss = (w: number, h?: number) => h ? new _SizeF(w, h) : new _SizeF(w, w)
+export const _p = (x: number, y: number) => new _Point(x, y)

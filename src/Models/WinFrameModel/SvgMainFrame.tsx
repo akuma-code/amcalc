@@ -1,4 +1,5 @@
 import { _Point, _SizeF, _TPoint, _isArr, _log, _p, _s, _ss } from "../../Helpers/HelpersFns"
+import { TSide, TSides } from "../../Interfaces/Enums"
 import { DrawerService } from "../Drower/DrawerFns"
 import { ISideDirections } from "../FrameFactory"
 
@@ -8,6 +9,8 @@ type MainFrameProps = {
     height: number,
     pos: InnerCoords
 }
+
+type _CoordsSE = _Point | _TPoint
 const ds = new DrawerService()
 export const SvgMainFrame = ({ width, height, pos }: MainFrameProps) => {
     const [x1, y1, x2, y2] = pos
@@ -40,18 +43,18 @@ export const SvgMainFrame = ({ width, height, pos }: MainFrameProps) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg"
             version="1.1"
-            viewBox={ `0 0 ${width} ${height}` }
-            width={ width }
-            height={ height }
+            viewBox={`0 0 ${width} ${height}`}
+            width={width}
+            height={height}
         >
             <g>
-                <rect width={ width } height={ height } fill="gray" stroke="#000" strokeWidth={ 4 } />
+                <rect width={width} height={height} fill="gray" stroke="#000" strokeWidth={4} />
             </g>
-            <g strokeWidth={ 2 } visibility={ 'hidden' }>
-                <path d="M0 0 L20 20 L280 20 L300 0 Z" stroke="black" fill="whitesmoke" key={ 'top' } />
-                <path d="M300 0 L280 20 L280 460 L300 480 Z" stroke="black" fill="whitesmoke" key={ 'right' } />
-                <path d="M0 480 L20 460 L280 460 L300 480 Z" stroke="black" fill="whitesmoke" key={ 'bottom' } />
-                <path d="M0 0 L20 20 L20 460 L0 480 Z" stroke="black" fill="whitesmoke" key={ 'left' } />
+            <g strokeWidth={2} visibility={'hidden'}>
+                <path d="M0 0 L20 20 L280 20 L300 0 Z" stroke="black" fill="whitesmoke" key={'top'} />
+                <path d="M300 0 L280 20 L280 460 L300 480 Z" stroke="black" fill="whitesmoke" key={'right'} />
+                <path d="M0 480 L20 460 L280 460 L300 480 Z" stroke="black" fill="whitesmoke" key={'bottom'} />
+                <path d="M0 0 L20 20 L20 460 L0 480 Z" stroke="black" fill="whitesmoke" key={'left'} />
             </g>
             {/* <RamaBorders
                 size={ _ss(width, height) }
@@ -102,7 +105,7 @@ const drawPath = (pts: readonly { x: number, y: number }[]) => {
     const converted = pts.map(p => ([p.x, p.y]))
     // console.log('converted', converted)
     const [start, step1, step2, end] = converted
-    const p = <path d={ `M${start} L${step1} L${step2} L${end} Z` } />
+    const p = <path d={`M${start} L${step1} L${step2} L${end} Z`} />
     return p
 
 }
@@ -196,3 +199,56 @@ export const _sideIterate = sides.map
 
 const y = RamaFrameData(_ss(400, 600), _p(0, 0), 20)
 _log(y)
+
+type TLineProps<T> = T extends TSide ?
+    T extends TSides[0 | 2] ? { side: T, coords: { x1: number, x2: number } }
+    : T extends TSides[1 | 3] ? { side: T, coords: { y1: number, y2: number } }
+    : never : never
+
+type TP = TLineProps<'left'>
+type LineProps = { side: TSides[0 | 2], coords: [number, number, number] } | { side: TSides[1 | 3], coords: [number, number, number] }
+function _newline<T>(props: TLineProps<T>) {
+    const border = (restCoord: number) => {
+        const start = []
+    }
+    switch (props.side) {
+        case "top":
+        case "bottom":
+        case "right":
+        case "left":
+    }
+
+}
+
+
+const converter = (line: LineProps) => {
+
+    switch (line.side) {
+        case "top": {
+            const { coords } = line
+            const [x1, x2, y1] = coords
+            const offset = (off: number) => [x1 + off, x2 - off, y1 + off]
+            return offset
+        }
+        case "bottom": {
+            const { coords } = line
+            const [x1, x2, y2] = coords
+            const offset = (off: number) => [x1 - off, x2 + off, y2 + off]
+            return offset
+        }
+        case "right": {
+            const { coords } = line
+            const [y1, y2, x2] = coords
+            const offset = (off: number) => [y1 + off, y2 - off, x2 - off]
+            return offset
+        }
+        case "left": {
+            const { coords } = line
+            const [y1, y2, x1] = coords
+            const offset = (off: number) => [y1 - off, y2 + off, x1 + off]
+            return offset
+        }
+    }
+}
+
+_log(converter({ side: 'left', coords: [200, 0, 300] })(20))

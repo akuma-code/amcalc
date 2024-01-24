@@ -32,3 +32,10 @@ export enum ZLABEL {
 export type TSides = readonly ['top', 'right', 'bottom', 'left']
 export type TSide = TSides[number]
 export const TSidesArray: TSides = ['top', 'right', 'bottom', 'left']
+export const enum IFrameVariantsEnum {
+    f = 'f',
+    ff = 'ff',
+    fff = 'fff',
+
+}
+export type IFrameVariants = keyof typeof IFrameVariantsEnum

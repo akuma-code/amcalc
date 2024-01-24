@@ -1,9 +1,26 @@
 import { DeepPartial } from "utility-types"
 import { A_Size, ISizeShort, SizeShort } from "../Interfaces/CommonTypes"
 import { _log } from "../Helpers/HelpersFns"
+import { TSide, TSides } from "../Interfaces/Enums"
 export type ISideDirections = 'top' | 'right' | 'bottom' | 'left'
-export type IBorders = Record<ISideDirections, string>
-
+export enum ISideBorderState {
+    imp = 'imp',
+    stv = 'stv',
+    rama = 'rama',
+    porog = 'porog',
+    stv_imp = 'stv_imp',
+    stv_rama = 'stv_rama',
+}
+export type TSideBorderState = keyof typeof ISideBorderState
+export type IBorders = Record<ISideDirections, TSideBorderState>
+export const OffsetBorder: Record<TSideBorderState, number> = {
+    rama: 20,
+    imp: 15,
+    porog: 8,
+    stv: 20,
+    stv_imp: 30,
+    stv_rama: 35
+}
 type INode = {
     size: ISizeShort
     bsides: IBorders
@@ -17,26 +34,24 @@ type IParams = {
     size?: Partial<ISizeShort>
     bsides?: Partial<IBorders>
 }
-export class BaseBorders implements IBorders {
-    top: string = 'rama'
-    right: string = 'rama'
-    bottom: string = 'rama'
-    left: string = 'rama'
-    constructor(params?: Partial<IBorders>) {
-        if (params) this.initparams(params)
+export class BorderStateOffset implements IBorders {
+    top: TSideBorderState = 'rama'
+    right: TSideBorderState = 'rama'
+    bottom: TSideBorderState = 'rama'
+    left: TSideBorderState = 'rama'
+    offset: Record<TSide, number>
+    constructor(off?: Partial<Record<TSide, number>> | number) {
+        this.offset = { top: 0, bottom: 0, left: 0, right: 0 }
+        if (off) this.init(off)
     }
-
-    initparams(params: { [Key in keyof IBorders]?: string }) {
-        for (const side in params) {
-            _log(params[side as keyof IBorders])
-        }
-
-
+    init(off: Partial<Record<TSide, number>> | number) {
+        if (typeof off === 'number') this.offset = { top: off, bottom: off, left: off, right: off }
+        else this.offset = { ...this.offset, ...off }
     }
 }
 export class BaseNode {
     public size: ISizeShort = new SizeShort(250, 400)
-    public bsides: IBorders = new BaseBorders()
+    public bsides: IBorders = new BorderStateOffset()
 
 }
 
@@ -50,21 +65,11 @@ export class FrameFactory {
     createFrame(params?: IParams) {
         let node: INode = {
             size: new SizeShort(250, 400),
-            bsides: {
-                top: 'rama',
-                right: 'rama',
-                bottom: 'rama',
-                left: 'rama'
-            }
+            bsides: new BorderStateOffset()
         }
         let rama: INode = {
             size: new SizeShort(250, 400),
-            bsides: {
-                top: 'rama',
-                right: 'rama',
-                bottom: 'rama',
-                left: 'rama'
-            }
+            bsides: new BorderStateOffset(20)
         }
 
 
@@ -93,8 +98,4 @@ const pars = {
     bsides: { top: 'impost' }
 }
 
-const FF = new FrameFactory()
-
-const fr = FF.createFrame()
-const fr2 = FF.createFrame(pars)
 

@@ -1,23 +1,21 @@
-import { Box, Container, FormControl, FormHelperText, FormLabel, ImageList, ImageListItem, Input, InputLabel, Stack } from '@mui/material'
+import { Box, Button, Container, FormControl, FormHelperText, Input, Stack } from '@mui/material'
 import React, { useState } from 'react'
-import { FrameFactory } from '../../../Models/FrameFactory'
-import { _ID, _log, _s, _ss } from '../../../Helpers/HelpersFns'
 import ff from '../../../Assets/ff.svg'
 import s1 from '../../../Assets/s1.svg'
+import { _p, _ss } from '../../../Helpers/HelpersFns'
 import { SvgMainFrame } from '../../../Models/WinFrameModel/SvgMainFrame'
+import { RamaF } from '../../../Models/WinFrameModel/RamaF'
+import { RamaFF } from '../../../Models/WinFrameModel/RamaFF'
 
 
 type TestPageProps = {}
 
 export const TestPage: React.FC<TestPageProps> = (props) => {
-    const [params, setParams] = useState({ width: 300, height: 480, x1: 0, y1: 0, x2: 300, y2: 480 })
+    const [params, setParams] = useState({ width: 300, height: 480, x1: 0, y1: 0 })
+    const [data, setData] = useState<typeof params | undefined>()
     const changeHandler = (param: keyof typeof params) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setParams(prev => ({ ...prev, [param]: +e.target.value }))
     }
-
-    const tt = new FrameFactory('tt')
-
-    const { x1 = 0, y1 = 0, x2 = 0, y2 = 0 } = params
 
     return (
         <Container disableGutters fixed maxWidth='lg' sx={ { borderWidth: 2, borderColor: 'red' } }>
@@ -39,14 +37,12 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                             placeholder='width'
 
                         />
-
-
                     </FormControl>
                     <FormControl>
                         <FormHelperText>Height</FormHelperText>
                         <Input onChange={ changeHandler('height') }
                             value={ +params.height }
-                            id='inputW'
+                            id='inputH'
                             placeholder='height'
                         />
                     </FormControl>
@@ -54,7 +50,7 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                         <FormHelperText>x1</FormHelperText>
                         <Input onChange={ changeHandler('x1') }
                             value={ +params.x1 }
-                            id='inputW'
+                            id='inputX1'
                             placeholder='x1'
                         />
                     </FormControl>
@@ -62,15 +58,15 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                         <FormHelperText>y1</FormHelperText>
                         <Input onChange={ changeHandler('y1') }
                             value={ +params.y1 }
-                            id='inputW'
+                            id='inputY1'
                             placeholder='y1'
                         />
                     </FormControl>
-                    <FormControl>
+                    {/* <FormControl>
                         <FormHelperText>x2</FormHelperText>
                         <Input onChange={ changeHandler('x2') }
                             value={ +params.x2 }
-                            id='inputW'
+                            id='inputX2'
                             placeholder='x2'
                         />
                     </FormControl>
@@ -78,18 +74,35 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                         <FormHelperText>y2</FormHelperText>
                         <Input onChange={ changeHandler('y2') }
                             value={ +params.y2 }
-                            id='inputW'
+                            id='inputY2'
                             placeholder='y2'
                         />
-                    </FormControl>
-
+                    </FormControl> */}
+                    <Button variant='contained' onClick={ () => setData(prev => params) }>Submit</Button>
                 </Stack>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    version="1.1"
+                    viewBox={ `0 0 800 800` }
+                    width={ 800 }
+                    height={ 800 }
+                >
 
-                <SvgMainFrame
-                    height={ +params.height }
-                    width={ +params.width }
-                    pos={ [+x1, +y1, +x2, +y2] } />
+                    {
+                        // data &&
 
+                        // <RamaF
+                        //     size={ _ss(data.width, data.height) }
+                        //     pos={ _p(data.x1, data.y1) }
+                        // />
+
+                    }
+                    { data &&
+                        <RamaFF
+                            size={ _ss(600, 500) }
+                            pos={ _p(0, 0) }
+                        />
+                    }
+                </svg>
             </Stack>
 
         </Container>

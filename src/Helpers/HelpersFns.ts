@@ -67,7 +67,7 @@ export class _SizeF {
     ) { }
 }
 
-export type DrawerPointType = 'L' | 'M' | 'l' | 'm'
+export type DrawerPointType = 'L' | 'M' | 'l' | 'm' | 'Z'
 export class _Point {
 
     constructor(public x: number, public y: number) { }

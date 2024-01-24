@@ -30,7 +30,15 @@ interface IFrameState<T extends IFrameVariants> {
         isShow: boolean
     }[]
 }
+class FrameState implements IFrameState<'f'>{
+    _type: 'f' = 'f'
+    rama!: { size: _SizeF; pos: _TPoint; params?: { system: string } | undefined }
+    imposts!: { axisCoords: [_TPoint, _TPoint]; params?: { _impType: 'standart' | 'fram'; delta: number } | undefined }[]
+    stvs!: { sCoords: [_TPoint, _TPoint]; pos: _CPoint; _id: `s${number}`; isShow: boolean }[]
+    constructor(size: _SizeF, pos: _TPoint, params?: any) {
 
+    }
+}
 
 
 

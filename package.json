@@ -34,7 +34,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "wp": "webpack --json stats.json"
   },
   "eslintConfig": {
     "extends": [
@@ -59,7 +60,8 @@
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "webpack-cli": "^5.1.4"
   },
   "homepage": "/",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",

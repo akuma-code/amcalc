@@ -1,4 +1,6 @@
+import { OFFSET, SystemProfile } from "../../Components/Templates/Systems"
 import { _AdvPoint, _Point, _TPoint, _isArr, _log, _p } from "../../Helpers/HelpersFns"
+import { TSidesArray } from "../../Interfaces/Enums"
 type _CoordsSE = _Point | _TPoint
 export type DrawerPointType = 'L' | 'M' | 'l' | 'm' | 'Z'
 export function _L(x: number, y: number) {
@@ -81,5 +83,10 @@ class PathMaker {
         const TCoord = _isArr(p) ? p : [p.x, p.y] as const
         return TCoord.join(" ")
     }
+}
+
+export const getOffset = (system: SystemProfile = SystemProfile.Proline) => {
+    const _off = OFFSET[system]
+    return _off
 }
 

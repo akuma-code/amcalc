@@ -1,3 +1,4 @@
+import { IFrameOffset } from "../../Components/Templates/Systems";
 import { _Point, _SizeF, _TPoint } from "../../Helpers/HelpersFns";
 import { TSide, TSidesArray } from "../../Interfaces/Enums";
 import { DrawerService } from "../Drower/DrawerFns";
@@ -45,16 +46,21 @@ export const RamaBordersCoords = (size: _SizeF, startPos: _Point) => {
 
 
 };
-const borderOffsetCoords = (border: { side: TSide, coords: [_TPoint, _TPoint] }, off: number) => {
+const borderOffsetCoords = (border: { side: TSide, coords: [_TPoint, _TPoint], _state?: keyof IFrameOffset }, off: number) => {
     const S = (x: number, y: number): _TPoint => [x, y];
     const E = (x: number, y: number): _TPoint => [x, y];
     const [start, end] = border.coords
     const [x1, y1, x2, y2] = [...start, ...end]
     switch (border.side) {
-        case "top": return [
-            S(x1 + off, y1 + off),
-            E(x2 - off, y1 + off)
-        ] as const
+        case "top": {
+            const topOff = {
+
+            }
+            return [
+                S(x1 + off, y1 + off),
+                E(x2 - off, y1 + off)
+            ] as const
+        }
         case "right": {
             return [
                 S(x2 - off, y1 + off),

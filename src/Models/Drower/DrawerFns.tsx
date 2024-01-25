@@ -1,5 +1,6 @@
-import { DrawerPointType, _AdvPoint, _Point, _TPoint, _isArr, _log, _p } from "../../Helpers/HelpersFns"
+import { _AdvPoint, _Point, _TPoint, _isArr, _log, _p } from "../../Helpers/HelpersFns"
 type _CoordsSE = _Point | _TPoint
+export type DrawerPointType = 'L' | 'M' | 'l' | 'm' | 'Z'
 export function _L(x: number, y: number) {
     return ` L${x} ${y}`
 }
@@ -10,7 +11,7 @@ export class DrawerService {
         const TCoord = _isArr(p) ? p : [p.x, p.y] as const
         return TCoord.join(" ")
     }
-    concatType(p: _CoordsSE, s: DrawerPointType) {
+    concatType(s: DrawerPointType, p: _CoordsSE,) {
         return ` ${s}${this.TCoords(p)}` as const
     }
 
@@ -19,10 +20,26 @@ export class DrawerService {
         const max = pts.length - 1
         if (max < 3) _log("Not enought points")
         const path = pts.reduce((prev, p, idx) => {
-            if (prev === "") return prev += this.concatType(p, 'M')
-            if (idx < max) prev += this.concatType(p, 'L')
+            if (prev === "") return prev += this.concatType('M', p,)
+            if (idx < max) prev += this.concatType('L', p,)
             if (idx === max) {
-                prev += this.concatType(p, 'L')
+                prev += this.concatType('L', p,)
+                prev += ` Z`
+            }
+            return prev
+        }, "")
+        this.saved.push({ d: path })
+        return path
+    }
+
+    drawRelativePath(...pts: _CoordsSE[]) {
+        const max = pts.length - 1
+        if (max < 3) _log("Not enought points")
+        const path = pts.reduce((prev, p, idx) => {
+            if (prev === "") return prev += this.concatType('M', p,)
+            if (idx < max) prev += this.concatType('l', p,)
+            if (idx === max) {
+                prev += this.concatType('l', p,)
                 prev += ` Z`
             }
             return prev
@@ -34,4 +51,35 @@ export class DrawerService {
 }
 
 
+class PathMaker {
+    d: string
+    constructor() {
+        this.d = ""
+    }
+
+    draw(...pts: _CoordsSE[]) {
+        const max = pts.length - 1
+        if (max < 3) _log("Not enought points")
+        const path = pts.reduce((prev, p, idx) => {
+            if (prev === "") return prev += this.concatType('M', p,)
+            if (idx < max) prev += this.concatType('L', p,)
+            if (idx === max) {
+                prev += this.concatType('L', p,)
+                prev += ` Z`
+            }
+            return prev
+
+        }, "")
+        return path
+    }
+
+    concatType(s: DrawerPointType, p: _CoordsSE,) {
+        return ` ${s}${this.TCoords(p)}` as const
+    }
+
+    TCoords(p: _Point | _TPoint) {
+        const TCoord = _isArr(p) ? p : [p.x, p.y] as const
+        return TCoord.join(" ")
+    }
+}
 

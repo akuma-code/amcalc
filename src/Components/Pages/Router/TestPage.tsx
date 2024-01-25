@@ -1,145 +1,161 @@
-import { Box, Button, Container, FormControl, FormHelperText, Input, Stack } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, Button, Container, FormControl, FormHelperText, Input, Slider, Stack } from '@mui/material'
+import React, { PropsWithChildren, useState } from 'react'
 import ff from '../../../Assets/ff.svg'
 import s1 from '../../../Assets/s1.svg'
-import { _p, _ss } from '../../../Helpers/HelpersFns'
+import { _CPoint, _SizeF, _p, _ss } from '../../../Helpers/HelpersFns'
 import { SvgMainFrame } from '../../../Models/WinFrameModel/SvgMainFrame'
 import { RamaF } from '../../../Models/WinFrameModel/RamaF'
 import { RamaFF } from '../../../Models/WinFrameModel/RamaFF'
 import { FrameState } from '../../../Models/WinFrameModel/FrameStateData'
+import { Stvorka } from '../../../Models/WinFrameModel/Stvorka'
 
 
 type TestPageProps = {}
 
 export const TestPage: React.FC<TestPageProps> = (props) => {
-    const [params, setParams] = useState({ width: 600, height: 500, x: 0, y: 0 })
+    const [params, setParams] = useState({ width: 500, height: 500, x: 0, y: 0 })
     const [data, setData] = useState<typeof params | undefined>()
     const changeHandler = (param: keyof typeof params) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setParams(prev => ({ ...prev, [param]: +e.target.value }))
     }
-    const _s = _ss(params.width, params.height)
-    const frame = new FrameState(_s, [params.x, params.y])
-    console.log('frame', frame)
+    // const _s = _ss(data?.width || 600, data?.height || 600)
+    // const frame = new FrameState(_s, [params.x, params.y])
+    // console.log('frame', frame.stvs.map(s => s.pos))
 
 
     return (
         <Container disableGutters fixed maxWidth='lg' sx={ { borderWidth: 2, borderColor: 'red' } }>
-            <Stack direction={ 'row' } useFlexGap gap={ 6 }>
+            <Stack direction={ 'row' } useFlexGap gap={ 8 }>
                 <Stack mx={ 2 }
                     sx={ {
-                        [`& .MuiInputBase-input`]: { maxWidth: 60, textAlign: 'center' }
+                        // flexDirection: 'column', flexWrap: 'nowrap',
+                        [`& .MuiInputBase-input`]: { maxWidth: 80, textAlign: 'center' }
                     } }
                 >
+                    <form className='flex flex-col w-32'>
 
-                    <FormControl>
-                        <FormHelperText >
-                            Width
-                        </FormHelperText>
-                        {/* <InputLabel id='inputW' > Width </InputLabel> */ }
-                        <Input onChange={ changeHandler('width') }
-                            value={ +params.width }
-                            id='inputW'
-                            placeholder='width'
 
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <FormHelperText>Height</FormHelperText>
-                        <Input onChange={ changeHandler('height') }
-                            value={ +params.height }
-                            id='inputH'
-                            placeholder='height'
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <FormHelperText>x1</FormHelperText>
-                        <Input onChange={ changeHandler('x') }
-                            value={ +params.x }
-                            id='inputX'
-                            placeholder='x'
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <FormHelperText>y1</FormHelperText>
-                        <Input onChange={ changeHandler('y') }
-                            value={ +params.y }
-                            id='inputY'
-                            placeholder='y'
-                        />
-                    </FormControl>
-                    {/* <FormControl>
-                        <FormHelperText>x2</FormHelperText>
-                        <Input onChange={ changeHandler('x2') }
-                            value={ +params.x2 }
-                            id='inputX2'
-                            placeholder='x2'
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <FormHelperText>y2</FormHelperText>
-                        <Input onChange={ changeHandler('y2') }
-                            value={ +params.y2 }
-                            id='inputY2'
-                            placeholder='y2'
-                        />
-                    </FormControl> */}
-                    <Button variant='contained' onClick={ () => setData(prev => ({ ...prev, ...params })) }>Submit</Button>
+                        <FormControl>
+                            <FormHelperText >
+                                Width
+                            </FormHelperText>
+                            {/* <InputLabel id='inputW' > Width </InputLabel> */ }
+                            <Input onChange={ changeHandler('width') }
+                                value={ +params.width }
+                                id='inputW'
+                                placeholder='width'
+
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormHelperText>Height</FormHelperText>
+                            <Input onChange={ changeHandler('height') }
+                                value={ +params.height }
+                                id='inputH'
+                                placeholder='height'
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormHelperText>x1</FormHelperText>
+                            <Input onChange={ changeHandler('x') }
+                                value={ +params.x }
+                                id='inputX'
+                                placeholder='x'
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormHelperText>y1</FormHelperText>
+                            <Input onChange={ changeHandler('y') }
+                                value={ +params.y }
+                                id='inputY'
+                                placeholder='y'
+                            />
+                        </FormControl>
+                        <FormControl >
+                            PosX  <Slider value={ params.x } onChange={ (e, value) => { setParams(prev => ({ ...prev, x: +value })) } } step={ 5 } />{ params.x }
+                            PosY  <Slider value={ params.y } onChange={ (e, value) => { setParams(prev => ({ ...prev, y: +value })) } } step={ 5 } />{ params.y }
+                        </FormControl>
+                        <Button variant='contained' onClick={ () => setData(prev => ({ ...prev, ...params })) }>Submit</Button>
+                    </form>
                 </Stack>
-                <svg xmlns="http://www.w3.org/2000/svg"
+                {/* <svg xmlns="http://www.w3.org/2000/svg"
                     version="1.1"
                     viewBox={ `0 0 800 800` }
                     width={ 800 }
                     height={ 800 }
-                >
+                > */}
+                <Stack >
 
-                    {
-                        data &&
+                    <DrawContainer size={ _ss(800, 800) }
+                    >
+                        {/* <Stvorka
+                        w={ 300 }
+                        h={ 500 }
+                        anchor={ { _type: 'impost', p: [0, 0] } }
+                    /> */}
+                        {
+                            data &&
+                            <RamaFF
+                                size={ _ss(data.width, data.height) }
+                                pos={ _p(data.x, data.y) }
+                            />
+                        }
+                    </DrawContainer>
+                </Stack>
+                {
+                    // data &&
 
-                        <RamaF
-                            size={ _ss(data.width / 3, data.height) }
-                            pos={ _p(data.x + data.width, data.y) }
-                        />
+                    // <RamaF
+                    //     size={ _ss(data.width / 3, data.height) }
+                    //     pos={ _p(data.x + data.width, data.y) }
+                    // />
 
-                    }
-                    { data &&
-                        <RamaFF
-                            size={ _ss(data.width, data.height) }
-                            pos={ _p(data.x, data.y) }
-                        />
-                    }
-                </svg>
+                }
+
+                {/* </svg> */ }
             </Stack>
 
-        </Container>
+        </Container >
     )
 }
 
+export const DrawContainer: React.FC<{ size: _SizeF } & PropsWithChildren> = ({ children, size }) => {
 
-export const FrameBox = ({ frame }: { frame: typeof TestFrame }) => {
-    const rama = {
-        size: frame.size,
-        borders: {
-            top: 'rama',
-            right: 'rama',
-            bottom: 'rama',
-            left: 'rama',
-        }
-    }
-
-    const nodes = frame.nodes
-    return (
-        <Box sx={ { border: '2px solid #000', ...rama.size, background: `url(${ff}) no-repeat top/100% content-box` } } position={ 'relative' } >
-
-            <img src={ s1 } width={ '50%' } alt='not found' className='absolute' />
-            <img src={ s1 } className='rotate-180 absolute left-[50%]' alt='not found' width={ '50%' } />
-            {/* <img src={ s1 } alt='not found' /> */ }
-
-
-        </Box>
-    )
-
-
+    return <svg xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+        viewBox={ `0 0 ${size.width} ${size.height}` }
+        { ...size }
+        className='bg-gray-300'
+    >
+        { children }
+    </svg>
 }
+
+// export const FrameBox = ({ frame }: { frame: typeof TestFrame }) => {
+//     const rama = {
+//         size: frame.size,
+//         borders: {
+//             top: 'rama',
+//             right: 'rama',
+//             bottom: 'rama',
+//             left: 'rama',
+//         }
+//     }
+
+//     const nodes = frame.nodes
+//     return (
+//         <Box sx={ { border: '2px solid #000', ...rama.size, background: `url(${ff}) no-repeat top/100% content-box` } } position={ 'relative' } >
+
+//             <img src={ s1 } width={ '50%' } alt='not found' className='absolute' />
+//             <img src={ s1 } className='rotate-180 absolute left-[50%]' alt='not found' width={ '50%' } />
+//             {/* <img src={ s1 } alt='not found' /> */ }
+
+
+//         </Box>
+//     )
+
+
+// }
 
 
 

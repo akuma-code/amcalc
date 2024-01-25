@@ -2,6 +2,7 @@ import { v4 } from 'uuid'
 import { DTO_EXPORT, IC_FuncArgs, IC_FuncsList } from '../ActionComponents/ActionTypes/Types'
 import { Brand, ISize, ISizeTuple, _isFullSize } from '../Interfaces/CommonTypes'
 import { ANYobj } from '../Interfaces/MathActionsTypes'
+import { DrawerPointType } from '../Models/Drower/DrawerFns'
 
 
 export const _log = console.log
@@ -67,7 +68,7 @@ export class _SizeF {
     ) { }
 }
 
-export type DrawerPointType = 'L' | 'M' | 'l' | 'm' | 'Z'
+
 export class _Point {
 
     constructor(public x: number, public y: number) { }

@@ -139,7 +139,7 @@ export class FrameState implements IFrameState<'ff'> {
 }
 
 
-class FrameService {
+export class FrameService {
     static getBorderCoordsFromSize(size: _SizeF, offset: number, startPos: _CPoint = { x: 0, y: 0 },) {
         const { width, height } = size;
         const { x, y } = startPos;

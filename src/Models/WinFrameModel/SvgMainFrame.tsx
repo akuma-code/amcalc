@@ -4,6 +4,7 @@ import { TSide, TSides } from "../../Interfaces/Enums"
 import { DrawerService } from "../Drower/DrawerFns"
 import { TSideBorderState } from "../FrameFactory"
 import { RamaBordersCoords } from "./RamaBordersCoords"
+import { FrameState } from "./FrameStateData"
 
 export type InnerCoords = readonly [x1: number, y1: number, x2: number, y2: number]
 type MainFrameProps = {

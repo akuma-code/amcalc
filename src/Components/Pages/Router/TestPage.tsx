@@ -6,16 +6,21 @@ import { _p, _ss } from '../../../Helpers/HelpersFns'
 import { SvgMainFrame } from '../../../Models/WinFrameModel/SvgMainFrame'
 import { RamaF } from '../../../Models/WinFrameModel/RamaF'
 import { RamaFF } from '../../../Models/WinFrameModel/RamaFF'
+import { FrameState } from '../../../Models/WinFrameModel/FrameStateData'
 
 
 type TestPageProps = {}
 
 export const TestPage: React.FC<TestPageProps> = (props) => {
-    const [params, setParams] = useState({ width: 300, height: 480, x1: 0, y1: 0 })
+    const [params, setParams] = useState({ width: 600, height: 500, x: 0, y: 0 })
     const [data, setData] = useState<typeof params | undefined>()
     const changeHandler = (param: keyof typeof params) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setParams(prev => ({ ...prev, [param]: +e.target.value }))
     }
+    const _s = _ss(params.width, params.height)
+    const frame = new FrameState(_s, [params.x, params.y])
+    console.log('frame', frame)
+
 
     return (
         <Container disableGutters fixed maxWidth='lg' sx={ { borderWidth: 2, borderColor: 'red' } }>
@@ -48,18 +53,18 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                     </FormControl>
                     <FormControl>
                         <FormHelperText>x1</FormHelperText>
-                        <Input onChange={ changeHandler('x1') }
-                            value={ +params.x1 }
-                            id='inputX1'
-                            placeholder='x1'
+                        <Input onChange={ changeHandler('x') }
+                            value={ +params.x }
+                            id='inputX'
+                            placeholder='x'
                         />
                     </FormControl>
                     <FormControl>
                         <FormHelperText>y1</FormHelperText>
-                        <Input onChange={ changeHandler('y1') }
-                            value={ +params.y1 }
-                            id='inputY1'
-                            placeholder='y1'
+                        <Input onChange={ changeHandler('y') }
+                            value={ +params.y }
+                            id='inputY'
+                            placeholder='y'
                         />
                     </FormControl>
                     {/* <FormControl>
@@ -78,7 +83,7 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                             placeholder='y2'
                         />
                     </FormControl> */}
-                    <Button variant='contained' onClick={ () => setData(prev => params) }>Submit</Button>
+                    <Button variant='contained' onClick={ () => setData(prev => ({ ...prev, ...params })) }>Submit</Button>
                 </Stack>
                 <svg xmlns="http://www.w3.org/2000/svg"
                     version="1.1"
@@ -88,18 +93,18 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                 >
 
                     {
-                        // data &&
+                        data &&
 
-                        // <RamaF
-                        //     size={ _ss(data.width, data.height) }
-                        //     pos={ _p(data.x1, data.y1) }
-                        // />
+                        <RamaF
+                            size={ _ss(data.width / 3, data.height) }
+                            pos={ _p(data.x + data.width, data.y) }
+                        />
 
                     }
                     { data &&
                         <RamaFF
-                            size={ _ss(600, 500) }
-                            pos={ _p(0, 0) }
+                            size={ _ss(data.width, data.height) }
+                            pos={ _p(data.x, data.y) }
                         />
                     }
                 </svg>

@@ -36,10 +36,11 @@ export const ARama = (props: AramaProps) => {
             viewBox={ `0 0 ${x + w} ${y + h}` }
             width={ x + w }
             height={ y + h }>
-            <g stroke='black' fill='white' >
-                { paths.map(bs =>
-                    <path d={ bs.path } key={ bs.side } />
-                ) }
+            <g stroke='black' fill='white' key={ 'rama' }>
+                {
+                    paths.map(bs =>
+                        <path d={ bs.path } key={ bs.side } />
+                    ) }
             </g>
 
 

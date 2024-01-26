@@ -78,9 +78,7 @@ export const ZhPriceTable: React.FC<IsoTablePriceProps> = observer(({ zGroup, zt
         // console.log('cellData: ', getCellState(ri, ci))
 
     }
-    useEffect(() => {
 
-    }, [])
 
     const color = (cond: boolean) => cond ? 'green-200' : 'inherit'
     const colorWatched = (cond: boolean) => cond ? 'green-100' : 'inherit'
@@ -98,7 +96,7 @@ export const ZhPriceTable: React.FC<IsoTablePriceProps> = observer(({ zGroup, zt
         return 'none'
     }
     return (
-        <Box sx={{
+        <Box sx={ {
             [`& td`]: { border: '2px solid #000', minWidth: 25, px: 1, },
 
             [`& td[data-cell-state=_watched]`]: { bgcolor: '#c2fac7' },
@@ -112,46 +110,46 @@ export const ZhPriceTable: React.FC<IsoTablePriceProps> = observer(({ zGroup, zt
             [`& td[data-selected_cell=true]`]: { bgcolor: 'pink', cursor: 'default', fontWeight: 'bold' },
             [`& th[data-delete-cell]`]: { cursor: 'pointer', bgcolor: 'black' },
             [`& hover:th[data-delete-cell]`]: { cursor: 'pointer', bgcolor: 'red' },
-        }}>
+        } }>
             <table className='border-separate'>
                 <thead>
                     <tr>
-                        {wsteps.map((n, colIdx) =>
-                            <th key={n} data-datacell className={`bg-${colorSX(colIdx === cell?.colIdx)}`}>
-                                <b>{n}</b>
+                        { wsteps.map((n, colIdx) =>
+                            <th key={ n } data-datacell className={ `bg-${colorSX(colIdx === cell?.colIdx)}` }>
+                                <b>{ n }</b>
                             </th>
-                        )}
+                        ) }
                         <th className='bg-black border-2 border-black text-white' data-delete-cell
-                            onClick={() => ViewConfig.setActive('zgroup', "")}
+                            onClick={ () => ViewConfig.setActive('zgroup', "") }
                         >
                             <HighlightOffIcon />
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {zGroup.data.map((row, rowInd) =>
-                        <tr key={_ID() + rowInd}>
+                    { zGroup.data.map((row, rowInd) =>
+                        <tr key={ _ID() + rowInd }>
                             {
                                 row.map((price, colInd) =>
                                     <td
                                         // className={`bg-${color(isHighlightRow(rowInd, colInd) || isHighlightCol(rowInd, colInd))}`}
-                                        key={price}
-                                        onClick={tdClickFn(rowInd, colInd)}
-                                        data-selected_cell={isHighlightRow(rowInd, colInd) && isHighlightCol(rowInd, colInd)}
-                                        data-cell-state={getCellState(rowInd, colInd)}
-                                        onMouseEnter={handleEnter(rowInd, colInd)}
-                                        onMouseLeave={handleLave(rowInd, colInd)}
-                                    >{parseFloat(_trim(price))}</td>
+                                        key={ price }
+                                        onClick={ tdClickFn(rowInd, colInd) }
+                                        data-selected_cell={ isHighlightRow(rowInd, colInd) && isHighlightCol(rowInd, colInd) }
+                                        data-cell-state={ getCellState(rowInd, colInd) }
+                                    // onMouseEnter={handleEnter(rowInd, colInd)}
+                                    // onMouseLeave={handleLave(rowInd, colInd)}
+                                    >{ parseFloat(_trim(price)) }</td>
                                 )
                             }
-                            <td data-datacell className={`text-center bg-${colorSX(rowInd === cell?.rowIdx)}`}>
-                                <b>{hsteps[rowInd]}</b>
+                            <td data-datacell className={ `text-center bg-${colorSX(rowInd === cell?.rowIdx)}` }>
+                                <b>{ hsteps[rowInd] }</b>
                             </td>
                         </tr>
-                    )}
+                    ) }
                 </tbody>
             </table>
-            <Dialog open={open}>
+            <Dialog open={ open }>
                 {/* <Box component={ Stack } flexDirection={ 'row' } justifyContent={ 'space-around' }
                     sx={ {
                         bgcolor: 'inherit',

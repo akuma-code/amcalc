@@ -37,10 +37,7 @@ const ds = new DrawerService();
 export const RamaFF: React.FC<FixProps> = ({ pos, size }) => {
     const { width, height } = size;
     const { x, y } = pos
-    const OFFSET_STV = {
-        s1: _p(20, 20),
-        s2: _p(10, 20),
-    }
+
     const [params, setParams] = useState<FrameParams>({ pos, size })
 
 
@@ -125,7 +122,7 @@ export const RamaFF: React.FC<FixProps> = ({ pos, size }) => {
             <g key={ 'glass' }>
 
                 <rect fill="#0080aa"
-                    x={ STV.s1.pos[0] } y={ STV.s1.pos[1] } width={ x + width / 2 } height={ y + height }
+                    x={ STV.s1.pos[0] } y={ STV.s1.pos[1] } width={ width / 2 } height={ height }
                     className="cursor-pointer" onClick={ () => setStv(prev => ({ ...prev, s1: { ...prev.s1, isShow: !prev.s1.isShow } })) }
                 />
                 <rect fill="#0080aa"

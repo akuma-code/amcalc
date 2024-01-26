@@ -22,7 +22,8 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
     // const _s = _ss(data?.width || 600, data?.height || 600)
     // const frame = new FrameState(_s, [params.x, params.y])
     // console.log('frame', frame.stvs.map(s => s.pos))
-    const tt = ARama({ size: _ss(params.width, params.height), pos: _p(params.x, params.y) })
+    const TT = ARama({ size: _ss(params.width, params.height), pos: _p(params.x, params.y) })
+
 
     return (
         <Container disableGutters fixed maxWidth='lg' sx={ { borderWidth: 2, borderColor: 'red' } }>
@@ -33,7 +34,7 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                         [`& .MuiInputBase-input`]: { maxWidth: 80, textAlign: 'center' }
                     } }
                 >
-                    <form className='flex flex-col w-32'>
+                    <form className='flex flex-col w-64'>
 
 
                         <FormControl>
@@ -56,7 +57,7 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                                 placeholder='height'
                             />
                         </FormControl>
-                        <FormControl>
+                        {/* <FormControl>
                             <FormHelperText>x1</FormHelperText>
                             <Input onChange={ changeHandler('x') }
                                 value={ +params.x }
@@ -71,10 +72,13 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                                 id='inputY'
                                 placeholder='y'
                             />
+                        </FormControl> */}
+                        <FormControl >
+                            <div className="flex flex-row gap-4"> PosX  <Slider value={ params.x } onChange={ (e, value) => { setParams(prev => ({ ...prev, x: +value })) } } step={ 5 } max={ 500 } min={ 0 } />{ params.x }</div>
                         </FormControl>
                         <FormControl >
-                            PosX  <Slider value={ params.x } onChange={ (e, value) => { setParams(prev => ({ ...prev, x: +value })) } } step={ 5 } max={ 500 } min={ 0 } />{ params.x }
-                            PosY  <Slider value={ params.y } onChange={ (e, value) => { setParams(prev => ({ ...prev, y: +value })) } } step={ 5 } max={ 500 } min={ 0 } />{ params.y }
+                            <div className='flex flex-row gap-4'>  PosY
+                                <Slider value={ params.y } onChange={ (e, value) => { setParams(prev => ({ ...prev, y: +value })) } } step={ 5 } max={ 500 } min={ 0 } /> { params.y }</div>
                         </FormControl>
                         <Button variant='contained' onClick={ () => setData(prev => ({ ...prev, ...params })) }>Submit</Button>
                     </form>
@@ -95,10 +99,16 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                         anchor={ { _type: 'impost', p: [0, 0] } }
                     /> */}
                         {
-                            data &&
-                            <RamaFF
-                                size={ _ss(data.width, data.height) }
-                                pos={ _p(data.x, data.y) }
+                            // data &&
+                            // <RamaFF
+                            //     size={ _ss(data.width, data.height) }
+                            //     pos={ _p(data.x, data.y) }
+                            // />
+                        }
+                        { params &&
+                            <ARama
+                                size={ _ss(params.width, params.height) }
+                                pos={ _p(params.x, params.y) }
                             />
                         }
                     </DrawContainer>

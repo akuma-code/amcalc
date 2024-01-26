@@ -1,8 +1,8 @@
 import { IBorders, IFrameOffset, OFFSET, SystemProfile, _TSideBorderState } from "../Components/Templates/Systems"
-import { _Point, _SizeF, _p } from "../Helpers/HelpersFns"
+import { _Point, _SizeF, _TPoint, _p } from "../Helpers/HelpersFns"
 import { ISizeShort, SizeShort } from "../Interfaces/CommonTypes"
-import { TSide, TSidesArray } from "../Interfaces/Enums"
-import { _OffsetCoordsRecord, _TCoords } from "../Interfaces/FrameState"
+import { IFrameVariants, TSide, TSidesArray } from "../Interfaces/Enums"
+import { IFrameState, _OffsetCoordsRecord, _TCoords } from "../Interfaces/FrameState"
 
 export const OffsetBorder: Record<_TSideBorderState, number> = {
     rama: 20,
@@ -25,18 +25,18 @@ type IParams = {
     size?: Partial<ISizeShort>
     bsides?: Partial<IBorders>
 }
-export class BorderStateOffset implements IBorders {
+export class NodeFactory implements IBorders {
     top: _TSideBorderState = 'rama'
     right: _TSideBorderState = 'rama'
     bottom: _TSideBorderState = 'rama'
     left: _TSideBorderState = 'rama'
     offset: Record<TSide, number>
-    constructor(off?: Partial<Record<TSide, number>> | number, system?: SystemProfile) {
+    constructor(system?: SystemProfile) {
         this.offset = { top: 0, bottom: 0, left: 0, right: 0 }
         this.setSystemOffset(system)
-        if (off) this.init(off)
+        // if (off) this.changeOffsetRecord(off)
     }
-    init(off: Partial<Record<TSide, number>> | number) {
+    changeOffsetRecord(off: Partial<Record<TSide, number>> | number) {
         if (typeof off === 'number') this.offset = { top: off, bottom: off, left: off, right: off }
         else this.offset = { ...this.offset, ...off }
     }
@@ -110,46 +110,36 @@ export class BorderStateOffset implements IBorders {
         const pathCoords = borderCoordsMap.map((b, idx) => {
             const [x1, y1, x2, y2] = b.coords
             const [ox1, oy1, ox2, oy2] = this.joinMatrixCoords(
-                b.coords as unknown as [number, number, number, number],
-                offset[idx].coords as unknown as [number, number, number, number]
+                b.coords,
+                offset[idx].coords
             )
 
-            const offsetcoords = []
-            offsetcoords.push(
-                [
-                    [x1, y1],
-                    [ox1, oy1],
-                    [ox2, oy2],
-                    [x2, y2]
-                ],
+            const path = [] as unknown as [_TPoint, _TPoint][]
+            path.push(
+                [[x1, y1], [ox1, oy1]],
+                [[ox2, oy2], [x2, y2]]
+
             )
+            const dataSide = { outerborder: [[x1, y1], [x2, y2]], innerborder: [[ox1, oy1], [ox2, oy2]] }
             // .splice(0, 0, ...this.joinMatrixCoords(coords, of))
-            return { side: b.side, coords: offsetcoords }
+            return { side: b.side, path, dataSide }
         })
-        // .map(a => (
-        //     {
-        //         ...a, coords: [
-        //             [a.coords[0], a.coords[1]],
-        //             [a.coords[2], a.coords[3]]
-        //         ]
-        //     }
-        // ))
+
 
         return { corners, anchor: startPos, size, pathCoords }
     }
 
 
-    joinMatrixCoords(arr1: [x1: number, y1: number, x2: number, y2: number], arr2: typeof arr1) {
+    joinMatrixCoords(arr1: number[], arr2: typeof arr1) {
         const l = arr1.length
+        const l1 = arr2.length
+        if (l !== l1) throw new Error("Check arr length!")
         let result = []
         for (let i = 0; i < l; i++) {
 
             result.push(arr1[i] + arr2[i])
         }
-        result = [
-            result[0], result[1],
-            result[2], result[3]
-        ]
+
         return result
     }
 
@@ -157,7 +147,7 @@ export class BorderStateOffset implements IBorders {
 }
 export class BaseNode {
     public size: ISizeShort = new SizeShort(250, 400)
-    public bsides: IBorders = new BorderStateOffset()
+    public bsides: IBorders = new NodeFactory()
 
 }
 
@@ -168,28 +158,9 @@ export class FrameFactory {
         this.name = name ? name : 'frame_factory'
     }
 
-    createFrame(params?: IParams) {
-        let node: INode = {
-            size: new SizeShort(250, 400),
-            bsides: new BorderStateOffset()
-        }
-        let rama: INode = {
-            size: new SizeShort(250, 400),
-            bsides: new BorderStateOffset(20)
-        }
-
-
-        if (params) {
-            const { size, bsides } = params
-            node = { ...node, size: { ...node.size, ...size }, bsides: { ...node.bsides, ...bsides } }
-            rama = { ...rama, size: { ...rama.size, ...size }, bsides: { ...rama.bsides, ...bsides } }
-        }
-        let frame: IFrame = {
-            nodes: [node],
-            rama
-        } satisfies IFrame
-        this.history.push(frame)
-        return frame
+    createFrame(_type: IFrameVariants, size: _SizeF, startPos: _Point, system?: SystemProfile) {
+        const nf = new NodeFactory(system)
+        nf.newNodeData(size, startPos)
 
     }
 
@@ -200,3 +171,45 @@ export class FrameFactory {
 }
 
 
+export const NodeBordersTemplate: Record<IFrameVariants, Array<Record<TSide, _TSideBorderState>>> = {
+    f: [{
+        top: 'rama',
+        right: 'rama',
+        bottom: 'rama',
+        left: 'rama',
+    }],
+    ff: [
+        {
+            top: 'rama',
+            right: 'imp',
+            bottom: 'rama',
+            left: 'rama',
+        },
+        {
+            top: 'rama',
+            right: 'rama',
+            bottom: 'rama',
+            left: 'imp',
+        }
+    ],
+    fff: [
+        {
+            top: 'rama',
+            right: 'imp',
+            bottom: 'rama',
+            left: 'rama',
+        },
+        {
+            top: 'rama',
+            right: 'imp',
+            bottom: 'rama',
+            left: 'imp',
+        },
+        {
+            top: 'rama',
+            right: 'rama',
+            bottom: 'rama',
+            left: 'imp',
+        },
+    ]
+}

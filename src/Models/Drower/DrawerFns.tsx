@@ -18,7 +18,7 @@ export class DrawerService {
     }
 
 
-    drawpath(...pts: (_Point | _TPoint)[]) {
+    drawpath(...pts: _TPoint[]) {
         const max = pts.length - 1
         if (max < 3) _log("Not enought points")
         const path = pts.reduce((prev, p, idx) => {

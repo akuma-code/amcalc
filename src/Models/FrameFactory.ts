@@ -25,6 +25,9 @@ type IParams = {
     size?: Partial<ISizeShort>
     bsides?: Partial<IBorders>
 }
+
+//TODO: FrameFactory.create(type)=>(...args)=><FrameRama />  <FrameBaseComponent/> <FrameStv /> <FrameImpost/>
+
 export class NodeFactory implements IBorders {
     top: _TSideBorderState = 'rama'
     right: _TSideBorderState = 'rama'

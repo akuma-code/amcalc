@@ -7,9 +7,10 @@ import { TSide } from '../../Interfaces/Enums'
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import { Button } from '@mui/material'
 import { FrameState } from './FrameStateData'
-import { ISideDirections } from '../FrameFactory'
+
 import { ANYobj } from '../../Interfaces/MathActionsTypes'
 import { Stvorka } from './Stvorka'
+import { ISideDirections } from '../../Components/Templates/Systems'
 export type BorderPath = {
     side: ISideDirections;
     path: string;
@@ -124,11 +125,11 @@ export const RamaFF: React.FC<FixProps> = ({ pos, size }) => {
             <g key={ 'glass' }>
 
                 <rect fill="#0080aa"
-                    x={ STV.s1.pos[0] + x } y={ STV.s1.pos[1] + y } width={ width / 2 } height={ height }
+                    x={ STV.s1.pos[0] } y={ STV.s1.pos[1] } width={ x + width / 2 } height={ y + height }
                     className="cursor-pointer" onClick={ () => setStv(prev => ({ ...prev, s1: { ...prev.s1, isShow: !prev.s1.isShow } })) }
                 />
                 <rect fill="#0080aa"
-                    x={ STV.s2.pos[0] + x } y={ STV.s2.pos[1] + y } width={ width / 2 } height={ height }
+                    x={ STV.s2.pos[0] } y={ STV.s2.pos[1] } width={ width / 2 } height={ height }
                     className="cursor-pointer" onClick={ () => setStv(prev => ({ ...prev, s2: { ...prev.s2, isShow: !prev.s2.isShow } })) }
                 />
             </g>

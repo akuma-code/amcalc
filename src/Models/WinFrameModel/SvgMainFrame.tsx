@@ -2,7 +2,7 @@ import { useState } from "react"
 import { _TPoint, _isArr, _log, _p, _s, _ss } from "../../Helpers/HelpersFns"
 import { TSide, TSides } from "../../Interfaces/Enums"
 import { DrawerService } from "../Drower/DrawerFns"
-import { TSideBorderState } from "../FrameFactory"
+
 import { RamaBordersCoords } from "./RamaBordersCoords"
 import { FrameState } from "./FrameStateData"
 

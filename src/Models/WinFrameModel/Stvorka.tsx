@@ -1,6 +1,6 @@
 import React from 'react'
 import { _TPoint, _p, _ss } from '../../Helpers/HelpersFns'
-import { FrameService } from './FrameStateData'
+import { FrameService } from './FrameService'
 import { DrawerService } from '../Drower/DrawerFns'
 
 type StvProps = {

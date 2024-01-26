@@ -8,6 +8,7 @@ import { RamaF } from '../../../Models/WinFrameModel/RamaF'
 import { RamaFF } from '../../../Models/WinFrameModel/RamaFF'
 import { FrameState } from '../../../Models/WinFrameModel/FrameStateData'
 import { Stvorka } from '../../../Models/WinFrameModel/Stvorka'
+import { ARama } from '../../../Models/WinFrameModel/Rama/ARama'
 
 
 type TestPageProps = {}
@@ -21,7 +22,7 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
     // const _s = _ss(data?.width || 600, data?.height || 600)
     // const frame = new FrameState(_s, [params.x, params.y])
     // console.log('frame', frame.stvs.map(s => s.pos))
-
+    const tt = ARama({ size: _ss(params.width, params.height), pos: _p(params.x, params.y) })
 
     return (
         <Container disableGutters fixed maxWidth='lg' sx={ { borderWidth: 2, borderColor: 'red' } }>
@@ -72,8 +73,8 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                             />
                         </FormControl>
                         <FormControl >
-                            PosX  <Slider value={ params.x } onChange={ (e, value) => { setParams(prev => ({ ...prev, x: +value })) } } step={ 5 } />{ params.x }
-                            PosY  <Slider value={ params.y } onChange={ (e, value) => { setParams(prev => ({ ...prev, y: +value })) } } step={ 5 } />{ params.y }
+                            PosX  <Slider value={ params.x } onChange={ (e, value) => { setParams(prev => ({ ...prev, x: +value })) } } step={ 5 } max={ 500 } min={ 0 } />{ params.x }
+                            PosY  <Slider value={ params.y } onChange={ (e, value) => { setParams(prev => ({ ...prev, y: +value })) } } step={ 5 } max={ 500 } min={ 0 } />{ params.y }
                         </FormControl>
                         <Button variant='contained' onClick={ () => setData(prev => ({ ...prev, ...params })) }>Submit</Button>
                     </form>
@@ -86,7 +87,7 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                 > */}
                 <Stack >
 
-                    <DrawContainer size={ _ss(800, 800) }
+                    <DrawContainer size={ _ss(2000, 2000) }
                     >
                         {/* <Stvorka
                         w={ 300 }
@@ -124,8 +125,10 @@ export const DrawContainer: React.FC<{ size: _SizeF } & PropsWithChildren> = ({ 
     return <svg xmlns="http://www.w3.org/2000/svg"
         version="1.1"
         viewBox={ `0 0 ${size.width} ${size.height}` }
-        { ...size }
+        // { ...size }
         className='bg-gray-300'
+        width={ 1000 }
+        height={ 1000 }
     >
         { children }
     </svg>

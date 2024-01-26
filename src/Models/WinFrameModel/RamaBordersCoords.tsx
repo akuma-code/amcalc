@@ -1,8 +1,8 @@
-import { IFrameOffset } from "../../Components/Templates/Systems";
+import { IFrameOffset, ISideDirections } from "../../Components/Templates/Systems";
 import { _Point, _SizeF, _TPoint } from "../../Helpers/HelpersFns";
 import { TSide, TSidesArray } from "../../Interfaces/Enums";
 import { DrawerService } from "../Drower/DrawerFns";
-import { ISideDirections } from "../FrameFactory";
+
 
 export type CoordsRecord = Record<ISideDirections, [_TPoint, _TPoint]>
 

@@ -105,9 +105,9 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                             //     pos={ _p(data.x, data.y) }
                             // />
                         }
-                        { params &&
+                        { data &&
                             <ARama
-                                size={ _ss(params.width, params.height) }
+                                size={ _ss(data.width, data.height) }
                                 pos={ _p(params.x, params.y) }
                             />
                         }

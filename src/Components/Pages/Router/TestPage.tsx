@@ -1,7 +1,8 @@
 import { Button, Container, FormControl, FormHelperText, Input, Slider, Stack } from '@mui/material'
 import React, { PropsWithChildren, useState } from 'react'
 import { _SizeF, _p, _ss } from '../../../Helpers/HelpersFns'
-import { FrameContainer } from '../../../Models/FrameComponent/FrameBaseContainer'
+import { FrameTypeF } from '../../../Models/FrameComponent/FrameTypeF'
+import { FrameTypeFF } from '../../../Models/FrameComponent/FrameTypeFF'
 
 
 type TestPageProps = {}
@@ -66,19 +67,18 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
 
                     <DrawCanvas size={ _ss(2000, 2000) }
                     >
-                        { data &&
-                            <FrameContainer
-                                size={ _ss(data.width, data.height) }
-                                pos={ _p(params.x, params.y) }
-                            />
+                        {
+                            //  data &&
+                            // <FrameTypeF
+                            //     size={ _ss(data.width, data.height) }
+                            //     pos={ _p(params.x, params.y) }
+                            // />
                         }
                         {
                             data &&
-                            <FrameContainer
+                            <FrameTypeFF
                                 size={ _ss(data.width, data.height) }
-                                pos={ _p(params.x + data.width, params.y) }>
-
-                            </FrameContainer>
+                                pos={ _p(params.x, params.y) } />
                         }
 
                     </DrawCanvas>

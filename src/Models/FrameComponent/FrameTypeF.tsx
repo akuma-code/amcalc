@@ -15,7 +15,7 @@ type FrameRamaProps = {
 
 const BO = new NodeFactory(SystemProfile.Proline)
 const ds = new DrawerService()
-export const FrameContainer = (props: FrameRamaProps) => {
+export const FrameTypeF = (props: FrameRamaProps) => {
 
     const [showStv, setshowStv] = useState({ s1: false })
     const { size, pos: { x, y } } = props

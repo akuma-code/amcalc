@@ -1,5 +1,5 @@
 import { IBorders, IFrameOffset, OFFSET, SystemProfile, _TSideBorderState } from "../Components/Templates/Systems"
-import { _Point, _SizeF, _TPoint, _p } from "../Helpers/HelpersFns"
+import { _CPoint, _Point, _SizeF, _TPoint, _p, _psum } from "../Helpers/HelpersFns"
 import { ISizeShort, SizeShort } from "../Interfaces/CommonTypes"
 import { IFrameVariants, TSide, TSidesArray } from "../Interfaces/Enums"
 import { IFrameState, _OffsetCoordsRecord, _TCoords } from "../Interfaces/FrameState"
@@ -86,12 +86,45 @@ export class NodeFactory implements IBorders {
             return { side, coords: [off.ox1, off.oy1, off.ox2, off.oy2] }
         })
         return cmap
-        //         return cmap.reduce((record, current)=>{
-        // current
-        //         }, {} as Record<TSide, _OffsetCoordsRecord>)
+
+    }
+    get coordsOffsetPointsMap() {
+        const cmap = TSidesArray.map(side => {
+            const o = this.offset
+            let off: _OffsetCoordsRecord = { ox1: -1, oy1: -1, ox2: -1, oy2: -1 }
+            switch (side) {
+                case "top": off = {
+                    ox1: o.left,
+                    oy1: o.top,
+                    ox2: -o.right,
+                    oy2: o.top
+                }; break
+                case "right": off = {
+                    ox1: -o.right,
+                    oy1: o.top,
+                    ox2: -o.right,
+                    oy2: -o.bottom
+                }; break
+                case "bottom": off = {
+                    ox1: -o.right,
+                    oy1: -o.bottom,
+                    ox2: o.left,
+                    oy2: -o.bottom
+                }; break
+                case "left": off = {
+                    ox1: o.left,
+                    oy1: -o.bottom,
+                    ox2: o.left,
+                    oy2: o.top
+                }; break
+            }
+            return { side, pcoords: [_p(off.ox1, off.oy1), _p(off.ox2, off.oy2)] satisfies [_Point, _Point] }
+        })
+        return cmap
+
     }
 
-    newNodeData(size: _SizeF, startPos: _Point) {
+    newNodeData(size: _SizeF, startPos: _CPoint) {
         const { x, y } = startPos
         const { width: w, height: h } = size
         const [rx1, ry1] = [x, y]
@@ -108,6 +141,19 @@ export class NodeFactory implements IBorders {
             { side: 'bottom', coords: [rx2, ry2, rx1, ry2] },
             { side: 'left', coords: [rx1, ry2, rx1, ry1] },
         ]
+        const poffset = this.coordsOffsetPointsMap
+
+        const pointsMap = [
+            { side: 'top', coords: [_p(rx1, ry1), _p(rx2, ry1)] },
+            { side: 'right', coords: [_p(rx2, ry1), _p(rx2, ry2)] },
+            { side: 'bottom', coords: [_p(rx2, ry2), _p(rx1, ry2)] },
+            { side: 'left', coords: [_p(rx1, ry2), _p(rx1, ry1)] },
+        ] as {
+            side: string;
+            coords: [_Point, _Point];
+        }[]
+
+        const pathPoints = pointsMap.map((pm, i) => ({ ...pm, coords: applyOffsetPoint(pm.coords, poffset[i].pcoords) }))
 
         const offset = this.coordsOffsetMap
         const pathCoords = borderCoordsMap.map((b, idx) => {
@@ -124,12 +170,18 @@ export class NodeFactory implements IBorders {
 
             )
             const dataSide = { outerborder: [[x1, y1], [x2, y2]], innerborder: [[ox1, oy1], [ox2, oy2]] }
-            // .splice(0, 0, ...this.joinMatrixCoords(coords, of))
-            return { side: b.side, path, dataSide }
+            const points = [
+                _p(x1, y1),
+                _p(ox1, oy1),
+                _p(ox2, oy2),
+                _p(x2, y2)
+            ]
+
+            return { side: b.side as TSide, path, points }
         })
 
 
-        return { corners, anchor: startPos, size, pathCoords }
+        return { corners, anchor: startPos, size, pathCoords, pathPoints }
     }
 
 
@@ -148,6 +200,15 @@ export class NodeFactory implements IBorders {
 
 
 }
+
+const applyOffsetPoint = (coords: [_Point, _Point], pcoords: typeof coords) => {
+
+    const [start, end] = coords
+    const [os, oe] = pcoords
+    const result = [start, _psum(start, os), _psum(end, oe), end] as const
+    return result
+}
+
 export class BaseNode {
     public size: ISizeShort = new SizeShort(250, 400)
     public bsides: IBorders = new NodeFactory()
@@ -163,7 +224,7 @@ export class FrameFactory {
 
     createFrame(_type: IFrameVariants, size: _SizeF, startPos: _Point, system?: SystemProfile) {
         const nf = new NodeFactory(system)
-        nf.newNodeData(size, startPos)
+        return nf.newNodeData(size, startPos)
 
     }
 

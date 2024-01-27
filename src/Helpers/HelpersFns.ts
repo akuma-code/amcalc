@@ -81,4 +81,5 @@ export type _AdvPoint = {
 }
 export const _s = (w: number, h?: number) => h ? new _Size(w, h) : new _Size(w, w)
 export const _ss = (w: number, h?: number) => h ? new _SizeF(w, h) : new _SizeF(w, w)
-export const _p = (x: number, y: number) => new _Point(x, y)
+export const _p = (x: number, y: number) => new _Point(x, y) satisfies _CPoint
+export const _psum = (p1: _CPoint, p2: _CPoint) => _p(p1.x + p2.x, p1.y + p2.y)

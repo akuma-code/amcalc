@@ -1,5 +1,5 @@
 import { OFFSET, SystemProfile } from "../../Components/Templates/Systems"
-import { _AdvPoint, _Point, _TPoint, _isArr, _log, _p } from "../../Helpers/HelpersFns"
+import { _AdvPoint, _CPoint, _Point, _TPoint, _isArr, _log, _p } from "../../Helpers/HelpersFns"
 import { TSidesArray } from "../../Interfaces/Enums"
 type _CoordsSE = _Point | _TPoint
 export type DrawerPointType = 'L' | 'M' | 'l' | 'm' | 'Z'
@@ -18,7 +18,7 @@ export class DrawerService {
     }
 
 
-    drawpath(...pts: _TPoint[]) {
+    drawpath(...pts: _CoordsSE[]) {
         const max = pts.length - 1
         if (max < 3) _log("Not enought points")
         const path = pts.reduce((prev, p, idx) => {
@@ -34,14 +34,14 @@ export class DrawerService {
         return path
     }
 
-    drawRelativePath(...pts: _CoordsSE[]) {
+    drawpathC(...pts: _CPoint[]) {
         const max = pts.length - 1
         if (max < 3) _log("Not enought points")
         const path = pts.reduce((prev, p, idx) => {
             if (prev === "") return prev += this.concatType('M', p,)
-            if (idx < max) prev += this.concatType('l', p,)
+            if (idx < max) prev += this.concatType('L', p,)
             if (idx === max) {
-                prev += this.concatType('l', p,)
+                prev += this.concatType('L', p,)
                 prev += ` Z`
             }
             return prev

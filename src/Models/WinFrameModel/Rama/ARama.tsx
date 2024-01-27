@@ -44,7 +44,7 @@ export const FrameRamaA: React.FC<FrameRamaProps> = (props) => {
 
 
     const Node = useMemo(() => {
-        const extRama = BO.newNodeData(size, props.pos)
+        const extRama = BO.newPathCoordsMap(size, props.pos)
         const bpaths = extRama.pathCoords
             .map(pc => ({ side: pc.side, path: ds.drawpathC(...pc.points) }))
 
@@ -63,21 +63,21 @@ export const FrameRamaA: React.FC<FrameRamaProps> = (props) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg"
             version="1.1"
-            viewBox={ `0 0 ${x + w} ${y + h}` }
-            width={ x + w }
-            height={ y + h }>
-            <g fill='lightblue' onClick={ () => setshowStv(prev => ({ ...prev, s1: !prev.s1 })) }>
-                <GlsRect posAnchor={ frameState.anchor } size={ frameState.size } />
+            viewBox={`0 0 ${x + w} ${y + h}`}
+            width={x + w}
+            height={y + h}>
+            <g fill='lightblue' onClick={() => setshowStv(prev => ({ ...prev, s1: !prev.s1 }))}>
+                <GlsRect posAnchor={frameState.anchor} size={frameState.size} />
             </g>
 
-            <NodeBorders { ...Node } />
+            <NodeBorders {...Node} />
             {
                 showStv.s1 &&
                 <Stv
-                    posOffset={ { ox: 60, oy: 60 } }
-                    posAnchor={ frameState.anchor }
-                    size={ frameState.size }
-                    params={ { fill: 'whitesmoke', stroke: 'black' } }
+                    posOffset={{ ox: 60, oy: 60 }}
+                    posAnchor={frameState.anchor}
+                    size={frameState.size}
+                    params={{ fill: 'whitesmoke', stroke: 'black' }}
                 />
             }
         </svg>

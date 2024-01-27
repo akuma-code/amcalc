@@ -124,17 +124,12 @@ export class NodeFactory implements IBorders {
 
     }
 
-    newNodeData(size: _SizeF, startPos: _CPoint) {
+    newPathCoordsMap(size: _SizeF, startPos: _CPoint) {
         const { x, y } = startPos
         const { width: w, height: h } = size
         const [rx1, ry1] = [x, y]
         const [rx2, ry2] = [x + w, y + h]
-        const corners: _TCoords = [
-            [rx1, ry1],
-            [rx2, ry1],
-            [rx2, ry2],
-            [rx1, ry2],
-        ]
+
         const borderCoordsMap = [
             { side: 'top', coords: [rx1, ry1, rx2, ry1] },
             { side: 'right', coords: [rx2, ry1, rx2, ry2] },
@@ -149,7 +144,7 @@ export class NodeFactory implements IBorders {
             { side: 'bottom', coords: [_p(rx2, ry2), _p(rx1, ry2)] },
             { side: 'left', coords: [_p(rx1, ry2), _p(rx1, ry1)] },
         ] as {
-            side: string;
+            side: TSide;
             coords: [_Point, _Point];
         }[]
 
@@ -181,7 +176,7 @@ export class NodeFactory implements IBorders {
         })
 
 
-        return { corners, anchor: startPos, size, pathCoords, pathPoints }
+        return { anchor: startPos, size, pathCoords, pathPoints: [...pathPoints] as const }
     }
 
 
@@ -224,7 +219,7 @@ export class FrameFactory {
 
     createFrame(_type: IFrameVariants, size: _SizeF, startPos: _Point, system?: SystemProfile) {
         const nf = new NodeFactory(system)
-        return nf.newNodeData(size, startPos)
+        return nf.newPathCoordsMap(size, startPos)
 
     }
 

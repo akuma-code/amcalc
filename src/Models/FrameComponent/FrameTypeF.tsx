@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, PropsWithChildren } from 'react'
-import { _Point, _SizeF } from '../../Helpers/HelpersFns'
+import { _Point, _SizeF, _log, _p } from '../../Helpers/HelpersFns'
 import { SystemProfile } from '../../Components/Templates/Systems'
 import { NodeFactory } from '../FrameFactory'
 import { StateData } from '../WinFrameModel/Rama/ARama'
@@ -7,6 +7,8 @@ import { NodeBorders } from './NodeBorders'
 import { Stv } from './Stv'
 import { GlsRect } from './GlsRect'
 import { DrawerService } from '../Drower/DrawerFns'
+import { FrameRamaContainer } from './FrameRamaContainer'
+import { useOffsetRama } from '../../Hooks/useOffset'
 
 type FrameRamaProps = {
     size: _SizeF
@@ -21,7 +23,7 @@ export const FrameTypeF = (props: FrameRamaProps) => {
     const { size, pos: { x, y } } = props
     const { width: w, height: h } = size
     const [frameState, setFrameState] = useState<Pick<StateData, 'size' | 'anchor'>>({ size, anchor: { x, y } })
-
+    const rama = useOffsetRama(size, _p(x, y))
 
     const Node = useMemo(() => {
         const extRama = BO.newPathCoordsMap(size, props.pos)
@@ -32,7 +34,7 @@ export const FrameTypeF = (props: FrameRamaProps) => {
         return { bpaths, anchor: extRama.anchor, size: extRama.size }
     }, [props.pos, size])
 
-
+    _log(rama)
 
     useEffect(() => {
 
@@ -42,33 +44,34 @@ export const FrameTypeF = (props: FrameRamaProps) => {
 
 
     return (
-        <svg xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            viewBox={`0 0 ${x + w} ${y + h}`}
-            width={x + w}
-            height={y + h}>
+        <FrameRamaContainer
+            startPos={ _p(x, y) }
+            w={ w }
+            h={ h }
+        >
 
             <GlsRect
-                posAnchor={frameState.anchor}
-                size={frameState.size}
-                clickHandler={() => setshowStv(prev => ({ ...prev, s1: !prev.s1 }))}
-                params={{ fill: 'lightblue' }}
+                posAnchor={ frameState.anchor }
+                size={ frameState.size }
+                clickHandler={ () => setshowStv(prev => ({ ...prev, s1: !prev.s1 })) }
+                params={ { fill: 'lightblue' } }
             />
 
-            <NodeBorders {...Node} />
+            <NodeBorders { ...Node } />
             {
                 showStv.s1 &&
 
                 <Stv
-                    posOffset={{ ox: 60, oy: 60 }}
-                    posAnchor={frameState.anchor}
-                    size={frameState.size}
-                    params={{ fill: 'whitesmoke', stroke: 'black' }}
+                    posOffset={ { ox: 60, oy: 60 } }
+                    posAnchor={ frameState.anchor }
+                    size={ frameState.size }
+                    g_props={ { fill: 'whitesmoke', stroke: 'black' } }
                 />
             }
-            {props.children}
+            { props.children }
 
-        </svg>
+        </FrameRamaContainer>
+
     )
 }
 

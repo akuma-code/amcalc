@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "huuums.vscode-fast-folder-structure",
-        "reactreedev.reactree"
+        "reactreedev.reactree",
+        "markosth09.color-picker"
     ]
 }

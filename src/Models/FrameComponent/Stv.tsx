@@ -7,13 +7,13 @@ export type _TOverlap = { side: TSide, o: number }
 interface StvPathProps {
     posAnchor: _Point;
     size: _SizeF;
-    params?: React.SVGProps<SVGPathElement>;
+    g_props?: React.SVGProps<SVGPathElement>;
     posOffset?: { ox: number; oy: number; };
     // sizeOffset?: { wo: number, ho: number }
     overlap?: _TOverlap
 }
 const BO = new NodeFactory()
-export const Stv: React.FC<StvPathProps> = ({ posAnchor, size, params, posOffset, overlap }) => {
+export const Stv: React.FC<StvPathProps> = ({ posAnchor, size, g_props, posOffset, overlap }) => {
     let [ox = 0, oy = 0] = [posOffset?.ox, posOffset?.oy];
     let { width, height } = size
     const { offset } = BO
@@ -69,10 +69,10 @@ export const Stv: React.FC<StvPathProps> = ({ posAnchor, size, params, posOffset
     const { pathPoints, pathCoords, } = BO.newPathCoordsMap(_size, _anchor);
 
     return (
-        <g {...params}>
+        <g { ...g_props } >
 
-            {pathPoints.map(b => <path key={b.side} d={ds.drawpath(...b.coords)} {...params} />
-            )}
+            { pathPoints.map(b => <path key={ b.side } d={ ds.drawpath(...b.coords) } />
+            ) }
         </g>
     );
 };

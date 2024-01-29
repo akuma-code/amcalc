@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, PropsWithChildren } from 'react'
-import { _Point, _SizeF, _p, _ss } from '../../Helpers/HelpersFns'
+import { _Point, _SizeF, _log, _p, _ss } from '../../Helpers/HelpersFns'
 import { SystemProfile } from '../../Components/Templates/Systems'
 import { NodeFactory } from '../FrameFactory'
 import { StateData } from '../WinFrameModel/Rama/ARama'
@@ -7,6 +7,8 @@ import { NodeBorders } from './NodeBorders'
 import { Stv } from './Stv'
 import { GlsRect } from './GlsRect'
 import { DrawerService } from '../Drower/DrawerFns'
+import { FrameRamaContainer } from './FrameRamaContainer'
+import { useOffsetRama } from '../../Hooks/useOffset'
 
 type FrameRamaProps = {
     size: _SizeF
@@ -25,6 +27,7 @@ export const FrameTypeFF = (props: FrameRamaProps) => {
     const toogleShow = (stvId: keyof typeof showStv) => () => {
         setshowStv(prev => ({ ...prev, [stvId]: !prev[stvId] }))
     }
+    const ramaBordersPath = useOffsetRama(size, props.pos)
     const no = {
         s1: {
             size: _ss(w / 2, h),
@@ -55,7 +58,7 @@ export const FrameTypeFF = (props: FrameRamaProps) => {
         // ]
         const rama = r.pathCoords
             .map(pc => ({ side: pc.side, path: ds.drawpathC(...pc.points) }))
-        return { rama, BordersStv1, BordersStv2 }
+        return { BordersStv1, BordersStv2 }
     }, [w, h, x, y])
 
 
@@ -69,42 +72,41 @@ export const FrameTypeFF = (props: FrameRamaProps) => {
 
 
     return (
-        <svg xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            viewBox={`0 0 ${x + w} ${y + h}`}
-            width={x + w}
-            height={y + h}>
+
+        <FrameRamaContainer
+            w={ w }
+            h={ h }
+            startPos={ _p(x, y) }
+        >
 
             <GlsRect
-                posAnchor={{ x: BO.offset.left, y: BO.offset.top }}
-
-                size={{ width: w - BO.offset.left - BO.offset.right, height: h - BO.offset.top - BO.offset.bottom }}
-
-                params={{ fill: 'blue' }}
-            />
-            {/* <GlsRect
-                posAnchor={frameS1.anchor}
-                size={frameS1.size}
-                clickHandler={toogleShow('s1')}
-                params={{ fill: 'lightblue' }}
+                posAnchor={ { x: BO.offset.left, y: BO.offset.top } }
+                size={ { width: w - BO.offset.left - BO.offset.right, height: h - BO.offset.top - BO.offset.bottom } }
+                params={ { fill: 'blue' } }
             />
             <GlsRect
-                posAnchor={frameS2.anchor}
-                size={frameS2.size}
-                clickHandler={toogleShow('s2')}
-                params={{ fill: 'blue' }}
-            /> */}
-            <NodeBorders bpaths={Paths.rama} anchor={{ x, y }} size={_ss(w, h)} />
-            {/* { Conteiner.nodes.map(n => <NodeBorders { ...n } key={ n._id } />) } */}
+                posAnchor={ frameS1.anchor }
+                size={ frameS1.size }
+                clickHandler={ toogleShow('s1') }
+                params={ { fill: 'lightblue' } }
+            />
+            <GlsRect
+                posAnchor={ frameS2.anchor }
+                size={ frameS2.size }
+                clickHandler={ toogleShow('s2') }
+                params={ { fill: '#6d6dc9' } }
+            />
+            <NodeBorders bpaths={ ramaBordersPath } anchor={ { x, y } } size={ _ss(w, h) } />
+            {/* { Conteiner.nodes.map(n => <NodeBorders { ...n } key={ n._id } />) } */ }
             {
                 showStv.s1 &&
 
                 <Stv
-                    posOffset={{ ox: BO.offset.left / 2, oy: BO.offset.top / 2 }}
-                    posAnchor={frameS1.anchor}
-                    size={frameS1.size}
-                    params={{ fill: 'whitesmoke', stroke: 'black' }}
-                    overlap={{ side: 'right', o: 15 }}
+                    posOffset={ { ox: BO.offset.left / 2, oy: BO.offset.top / 2 } }
+                    posAnchor={ frameS1.anchor }
+                    size={ frameS1.size }
+                    g_props={ { fill: 'whitesmoke', stroke: 'black' } }
+                    overlap={ { side: 'right', o: 15 } }
 
                 />
             }
@@ -112,16 +114,17 @@ export const FrameTypeFF = (props: FrameRamaProps) => {
                 showStv.s2 &&
 
                 <Stv
-                    posOffset={{ ox: 30, oy: 30 }}
-                    posAnchor={frameS2.anchor}
-                    size={frameS2.size}
-                    params={{ fill: 'whitesmoke', stroke: 'black' }}
-                    overlap={{ side: 'left', o: 15 }}
+                    posOffset={ { ox: 30, oy: 30 } }
+                    posAnchor={ frameS2.anchor }
+                    size={ frameS2.size }
+                    g_props={ { fill: 'whitesmoke', stroke: 'black' } }
+                    overlap={ { side: 'left', o: 15 } }
                 />
             }
-            {props.children}
-            <path d={`M${no.s2.pos.x} ${no.s2.pos.y} L${no.s2.pos.x} ${no.s2.pos.y + h} Z`} x={no.s2.pos.x + w / 2} y={no.s2.pos.y} stroke='black' />
-        </svg>
+            { props.children }
+            <path d={ `M${no.s2.pos.x} ${no.s2.pos.y} L${no.s2.pos.x} ${no.s2.pos.y + h} Z` } x={ no.s2.pos.x + w / 2 } y={ no.s2.pos.y } stroke='black' />
+        </FrameRamaContainer>
+        // </svg>
     )
 }
 

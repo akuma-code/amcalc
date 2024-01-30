@@ -11,47 +11,89 @@ interface FrameBorderProps {
 const ds = new DrawerService()
 
 const FrameBorder = ({ coords, dir, bh = 50 }: FrameBorderProps) => {
+    const { path } = absSidePath(dir, coords, bh)
 
-    const [s0, s3] = [coords['0'], coords[1]]
-    const lx = s3.x - s0.x
-    const ly = s3.y - s0.y
-    const [s1, s2] = [
-        _p(s0.x + bh, s0.y + bh),
-        _p(s0.x - bh, s0.y + bh)
-    ]
-    console.log('l', lx)
-    const pathTop = [
-        `m`, 0, 0,
-        `l${bh}`, bh,
-        `l${lx}`, 0,
-        `l${bh}`, -bh,
-        `z`
-    ].join(" ")
-    const pathBot = [
-        `M${s0.x} ${s3.y}`,
-        `l${-bh}`, bh,
-        `l${lx}`, 0,
-        `l${-bh}`, -bh,
-        `z`
-    ].join(" ")
-    _log(pathBot)
     return (
-        <path x={s0.x} y={s0.y} d={pathBot} stroke='green' fill='blue' />
+        <path d={ path } stroke='black' fill='whitesmoke' strokeWidth={ 2 } key={ dir } />
     )
 }
 
 
-const absLength = (coords: [_Point, _Point]) => {
-    const [start, end] = coords
-    const [ax, ay] = [Math.abs(start.x - end.x), Math.abs(start.y - end.y)]
 
-    console.log('ax-ay', ax, ay)
-    const l = Math.sqrt(ax ^ 2 + ay ^ 2)
-    return l
+
+
+const absSidePath = (side: TSide, coords: [start: _Point, end: _Point], bh: number) => {
+
+    const [s, e] = coords
+    const lx = Math.abs(s.x - e.x) - 2 * bh
+    const ly = Math.abs(s.y - e.y) - 2 * bh
+    const { x, y } = s
+    const path: (string | number)[] = []
+    const b = bh
+
+    switch (side) {
+        case 'top': path.push(
+            `M${x} ${y}`,
+            `l${b}`, b,
+            `l${lx}`, 0,
+            `l${b}`, -b,
+            'Z',
+        );
+            break
+        case 'right': path.push(
+            `M${x} ${y}`,
+            `l${-b}`, b,
+            `l0`, ly,
+            `l${b}`, b,
+            'Z',
+        );
+            break
+        case 'bottom': path.push(
+            `M${x} ${y}`,
+            `l${-b}`, -b,
+            `l${-lx}`, 0,
+            `l${-b}`, b,
+            'Z',
+        );
+            break
+        case 'left': path.push(
+            `M${x} ${y}`,
+            `l${b}`, -b,
+            `l${0}`, -ly,
+            `l${-b}`, -b,
+            'Z',
+        );
+            break
+    }
+    const abs = path.join(" ")
+
+    const relativePathPoints = {
+        top: [
+
+            [b, b],
+            [lx, 0],
+            [b, -b]
+        ],
+        bottom: [
+
+            [-b, -b],
+            [-lx, 0],
+            [-b, b]
+        ],
+        left: [
+            [b, -b],
+            [0, -ly],
+            [-b, -b],
+        ],
+        right: [
+            [-b, b],
+            [0, ly],
+            [b, b],
+        ]
+    }
+    return { path: abs, relativePathPoints }
+
 }
-
-
-
 
 
 

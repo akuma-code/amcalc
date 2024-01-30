@@ -6,7 +6,7 @@ import { DrawerService } from "../Models/Drower/DrawerFns";
 import { TSide, TSidesArray } from "../Interfaces/Enums";
 import { IFrameState, _OffsetCoordsRecord } from "../Interfaces/FrameState";
 
-const $DrawOffset: IFrameOffset = {
+export const $DrawOffset: IFrameOffset = {
     rama: 50,
     imp: 30,
     stv: 65,
@@ -14,8 +14,11 @@ const $DrawOffset: IFrameOffset = {
     stv_imp: 74.5,
     imp_shtulp: 64,
     svet: -16,
+}
 
-
+export const $DrawPosOffset = {
+    stv_rama: 30,
+    stv_impost: 20,
 }
 
 type OffsetRamaParams = {
@@ -60,13 +63,13 @@ export const useOffsetRama = (size: _SizeF, pos: _Point, params: Partial<OffsetR
 }
 
 
-function newBordersCoordMap(size: _SizeF, startPos: _CPoint) {
+export function newBordersCoordMap(size: _SizeF, startPos: _CPoint) {
     const { x, y } = startPos
     const { width: w, height: h } = size
     const [rx1, ry1] = [x, y]
     const [rx2, ry2] = [x + w, y + h]
 
-    const borderCoordPoints: { side: TSide, coords: _Point[] }[] = [
+    const borderCoordPoints: { side: TSide, coords: [_Point, _Point] }[] = [
         { side: 'top', coords: [_p(rx1, ry1), _p(rx2, ry1)] },
         { side: 'right', coords: [_p(rx2, ry1), _p(rx2, ry2)] },
         { side: 'bottom', coords: [_p(rx2, ry2), _p(rx1, ry2)] },

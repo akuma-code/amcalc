@@ -25,13 +25,13 @@ const FrameFF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
             _id: 's1',
             isShow: false,
             anchorCoords: [pos, impost.coords[1]] as [_Point, _Point],
-            overlap: { right: 15 }
+
         },
         {
             _id: 's2',
             isShow: false,
             anchorCoords: [_p(pos.x + size.width / 2, pos.y), _p(pos.x + size.width, pos.y + size.height)] as [_Point, _Point],
-            overlap: { left: 15 },
+
 
         },
 
@@ -75,10 +75,10 @@ const FrameFF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
             {
                 STVs.map(stv =>
                     <StvS2 key={ stv._id }
-                        _id='s1'
+                        _id={ stv._id }
                         anchorCoords={ stv.anchorCoords }
                         isShow={ stv.isShow }
-                        overlap={ stv.overlap }
+                    // overlap={ stv.overlap }
                     />
                 )
             }
@@ -164,33 +164,26 @@ export const StvS2 = ({ _id, anchorCoords, isShow, overlap }: { anchorCoords: [_
     const deltaAX = $DrawPosOffset.stv_rama
     const deltaAY = $DrawPosOffset.stv_rama
     let [s, e] = anchorCoords
+    let [os, oe] = [
+        _p(s.x + deltaAX, s.y + deltaAY),
+        _p(e.x - deltaAX, e.y - deltaAY)
+    ]
     const [frame, setFrame] = useState({
-        _id: 's1',
+
         isShow: false,
         anchorCoords,
         _size: _ss(e.x - s.x - deltaW, e.y - s.y - deltaH),
         anchor: _p(s.x + deltaAX, s.y + deltaAY)
 
     })
-    if (overlap?.left) {
 
-        e = { ...e, x: e.x + overlap.left }
-        s = { ...s, x: s.x - overlap.left }
-
-        _log(s, e)
-    }
-
-    if (overlap?.right) {
-        e = { ...e, x: e.x + overlap.right }
-
-    }
     useEffect(() => {
         // let [s, e] = frame.anchorCoords
         // const [s, e] = anchorCoords
         const size = _ss(e.x - s.x - deltaW, e.y - s.y - deltaH)
-        const coords = [_p(s.x + deltaAX, s.y + deltaAY), _p(e.x - $DrawPosOffset.stv_impost, e.y - deltaAY)] as [_Point, _Point]
+        const coords = [_p(s.x + deltaAX, s.y + deltaAY), _p(e.x - $DrawPosOffset.stv_rama, e.y - deltaAY)] as [_Point, _Point]
         setFrame(prev => ({ ...prev, isShow, anchorCoords: coords, _size: size }))
-    }, [anchorCoords, deltaAX, deltaAY, deltaH, deltaW, isShow,]
+    }, [anchorCoords, deltaAX, deltaAY, deltaH, deltaW, e.x, e.y, isShow, s.x, s.y]
 
     )
 

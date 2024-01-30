@@ -1,5 +1,5 @@
 import { OFFSET, SystemProfile } from "../../Components/Templates/Systems"
-import { _AdvPoint, _CPoint, _Point, _TPoint, _isArr, _log, _p } from "../../Helpers/HelpersFns"
+import { _AdvPoint, _CPoint, _Point, _TPoint, _isArr, _log, _p, _ss } from "../../Helpers/HelpersFns"
 import { TSidesArray } from "../../Interfaces/Enums"
 type _CoordsSE = _Point | _TPoint
 export type DrawerPointType = 'L' | 'M' | 'l' | 'm' | 'Z'
@@ -90,3 +90,6 @@ export const getOffset = (system: SystemProfile = SystemProfile.Proline) => {
     return _off
 }
 
+export const getSizeFromCoords = (start: _Point, end: _Point) => {
+    return _ss(Math.abs(start.x - end.x), Math.abs(start.y - end.y))
+}

@@ -6,9 +6,10 @@ import FrameBorder from './FrameBorder'
 type FrameBordersBlockProps = {
     anchor: _Point
     size: _SizeF
+    bh?: number
 }
 
-const FrameBordersBlock = ({ anchor, size }: FrameBordersBlockProps) => {
+const FrameBordersBlock = ({ anchor, size, bh }: FrameBordersBlockProps) => {
     const { borderCoordPoints } = newBordersCoordMap(size, anchor)
     const [border, setBorder] = useState(newBordersCoordMap(size, anchor))
     useEffect(() => {
@@ -17,7 +18,7 @@ const FrameBordersBlock = ({ anchor, size }: FrameBordersBlockProps) => {
     return (
         <g>
             { borderCoordPoints.map(({ coords, side }) =>
-                <FrameBorder coords={ coords } dir={ side } key={ side } bh={ 48 }
+                <FrameBorder coords={ coords } dir={ side } key={ side } bh={ bh || 48 }
 
                 />
             ) }

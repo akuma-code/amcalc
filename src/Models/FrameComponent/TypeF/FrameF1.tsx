@@ -45,7 +45,7 @@ const FrameF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
             <GlsRect
                 size={ size }
                 posAnchor={ pos }
-                params={ { fill: 'lightblue' } }
+                rectProps={ { fill: 'lightblue' } }
                 clickHandler={ toggleShow('s1') }
             />
             <FrameBordersBlock

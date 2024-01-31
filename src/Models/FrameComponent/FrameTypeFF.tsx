@@ -82,19 +82,19 @@ export const FrameTypeFF = (props: FrameRamaProps) => {
             <GlsRect
                 posAnchor={ { x: BO.offset.left, y: BO.offset.top } }
                 size={ { width: w - BO.offset.left - BO.offset.right, height: h - BO.offset.top - BO.offset.bottom } }
-                params={ { fill: 'blue' } }
+                rectProps={ { fill: 'blue' } }
             />
             <GlsRect
                 posAnchor={ frameS1.anchor }
                 size={ frameS1.size }
                 clickHandler={ toogleShow('s1') }
-                params={ { fill: 'lightblue' } }
+                rectProps={ { fill: 'lightblue' } }
             />
             <GlsRect
                 posAnchor={ frameS2.anchor }
                 size={ frameS2.size }
                 clickHandler={ toogleShow('s2') }
-                params={ { fill: '#6d6dc9' } }
+                rectProps={ { fill: '#6d6dc9' } }
             />
             <NodeBorders bpaths={ ramaBordersPath } anchor={ { x, y } } size={ _ss(w, h) } />
             {/* { Conteiner.nodes.map(n => <NodeBorders { ...n } key={ n._id } />) } */ }

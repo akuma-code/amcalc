@@ -54,7 +54,7 @@ export const FrameTypeF = (props: FrameRamaProps) => {
                 posAnchor={ frameState.anchor }
                 size={ frameState.size }
                 clickHandler={ () => setshowStv(prev => ({ ...prev, s1: !prev.s1 })) }
-                params={ { fill: 'lightblue' } }
+                rectProps={ { fill: 'lightblue' } }
             />
 
             <NodeBorders { ...Node } />

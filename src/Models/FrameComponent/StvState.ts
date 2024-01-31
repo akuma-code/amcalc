@@ -7,7 +7,7 @@ type BorderSideCoords = {
     side: TSide;
     coords: [_Point, _Point];
 }
-type ISideStateOffset = { [Key in TSide]?: _CType }
+export type ISideStateOffset = { [Key in TSide]?: _CType }
 type IPosOffsetRecord = { [Key in _CType]: number }
 type PartialOffsetValue = Partial<{ [Kei in TSide]: number }>
 

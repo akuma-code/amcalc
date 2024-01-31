@@ -10,7 +10,7 @@ type ImpostProps = {
     ih?: number
     clickHandler?: (id: string) => void;
 };
-const _id = _ID()
+const _id = 'impost1'
 export const ImpostVertical = observer(({ clickHandler, coords, ih = $DrawOffset.imp }: ImpostProps) => {
     const { FrameCtx } = useFrameContext()
     const [s, e] = coords!;
@@ -32,11 +32,16 @@ export const ImpostVertical = observer(({ clickHandler, coords, ih = $DrawOffset
     const color = isSelected() ? 'orange' : 'whitesmoke'
 
     const onClickFn = () => {
-        FrameCtx.selectItem({ id: _id })
+        const impost = {
+            id: _id,
+            coords,
+            impostH: ih
+        }
+        FrameCtx.selectItem(impost)
         // console.log('Impost coords:', s, e);
         clickHandler && clickHandler(_id);
     };
-    return <path d={ path } stroke='black' fill={ color } onClick={ onClickFn } />;
+    return <path d={path} stroke='black' fill={color} onClick={onClickFn} />;
 });
 
 

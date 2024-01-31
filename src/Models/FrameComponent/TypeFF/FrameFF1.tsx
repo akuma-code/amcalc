@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { _Point, _SizeF, _p, _ss } from '../../../Helpers/HelpersFns'
+import { _ID, _Point, _SizeF, _log, _p, _ss } from '../../../Helpers/HelpersFns'
 import { TSide } from '../../../Interfaces/Enums'
 import FrameBordersBlock from '../FrameBorderBox'
 import { FrameRamaContainer } from '../FrameRamaContainer'
@@ -29,7 +29,7 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
     }
     const [anchor, setAnchor] = useState(_initAnchor)
 
-    const [impost, setImpost] = useState({ coords: [anchor.impStart, anchor.impEnd] as [_Point, _Point] })
+    const [impost, setImpost] = useState({ coords: [anchor.impStart, anchor.impEnd] as [_Point, _Point], id: _ID() })
 
 
     const left = useMemo(() => new StvFrame('s1', [anchor.frameStart, anchor.impEnd], { right: 'impost' }),
@@ -46,9 +46,11 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
         setShow(prev => ({ ...prev, [stv_id]: !prev[stv_id as keyof typeof prev] }))
     }
 
-
+    const selectItem = (id: string) => {
+        FrameCtx.selectItem({ id })
+    }
     useEffect(() => {
-
+        FrameCtx && FrameCtx.resizeRama(size)
         setAnchor(prev => ({
             ...prev,
             frameStart: pos,
@@ -82,7 +84,7 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
                 clickHandler={ toggleShow('s2') }
             />
             { /*  //*Impost **/ }
-            <ImpostVertical coords={ impost.coords } />
+            <ImpostVertical coords={ impost.coords } clickHandler={ (id) => selectItem(id) } />
             { /*  //*RamaBorders **/ }
             <FrameBordersBlock
                 size={ size }
@@ -106,7 +108,7 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
 
     )
 })
-
+FrameFF1.displayName = '***Frame Type FF'
 export default FrameFF1
 
 

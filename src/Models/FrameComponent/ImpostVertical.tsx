@@ -1,16 +1,18 @@
 import React from 'react';
-import { _Point } from '../../Helpers/HelpersFns';
+import { _ID, _Point } from '../../Helpers/HelpersFns';
 import { $DrawOffset } from '../../Hooks/useOffset';
 import { useFrameContext } from '../../Hooks/useFrameContext';
+import { observer } from 'mobx-react-lite';
 
 type ImpostProps = {
     coords?: [_Point, _Point];
     anchor?: _Point;
     ih?: number
-    clickHandler?: () => void;
+    clickHandler?: (id: string) => void;
 };
-export const ImpostVertical = ({ clickHandler, coords, ih = $DrawOffset.imp }: ImpostProps) => {
-    const context = useFrameContext()
+const _id = _ID()
+export const ImpostVertical = observer(({ clickHandler, coords, ih = $DrawOffset.imp }: ImpostProps) => {
+    const { FrameCtx } = useFrameContext()
     const [s, e] = coords!;
     const wImp = ih * 2;
     const offsetHRama = $DrawOffset.rama;
@@ -26,11 +28,16 @@ export const ImpostVertical = ({ clickHandler, coords, ih = $DrawOffset.imp }: I
         `l${-wImp} ${0}`,
         `Z`
     ].join(" ");
-
+    const isSelected = () => FrameCtx.selected && FrameCtx.selected['id'] === _id
+    const color = isSelected() ? 'orange' : 'whitesmoke'
 
     const onClickFn = () => {
-        console.log('Impost coords:', s, e);
-        clickHandler && clickHandler();
+        FrameCtx.selectItem({ id: _id })
+        // console.log('Impost coords:', s, e);
+        clickHandler && clickHandler(_id);
     };
-    return <path d={ path } stroke='black' fill='whitesmoke' onClick={ onClickFn } />;
-};
+    return <path d={ path } stroke='black' fill={ color } onClick={ onClickFn } />;
+});
+
+
+ImpostVertical.displayName = 'Vertical Impost'

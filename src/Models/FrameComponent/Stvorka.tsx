@@ -14,7 +14,7 @@ export const Stvorka = (props: { stv: StvFrame; isShow: boolean }) => {
     return (
         <>
             <FrameBordersBlock anchor={ anchor } size={ size } bh={ 60 } />
-            <div className='w-[100%] h-[100%] bg-zinc-900'></div>
+
             {/* <GlsRect size={ size } posAnchor={ anchor } rectProps={ { fillOpacity: 0 } } /> */ }
         </>
     )

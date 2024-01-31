@@ -1,24 +1,25 @@
 import React from 'react';
 import { _Point } from '../../Helpers/HelpersFns';
 import { $DrawOffset } from '../../Hooks/useOffset';
+import { useFrameContext } from '../../Hooks/useFrameContext';
 
 type ImpostProps = {
-    coords: [_Point, _Point];
+    coords?: [_Point, _Point];
     anchor?: _Point;
-
+    ih?: number
     clickHandler?: () => void;
 };
-export const ImpostVertical = ({ coords, anchor, clickHandler }: ImpostProps) => {
-
-    const [s, e] = coords;
-    const wImp = $DrawOffset.imp * 2;
-    const rama = $DrawOffset.rama;
-    const ly = Math.abs(s.y - e.y) - rama * 2;
+export const ImpostVertical = ({ clickHandler, coords, ih = $DrawOffset.imp }: ImpostProps) => {
+    const context = useFrameContext()
+    const [s, e] = coords!;
+    const wImp = ih * 2;
+    const offsetHRama = $DrawOffset.rama;
+    const ly = Math.abs(s.y - e.y) - offsetHRama * 2;
 
 
 
     const path = [
-        `M${s.x - wImp / 2} ${s.y + rama - 5}`,
+        `M${s.x - wImp / 2} ${s.y + offsetHRama - 5}`,
         `l${0} ${ly + 5}`,
         `l${wImp} ${0}`,
         `l${0} ${-ly}`,
@@ -28,8 +29,8 @@ export const ImpostVertical = ({ coords, anchor, clickHandler }: ImpostProps) =>
 
 
     const onClickFn = () => {
-        console.log('Impost path:', path);
+        console.log('Impost coords:', s, e);
         clickHandler && clickHandler();
     };
-    return <path d={ path } stroke='black' fill='#f87e0c' onClick={ onClickFn } />;
+    return <path d={ path } stroke='black' fill='whitesmoke' onClick={ onClickFn } />;
 };

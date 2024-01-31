@@ -7,13 +7,17 @@ import { GlsRect } from '../GlsRect'
 import { StvFrame, _CType } from '../StvState'
 import { Stvorka } from '../Stvorka'
 import { ImpostVertical } from '../ImpostVertical'
+import { FrameContext, useFrameContext } from '../../../Hooks/useFrameContext'
+import { observer } from 'mobx-react-lite'
 
 type FrameRamaProps = {
     size: _SizeF
     pos: _Point
 }
 
-const FrameFF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
+const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
+    const { FrameCtx } = useFrameContext();
+
     const { width: w, height: h } = size
     const [show, setShow] = useState({ s1: false, s2: false })
     const _initAnchor = {
@@ -37,6 +41,8 @@ const FrameFF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
 
 
     const toggleShow = (stv_id: string) => () => {
+        FrameCtx.toggleStv(stv_id)
+
         setShow(prev => ({ ...prev, [stv_id]: !prev[stv_id as keyof typeof prev] }))
     }
 
@@ -56,29 +62,34 @@ const FrameFF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
         }))
     }, [pos, size])
     return (
+
         <FrameRamaContainer
             startPos={ pos }
             w={ w }
             h={ h }
         >
+            { /*  //*Glasses **/ }
             <GlsRect
                 size={ _ss(size.width / 2, size.height) }
                 posAnchor={ pos }
-                rectProps={ { fill: 'lightblue' } }
+                rectProps={ { fill: 'lightblue', fillOpacity: .5 } }
                 clickHandler={ toggleShow('s1') }
             />
             <GlsRect
                 size={ _ss(size.width / 2, size.height) }
                 posAnchor={ anchor.impStart }
-                rectProps={ { fill: 'lightblue' } }
+                rectProps={ { fill: 'lightblue', fillOpacity: .7 } }
                 clickHandler={ toggleShow('s2') }
             />
+            { /*  //*Impost **/ }
             <ImpostVertical coords={ impost.coords } />
+            { /*  //*RamaBorders **/ }
             <FrameBordersBlock
                 size={ size }
                 anchor={ pos }
-            />
 
+            />
+            { /*  //*Stvorki **/ }
             <Stvorka
                 isShow={ show.s1 }
                 stv={ left }
@@ -92,8 +103,9 @@ const FrameFF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
 
 
         </FrameRamaContainer>
+
     )
-}
+})
 
 export default FrameFF1
 

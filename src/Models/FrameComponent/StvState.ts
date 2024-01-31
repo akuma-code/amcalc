@@ -25,10 +25,11 @@ export class StvFrame {
         this.setOffsetSide()
         this._borderCoords = this.setBorderCoords(nodeCoords)
         if (connections) this.updateOffset(connections)
-        // this.applyOffset()
+        this.applyOffset()
     }
     get anchor() {
-        return this.drawCoords[0].coords[0]
+        if (!this.drawCoords[0]) return { x: 0, y: 0 }
+        return this.drawCoords[0]?.coords[0]
     }
 
     setOffsetSide() {

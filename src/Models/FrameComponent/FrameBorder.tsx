@@ -7,12 +7,13 @@ interface FrameBorderProps {
     coords: [start: _Point, end: _Point]
     dir: TSide
     bh?: number
+    pathProps?: React.SVGProps<SVGPathElement>
 }
 const ds = new DrawerService()
 
-const FrameBorder = ({ coords, dir, bh = 50 }: FrameBorderProps) => {
+const FrameBorder = ({ coords, dir, bh = 50, pathProps }: FrameBorderProps) => {
     const { path } = absSidePath(dir, coords, bh)
-
+    if (pathProps) return <path d={ path } strokeWidth={ 2 } key={ dir } { ...pathProps } />
     return (
         <path d={ path } stroke='black' fill='whitesmoke' strokeWidth={ 2 } key={ dir } />
     )

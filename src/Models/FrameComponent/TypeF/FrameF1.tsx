@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { _Point, _SizeF, _p, _ss } from '../../../Helpers/HelpersFns'
 import { $DrawPosOffset } from '../../../Hooks/useOffset'
 import FrameBordersBlock from '../FrameBorderBox'
 import { FrameRamaContainer } from '../FrameRamaContainer'
 import { GlsRect } from '../GlsRect'
+import { StvFrame } from '../StvState'
+import { Stvorka } from '../Stvorka'
+
 
 type FrameRamaProps = {
     size: _SizeF
@@ -13,30 +16,29 @@ type FrameRamaProps = {
 const FrameF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
 
     const { width: w, height: h } = size
+    const [show, setShow] = useState({ s1: false })
+    const _initAnchor = {
+        frameStart: pos,
+        frameEnd: _p(pos.x + size.width, pos.y + size.height)
+    }
+    const [anchor, setAnchor] = useState(_initAnchor)
 
-    const [STV, setStv] = useState([
-        {
-            _id: 's1',
-            _nodeSize: size,
-            anchor: pos,
-            isShow: false
-        }
-    ])
-
+    const stv = useMemo(() => new StvFrame('s1', [anchor.frameStart, anchor.frameEnd]), [anchor.frameEnd, anchor.frameStart])
     const toggleShow = (stv_id: string) => () => {
-        setStv(prev => prev.map(stv => stv._id === stv_id ? { ...stv, isShow: !stv.isShow } : stv))
+        setShow(prev => ({ ...prev, [stv_id]: !prev[stv_id as keyof typeof show] }))
     }
 
 
     useEffect(() => {
-        setStv(prev => prev.map(stv => stv._id === 's1' ? {
-            ...stv,
-            anchor: pos,
-            _nodeSize: size
-        }
-            : stv))
+        setAnchor(prev => ({
+            ...prev, frameStart: pos,
+            frameEnd: _p(pos.x + size.width, pos.y + size.height)
+        }))
     }, [pos, size])
     return (
+
+
+
         <FrameRamaContainer
             startPos={ pos }
             w={ w }
@@ -53,15 +55,19 @@ const FrameF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
                 anchor={ pos }
             />
             {
-                STV.map(stv =>
-                    <StvS1
-                        _id='s1'
-                        _nodeSize={ stv._nodeSize }
-                        anchor={ stv.anchor }
-                        isShow={ stv.isShow }
-                        key={ stv._id } />
-                )
+                // STV.map(stv =>
+                //     <StvS1
+                //         _id='s1'
+                //         _nodeSize={ stv._nodeSize }
+                //         anchor={ stv.anchor }
+                //         isShow={ stv.isShow }
+                //         key={ stv._id } />
+                // )
             }
+            <Stvorka
+                isShow={ show.s1 }
+                stv={ stv }
+            />
 
         </FrameRamaContainer>
     )

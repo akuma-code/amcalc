@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { _p, _ss } from '../../../Helpers/HelpersFns';
+import { _SizeF, _p, _ss } from '../../../Helpers/HelpersFns';
 type DataProps = {
     width: number;
     height: number;
@@ -21,19 +21,19 @@ const DrawerPage = () => {
 
 
     return (
-        <Stack useFlexGap direction={ 'column' }>
+        <Stack useFlexGap direction={'column'}>
             <Divider >
                 <h3 className='text-center text-4xl'>DrawerPage</h3>
 
             </Divider>
 
-            <Stack direction={ 'row' } useFlexGap gap={ 4 } mx={ 4 }>
-                <CreatePopup isOpen={ isOpen }
-                    toggleOpen={ () => { setIsOpen(prev => !prev) } }
-                    onCreate={ createHandler }
+            <Stack direction={'row'} useFlexGap gap={4} mx={4}>
+                <CreatePopup isOpen={isOpen}
+                    toggleOpen={() => { setIsOpen(prev => !prev) }}
+                    onCreate={createHandler}
                 />
                 <Button variant='contained' color='warning'
-                    onClick={ () => setFrame(null) }
+                    onClick={() => setFrame(null)}
                 >
                     Delete Frame
                 </Button>
@@ -68,37 +68,37 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
     return (
         <>
             <Button variant='contained'
-                onClick={ handleClickOpen }
+                onClick={handleClickOpen}
             >
                 Create Frame
             </Button>
             <Dialog fullWidth
-                open={ isOpen }
-                onClose={ handleClose }
-                PaperProps={ {
+                open={isOpen}
+                onClose={handleClose}
+                PaperProps={{
                     component: 'form',
                     onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
                         event.preventDefault();
                         onCreate(data)
                         handleClose();
                     },
-                } }
+                }}
             >
                 <DialogTitle>Create Frame Type F</DialogTitle>
                 <DialogContent >
-                    <DialogContentText gap={ 4 } display={ 'flex' } justifyContent={ 'center' }>
+                    <DialogContentText gap={4} display={'flex'} justifyContent={'center'}>
                         <span>Type: 'FF'</span>
                         <span>
-                            Width: { data.width }
+                            Width: {data.width}
                         </span>
                         <span>
-                            Height: { data.height }
+                            Height: {data.height}
                         </span>
                         <span>
-                            X: { data.x }
+                            X: {data.x}
                         </span>
                         <span>
-                            Y: { data.y }
+                            Y: {data.y}
                         </span>
                     </DialogContentText>
                     <Stack>
@@ -106,48 +106,48 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
                         <FormControl >
                             <div className="flex flex-row gap-4">
                                 W
-                                <Slider value={ data.width } onChange={ (e, value) => { setData(prev => ({ ...prev!, width: +value })) } }
-                                    step={ 100 }
-                                    max={ 2000 }
-                                    min={ 400 } />
-                                { data.width }
+                                <Slider value={data.width} onChange={(e, value) => { setData(prev => ({ ...prev!, width: +value })) }}
+                                    step={100}
+                                    max={2000}
+                                    min={400} />
+                                {data.width}
                             </div>
                         </FormControl>
                         <FormControl >
                             <div className="flex flex-row gap-4">
                                 H
-                                <Slider value={ data.height } onChange={ (e, value) => { setData(prev => ({ ...prev!, height: +value })) } }
-                                    step={ 100 }
-                                    max={ 2000 }
-                                    min={ 400 } />
-                                { data.height }
+                                <Slider value={data.height} onChange={(e, value) => { setData(prev => ({ ...prev!, height: +value })) }}
+                                    step={100}
+                                    max={2000}
+                                    min={400} />
+                                {data.height}
                             </div>
                         </FormControl>
                         <FormControl >
                             <div className="flex flex-row gap-4">
                                 X
-                                <Slider value={ data.x } onChange={ (e, value) => { setData(prev => ({ ...prev!, x: +value })) } }
-                                    step={ 10 }
-                                    max={ 2000 }
-                                    min={ 0 } />
-                                { data.x }
+                                <Slider value={data.x} onChange={(e, value) => { setData(prev => ({ ...prev!, x: +value })) }}
+                                    step={10}
+                                    max={2000}
+                                    min={0} />
+                                {data.x}
                             </div>
                         </FormControl>
                         <FormControl >
                             <div className="flex flex-row gap-4">
                                 Y
-                                <Slider value={ data.y } onChange={ (e, value) => { setData(prev => ({ ...prev!, y: +value })) } }
-                                    step={ 10 }
-                                    max={ 2000 }
-                                    min={ 0 } />
-                                { data.y }
+                                <Slider value={data.y} onChange={(e, value) => { setData(prev => ({ ...prev!, y: +value })) }}
+                                    step={10}
+                                    max={2000}
+                                    min={0} />
+                                {data.y}
                             </div>
                         </FormControl>
                     </Stack>
                 </DialogContent>
-                <DialogActions sx={ { justifyContent: 'flex-start' } }>
+                <DialogActions sx={{ justifyContent: 'flex-start' }}>
                     <Button type="submit" color='info' variant='contained'>Create</Button>
-                    <Button onClick={ handleClose } color='secondary' variant='contained'>Cancel</Button>
+                    <Button onClick={handleClose} color='secondary' variant='contained'>Cancel</Button>
                 </DialogActions>
             </Dialog>
         </>
@@ -269,3 +269,6 @@ function nodeGenerator(type: 'f' | 'ff' | 'fff') {
 
     return _nodes[type]
 }
+
+
+

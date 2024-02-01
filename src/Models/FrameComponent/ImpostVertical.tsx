@@ -34,7 +34,7 @@ export const ImpostVertical = observer(({ clickHandler, coords, ih = $DrawOffset
         // _log(fr.drawPath())
         clickHandler && clickHandler(fr.id);
     };
-    return <path d={ p1! } stroke='black' fill={ color } onClick={ onClickFn } />;
+    return <path d={p1!} stroke='black' fill={color} onClick={onClickFn} />;
 });
 
 

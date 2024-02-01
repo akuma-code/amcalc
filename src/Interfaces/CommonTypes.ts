@@ -91,7 +91,7 @@ export interface Arg_Size {
     argType: InputsTypeEnum.size_full
     args: ISizeFull
 }
-
+export interface WithIdProp { id: string }
 export interface Arg_Offset5 {
     argType: InputsTypeEnum.offset5
     args: Fn_Args_offset5

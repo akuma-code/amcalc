@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { _ID, _Point, _SizeF, _log, _p, _ss } from '../../../Helpers/HelpersFns'
+import { _ID, _Point, _SizeF, _TPoint, _log, _p, _ss } from '../../../Helpers/HelpersFns'
 import { TSide } from '../../../Interfaces/Enums'
 import FrameBordersBlock from '../FrameBorderBox'
 import { FrameRamaContainer } from '../FrameRamaContainer'
@@ -10,37 +10,77 @@ import { ImpostVertical } from '../ImpostVertical'
 import { FrameContext, useFrameContext } from '../../../Hooks/useFrameContext'
 import { observer } from 'mobx-react-lite'
 import { _TCoords } from '../../../Interfaces/FrameState'
+import { _TNode } from '../../../Context/FrameContext/FrameContext'
+import { createNode, useNodes } from '../../../Hooks/useNodes'
+import { getSizeFromCoords } from '../../Drower/DrawerFns'
 
 type FrameRamaProps = {
-    size: _SizeF
+    frame_size: _SizeF
     pos: _Point
 }
-const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
-    const { FrameCtx } = useFrameContext();
 
-    const { width: w, height: h } = size
+const LS = new StvFrame()
+const RS = new StvFrame()
+const IM = (coords: _TCoords) => new ImpostFrame([...coords])
+
+const FrameFF1: React.FC<FrameRamaProps> = observer(({ frame_size, pos }) => {
+    const { FrameCtx } = useFrameContext();
+    const { width: w, height: h } = frame_size
     const [show, setShow] = useState({ s1: false, s2: false })
+    const [nodes, nd] = useNodes()
     const _initAnchor = {
         frameStart: pos,
-        frameEnd: _p(pos.x + size.width, pos.y + size.height),
+        frameEnd: _p(pos.x + frame_size.width, pos.y + frame_size.height),
         impStart: _p(pos.x + w / 2, pos.y),
         impEnd: _p(pos.x + w / 2, pos.y + h)
 
     }
     const [anchor, setAnchor] = useState(_initAnchor)
 
+
+
+
     const [impost, setImpost] = useState({ coords: [anchor.impStart, anchor.impEnd] as [_Point, _Point], id: _ID() })
-    const LS = new StvFrame('s1', [anchor.frameStart, anchor.impEnd], { right: 'impost' })
-    const RS = new StvFrame('s2', [anchor.impStart, anchor.frameEnd], { left: 'impost' })
-    const IM = new ImpostFrame([anchor.impStart, anchor.impEnd])
 
+    const n = createNode('s1', [anchor.frameStart, anchor.impEnd], { right: 'impost' })
+    const n1 = createNode('s2', [anchor.impStart, anchor.frameEnd], { left: 'impost' })
+    nd.add(n)
+    nd.add(n1)
 
-    const left = useMemo(() => LS.watch([anchor.frameStart, anchor.impEnd]),
-        [anchor.frameStart, anchor.impEnd])
-    const right = useMemo(() => RS.watch([anchor.impStart, anchor.frameEnd]),
-        [anchor.frameEnd, anchor.impStart])
-    const Impst = useMemo(() => IM.watch([anchor.impStart, anchor.impEnd]),
-        [anchor.impEnd, anchor.impStart])
+    const left = useMemo(() => {
+        const s = LS.setBorderCoords([anchor.frameStart, anchor.impEnd])
+            .setId('s1')
+            .setNext({ right: 'impost' })
+
+        nd.edit('s1', {
+            coords: [anchor.frameStart, anchor.impEnd],
+            size: getSizeFromCoords(anchor.frameStart, anchor.impEnd)
+        })
+
+        return s.watch([anchor.frameStart, anchor.impEnd])
+
+    }, [anchor.frameStart, anchor.impEnd])
+
+    const right = useMemo(() => {
+        const r = RS
+        r.setBorderCoords([anchor.impStart, anchor.frameEnd])
+            .setId('s2')
+            .setNext({ left: 'impost' })
+
+        nd.edit('s2', {
+            coords: [anchor.impStart, anchor.frameEnd],
+            size: getSizeFromCoords(anchor.impStart, anchor.frameEnd)
+        })
+
+        return r.watch([anchor.impStart, anchor.frameEnd])
+
+    }, [anchor.frameEnd, anchor.impStart])
+
+    const Impst = useMemo(() => {
+        const i = IM([anchor.impStart, anchor.impEnd])
+        return i.watch([anchor.impStart, anchor.impEnd])
+
+    }, [anchor.impEnd, anchor.impStart])
 
 
 
@@ -53,20 +93,24 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
     const selectItem = (id: string) => {
         FrameCtx.selectItem({ id })
     }
+
+
     useEffect(() => {
-        FrameCtx && FrameCtx.resizeRama(size)
+        FrameCtx && FrameCtx.resizeRama(frame_size)
         setAnchor(prev => ({
             ...prev,
             frameStart: pos,
-            frameEnd: _p(pos.x + size.width, pos.y + size.height),
-            impStart: _p(pos.x + size.width / 2, pos.y),
-            impEnd: _p(pos.x + size.width / 2, pos.y + size.height)
+            frameEnd: _p(pos.x + frame_size.width, pos.y + frame_size.height),
+            impStart: _p(pos.x + frame_size.width / 2, pos.y),
+            impEnd: _p(pos.x + frame_size.width / 2, pos.y + frame_size.height)
         }))
         setImpost(prev => ({
             ...prev,
-            coords: [_p(pos.x + size.width / 2, pos.y), _p(pos.x + size.width / 2, pos.y + size.height)] as [_Point, _Point]
+            coords: [_p(pos.x + frame_size.width / 2, pos.y), _p(pos.x + frame_size.width / 2, pos.y + frame_size.height)] as [_Point, _Point]
         }))
-    }, [pos, size])
+
+        // return () => setNodes([])
+    }, [pos, frame_size])
     return (
 
         <FrameRamaContainer
@@ -75,23 +119,20 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
             h={ h }
         >
             { /*  //*Glasses **/ }
-            <GlsRect
-                size={ _ss(size.width / 2, size.height) }
-                posAnchor={ pos }
-                rectProps={ { fill: 'lightblue', fillOpacity: .5 } }
-                clickHandler={ toggleShow('s1') }
-            />
-            <GlsRect
-                size={ _ss(size.width / 2, size.height) }
-                posAnchor={ anchor.impStart }
-                rectProps={ { fill: 'lightblue', fillOpacity: .7 } }
-                clickHandler={ toggleShow('s2') }
-            />
+            {
+                nodes.map(n =>
+                    <GlsRect size={ n.size! }
+                        posAnchor={ n?.coords![0] }
+                        rectProps={ { fill: 'lightblue', fillOpacity: .5 } }
+                        clickHandler={ toggleShow(n.id) }
+                        key={ n.id }
+                    />
+                ) }
             { /*  //*Impost **/ }
             <ImpostVertical coords={ impost.coords } impFrame={ Impst } />
             { /*  //*RamaBorders **/ }
             <FrameBordersBlock
-                size={ size }
+                size={ frame_size }
                 anchor={ pos }
 
             />

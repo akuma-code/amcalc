@@ -22,20 +22,28 @@ export class StvFrame {
     private _offsetSide: ISideOffsetRecord = { top: 0, bottom: 0, left: 0, right: 0 }
 
     private _borderCoords: BorderSideCoords[] = []
-    private _nodeSize!: _SizeF
-    constructor(id: string, nodeCoords: [start: _Point, end: _Point], next?: ISideStateOffset) {
-        this._id = id
+    public _nodeSize!: _SizeF
+    constructor(nodeCoords?: [start: _Point, end: _Point], next?: ISideStateOffset) {
+
         this.stateSide = { bottom: 'rama', left: 'rama', right: 'rama', top: 'rama' }
-        this._borderCoords = this.setBorderCoords(nodeCoords)
         this.setOffsetSide()
+        nodeCoords && this.setBorderCoords(nodeCoords)
         if (next) this.updateOffset(next)
-        this.applyOffset()
+        nodeCoords && this.applyOffset()
+        // console.log('created with id: ', this._id)
     }
     get anchor() {
         if (!this.drawCoords[0]) return { x: 0, y: 0 }
         return this.drawCoords[0]?.coords[0]
     }
-
+    setId(id: string) {
+        this._id = id
+        return this
+    }
+    setNext(_next: ISideStateOffset) {
+        this.updateOffset(_next)
+        return this
+    }
     setOffsetSide() {
         let offsetSides = {}
         for (let side in this.stateSide) {
@@ -56,8 +64,8 @@ export class StvFrame {
         ]
         const ns = getSizeFromCoords(...nodeCoords)  //! nodesize
         this._nodeSize = ns
-
-        return borderCoordPoints
+        this._borderCoords = [...borderCoordPoints]
+        return this
     }
 
     updateOffset(connection: ISideStateOffset) {
@@ -72,6 +80,7 @@ export class StvFrame {
     }
 
     applyOffset() {
+        // if (this._borderCoords.length <= 1) return _log("low coords!")
         this.drawCoords = this._borderCoords.map(b => {
             let [s, e] = b.coords
             const { top, bottom, left, right } = this._offsetSide

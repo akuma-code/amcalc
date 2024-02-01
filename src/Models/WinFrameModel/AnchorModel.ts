@@ -1,7 +1,6 @@
 import { IFrameOffset, OFFSET, SystemProfile } from "../../Components/Templates/Systems";
-import { _Point, _SizeF, _TPoint } from "../../Helpers/HelpersFns";
+import { _Point, _SizeF } from "../../Helpers/HelpersFns";
 import { TSide } from "../../Interfaces/Enums";
-import { _TCoords } from "../../Interfaces/FrameState";
 
 
 export const AFrameCoords = (size: _SizeF, startPos: _Point) => {
@@ -9,7 +8,7 @@ export const AFrameCoords = (size: _SizeF, startPos: _Point) => {
     const { width: w, height: h } = size
     const [rx1, ry1] = [x, y]
     const [rx2, ry2] = [x + w, y + h]
-    const corners: _TCoords = [
+    const corners = [
         [rx1, ry1],
         [rx2, ry1],
         [rx2, ry2],

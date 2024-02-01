@@ -1,7 +1,8 @@
-import { makeAutoObservable } from "mobx";
-import { _Point, _SizeF, _log, _p } from "../../Helpers/HelpersFns";
+import { action, makeAutoObservable } from "mobx";
+import { _Point, _SizeF, _isArr, _log, _p } from "../../Helpers/HelpersFns";
 import { ANYobj } from "../../Interfaces/MathActionsTypes";
 import { ISideStateOffset, ImpostFrame, StvFrame } from "../../Models/FrameComponent/StvState";
+import { _TCoords } from "../../Interfaces/FrameState";
 
 export interface FrameStoreT {
     rama: {
@@ -15,8 +16,17 @@ export interface FrameStoreT {
     imps?: ImpostFrame[]
 
 }
+
+export type _TNode = {
+    id: string
+    size?: _SizeF
+    coords?: _TCoords
+    next?: ISideStateOffset
+
+}
 export interface IFrameContext {
     FrameCtx: FrameContextMobx
+    NodeStore: NodeStore<_TNode>
 
 }
 export class FrameContextMobx {
@@ -54,10 +64,28 @@ export class FrameContextMobx {
 
 }
 
-const initStvState = [
-    {
-        id: 's1',
-        isShow: false,
 
-    },
-]
+export class NodeStore<T extends { id: string }>{
+    nodes: T[]
+    constructor() {
+        this.nodes = []
+        makeAutoObservable(this)
+    }
+
+    addNode(node: T | T[]) {
+        if (!_isArr(node)) {
+            if (this.checkId(node.id)) this.nodes = [...this.nodes, node]
+        } else {
+            const ff = node.filter(n => this.checkId(n.id))
+            this.nodes.push(...ff)
+        }
+
+        // console.log('nodes', this.nodes)
+    }
+
+    checkId(id: string) {
+        if (this.nodes.map(n => n.id).includes(id)) return false
+        else return true
+    }
+
+}

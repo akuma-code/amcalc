@@ -23,7 +23,7 @@ const FrameF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
     }
     const [anchor, setAnchor] = useState(_initAnchor)
 
-    const stv = useMemo(() => new StvFrame('s1', [anchor.frameStart, anchor.frameEnd]), [anchor.frameEnd, anchor.frameStart])
+    const stv = useMemo(() => new StvFrame([anchor.frameStart, anchor.frameEnd]), [anchor.frameEnd, anchor.frameStart])
     const toggleShow = (stv_id: string) => () => {
         setShow(prev => ({ ...prev, [stv_id]: !prev[stv_id as keyof typeof show] }))
     }

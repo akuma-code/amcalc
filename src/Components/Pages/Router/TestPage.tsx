@@ -3,7 +3,7 @@ import React, { PropsWithChildren, useState } from 'react'
 import { _SizeF, _p, _ss } from '../../../Helpers/HelpersFns'
 import FrameFF1 from '../../../Models/FrameComponent/TypeFF/FrameFF1'
 import FrameF1 from '../../../Models/FrameComponent/TypeF/FrameF1'
-import { FrameContextMobx } from '../../../Context/FrameContext/FrameContext'
+import { FrameContextMobx, NodeStore } from '../../../Context/FrameContext/FrameContext'
 import { FrameContext } from '../../../Hooks/useFrameContext'
 import { observer } from 'mobx-react-lite'
 
@@ -97,7 +97,10 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                     <DrawCanvas size={ _ss(2000, 2000) }
                     >
                         <FrameContext.Provider
-                            value={ { FrameCtx: new FrameContextMobx(_ss(params.width, params.height), _p(params.x, params.y)) } }
+                            value={ {
+                                FrameCtx: new FrameContextMobx(_ss(params.width, params.height), _p(params.x, params.y)),
+                                NodeStore: new NodeStore()
+                            } }
                         >
 
                             {
@@ -110,7 +113,7 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                             {
                                 data &&
                                 <FrameFF1
-                                    size={ _ss(data.width, data.height) }
+                                    frame_size={ _ss(data.width, data.height) }
                                     pos={ _p(params.x, params.y) }
                                 />
                             }

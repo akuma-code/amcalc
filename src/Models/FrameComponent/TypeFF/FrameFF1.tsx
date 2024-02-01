@@ -4,17 +4,17 @@ import { TSide } from '../../../Interfaces/Enums'
 import FrameBordersBlock from '../FrameBorderBox'
 import { FrameRamaContainer } from '../FrameRamaContainer'
 import { GlsRect } from '../GlsRect'
-import { StvFrame, _CType } from '../StvState'
+import { ImpostFrame, StvFrame, _CType } from '../StvState'
 import { Stvorka } from '../Stvorka'
 import { ImpostVertical } from '../ImpostVertical'
 import { FrameContext, useFrameContext } from '../../../Hooks/useFrameContext'
 import { observer } from 'mobx-react-lite'
+import { _TCoords } from '../../../Interfaces/FrameState'
 
 type FrameRamaProps = {
     size: _SizeF
     pos: _Point
 }
-
 const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
     const { FrameCtx } = useFrameContext();
 
@@ -30,13 +30,17 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
     const [anchor, setAnchor] = useState(_initAnchor)
 
     const [impost, setImpost] = useState({ coords: [anchor.impStart, anchor.impEnd] as [_Point, _Point], id: _ID() })
+    const LS = new StvFrame('s1', [anchor.frameStart, anchor.impEnd], { right: 'impost' })
+    const RS = new StvFrame('s2', [anchor.impStart, anchor.frameEnd], { left: 'impost' })
+    const IM = new ImpostFrame([anchor.impStart, anchor.impEnd])
 
 
-    const left = useMemo(() => new StvFrame('s1', [anchor.frameStart, anchor.impEnd], { right: 'impost' }),
+    const left = useMemo(() => LS.watch([anchor.frameStart, anchor.impEnd]),
         [anchor.frameStart, anchor.impEnd])
-    const right = useMemo(() => new StvFrame('s2', [anchor.impStart, anchor.frameEnd], { left: 'impost' }),
+    const right = useMemo(() => RS.watch([anchor.impStart, anchor.frameEnd]),
         [anchor.frameEnd, anchor.impStart])
-
+    const Impst = useMemo(() => IM.watch([anchor.impStart, anchor.impEnd]),
+        [anchor.impEnd, anchor.impStart])
 
 
 
@@ -84,7 +88,7 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ size, pos }) => {
                 clickHandler={ toggleShow('s2') }
             />
             { /*  //*Impost **/ }
-            <ImpostVertical coords={ impost.coords } clickHandler={ (id) => selectItem(id) } />
+            <ImpostVertical coords={ impost.coords } impFrame={ Impst } />
             { /*  //*RamaBorders **/ }
             <FrameBordersBlock
                 size={ size }

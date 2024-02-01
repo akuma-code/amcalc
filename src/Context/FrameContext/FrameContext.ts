@@ -1,35 +1,28 @@
 import { makeAutoObservable } from "mobx";
-import { _Point, _SizeF, _p } from "../../Helpers/HelpersFns";
+import { _Point, _SizeF, _log, _p } from "../../Helpers/HelpersFns";
 import { ANYobj } from "../../Interfaces/MathActionsTypes";
-import { ISideStateOffset } from "../../Models/FrameComponent/StvState";
+import { ISideStateOffset, ImpostFrame, StvFrame } from "../../Models/FrameComponent/StvState";
+
+export interface FrameStoreT {
+    rama: {
+        size: _SizeF
+        pos: _Point
+    }
+
+    stvs?: StvFrame[]
 
 
+    imps?: ImpostFrame[]
+
+}
 export interface IFrameContext {
     FrameCtx: FrameContextMobx
-    // FrameCtx: {
-    //     rama: {
-    //         size: _SizeF
-    //         pos: _Point
-    //     }
 
-    //     stvs?: {
-    //         id: string
-    //         isShow: boolean
-    //     }[]
-    //     resize(size: Partial<_SizeF>): void
-    //     toggleStv(stv_id: string): void
-    // }
-    // imposts?: { coords: [_Point, _Point] }[]
-    // anchor?: {
-    //     frameStart: _Point
-    //     frameEnd: _Point
-    //     impostStart: _Point
-    //     impostEnd: _Point
-    // }
 }
 export class FrameContextMobx {
     rama: { size: _SizeF, pos: _Point }
     stvs: { id: string, isShow: boolean, coords?: [], next?: ISideStateOffset }[] = []
+    imps: ImpostFrame[] = []
     selected: { id: string } | null = null
     constructor(size: _SizeF, pos = _p(0, 0)) {
         this.rama = { size: size, pos: pos }
@@ -51,12 +44,20 @@ export class FrameContextMobx {
     }
 
     selectItem(item: { id: string }) {
-        // if (id === this.selected?.id) return this.clearSelected()
-        this.selected = { ...this.selected, ...item }
+
+        this.selected = item
     }
     clearSelected() {
-        if (this.selected) this.selected.id = ""
+        if (this.selected) this.selected = null
     }
 
 
 }
+
+const initStvState = [
+    {
+        id: 's1',
+        isShow: false,
+
+    },
+]

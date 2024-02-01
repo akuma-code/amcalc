@@ -76,10 +76,10 @@ const FrameF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
 export default FrameF1
 
 export const StvS1 = ({ anchor, _id, _nodeSize, isShow }: { anchor: _Point, _id: string, isShow: boolean, _nodeSize: _SizeF }) => {
-    const deltaW = $DrawPosOffset.stv_rama + $DrawPosOffset.stv_rama
-    const deltaH = $DrawPosOffset.stv_rama + $DrawPosOffset.stv_rama
-    const deltaAX = $DrawPosOffset.stv_rama
-    const deltaAY = $DrawPosOffset.stv_rama
+    const deltaW = $DrawPosOffset.rama + $DrawPosOffset.rama
+    const deltaH = $DrawPosOffset.rama + $DrawPosOffset.rama
+    const deltaAX = $DrawPosOffset.rama
+    const deltaAY = $DrawPosOffset.rama
     const { width: w, height: h } = _nodeSize
 
     const [frame, setFrame] = useState({

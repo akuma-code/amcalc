@@ -3,7 +3,7 @@ import { _ID, _Point, _log } from '../../Helpers/HelpersFns';
 import { $DrawOffset } from '../../Hooks/useOffset';
 import { useFrameContext } from '../../Hooks/useFrameContext';
 import { observer } from 'mobx-react-lite';
-import { ImpostFrame } from './StvState';
+import { ImpostFrame } from "./ImpostFrame";
 
 type ImpostProps = {
     coords?: [_Point, _Point];
@@ -34,7 +34,7 @@ export const ImpostVertical = observer(({ clickHandler, coords, ih = $DrawOffset
         // _log(fr.drawPath())
         clickHandler && clickHandler(fr.id);
     };
-    return <path d={p1!} stroke='black' fill={color} onClick={onClickFn} />;
+    return <path d={ p1! } stroke='black' fill={ color } onClick={ onClickFn } />;
 });
 
 

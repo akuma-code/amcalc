@@ -4,7 +4,8 @@ import { TSide } from '../../../Interfaces/Enums'
 import FrameBordersBlock from '../FrameBorderBox'
 import { FrameRamaContainer } from '../FrameRamaContainer'
 import { GlsRect } from '../GlsRect'
-import { ImpostFrame, StvFrame, _CType } from '../StvState'
+import { StvFrame, _CType } from '../StvState'
+import { ImpostFrame } from "../ImpostFrame"
 import { Stvorka } from '../Stvorka'
 import { ImpostVertical } from '../ImpostVertical'
 import { FrameContext, useFrameContext } from '../../../Hooks/useFrameContext'
@@ -42,15 +43,15 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ frame_size, pos }) => {
 
     const [impost, setImpost] = useState({ coords: [anchor.impStart, anchor.impEnd] as [_Point, _Point], id: _ID() })
 
-    const n = createNode('s1', [anchor.frameStart, anchor.impEnd], { right: 'impost' })
-    const n1 = createNode('s2', [anchor.impStart, anchor.frameEnd], { left: 'impost' })
+    const n = createNode('s1', [anchor.frameStart, anchor.impEnd], { right: 'imp' })
+    const n1 = createNode('s2', [anchor.impStart, anchor.frameEnd], { left: 'imp' })
     nd.add(n)
     nd.add(n1)
 
     const left = useMemo(() => {
         const s = LS.setBorderCoords([anchor.frameStart, anchor.impEnd])
             .setId('s1')
-            .setNext({ right: 'impost' })
+            .setNext({ right: 'imp' })
 
         nd.edit('s1', {
             coords: [anchor.frameStart, anchor.impEnd],
@@ -65,7 +66,7 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ frame_size, pos }) => {
         const r = RS
         r.setBorderCoords([anchor.impStart, anchor.frameEnd])
             .setId('s2')
-            .setNext({ left: 'impost' })
+            .setNext({ left: 'imp' })
 
         nd.edit('s2', {
             coords: [anchor.impStart, anchor.frameEnd],

@@ -12,6 +12,7 @@ import { pageRoutes } from './HTTP/PATHS';
 import { TestPage } from './Components/Pages/Router/TestPage';
 import DrawerPage from './Components/Pages/Router/DrawerPage';
 import { DrawerImage } from './Components/Pages/Router/DrawerImage/DrawerImage';
+import { _log } from './Helpers/HelpersFns';
 
 
 
@@ -62,10 +63,20 @@ export const CommonRoutes: RouteObject[] = [
                 children: [
                     {
                         path: pageRoutes.imgout,
-                        element: <DrawerImage />
-                    }
-                ]
+                        element: <DrawerImage />,
+                        loader: async ({ params }) => {
+                            // _log(request.body)
+                            const data = params.state
+                            // _log(data)
+                            return { data }
+                        },
+                        action: async ({ request, params }) => {
+                            const res = await request.json()
+                            return res
+                        },
+                    }],
             },
+
             {
                 path: pageRoutes.sill,
                 element: <SillPage />,

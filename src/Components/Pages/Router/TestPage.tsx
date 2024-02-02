@@ -1,11 +1,12 @@
 import { Button, Container, FormControl, FormHelperText, Input, Slider, Stack } from '@mui/material'
-import React, { PropsWithChildren, useState } from 'react'
-import { _SizeF, _p, _ss } from '../../../Helpers/HelpersFns'
+import React, { useState } from 'react'
+import { _p, _ss } from '../../../Helpers/HelpersFns'
 import FrameFF1 from '../../../Models/FrameComponent/TypeFF/FrameFF1'
 import FrameF1 from '../../../Models/FrameComponent/TypeF/FrameF1'
 import { FrameContextMobx, NodeStore } from '../../../Context/FrameContext/FrameContext'
 import { FrameContext } from '../../../Hooks/useFrameContext'
 import { observer } from 'mobx-react-lite'
+import { DrawCanvas } from './DrawCanvas'
 
 
 type TestPageProps = {}
@@ -94,7 +95,7 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
 
                 <Stack >
 
-                    <DrawCanvas size={ _ss(2000, 2000) }
+                    <DrawCanvas viewBoxSize={ _ss(2000, 2000) }
                     >
                         <FrameContext.Provider
                             value={ {
@@ -126,18 +127,5 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
 
         </Container >
     )
-}
-
-export const DrawCanvas: React.FC<{ size: _SizeF } & PropsWithChildren> = ({ children, size }) => {
-
-    return <svg xmlns="http://www.w3.org/2000/svg"
-        version="1.1"
-        viewBox={ `0 0 ${size.width} ${size.height}` }
-        className='bg-gray-300'
-        width={ '45rem' }
-        height={ '45rem' }
-    >
-        { children }
-    </svg>
 }
 

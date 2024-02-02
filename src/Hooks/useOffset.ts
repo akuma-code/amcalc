@@ -18,7 +18,7 @@ export const $DrawOffset: IFrameOffset = {
 
 export const $DrawPosOffset = {
     rama: 30,
-    impost: 15,
+    imp: 15,
 }
 
 type OffsetRamaParams = {

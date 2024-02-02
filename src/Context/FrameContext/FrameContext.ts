@@ -1,7 +1,8 @@
 import { action, makeAutoObservable } from "mobx";
 import { _Point, _SizeF, _isArr, _log, _p } from "../../Helpers/HelpersFns";
 import { ANYobj } from "../../Interfaces/MathActionsTypes";
-import { ISideStateOffset, ImpostFrame, StvFrame } from "../../Models/FrameComponent/StvState";
+import { ISideStateOffset, StvFrame } from "../../Models/FrameComponent/StvState";
+import { ImpostFrame } from "../../Models/FrameComponent/ImpostFrame";
 import { _TCoords } from "../../Interfaces/FrameState";
 
 export interface FrameStoreT {

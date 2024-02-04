@@ -2,7 +2,7 @@ import { OFFSET, SystemProfile } from "../../Components/Templates/Systems"
 import { _AdvPoint, _CPoint, _Point, _SizeF, _TPoint, _isArr, _log, _p, _ss } from "../../Helpers/HelpersFns"
 import { TSidesArray } from "../../Interfaces/Enums"
 type _CoordsSE = _Point | _TPoint
-export type DrawerPointType = 'L' | 'M' | 'l' | 'm' | 'Z'
+export type DrawerPointType = 'L' | 'M' | 'l' | 'm' | 'Z' | 'z' | 'h' | 'H' | 'v' | 'V'
 export function _L(x: number, y: number) {
     return ` L${x} ${y}`
 }

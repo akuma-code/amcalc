@@ -74,6 +74,7 @@ export const CommonRoutes: RouteObject[] = [
                             const res = await request.json()
                             return res
                         },
+
                     }],
             },
 

@@ -60,38 +60,38 @@ const DrawerPage = () => {
     const deleteHandler = () => {
         setFrame(prev => null)
     }
-    if (!frame) return <div>No frame</div>
+    // if (!frame) return <div>No frame</div>
     return (
-        <FrameContext.Provider
-            value={ {
-                FrameCtx: new FrameContextMobx(frame.size, frame.pos),
-                NodeStore: new NodeStore()
-            } }
-        >
+        // <FrameContext.Provider
+        //     value={{
+        //         FrameCtx: new FrameContextMobx(frame!.size, frame!.pos),
+        //         NodeStore: new NodeStore()
+        //     }}
+        // >
 
 
-            <Stack useFlexGap direction={ 'column' }>
-                <Divider >
-                    <h3 className='text-center text-4xl'>DrawerPage</h3>
+        <Stack useFlexGap direction={'column'}>
+            <Divider >
+                <h3 className='text-center text-4xl'>DrawerPage</h3>
 
-                </Divider>
+            </Divider>
 
-                <Stack direction={ 'row' } useFlexGap gap={ 4 } mx={ 4 }>
-                    <CreatePopup isOpen={ isOpen }
-                        toggleOpen={ () => { setIsOpen(prev => !prev) } }
-                        onCreate={ createHandler }
-                    />
-                    <Button variant='contained' color='warning'
-                        onClick={ deleteHandler }
-                        disabled={ frame === null }
-                    >
-                        Delete Frame
-                    </Button>
+            <Stack direction={'row'} useFlexGap gap={4} mx={4}>
+                <CreatePopup isOpen={isOpen}
+                    toggleOpen={() => { setIsOpen(prev => !prev) }}
+                    onCreate={createHandler}
+                />
+                <Button variant='contained' color='warning'
+                    onClick={deleteHandler}
+                    disabled={frame === null}
+                >
+                    Delete Frame
+                </Button>
 
-                </Stack>
-                <Outlet />
             </Stack>
-        </FrameContext.Provider>
+            <Outlet />
+        </Stack>
+        // </FrameContext.Provider>
     )
 }
 

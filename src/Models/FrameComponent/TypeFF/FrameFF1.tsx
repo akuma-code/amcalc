@@ -50,7 +50,7 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ frame_size, pos }) => {
 
     const left = useMemo(() => {
         const s = LS.setBorderCoords([anchor.frameStart, anchor.impEnd])
-            .setId('s1')
+            .setId(_ID())
             .setNext({ right: 'imp' })
 
         nd.edit('s1', {
@@ -60,7 +60,10 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ frame_size, pos }) => {
 
         return s.watch([anchor.frameStart, anchor.impEnd])
 
-    }, [anchor.frameStart, anchor.impEnd])
+    }, [
+        anchor.frameStart.x, anchor.frameStart.y,
+        anchor.impEnd.x, anchor.impEnd.y
+    ])
 
     const right = useMemo(() => {
         const r = RS
@@ -75,13 +78,13 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ frame_size, pos }) => {
 
         return r.watch([anchor.impStart, anchor.frameEnd])
 
-    }, [anchor.frameEnd, anchor.impStart])
+    }, [anchor.frameEnd.x, anchor.frameEnd.y, anchor.impStart.x, anchor.impStart.y])
 
     const Impst = useMemo(() => {
         const i = IM([anchor.impStart, anchor.impEnd])
         return i.watch([anchor.impStart, anchor.impEnd])
 
-    }, [anchor.impEnd, anchor.impStart])
+    }, [anchor.impEnd.x, anchor.impStart.x, anchor.impEnd.y, anchor.impStart.y])
 
 
 
@@ -111,40 +114,40 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ frame_size, pos }) => {
         }))
 
         // return () => setNodes([])
-    }, [pos, frame_size])
+    }, [pos.x, pos.y, frame_size.width, frame_size.height])
     return (
 
         <FrameRamaContainer
-            startPos={ pos }
-            w={ w }
-            h={ h }
+            startPos={pos}
+            w={w}
+            h={h}
         >
-            { /*  //*Glasses **/ }
+            { /*  //*Glasses **/}
             {
                 nodes.map(n =>
-                    <GlsRect size={ n.size! }
-                        posAnchor={ n?.coords![0] }
-                        rectProps={ { fill: 'lightblue', fillOpacity: .5 } }
-                        clickHandler={ toggleShow(n.id) }
-                        key={ n.id }
+                    <GlsRect size={n.size!}
+                        posAnchor={n?.coords![0]}
+                        rectProps={{ fill: 'lightblue', fillOpacity: .5 }}
+                        clickHandler={toggleShow(n.id)}
+                        key={n.id}
                     />
-                ) }
-            { /*  //*Impost **/ }
-            <ImpostVertical coords={ impost.coords } impFrame={ Impst } />
-            { /*  //*RamaBorders **/ }
+                )}
+            { /*  //*Impost **/}
+            <ImpostVertical coords={impost.coords} impFrame={Impst} />
+            { /*  //*RamaBorders **/}
             <FrameBordersBlock
-                size={ frame_size }
-                anchor={ pos }
+                size={frame_size}
+                anchor={pos}
 
             />
-            { /*  //*Stvorki **/ }
+            { /*  //*Stvorki **/}
             <Stvorka
-                isShow={ show.s1 }
-                stv={ left }
+                isShow={show.s1}
+                stv={left}
             />
             <Stvorka
-                isShow={ show.s2 }
-                stv={ right }
+                isShow={show.s2}
+                stv={right}
             />
 
 

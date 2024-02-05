@@ -12,6 +12,7 @@ import { FrameContextMobx, NodeStore } from '../../../Context/FrameContext/Frame
 import { ImpostFrame } from '../../../Models/FrameComponent/ImpostFrame';
 import { useStoresContext } from '../../../Hooks/useStoresContext';
 import { FrameCreator, FrameNodeWithSides } from '../../../Models/FrameComponent/FrameFactory/FrameCreator';
+import { observer } from 'mobx-react-lite';
 export type FrameMainProps = _SizeF & _Point & { type: IFrameVariants }
 
 export interface _FrameNodeData {
@@ -29,7 +30,7 @@ export interface _FrameStateWithNodes {
     nodes: _FrameNodeData[]
 }
 
-export const DrawerPage = () => {
+export const DrawerPage = observer(() => {
     const submit = useSubmit()
     const { NodeStore } = useStoresContext()
     const [frame, setFrame] = useState<_FrameStateWithNodes | null>(null)
@@ -44,15 +45,16 @@ export const DrawerPage = () => {
         const dataPos = _p(data.x, data.y)
         const _nodes = createNodes(dataSize, dataPos)
         setFrame(prev => ({ ...prev, nodes: _nodes, type: data.type, size: dataSize, pos: { x: data.x, y: data.y }, id: _ID() }))
-        NodeStore.add(frame)
+        // NodeStore.add(frame)
         submit(JSON.stringify(frame), {
             method: 'post',
             action: '/drawer/' + data.type,
             encType: 'application/json'
         })
-        fc.create(_ss(data.width, data.height), { ...data })
+        frame && fc.create(frame.size, { ...data })
             .setType(data.type)
-            .setNodes()
+        fc.isready && NodeStore.add(fc.frame! as unknown as _FrameStateWithNodes)
+        // .setNodes()
 
         console.log('fc', fc.frame)
     }
@@ -62,26 +64,26 @@ export const DrawerPage = () => {
     // if (!frame) return <div>No frame</div>
     return (
 
-        <Stack useFlexGap direction={ 'column' }>
+        <Stack useFlexGap direction={'column'}>
             <Divider >
                 <h3 className='text-center text-4xl'>DrawerPage</h3>
 
             </Divider>
-            <Stack useFlexGap direction={ 'row' } flexGrow={ 1 }>
+            <Stack useFlexGap direction={'row'} flexGrow={1}>
 
-                <Stack direction={ 'row' } useFlexGap gap={ 4 } mx={ 4 }>
-                    <CreatePopup isOpen={ isOpen }
-                        toggleOpen={ () => { setIsOpen(prev => !prev) } }
-                        onCreate={ createHandler }
+                <Stack direction={'row'} useFlexGap gap={4} mx={4}>
+                    <CreatePopup isOpen={isOpen}
+                        toggleOpen={() => { setIsOpen(prev => !prev) }}
+                        onCreate={createHandler}
                     />
                     <Button variant='contained' color='warning'
-                        onClick={ deleteHandler }
-                        disabled={ frame === null }
+                        onClick={deleteHandler}
+                        disabled={frame === null}
                     >
                         Delete Frame
                     </Button>
                 </Stack>
-                <Stack useFlexGap direction={ 'row' } flexGrow={ 1 }>
+                <Stack useFlexGap direction={'row'} flexGrow={1}>
 
                     <Outlet />
                 </Stack>
@@ -91,9 +93,9 @@ export const DrawerPage = () => {
         </Stack>
         // </FrameContext.Provider>
     )
-}
+})
 
-
+DrawerPage.displayName = '*** DrapwePage ___'
 
 
 export function nodeGenerator(type: IFrameVariants) {

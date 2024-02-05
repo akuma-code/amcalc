@@ -118,36 +118,36 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ frame_size, pos }) => {
     return (
 
         <FrameRamaContainer
-            startPos={pos}
-            w={w}
-            h={h}
+            startPos={ pos }
+            w={ w }
+            h={ h }
         >
-            { /*  //*Glasses **/}
+            { /*  //*Glasses **/ }
             {
                 nodes.map(n =>
-                    <GlsRect size={n.size!}
-                        posAnchor={n?.coords![0]}
-                        rectProps={{ fill: 'lightblue', fillOpacity: .5 }}
-                        clickHandler={toggleShow(n.id)}
-                        key={n.id}
+                    <GlsRect size={ n.size! }
+                        posAnchor={ n?.coords![0] }
+                        rectProps={ { fill: 'lightblue', fillOpacity: .5 } }
+                        clickHandler={ toggleShow(n.id) }
+                        key={ n.id }
                     />
-                )}
-            { /*  //*Impost **/}
-            <ImpostVertical coords={impost.coords} impFrame={Impst} />
-            { /*  //*RamaBorders **/}
+                ) }
+            { /*  //*Impost **/ }
+            <ImpostVertical coords={ impost.coords } impFrame={ Impst } />
+            { /*  //*RamaBorders **/ }
             <FrameBordersBlock
-                size={frame_size}
-                anchor={pos}
+                size={ frame_size }
+                anchor={ pos }
 
             />
-            { /*  //*Stvorki **/}
+            { /*  //*Stvorki **/ }
             <Stvorka
-                isShow={show.s1}
-                stv={left}
+                isShow={ show.s1 }
+                stv={ left }
             />
             <Stvorka
-                isShow={show.s2}
-                stv={right}
+                isShow={ show.s2 }
+                stv={ right }
             />
 
 

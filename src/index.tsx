@@ -15,6 +15,7 @@ import theme from './AppTheme';
 import { _log } from './Helpers/HelpersFns';
 import { ViteoStore } from './Context/SpreadSheetStore';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { mbxNodesStore } from './mobXStore/NodeStore';
 
 configure({
   useProxies: "always",
@@ -37,6 +38,7 @@ const Stores: IStoresContext = {
   ViewConfig: new OutputViewConfig(),
   SillStore: tempStore,
   ViteoStore: new ViteoStore(),
+  NodeStore: new mbxNodesStore(),
 }
 
 const queryClient = new QueryClient({
@@ -57,14 +59,14 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
 
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={ theme }>
       <StoresContext.Provider
-        value={{
+        value={ {
           ...Stores
-        }}
-        key={'Store Provider'}
+        } }
+        key={ 'Store Provider' }
       >
-        <QueryClientProvider client={queryClient} contextSharing={true}>
+        <QueryClientProvider client={ queryClient } contextSharing={ true }>
 
           <CssBaseline enableColorScheme />
           <App />

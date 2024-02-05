@@ -6,12 +6,16 @@ import { RootArgsStore_v1 } from '../Context/RootStore'
 import { OutputViewConfig } from '../Context/ThemeView'
 import { A_Sill, A_Size } from '../Interfaces/CommonTypes'
 import { ViteoStore } from '../Context/SpreadSheetStore'
+import { mbxNodesStore } from '../mobXStore/NodeStore'
+import { _FrameNodeData, _FrameStateWithNodes } from '../Components/Pages/Router/DrawerPage'
 export interface IStoresContext {
     RootStore: RootArgsStore_v1
     SizeStore?: ArgStorage<A_Size>
     ViewConfig: OutputViewConfig
     SillStore: ArgStorage<A_Sill>
     ViteoStore: ViteoStore
+
+    NodeStore: mbxNodesStore<_FrameStateWithNodes>
 }
 
 

@@ -10,7 +10,7 @@ import { GroupIdCard } from './Components/UI/SillGroupView';
 import { ROOTSTORE } from './Context/RootStore';
 import { pageRoutes } from './HTTP/PATHS';
 import { TestPage } from './Components/Pages/Router/TestPage';
-import DrawerPage from './Components/Pages/Router/DrawerPage';
+import { DrawerPage } from './Components/Pages/Router/DrawerPage';
 import { DrawerImage } from './Components/Pages/Router/DrawerImage/DrawerImage';
 import { _log } from './Helpers/HelpersFns';
 
@@ -66,12 +66,13 @@ export const CommonRoutes: RouteObject[] = [
                         element: <DrawerImage />,
                         loader: async ({ params }) => {
                             // _log(request.body)
-                            const data = params.state
+                            const data = await params.state
                             // _log(data)
                             return { data }
                         },
                         action: async ({ request, params }) => {
                             const res = await request.json()
+                            console.log('res:', res)
                             return res
                         },
 

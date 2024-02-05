@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { TSide } from "../Interfaces/Enums"
 import { _TCoords } from "../Interfaces/FrameState"
 import { ISideStateOffset, _CType } from "../Models/FrameComponent/StvState"
@@ -12,7 +12,7 @@ export type InitNodeT = {
 }
 export type _NodeType = {
     id: string
-    coords?: _TCoords
+    coords: _TCoords
     size?: _SizeF
 }
 
@@ -22,13 +22,13 @@ export const useNodes = <T extends _NodeType>() => {
     const checkSameId = (id: string) => !nodes.map(n => n.id).includes(id)
     const add = (node: T) => checkSameId(node.id) && setNodes(prev => [...prev, node])
     const del = (del_id: string) => setNodes(prev => prev.filter(p => p.id !== del_id))
-    const search = (id: string) => nodes.filter(n => n.id === id)
+    const search = (id: string) => nodes.find(n => n.id === id)
     const edit = (id: string, new_data: object) => setNodes(prev => prev.map(n => n.id === id ? { ...n, ...new_data } : n))
-    const addSize = (node: T, idx?: number) => {
-        if (node.coords) return { ...node, size: getSizeFromCoords(...node.coords) } satisfies { size: _SizeF }
-        else return node as T & { size: _SizeF }
-        //  setNodes(prev=>prev.map(n=>({...n, size:getSizeFromCoords(...n.coords!)})))
-    }
+
+   
+    useEffect(() => {
+        setNodes(prev => prev.map(n => ({ ...n, size: getSizeFromCoords(...n.coords) })))
+    }, [])
     // setNodes(prev => prev.map(addSize))
     const actions = { add, del, search, edit }
 

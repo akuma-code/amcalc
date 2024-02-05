@@ -1,10 +1,10 @@
-import React, { useState, useMemo, useCallback, useEffect, useReducer } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useReducer, useLayoutEffect } from 'react';
 import { DrawCanvas } from '../DrawCanvas';
-import { _ss } from '../../../../Helpers/HelpersFns';
+import { _ID, _SizeF, _log, _p, _ss } from '../../../../Helpers/HelpersFns';
 import { redirect, useActionData, useParams } from 'react-router-dom';
 import { IFrameVariants } from '../../../../Interfaces/Enums';
 import { Button, Container, Link } from '@mui/material';
-import { _NodesT, nodeExtract } from '../DrawerPage';
+import { _FrameStateWithNodes, nodeExtract } from '../DrawerPage';
 import { ISideStateOffset, StvFrame } from '../../../../Models/FrameComponent/StvState';
 import { FrameRamaContainer } from '../../../../Models/FrameComponent/FrameRamaContainer';
 import FrameBordersBlock from '../../../../Models/FrameComponent/FrameBorderBox';
@@ -18,7 +18,128 @@ import { pageRoutes } from '../../../../HTTP/PATHS';
 interface DrawerImageProps {
 }
 
-const initstate: _NodesT = {
+
+export const DrawerImage: React.FC<DrawerImageProps> = (props) => {
+    const params = useParams() as unknown as Promise<{ state: IFrameVariants }>
+    const [nodesT, setNodesT] = useState<_FrameStateWithNodes | null>(null)
+    const frameBlock = useMemo(() => {
+        if (!nodesT) return null
+        const { frame, stvs, imps } = nodeExtract(nodesT);
+        return { frame, stvs, imps }
+
+    }, [nodesT])
+
+
+
+
+    useLayoutEffect(() => {
+        // if (!data) return
+        // setNodesT(state)
+
+
+
+    }, [])
+
+    return (
+        <Container fixed sx={ { m: 2, border: '2px dotted red' } }>
+            {
+                !nodesT &&
+                <div className="text-xl text-center">List of nodes is empty!</div>
+            }
+            { nodesT &&
+                <ViewModelDraw
+                    frame={ nodesT }
+                />
+            }
+
+            {/* <DrawCanvas viewBoxSize={ _ss(2000, 2000) } canvasSize={ { w: '100%', h: '70vh' } }>
+
+                {
+                    frameBlock &&
+                    <FrameRamaContainer startPos={ frameBlock.frame.pos } w={ frameBlock.frame.size.width } h={ frameBlock.frame.size.height }>
+                        <FrameBordersBlock
+                            size={ frameBlock.frame.size }
+                            anchor={ frameBlock.frame.pos }
+                        />
+                        {
+                            frameBlock.stvs.map(s =>
+                                <GlsRect size={ s.size } posAnchor={ s.anchor } key={ s._id } rectProps={ { fill: '#ab7ac7' } } />
+                            )
+                        }
+                        {
+                            frameBlock.stvs.map(stv =>
+                                <Stvorka
+                                    stv={ stv }
+                                    isShow={ true }
+                                    key={ stv._id }
+                                />
+
+                            )
+                        }
+                    </FrameRamaContainer>
+                }
+            </DrawCanvas> */}
+
+
+        </Container >
+    )
+};
+
+export const ViewModelDraw = ({ frame }: { frame: _FrameStateWithNodes }) => {
+    const [nodesT, setNodesT] = useState<_FrameStateWithNodes>(frame)
+    const frameBlock = useMemo(() => {
+        if (!nodesT) return null
+        const { frame, stvs, imps } = nodeExtract(nodesT);
+        return { frame, stvs, imps }
+
+    }, [nodesT])
+
+    useLayoutEffect(() => {
+        frame && setNodesT(frame)
+    }, [])
+
+    return (
+        <DrawCanvas viewBoxSize={ _ss(2000, 2000) } canvasSize={ { w: '100%', h: '70vh' } }>
+
+            {
+                frameBlock &&
+                <FrameRamaContainer startPos={ frameBlock.frame.pos } w={ frameBlock.frame.size.width } h={ frameBlock.frame.size.height }>
+                    <FrameBordersBlock
+                        size={ frameBlock.frame.size }
+                        anchor={ frameBlock.frame.pos }
+                    />
+                    {
+                        frameBlock.stvs.map(s =>
+                            <GlsRect size={ s.size } posAnchor={ s.anchor } key={ s._id } rectProps={ { fill: '#ab7ac7' } } />
+                        )
+                    }
+                    {
+                        frameBlock.stvs.map(stv =>
+                            <Stvorka
+                                stv={ stv }
+                                isShow={ true }
+                                key={ stv._id }
+                            />
+
+                        )
+                    }
+                </FrameRamaContainer>
+            }
+        </DrawCanvas>
+    )
+
+}
+
+interface IFA_Load {
+    type: 'load'
+    payload: _FrameStateWithNodes
+}
+
+
+
+
+const initstate: _FrameStateWithNodes = {
+    id: _ID(),
     type: 'f',
     size: { width: 350, height: 800 },
     pos: { x: 0, y: 0 },
@@ -32,7 +153,7 @@ const initstate: _NodesT = {
             sidesState: {
                 bottom: "rama",
                 left: "rama",
-                right: "imp",
+                right: "rama",
                 top: "rama"
             },
             nsize: {
@@ -44,90 +165,38 @@ const initstate: _NodesT = {
         }
     ]
 }
-
-export const DrawerImage: React.FC<DrawerImageProps> = (props) => {
-    const params = useParams() as { state: IFrameVariants }
-    // const { data, isLoading } = useFetch(`${pageRoutes.drawer}/${params.state}`)
-    // const data = useActionData() as Promise<_NodesT>
-    const [nodesT, setNodesT] = useState<_NodesT | null>(null)
-    const [state, dispatch] = useReducer<typeof frameReducer>(frameReducer, initstate)
-
-    const frameBlock = useMemo(() => {
-        if (!nodesT) return null
-        const { frame, stvs } = nodeExtract(nodesT);
-        return { frame, stvs }
-
-    }, [nodesT])
-
-
-
-
-    useEffect(() => {
-        // if (!data) return
-
-
-        // console.log('state', nodesT)
-
-    }, [])
-
-    return (
-        <Container fixed sx={{ m: 2, border: '2px dotted red' }}>
+const initializer = (size: _SizeF, pos = { x: 0, y: 0 }): _FrameStateWithNodes => {
+    const { width, height } = size
+    const { x, y } = pos
+    const state = ({ width, height }: _SizeF, { x = 0, y = 0 }) => ({
+        id: _ID(),
+        type: 'f',
+        size: { width, height },
+        pos: { x, y },
+        nodes: [
             {
-                !nodesT &&
-                <div className="text-xl text-center">List of nodes is empty!</div>
+                id: "s1",
+                coords: [
+                    { x, y },
+                    _p(x + width, y + height)
+                ],
+                sidesState: {
+                    bottom: "rama",
+                    left: "rama",
+                    right: "rama",
+                    top: "rama"
+                },
+                nsize: {
+                    width,
+                    height
+                },
+                isShow: false,
+
             }
-
-            <FrameContext.Provider
-                value={{
-                    FrameCtx: new FrameContextMobx(state.size),
-                    NodeStore: new NodeStore()
-
-                }}
-            >
-
-
-                <DrawCanvas viewBoxSize={_ss(2000, 2000)} canvasSize={{ w: '100%', h: '70vh' }}>
-
-                    {
-                        frameBlock &&
-                        <FrameRamaContainer startPos={frameBlock.frame.pos} w={frameBlock.frame.size.width} h={frameBlock.frame.size.height}>
-                            <FrameBordersBlock
-                                size={frameBlock.frame.size}
-                                anchor={frameBlock.frame.pos}
-                            />
-                            {frameBlock.stvs.map(stv =>
-                                <>
-                                    <GlsRect size={stv.size} posAnchor={stv.anchor} />
-                                    <Stvorka
-                                        stv={stv}
-                                        isShow={true}
-                                    />
-                                </>
-                            )}
-                        </FrameRamaContainer>
-                    }
-                </DrawCanvas>
-            </FrameContext.Provider>
-
-        </Container >
-    )
-};
-
-export const ViewModelDraw = (frame: _NodesT) => {
-
-
-
-
-
+        ]
+    }) satisfies _FrameStateWithNodes
+    return state(size, pos)
 }
-
-interface IFA_Load {
-    type: 'load'
-    payload: _NodesT
-}
-
-
-
 interface IFA_setNext {
     type: 'setNext',
     payload: { next: ISideStateOffset, id: string }
@@ -143,7 +212,7 @@ type _FrameActions =
     | IFA_setNext
 
 
-function frameReducer(state: _NodesT, action: _FrameActions): _NodesT {
+function frameReducer(state: _FrameStateWithNodes, action: _FrameActions): _FrameStateWithNodes {
 
     switch (action.type) {
         case 'load': {

@@ -80,7 +80,7 @@ export const CommonRoutes: RouteObject[] = [
                         element: <FrameList />,
                         action: async ({ request, params }) => {
                             const res = await request.json()
-                            console.log('res:', res)
+                            // console.log('res:', res)
                             return res
                         },
                     },

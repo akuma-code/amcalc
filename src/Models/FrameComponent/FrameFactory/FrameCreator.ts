@@ -46,7 +46,7 @@ export class FrameCreator {
         const nodes = nodesPreset[this.frame.type]
         const len = nodes.length
         const restNum = this.frame!.size.width % len
-        _log(restNum)
+
 
 
         const nh = this.frame!.size.height

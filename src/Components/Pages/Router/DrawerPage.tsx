@@ -73,7 +73,7 @@ export const DrawerPage = observer(() => {
         <Stack useFlexGap direction={ 'column' }>
             <Stack useFlexGap direction={ 'row' } flexGrow={ 1 }>
 
-                <Stack direction={ 'row' } useFlexGap gap={ 4 } mx={ 4 } mt={ 2 }>
+                <Stack direction={ 'row' } useFlexGap gap={ 4 } mx={ 4 } mt={ 2 } justifyContent={ 'space-around' } width={ '100%' }>
                     <CreatePopup isOpen={ isOpen }
                         toggleOpen={ () => { setIsOpen(prev => !prev) } }
                         onCreate={ createHandler }

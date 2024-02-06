@@ -1,15 +1,15 @@
-import { Button, FormControl, Slider, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import React, { useState } from 'react';
+import { Button, FormControl, IconButton, Input, InputLabel, Slider, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { IFrameVariants } from '../../../Interfaces/Enums';
-import { FrameMainProps } from './DrawerPage';
-import { _Point, _SizeF, _log, _p, _ss } from '../../../Helpers/HelpersFns';
+import React, { useState } from 'react';
+import { _Point, _SizeF, _p, _ss } from '../../../Helpers/HelpersFns';
+import { IFrameVariants, TSide, TSidesArray } from '../../../Interfaces/Enums';
 import { _DRAWPATH } from '../../../Models/Drower/DrawPaths';
 import { drawframe } from '../../../Models/Drower/DrawerFns';
+import { FrameMainProps, _FrameNodeData } from './DrawerPage';
 
 type CreatePopupProps = {
     isOpen: boolean;
@@ -17,9 +17,9 @@ type CreatePopupProps = {
     onCreate: (data: FrameMainProps) => void;
 };
 export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, onCreate }) => {
-    const [open, setOpen] = React.useState(false);
+
     const [data, setData] = useState({ width: 500, height: 800, x: 0, y: 0, type: 'f' as const });
-    const [node, setNode] = useState<{ type: IFrameVariants; }>({ type: 'f' });
+
 
 
     const isSelected = (type: FrameMainProps['type']) => data.type === type
@@ -73,11 +73,21 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
                             value={ data }
                             onChange={ (e, v) => setData(prev => ({ ...prev, type: v })) }
                             exclusive
-
+                            sx={ { [`& .MuiToggleButton-root.Mui-selected`]: { fontWeight: 'bolder', bgcolor: 'red' } } }
                         >
-                            <ToggleButton value={ 'f' } selected={ isSelected('f') }>Type F</ToggleButton>
-                            <ToggleButton value={ 'ff' } selected={ isSelected('ff') }>Type FF</ToggleButton>
-                            <ToggleButton value={ 'fff' } selected={ isSelected('fff') }>Type FFF</ToggleButton>
+                            <ToggleButton value={ 'f' }
+                                selected={ isSelected('f') }
+                            >
+                                Type F
+                            </ToggleButton>
+                            <ToggleButton value={ 'ff' }
+                                selected={ isSelected('ff') }>
+                                Type FF
+                            </ToggleButton>
+                            <ToggleButton value={ 'fff' }
+                                selected={ isSelected('fff') }>
+                                Type FFF
+                            </ToggleButton>
                         </ToggleButtonGroup>
                         <div className="flex flex-row">
                             <div className="flex flex-col w-full">
@@ -105,29 +115,49 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
                                         </div>
                                     </FormControl>
                                 </div>
-                                <div className="flex flex-col gap-4 flex-grow-0">
+                                {/* <div className="flex flex-row gap-4 flex-grow"> */ }
+                                <Stack useFlexGap direction={ 'row' } columnGap={ 2 } mt={ 3 } justifyContent={ 'space-between' } flexGrow={ 1 } maxWidth={ '16rem' }
+                                    sx={ {
+                                        border: '2px double black', p: 1,
+                                        [`& .MuiFormControl-root`]: { flexDirection: 'row', gap: 1 },
+                                        [`& .MuiInput-root.MuiInput-underline`]: { bgcolor: 'inherit', maxWidth: 150, textAlign: 'center', pt: 1, mx: 'auto' },
 
-                                    <FormControl>
-                                        <div className="flex flex-row gap-4 max-w-48">
-                                            X
-                                            <Slider value={ data.x } onChange={ (e, value) => { setData(prev => ({ ...prev!, x: +value })); } }
-                                                step={ 10 }
-                                                max={ 2000 }
-                                                min={ 0 } />
-                                            { data.x }
-                                        </div>
+                                    } } >
+
+
+
+                                    <FormControl variant='filled'
+                                    >
+
+
+                                        <Input value={ data.x || 0 } onChange={ (e) => { setData(prev => ({ ...prev!, x: +e.target.value })) } }
+                                            id='posx'
+                                        />
+                                        <InputLabel sx={ { fontWeight: 'bold', fontSize: 18, justifyItems: 'end', } } htmlFor='posx' >
+                                            X coord
+                                        </InputLabel>
+                                        <IconButton sx={ {
+                                            ml: 1, bgcolor: 'hsl(0, 0%, 42%)', maxHeight: 'fit-content'
+                                        } } color='warning' size='small'
+                                            onClick={ () => setData(prev => ({ ...prev!, x: 0 })) }>R</IconButton>
                                     </FormControl>
-                                    <FormControl>
-                                        <div className="flex flex-row gap-4 max-w-48">
-                                            Y
-                                            <Slider value={ data.y } onChange={ (e, value) => { setData(prev => ({ ...prev!, y: +value })); } }
-                                                step={ 10 }
-                                                max={ 2000 }
-                                                min={ 0 } />
-                                            { data.y }
-                                        </div>
+                                    <FormControl variant='filled'>
+
+
+                                        <Input value={ data.y || 0 } onChange={ (e) => { setData(prev => ({ ...prev!, y: +e.target.value })) } }
+                                            id='posy'
+                                        />
+                                        <InputLabel sx={ { fontWeight: 'bold', fontSize: 18, justifyItems: 'end' } } htmlFor='posy' >
+                                            Y coord
+                                        </InputLabel>
+                                        <IconButton sx={ {
+                                            ml: 1, bgcolor: 'hsl(0, 0%, 42%)', maxHeight: 'fit-content'
+                                        } } color='warning' size='small'
+                                            onClick={ () => setData(prev => ({ ...prev!, y: 0 })) }>R</IconButton>
+
                                     </FormControl>
-                                </div>
+                                </Stack>
+                                {/* </div> */ }
                             </div>
                             <div className='w-42 h-42'>
                                 <div>
@@ -181,4 +211,13 @@ const _viewboxStr = (width: number, height: number) => {
     const scale = +(height / width).toFixed(2)
     const _viewbox = `0 0 100 ${(scale * 100).toFixed(0)}` as const
     return _viewbox
+}
+
+function iter<T extends { side: TSide, state: 'rama' | 'imp' }>(acc: T[], sides: _FrameNodeData['sidesState']) {
+    for (let side of TSidesArray) {
+        const s = side
+        const state = sides[s]
+        if (state !== 'rama') acc.push({ side: s, state } as T)
+    }
+    return acc
 }

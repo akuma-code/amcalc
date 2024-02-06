@@ -22,10 +22,15 @@ export const FrameView = (props: FrameViewProps) => {
 
 
 
-    const NodeCanvas = ({ children }: PropsWithChildren) => <svg viewBox='0 0 100 100' width={ '100%' } height={ '100%' }>{ children }</svg>
+    const NodeCanvas = ({ children }: PropsWithChildren) => <svg viewBox='0 0 100 100' width={ '15em' } height={ '15em' }>{ children }</svg>
     return currentNode ?
         <Container sx={ { bgcolor: '#faa1a16e', mt: 2 } } maxWidth='xl' >
-            <Divider flexItem >Edit Frame View</Divider>
+            <Divider flexItem sx={ { display: 'flex', justifyContent: 'space-between', flexDirection: 'row' } }>
+                <Text>Edit Frame View</Text>
+                <NavLink to={ pageRoutes.frames } >
+                    Back
+                    <ReplyIcon />
+                </NavLink></Divider>
             <Stack direction={ 'row' } columnGap={ 4 } mb={ 1 } mt={ 3 }>
                 <Stack component={ Paper } elevation={ 5 }
                     direction={ 'column' }
@@ -33,6 +38,7 @@ export const FrameView = (props: FrameViewProps) => {
                     sx={ { borderRight: '4px  hsl(231, 51%, 59%)', borderStyle: 'groove' } }
                     rowGap={ 1 }
                     p={ 2 }>
+                    <strong className='text-center'>Frame Data</strong>
                     <div>FrameSize: { currentNode?.size.width }x{ currentNode?.size.height }</div>
                     <div>Frame Position: { currentNode?.pos.x }, { currentNode?.pos.y }</div>
                 </Stack>
@@ -43,6 +49,7 @@ export const FrameView = (props: FrameViewProps) => {
                     p={ 2 }
 
                     component={ Paper } elevation={ 5 }>
+                    <strong className='text-center'>Nodes Data</strong>
                     { nodes &&
                         nodes.map(n =>
                             <div key={ n.id } >
@@ -55,9 +62,13 @@ export const FrameView = (props: FrameViewProps) => {
                     sx={ { borderRight: '4px  hsl(231, 51%, 59%)', borderStyle: 'groove', borderLeft: '4px  hsl(231, 51%, 59%)' } }
                     p={ 4 }
                 >
-                    <NodeCanvas>
-                        { drawframe(_DRAWPATH.fff) }
-                    </NodeCanvas>
+                    {/* <NodeCanvas > */ }
+
+
+
+
+
+                    {/* </NodeCanvas> */ }
                 </Stack>
             </Stack>
         </Container>
@@ -90,8 +101,30 @@ const NodeInfo = ({ node }: { node: _FrameNodeData }) => {
 
 const NodeView = ({ node }: { node: _FrameNodeData }) => {
     const { coords, nsize, sidesState } = node
-    const hscale = +(nsize.height / nsize.width).toFixed(1)
+    const wscale = 1
+    const _c = {
+        ox: 100,
+        oy: 100,
+    }
+    const [s, e] = coords
+    console.log('_c', _c)
+    const l = _c.ox
+    const path = [
+        `m0 0`,
+        `h${100}`,
+        `v${100}`,
+        `h-${100}`,
+        `v-${100}`,
+        `z`
+    ].join(' ')
+    return (
 
+        <svg viewBox={ `0 0 ${100} ${100}` } x={ s.x } y={ s.y } width={ 100 } height={ 100 } >
+            <g>
 
+                { drawframe(path) }
+            </g>
+        </svg>
+    )
 
 }

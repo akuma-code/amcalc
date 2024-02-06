@@ -150,7 +150,7 @@ const initstate: _FrameStateWithNodes = {
                 { "x": 0, y: 0 },
                 { "x": 350, y: 800 }
             ],
-            sidesState: {
+            sides: {
                 bottom: "rama",
                 left: "rama",
                 right: "rama",
@@ -180,7 +180,7 @@ const initializer = (size: _SizeF, pos = { x: 0, y: 0 }): _FrameStateWithNodes =
                     { x, y },
                     _p(x + width, y + height)
                 ],
-                sidesState: {
+                sides: {
                     bottom: "rama",
                     left: "rama",
                     right: "rama",
@@ -224,7 +224,7 @@ function frameReducer(state: _FrameStateWithNodes, action: _FrameActions): _Fram
             const { next, id } = action.payload
             if (!state) return initstate
             let n = state.nodes
-            n = [...n.map(node => node.id === id ? { ...node, sidesState: { ...node.sidesState!, ...next } } : node)]
+            n = [...n.map(node => node.id === id ? { ...node, sides: { ...node.sides!, ...next } } : node)]
 
             return {
                 ...state,

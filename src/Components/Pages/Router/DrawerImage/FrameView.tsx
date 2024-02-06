@@ -8,6 +8,8 @@ import { useStoresContext } from '../../../../Hooks/useStoresContext';
 import { _FrameNodeData, _FrameStateWithNodes } from '../DrawerPage';
 import { drawframe } from '../../../../Models/Drower/DrawerFns';
 import { _DRAWPATH } from '../../../../Models/Drower/DrawPaths';
+import { TSidesArray } from '../../../../Interfaces/Enums';
+import { toJS } from 'mobx';
 type FrameViewProps = {}
 
 export const FrameView = (props: FrameViewProps) => {
@@ -89,18 +91,23 @@ export const FrameView = (props: FrameViewProps) => {
 
 
 const NodeInfo = ({ node }: { node: _FrameNodeData }) => {
-    const { id, coords: [s, e], isShow, nsize, sidesState } = node;
+    const { id, coords: [{ ...s }, { ...e }], isShow, nsize, sides } = node;
+    console.log('sidesState', toJS(node))
     return (
         <Stack >
             <div >ID: { id }</div>
             <div>size: { nsize.width }x{ nsize.height }</div>
             <div>isShow: { isShow ? 'true' : 'false' }</div>
             <div>Coords: { s.x }, { s.y }, { e.x },{ e.y }</div>
+            { TSidesArray.map(side => {
+                return sides[side] !== 'rama' ? <div key={ side }>{ side }: { sides[side] }</div> : null
+            }
+            ) }
         </Stack>)
 }
 
 const NodeView = ({ node }: { node: _FrameNodeData }) => {
-    const { coords, nsize, sidesState } = node
+    const { coords, nsize, sides: sidesState } = node
     const wscale = 1
     const _c = {
         ox: 100,

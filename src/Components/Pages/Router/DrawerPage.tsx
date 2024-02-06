@@ -26,7 +26,7 @@ export interface _FrameNodeData {
     nsize: _SizeF;
     coords: _TCoords;
     isShow: boolean
-    sidesState: Required<_TSideBaseState>
+    sides: _TSideBaseState
 }
 export interface _FrameStateWithNodes {
     id: string
@@ -113,7 +113,7 @@ export function nodeGenerator(type: IFrameVariants) {
                 nsize: frame_size,
                 coords: _getcoords(frame_size, pos),
                 id: 's1',
-                sidesState: _defaultSS,
+                sides: _defaultSS,
                 isShow: false
             }
             return [n1]
@@ -126,14 +126,14 @@ export function nodeGenerator(type: IFrameVariants) {
                 id: 's1',
                 nsize: s,
                 coords: _getcoords(s, pos),
-                sidesState: { ..._defaultSS, right: 'imp' as const },
+                sides: { ..._defaultSS, right: 'imp' as const },
                 isShow: false
             }
             const n2: _FrameStateWithNodes['nodes'][number] = {
                 id: 's2',
                 nsize: s,
                 coords: _getcoords(s, pos2),
-                sidesState: { ..._defaultSS, left: 'imp' as const },
+                sides: { ..._defaultSS, left: 'imp' as const },
                 isShow: false
             }
             const nodes = [n1, n2]
@@ -148,7 +148,7 @@ export function nodeGenerator(type: IFrameVariants) {
                 id: 's1',
                 nsize: s,
                 coords: _getcoords(s, pos),
-                sidesState: { ..._defaultSS, right: 'imp' as const },
+                sides: { ..._defaultSS, right: 'imp' as const },
                 isShow: false
 
             }
@@ -156,7 +156,7 @@ export function nodeGenerator(type: IFrameVariants) {
                 id: 's2',
                 nsize: s,
                 coords: _getcoords(s, pos2),
-                sidesState: { ..._defaultSS, right: 'imp' as const, left: 'imp' as const },
+                sides: { ..._defaultSS, right: 'imp' as const, left: 'imp' as const },
                 isShow: false
 
             }
@@ -164,7 +164,7 @@ export function nodeGenerator(type: IFrameVariants) {
                 id: 's3',
                 nsize: s,
                 coords: _getcoords(s, pos3),
-                sidesState: { ..._defaultSS, left: 'imp' as const },
+                sides: { ..._defaultSS, left: 'imp' as const },
                 isShow: false
 
             }
@@ -184,7 +184,7 @@ export function nodeExtract(frame: _FrameStateWithNodes) {
 
     const { nodes, pos, size, type } = frame
     const stvs: StvFrame[] = nodes.map(node => {
-        const { id, sidesState } = node
+        const { id, sides: sidesState } = node
         const stvFrame = new StvFrame([...node.coords])
             .setId(id)
             .setNext(sidesState)

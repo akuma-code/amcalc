@@ -213,7 +213,7 @@ const _viewboxStr = (width: number, height: number) => {
     return _viewbox
 }
 
-function iter<T extends { side: TSide, state: 'rama' | 'imp' }>(acc: T[], sides: _FrameNodeData['sidesState']) {
+function iter<T extends { side: TSide, state: 'rama' | 'imp' }>(acc: T[], sides: _FrameNodeData['sides']) {
     for (let side of TSidesArray) {
         const s = side
         const state = sides[s]

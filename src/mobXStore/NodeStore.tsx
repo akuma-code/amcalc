@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx"
 import { _isArr, _log } from "../Helpers/HelpersFns"
 
 export class mbxNodesStore<T extends { id: string }>{
-    nodes: T[] = [] as T[]
+    nodes: T[] = []
     constructor() {
         makeAutoObservable(this)
     }

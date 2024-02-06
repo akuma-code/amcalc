@@ -19,7 +19,7 @@ export const FrameView = (props: FrameViewProps) => {
     const { NodeStore } = useStoresContext()
 
     const currentNode = id ? NodeStore.getNode(id) : null
-    const [nodes, setNodes] = useState(currentNode?.nodes)
+    const [nodes, setNodes] = useState(currentNode?.nodes || [])
 
 
 

@@ -51,7 +51,11 @@ export const SelectorPanel = observer((props: Props) => {
                         </RouterLink>
                         <RouterLink to={ pageRoutes.drawer }>
 
-                            <strong>DrawerCanvas</strong>
+                            <strong>Create Frame</strong>
+                        </RouterLink>
+                        <RouterLink to={ pageRoutes.frames }>
+
+                            <strong>FramesList</strong>
                         </RouterLink>
 
                     </Breadcrumbs>

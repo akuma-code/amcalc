@@ -100,3 +100,6 @@ function _sumSize<T extends _SizeF>(sizes: T[]) {
     const H = sizes.reduce((prev, c) => ({ ...prev, height: prev.height += c.height })).height
     return { W, H }
 }
+
+
+export const drawframe = (path: string, pathProps?: object) => <path d={ path } stroke='black' fill='transparent' { ...pathProps } />

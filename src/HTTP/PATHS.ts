@@ -14,6 +14,8 @@ export const pageRoutes = {
     test: 'test' as const,
     drawer: 'drawer' as const,
     imgout: '/drawer/:state' as const,
+    frames: '/drawer/frames' as const,
+    frameId: '/drawer/frames/:id' as const,
     // assets: 'Assets' as const,
     groups: '/sill/groups/:group_id' as const,
     print: '/sill/groups/print' as const,

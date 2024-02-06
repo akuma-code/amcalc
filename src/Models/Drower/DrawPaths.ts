@@ -13,7 +13,7 @@ const concat_numb = (l: DrawerPointType, x?: number, y?: number) => {
     return !y && y !== 0 ? `${l}${x}` as const : `${l}${x} ${y}` as const
 }
 export const _DRAWPATH = {
-    type_f: [
+    f: [
         concat_numb('m', 0, 0),
         concat_numb('h', 100),
         concat_numb('v', 100),
@@ -21,7 +21,7 @@ export const _DRAWPATH = {
         concat_numb('z'),
     ]
         .join(" "),
-    type_ff: [
+    ff: [
         concat_numb('m', 0, 0),
         concat_numb('h', 48),
         concat_numb('v', 100),
@@ -35,7 +35,7 @@ export const _DRAWPATH = {
 
     ]
         .join(" "),
-    type_fff: [
+    fff: [
         concat_numb('m', 0, 0),
         concat_numb('h', 32),
         concat_numb('v', 100),

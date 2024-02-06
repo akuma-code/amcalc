@@ -67,6 +67,30 @@ export const AppPaths = () => {
                         <RouterLink to={ '/getapp' } >AppScript</RouterLink>
                     </div>
                 </li>
+                <li>
+                    <div className='flex-grow'>
+                        <b>/drawer</b>
+                    </div>
+
+                    <div className='flex-grow-0'><RouterLink to={ pageRoutes.drawer }>  CreateFrame</RouterLink> </div>
+
+                </li>
+                <li>
+                    <div className='flex-grow'>
+                        <b>/drawer/frames</b>
+                    </div>
+
+                    <div className='flex-grow-0'><RouterLink to={ pageRoutes.frames }> FramesList</RouterLink> </div>
+
+                </li>
+                <li>
+                    <div className='flex-grow'>
+                        <b>/drawer/frames/:id</b>
+                    </div>
+
+                    <div className='flex-grow-0'><RouterLink to={ pageRoutes.frameId } > FramesPage</RouterLink> </div>
+
+                </li>
             </ul>
         </div>
     </Box>;

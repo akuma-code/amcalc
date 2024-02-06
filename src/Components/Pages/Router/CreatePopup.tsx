@@ -9,6 +9,7 @@ import { IFrameVariants } from '../../../Interfaces/Enums';
 import { FrameMainProps } from './DrawerPage';
 import { _Point, _SizeF, _log, _p, _ss } from '../../../Helpers/HelpersFns';
 import { _DRAWPATH } from '../../../Models/Drower/DrawPaths';
+import { drawframe } from '../../../Models/Drower/DrawerFns';
 
 type CreatePopupProps = {
     isOpen: boolean;
@@ -34,49 +35,49 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
     return (
         <>
             <Button variant='contained'
-                onClick={handleClickOpen}
+                onClick={ handleClickOpen }
             >
                 Create Frame
             </Button>
             <Dialog fullWidth
-                open={isOpen}
-                onClose={handleClose}
-                PaperProps={{
+                open={ isOpen }
+                onClose={ handleClose }
+                PaperProps={ {
                     component: 'form',
                     onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
                         event.preventDefault();
                         onCreate(data);
                         handleClose();
                     },
-                }}
+                } }
             >
                 <DialogTitle>Create Frame</DialogTitle>
                 <DialogContent>
-                    <DialogContentText gap={4} display={'flex'} justifyContent={'center'}>
-                        <span className='font-bold'>{'Frame type: '} {data.type.toUpperCase()}</span>
+                    <DialogContentText gap={ 4 } display={ 'flex' } justifyContent={ 'center' }>
+                        <span className='font-bold'>{ 'Frame type: ' } { data.type.toUpperCase() }</span>
                         <span>
-                            Width: {data.width}
+                            Width: { data.width }
                         </span>
                         <span>
-                            Height: {data.height}
+                            Height: { data.height }
                         </span>
                         <span>
-                            X: {data.x}
+                            X: { data.x }
                         </span>
                         <span>
-                            Y: {data.y}
+                            Y: { data.y }
                         </span>
                     </DialogContentText>
                     <Stack useFlexGap>
                         <ToggleButtonGroup
-                            value={data}
-                            onChange={(e, v) => setData(prev => ({ ...prev, type: v }))}
+                            value={ data }
+                            onChange={ (e, v) => setData(prev => ({ ...prev, type: v })) }
                             exclusive
 
                         >
-                            <ToggleButton value={'f'} selected={isSelected('f')}>Type F</ToggleButton>
-                            <ToggleButton value={'ff'} selected={isSelected('ff')}>Type FF</ToggleButton>
-                            <ToggleButton value={'fff'} selected={isSelected('fff')}>Type FFF</ToggleButton>
+                            <ToggleButton value={ 'f' } selected={ isSelected('f') }>Type F</ToggleButton>
+                            <ToggleButton value={ 'ff' } selected={ isSelected('ff') }>Type FF</ToggleButton>
+                            <ToggleButton value={ 'fff' } selected={ isSelected('fff') }>Type FFF</ToggleButton>
                         </ToggleButtonGroup>
                         <div className="flex flex-row">
                             <div className="flex flex-col w-full">
@@ -86,21 +87,21 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
                                         <div className="flex flex-row gap-4 max-w-52">
 
                                             W
-                                            <Slider value={data.width} onChange={(e, value) => { setData(prev => ({ ...prev!, width: +value })); }}
-                                                step={100}
-                                                max={2000}
-                                                min={400} />
-                                            {data.width}
+                                            <Slider value={ data.width } onChange={ (e, value) => { setData(prev => ({ ...prev!, width: +value })); } }
+                                                step={ 100 }
+                                                max={ 2000 }
+                                                min={ 400 } />
+                                            { data.width }
                                         </div>
                                     </FormControl>
                                     <FormControl>
                                         <div className="flex flex-row gap-4 max-w-52">
                                             H
-                                            <Slider value={data.height} onChange={(e, value) => { setData(prev => ({ ...prev!, height: +value })); }}
-                                                step={100}
-                                                max={2000}
-                                                min={400} />
-                                            {data.height}
+                                            <Slider value={ data.height } onChange={ (e, value) => { setData(prev => ({ ...prev!, height: +value })); } }
+                                                step={ 100 }
+                                                max={ 2000 }
+                                                min={ 400 } />
+                                            { data.height }
                                         </div>
                                     </FormControl>
                                 </div>
@@ -109,21 +110,21 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
                                     <FormControl>
                                         <div className="flex flex-row gap-4 max-w-48">
                                             X
-                                            <Slider value={data.x} onChange={(e, value) => { setData(prev => ({ ...prev!, x: +value })); }}
-                                                step={10}
-                                                max={2000}
-                                                min={0} />
-                                            {data.x}
+                                            <Slider value={ data.x } onChange={ (e, value) => { setData(prev => ({ ...prev!, x: +value })); } }
+                                                step={ 10 }
+                                                max={ 2000 }
+                                                min={ 0 } />
+                                            { data.x }
                                         </div>
                                     </FormControl>
                                     <FormControl>
                                         <div className="flex flex-row gap-4 max-w-48">
                                             Y
-                                            <Slider value={data.y} onChange={(e, value) => { setData(prev => ({ ...prev!, y: +value })); }}
-                                                step={10}
-                                                max={2000}
-                                                min={0} />
-                                            {data.y}
+                                            <Slider value={ data.y } onChange={ (e, value) => { setData(prev => ({ ...prev!, y: +value })); } }
+                                                step={ 10 }
+                                                max={ 2000 }
+                                                min={ 0 } />
+                                            { data.y }
                                         </div>
                                     </FormControl>
                                 </div>
@@ -131,11 +132,11 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
                             <div className='w-42 h-42'>
                                 <div>
                                     <svg
-                                        viewBox='0 0 100 100' width={'100%'} height={'100%'}
+                                        viewBox='0 0 100 100' width={ '100%' } height={ '100%' }
 
                                     >
-                                        {/* <path d={_DRAWPATH.type_f} stroke='black' fill='transparent' /> */}
-                                        {drawframe(_DRAWPATH[`type_${data.type}`])}
+                                        {/* <path d={_DRAWPATH.type_f} stroke='black' fill='transparent' /> */ }
+                                        { drawframe(_DRAWPATH[data.type]) }
                                     </svg>
                                     {/* <svg viewBox={_viewboxStr(data.width / 10, data.height / 10)} width={100} height={100} >
                                         <g>
@@ -149,16 +150,16 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
                         </div>
                     </Stack>
                 </DialogContent>
-                <DialogActions sx={{ justifyContent: 'flex-start' }}>
+                <DialogActions sx={ { justifyContent: 'flex-start' } }>
                     <Button type="submit" color='info' variant='contained'>Create</Button>
-                    <Button onClick={handleClose} color='secondary' variant='contained'>Cancel</Button>
+                    <Button onClick={ handleClose } color='secondary' variant='contained'>Cancel</Button>
                 </DialogActions>
             </Dialog>
         </>
     );
 };
 
-const drawframe = (path: string) => <path d={path} stroke='black' fill='transparent' />
+
 
 export interface IModelSkeletonProps {
     size: _SizeF
@@ -172,7 +173,7 @@ export const ModelSkeleton = ({ type = 'f', size, pos = { x: 0, y: 0 } }: IModel
     const scale = +(height / width).toFixed(2)
 
     const _viewbox = `0 0 100 ${(scale * 100).toFixed(0)}`
-    console.log('_viewbox', _viewbox)
+
 
 }
 

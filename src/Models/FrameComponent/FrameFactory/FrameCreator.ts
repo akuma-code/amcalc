@@ -64,7 +64,7 @@ export class FrameCreator {
             coords: _getcoords(ns, { x: this.frame!.pos.x + ns.width * i, y: this.frame!.pos.y }) as _TCoords
         }))
         this.frame = { ...this.frame, nodes: sizedNodes }
-        _log("node ready state: ", this.isready)
+        // _log("node ready state: ", this.isready)
         return this
     }
 

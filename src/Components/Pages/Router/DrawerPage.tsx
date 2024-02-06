@@ -13,6 +13,12 @@ import { ImpostFrame } from '../../../Models/FrameComponent/ImpostFrame';
 import { useStoresContext } from '../../../Hooks/useStoresContext';
 import { FrameCreator, FrameNodeWithSides } from '../../../Models/FrameComponent/FrameFactory/FrameCreator';
 import { observer } from 'mobx-react-lite';
+import { pageRoutes } from '../../../HTTP/PATHS';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+
+
+
+
 export type FrameMainProps = _SizeF & _Point & { type: IFrameVariants }
 
 export interface _FrameNodeData {
@@ -48,48 +54,43 @@ export const DrawerPage = observer(() => {
         // NodeStore.add(frame)
         submit(JSON.stringify(frame), {
             method: 'post',
-            action: '/drawer/' + data.type,
+            action: pageRoutes.frames,
             encType: 'application/json'
         })
-        frame && fc.create(frame.size, { ...data })
+        fc.create(dataSize, dataPos)
             .setType(data.type)
         fc.isready && NodeStore.add(fc.frame! as unknown as _FrameStateWithNodes)
         // .setNodes()
 
-        console.log('fc', fc.frame)
+        // console.log('fc', fc.frame)
     }
     const deleteHandler = () => {
-        setFrame(prev => null)
+        NodeStore.clear()
     }
     // if (!frame) return <div>No frame</div>
     return (
 
-        <Stack useFlexGap direction={'column'}>
-            <Divider >
-                <h3 className='text-center text-4xl'>DrawerPage</h3>
+        <Stack useFlexGap direction={ 'column' }>
+            <Stack useFlexGap direction={ 'row' } flexGrow={ 1 }>
 
-            </Divider>
-            <Stack useFlexGap direction={'row'} flexGrow={1}>
-
-                <Stack direction={'row'} useFlexGap gap={4} mx={4}>
-                    <CreatePopup isOpen={isOpen}
-                        toggleOpen={() => { setIsOpen(prev => !prev) }}
-                        onCreate={createHandler}
+                <Stack direction={ 'row' } useFlexGap gap={ 4 } mx={ 4 } mt={ 2 }>
+                    <CreatePopup isOpen={ isOpen }
+                        toggleOpen={ () => { setIsOpen(prev => !prev) } }
+                        onCreate={ createHandler }
                     />
-                    <Button variant='contained' color='warning'
-                        onClick={deleteHandler}
-                        disabled={frame === null}
+                    <Button variant='contained' color='secondary'
+                        onClick={ deleteHandler }
+                        disabled={ NodeStore.nodes.length === 0 }
                     >
-                        Delete Frame
+                        Clear Store <DeleteOutlinedIcon color='warning' sx={ { ml: 1 } } />
                     </Button>
                 </Stack>
-                <Stack useFlexGap direction={'row'} flexGrow={1}>
-
-                    <Outlet />
-                </Stack>
-
-
             </Stack>
+            {/* <Divider >
+                <h3 className='text-center text-4xl'>DrawerPage</h3>
+
+            </Divider> */}
+            <Outlet />
         </Stack>
         // </FrameContext.Provider>
     )

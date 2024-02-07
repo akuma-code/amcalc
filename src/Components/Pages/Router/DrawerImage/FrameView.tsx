@@ -17,6 +17,7 @@ import Icons from '../../../Icons/SvgIcons';
 import { MasterFrame } from '../../../../Models/FrameComponent/FrameFactory/FrameCreator';
 import { FrameNodeWithSides } from '../../../../Models/FrameComponent/FrameFactory/FrameNodeWithSides';
 import { observer } from 'mobx-react-lite';
+import { useQuery } from 'react-query';
 type FrameViewProps = {}
 type FrameCanvasProps = {
     _viewbox?: string
@@ -28,6 +29,7 @@ export const FrameView = observer((props: FrameViewProps) => {
     // const { id } = useLoaderData() as { id?: string }
     const { id } = useParams<{ id: string }>()
     const { NodeStore } = useStoresContext()
+
 
     const currentFrame = id ? NodeStore.getNode(id) : null
     const [nodes, setNodes] = useState(currentFrame?.nodes || [])
@@ -76,7 +78,7 @@ export const FrameView = observer((props: FrameViewProps) => {
                         <ButtonGroup variant='contained' orientation='vertical' >
 
                             <Button variant='contained' fullWidth
-                                onClick={ () => { resizeFrame(currentFrame.id, _ss(100, 100)) } }
+                                onClick={ () => { resizeNode(_ss(100, 100)) } }
                                 sx={ { border: '2px solid black' } }>
                                 Height x 2
                             </Button>
@@ -111,6 +113,7 @@ export const FrameView = observer((props: FrameViewProps) => {
                     sx={ { borderRight: '4px  hsl(231, 51%, 59%)', borderRightStyle: 'groove', borderLeft: '4px  hsl(231, 51%, 59%)' } }
                     p={ 4 } position={ 'relative' }
                 >
+                    <strong>Frame View</strong>
                     <FrameCanvas
                         height={ 500 }
                     //  _viewbox='0 0 100 100'
@@ -234,9 +237,18 @@ const _stepsV = (count: number) => {
         res.push([
             `h50 `,
             `h-50`,
-            `v100`,
-            `h50`,
-            `h-50`,
+            `v25`,
+            `h20`,
+            `h-20`,
+            `v25`,
+            `h20`,
+            `h-20`,
+            `v25`,
+            `h20 `,
+            `h-20`,
+            `v25`,
+
+
         ].join(" ")
         )
         c++

@@ -1,13 +1,9 @@
-import { Box, Dialog, Stack } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { _ID, _log, _trim } from '../../../Helpers/HelpersFns'
-import { ZLABEL } from '../../../Interfaces/Enums'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import { Box, Dialog } from '@mui/material'
 import { observer } from 'mobx-react-lite'
+import React, { useState } from 'react'
+import { _ID, _trim } from '../../../Helpers/HelpersFns'
 import { useStoresContext } from '../../../Hooks/useStoresContext'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { red } from '@mui/material/colors'
-import { BasicModal } from '../BasicModal'
-import { PS } from '../../../Models/PriceStorage'
 type PriceTableProps = {
     data: number[][]
     groupId?: string | null
@@ -31,7 +27,7 @@ type ICellData = {
 
 }
 type ICellStateType = "none" | "_watched" | "_watched_row" | "_watched_col" | "_selected" | "_selected_row" | "_selected_col"
-console.log('PS', PS)
+// console.log('PS', PS)
 export const ZhPriceTable: React.FC<IsoTablePriceProps> = observer(({ zGroup, ztype = 'viteo' }) => {
     const { ViewConfig } = useStoresContext();
     const [cell, setCell] = useState<ICellData | null>(null)
@@ -63,7 +59,6 @@ export const ZhPriceTable: React.FC<IsoTablePriceProps> = observer(({ zGroup, zt
         if (!cell) return setCell(cellInfo)
         setCell(prev => cellInfo)
 
-        console.log('cellData: ', getCellState(rowIdx, colIdx))
     }
 
     const handleEnter = (ri: number, ci: number) => (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>) => {

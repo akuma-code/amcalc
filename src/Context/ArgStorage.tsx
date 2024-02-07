@@ -1,8 +1,6 @@
-import { _allowStateChangesInsideComputed, makeAutoObservable } from "mobx"
+import { makeAutoObservable } from "mobx"
 import { _ID } from "../Helpers/HelpersFns"
 import { ANYobj } from "../Interfaces/MathActionsTypes"
-import { A_Sill } from "../Interfaces/CommonTypes"
-import { arrReducer } from "../ActionComponents/Calculators/SillCalculator"
 export type AddTypeProp<A, T> = A & { _type: T }
 export interface StoreGroupData<T extends ANYobj> {
     group_id: string

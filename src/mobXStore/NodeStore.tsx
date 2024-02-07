@@ -13,8 +13,8 @@ export class mbxNodesStore<T extends { id: string }>{
         this.nodes = [...this.nodes, datanode]
     }
 
-    remove(node_idx: number) {
-        this.nodes = [...this.nodes].filter((n, idx) => idx !== node_idx)
+    remove(node_id: string) {
+        this.nodes = [...this.nodes].filter((n, idx) => n.id !== node_id)
     }
 
     clear() {
@@ -28,4 +28,13 @@ export class mbxNodesStore<T extends { id: string }>{
 
         return this.nodes.map(n => n)
     }
+    edit(id: string, new_data: Partial<T>) {
+        let current = this.getNode(id)
+        if (!current) return
+        current = { ...current, ...new_data }
+        this.remove(id)
+        this.add(current)
+
+    }
+
 }

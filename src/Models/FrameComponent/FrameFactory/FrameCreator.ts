@@ -1,9 +1,9 @@
 import { _FrameStateWithNodes } from "../../../Components/Pages/Router/DrawerPage";
 import { ISideBorderState, _TSideBaseState } from "../../../Components/Templates/Systems";
-import { _ID, _Point, _SizeF, _getcoords, _log, _p } from "../../../Helpers/HelpersFns";
-import { $DrawPosOffset } from "../../../Hooks/useOffset";
-import { IFrameVariants, TSide } from "../../../Interfaces/Enums";
-import { ISideStateOffset, _CType, _TCoords } from "../StvState";
+import { _ID, _Point, _SizeF, _getcoords, _log, _p, _ss } from "../../../Helpers/HelpersFns";
+import { IFrameVariants } from "../../../Interfaces/Enums";
+import { _TCoords } from "../StvState";
+import { FrameNodeWithSides, nodesPreset } from "./FrameNodeWithSides";
 
 
 
@@ -19,7 +19,7 @@ type NewNodeCreate = {
 
 
 
-export class FrameCreator {
+export class MasterFrame {
     frame: NewFrameCreate | null = null
 
 
@@ -45,26 +45,20 @@ export class FrameCreator {
         if (!this.frame.type) throw new Error("Frame type UNKNOWN! You have to set frame type first!")
         const nodes = nodesPreset[this.frame.type]
         const len = nodes.length
-        const restNum = this.frame!.size.width % len
-
-
 
         const nh = this.frame!.size.height
         const nW = Math.floor(this.frame!.size.width / len)
-        const nw1 = +(this.frame!.size.width / len).toFixed(2)
-        const ns = {
-            width: nW,
-            height: nh
-        }
-        const nc = (i: number) => _getcoords(ns, { x: this.frame!.pos.x + ns.width * i, y: this.frame!.pos.y })
 
-        let sizedNodes: NewNodeCreate[] = nodes.map((n, i, arr) => ({
+        const ns = _ss(nW, nh)
+        // const nc = (i: number) => _getcoords(ns, { x: this.frame!.pos.x + ns.width * i, y: this.frame!.pos.y })
+
+        let sizedNodes: Partial<FrameNodeWithSides>[] = nodes.map((n, i, arr) => ({
             ...n,
             nsize: ns,
-            coords: _getcoords(ns, { x: this.frame!.pos.x + ns.width * i, y: this.frame!.pos.y }) as _TCoords
+            coords: [..._getcoords(ns, { x: this.frame!.pos.x + ns.width * i, y: this.frame!.pos.y })] as _TCoords
         }))
-        this.frame = { ...this.frame, nodes: sizedNodes }
-        // _log("node ready state: ", this.isready)
+        this.frame = { ...this.frame, nodes: sizedNodes as Required<FrameNodeWithSides>[] }
+
         return this
     }
 
@@ -74,76 +68,8 @@ export class FrameCreator {
         return false
     }
 
-}
-function size_mistake(initNum: number, devider: number) {
-    const n = initNum
-    const d = devider
-    const rest = n % d
-    return rest
-}
-
-export class FrameNodeWithSides {
-    id: string = _ID()
-    isShow: boolean = false
-    sides: Record<TSide, _CType>
-    offset: Record<TSide, number> = {
-        bottom: 0,
-        left: 0,
-        right: 0,
-        top: 0,
+    resizeFrame(new_size: Partial<_SizeF>) {
+        if (!this.frame) return
+        this.frame = { ...this.frame, size: { ...this.frame.size, ...new_size } }
     }
-    nsize?: _SizeF
-    coords?: _TCoords
-    constructor(next?: ISideStateOffset) {
-        this.sides = {
-            bottom: "rama" as const,
-            left: "rama" as const,
-            right: "rama" as const,
-            top: "rama" as const
-        }
-
-        if (next) this.setSides(next)
-
-    }
-    setSides(next: ISideStateOffset) {
-        this.sides = { ...this.sides, ...next }
-
-        return this.setOffset()
-    }
-
-    setOffset() {
-
-        for (let side in this.sides) {
-            let s = side as TSide
-            const sideState = this.sides[s]
-
-            this.offset = { ...this.offset, [s]: $DrawPosOffset[sideState] }
-        }
-        return this
-    }
-    setNodeSize(nodesize: _SizeF) {
-        this.nsize = nodesize
-        return this
-    }
-
-    setNodeCoords(coords: _TCoords) {
-        this.coords = coords
-        return this
-    }
-
-
-
-}
-
-export const nodesPreset = {
-    f: [new FrameNodeWithSides()],
-    ff: [
-        new FrameNodeWithSides({ right: 'imp' }),
-        new FrameNodeWithSides({ left: 'imp' })
-    ],
-    fff: [
-        new FrameNodeWithSides({ right: 'imp' }),
-        new FrameNodeWithSides({ left: 'imp', right: 'imp' }),
-        new FrameNodeWithSides({ left: 'imp' })
-    ],
 }

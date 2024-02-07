@@ -16,6 +16,7 @@ import { _log } from './Helpers/HelpersFns';
 import { ViteoStore } from './Context/SpreadSheetStore';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { mbxNodesStore } from './mobXStore/NodeStore';
+import { _FrameStateWithNodes } from './Components/Pages/Router/DrawerPage';
 
 configure({
   useProxies: "always",
@@ -38,7 +39,7 @@ const Stores: IStoresContext = {
   ViewConfig: new OutputViewConfig(),
   SillStore: tempStore,
   ViteoStore: new ViteoStore(),
-  NodeStore: new mbxNodesStore(),
+  NodeStore: new mbxNodesStore<_FrameStateWithNodes>(),
 }
 
 const queryClient = new QueryClient({

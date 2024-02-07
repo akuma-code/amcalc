@@ -11,7 +11,8 @@ import { FrameContext } from '../../../Hooks/useFrameContext';
 import { FrameContextMobx, NodeStore } from '../../../Context/FrameContext/FrameContext';
 import { ImpostFrame } from '../../../Models/FrameComponent/ImpostFrame';
 import { useStoresContext } from '../../../Hooks/useStoresContext';
-import { FrameCreator, FrameNodeWithSides } from '../../../Models/FrameComponent/FrameFactory/FrameCreator';
+import { MasterFrame } from '../../../Models/FrameComponent/FrameFactory/FrameCreator';
+import { FrameNodeWithSides } from "../../../Models/FrameComponent/FrameFactory/FrameNodeWithSides";
 import { observer } from 'mobx-react-lite';
 import { pageRoutes } from '../../../HTTP/PATHS';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -41,7 +42,7 @@ export const DrawerPage = observer(() => {
     const { NodeStore } = useStoresContext()
     const [frame, setFrame] = useState<_FrameStateWithNodes | null>(null)
     const [isOpen, setIsOpen] = useState(false)
-    const fc = new FrameCreator()
+    const fc = new MasterFrame()
     const createHandler = (data: FrameMainProps) => {
         // if (frame) setFrame(null)
 
@@ -52,16 +53,16 @@ export const DrawerPage = observer(() => {
         const _nodes = createNodes(dataSize, dataPos)
         setFrame(prev => ({ ...prev, nodes: _nodes, type: data.type, size: dataSize, pos: { x: data.x, y: data.y }, id: _ID() }))
         // NodeStore.add(frame)
-        submit(JSON.stringify(frame), {
-            method: 'post',
-            action: pageRoutes.frames,
-            encType: 'application/json'
-        })
+
         fc.create(dataSize, dataPos)
             .setType(data.type)
         fc.isready && NodeStore.add(fc.frame! as unknown as _FrameStateWithNodes)
         // .setNodes()
-
+        submit(JSON.stringify(fc.frame), {
+            method: 'post',
+            action: pageRoutes.frames,
+            encType: 'application/json'
+        })
         // console.log('fc', fc.frame)
     }
     const deleteHandler = () => {

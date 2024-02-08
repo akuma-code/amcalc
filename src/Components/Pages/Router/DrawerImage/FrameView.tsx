@@ -1,4 +1,5 @@
-import { Box, Button, ButtonGroup, Container, Divider, Paper, Stack } from '@mui/material'
+import { FiAlertTriangle } from "react-icons/fi";
+import { Avatar, Box, Button, ButtonGroup, Container, Divider, Paper, Stack } from '@mui/material'
 import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import { NavLink, useLoaderData, useParams } from 'react-router-dom'
 import { Text } from '../../../UI/Text'
@@ -164,11 +165,15 @@ export const FrameView = observer((props: FrameViewProps) => {
         :
         <Box
             component={ Paper }
-            sx={ { bgcolor: '#c73f09', py: 2, m: 5, textTransform: 'full-width', textAlign: 'center', } }
+            sx={ { bgcolor: '#c73f09', p: 4, mx: 'auto', textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 5, mt: 2 } }
         >
+            <Avatar>
+                <FiAlertTriangle size={ 38 } color="red" />
+            </Avatar>
             <NavLink to={ pageRoutes.frames } >
-                <Text >Node with id: { id } not found! </Text>
-                <ReplyIcon />
+
+                <strong >  Node with id: { id } not found! </strong>
+                <ReplyIcon sx={ { fontSize: 42, bgcolor: 'red', borderRadius: '45%', color: '#fff', mx: 2 } } />
             </NavLink>
         </Box>
 })

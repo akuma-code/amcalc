@@ -41,10 +41,10 @@ export const SelectorPanel = observer((props: Props) => {
                             <SignalCellularAltIcon />
                             Sill
                         </RouterLink>
-                        <RouterLink to={ pageRoutes.getapp }>
+                        {/* <RouterLink to={ pageRoutes.getapp } >
                             <DescriptionIcon />
                             GetApp
-                        </RouterLink>
+                        </RouterLink> */}
                         <RouterLink to={ pageRoutes.test }>
                             <BugReportIcon />
                             <strong>Test Page</strong>

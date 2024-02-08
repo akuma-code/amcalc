@@ -30,7 +30,7 @@ export enum ISideBorderState {
     stv_rama = 'stv_rama',
 }
 export type _TSideBorderState = keyof typeof ISideBorderState
-export type _TSideBaseState = { [Key in TSide]?: 'rama' | 'imp' }
+export type _TSideBaseState = { [Key in TSide]: 'rama' | 'imp' }
 export type IBorders = Record<ISideDirections, _TSideBorderState>
 export const Proline: IFrameOffset = {
     rama: 48,

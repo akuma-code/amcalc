@@ -11,7 +11,7 @@ import { FrameContext } from '../../../Hooks/useFrameContext';
 import { FrameContextMobx, NodeStore } from '../../../Context/FrameContext/FrameContext';
 import { ImpostFrame } from '../../../Models/FrameComponent/ImpostFrame';
 import { useStoresContext } from '../../../Hooks/useStoresContext';
-import { MasterFrame } from '../../../Models/FrameComponent/FrameFactory/FrameCreator';
+import { ActionFrame, MasterFrame } from '../../../Models/FrameComponent/FrameFactory/FrameCreator';
 import { FrameNodeWithSides } from "../../../Models/FrameComponent/FrameFactory/FrameNodeWithSides";
 import { observer } from 'mobx-react-lite';
 import { pageRoutes } from '../../../HTTP/PATHS';
@@ -23,7 +23,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 export type FrameMainProps = _SizeF & _Point & { type: IFrameVariants }
 
 export interface _FrameNodeData {
-    id: string;
+    _id: string;
     nsize: _SizeF;
     coords: _TCoords;
     isShow: boolean
@@ -43,6 +43,7 @@ export const DrawerPage = observer(() => {
     const [frame, setFrame] = useState<_FrameStateWithNodes | null>(null)
     const [isOpen, setIsOpen] = useState(false)
     const fc = new MasterFrame()
+
     const createHandler = (data: FrameMainProps) => {
         // if (frame) setFrame(null)
 
@@ -50,13 +51,16 @@ export const DrawerPage = observer(() => {
 
         const dataSize = _ss(data.width, data.height)
         const dataPos = _p(data.x, data.y)
+        fc.create(dataSize, dataPos)
+            .setType(data.type)
+            .setNodes()
         const _nodes = createNodes(dataSize, dataPos)
+
         setFrame(prev => ({ ...prev, nodes: _nodes, type: data.type, size: dataSize, pos: { x: data.x, y: data.y }, id: _ID() }))
         // NodeStore.add(frame)
 
-        fc.create(dataSize, dataPos)
-            .setType(data.type)
-        fc.isready && NodeStore.add(fc.frame! as unknown as _FrameStateWithNodes)
+        fc.isready() && NodeStore.add(fc.frame as _FrameStateWithNodes)
+        // const af = new ActionFrame(fc)
         // .setNodes()
         submit(JSON.stringify(fc.frame), {
             method: 'post',
@@ -113,7 +117,7 @@ export function nodeGenerator(type: IFrameVariants) {
             const n1 = {
                 nsize: frame_size,
                 coords: _getcoords(frame_size, pos),
-                id: 's1',
+                _id: 's1',
                 sides: _defaultSS,
                 isShow: false
             }
@@ -124,14 +128,14 @@ export function nodeGenerator(type: IFrameVariants) {
             const pos2 = _p(pos.x + nodeW, pos.y)
             const s = _ss(nodeW, frame_size.height)
             const n1: _FrameStateWithNodes['nodes'][number] = {
-                id: 's1',
+                _id: 's1',
                 nsize: s,
                 coords: _getcoords(s, pos),
                 sides: { ..._defaultSS, right: 'imp' as const },
                 isShow: false
             }
             const n2: _FrameStateWithNodes['nodes'][number] = {
-                id: 's2',
+                _id: 's2',
                 nsize: s,
                 coords: _getcoords(s, pos2),
                 sides: { ..._defaultSS, left: 'imp' as const },
@@ -146,7 +150,7 @@ export function nodeGenerator(type: IFrameVariants) {
             const pos3 = _p(pos.x + pos2.x, pos.y)
             const s = _ss(nodeW, frame_size.height)
             const n1: _FrameStateWithNodes['nodes'][number] = {
-                id: 's1',
+                _id: 's1',
                 nsize: s,
                 coords: _getcoords(s, pos),
                 sides: { ..._defaultSS, right: 'imp' as const },
@@ -154,7 +158,7 @@ export function nodeGenerator(type: IFrameVariants) {
 
             }
             const n2: _FrameStateWithNodes['nodes'][number] = {
-                id: 's2',
+                _id: 's2',
                 nsize: s,
                 coords: _getcoords(s, pos2),
                 sides: { ..._defaultSS, right: 'imp' as const, left: 'imp' as const },
@@ -162,7 +166,7 @@ export function nodeGenerator(type: IFrameVariants) {
 
             }
             const n3: _FrameStateWithNodes['nodes'][number] = {
-                id: 's3',
+                _id: 's3',
                 nsize: s,
                 coords: _getcoords(s, pos3),
                 sides: { ..._defaultSS, left: 'imp' as const },
@@ -185,7 +189,7 @@ export function nodeExtract(frame: _FrameStateWithNodes) {
 
     const { nodes, pos, size, type } = frame
     const stvs: StvFrame[] = nodes.map(node => {
-        const { id, sides: sidesState } = node
+        const { _id: id, sides: sidesState } = node
         const stvFrame = new StvFrame([...node.coords])
             .setId(id)
             .setNext(sidesState)

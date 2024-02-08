@@ -5,7 +5,7 @@ import { ISideStateOffset, _CType, _TCoords } from "../StvState";
 
 
 export class FrameNodeWithSides {
-    id: string = _ID();
+    _id: string
     isShow: boolean = false;
     sides: Record<TSide, _CType>;
     offset: Record<TSide, number> = {
@@ -17,6 +17,7 @@ export class FrameNodeWithSides {
     nsize?: _SizeF;
     coords?: _TCoords;
     constructor(next?: ISideStateOffset) {
+        this._id = _ID();
         this.sides = {
             bottom: "rama" as const,
             left: "rama" as const,
@@ -24,8 +25,8 @@ export class FrameNodeWithSides {
             top: "rama" as const
         };
 
+        this.setOffset()
         if (next) this.setSides(next);
-
     }
     setSides(next: ISideStateOffset) {
         this.sides = { ...this.sides, ...next };
@@ -56,7 +57,12 @@ export class FrameNodeWithSides {
         if (!this.nsize) return
         this.nsize = { ...this.nsize, ...new_size }
     }
-
+    isReady(): this is { coords: _TCoords, nsize: _SizeF } {
+        const cond = this.coords !== undefined
+            && this.nsize !== undefined
+            && this.sides !== undefined
+        return cond;
+    }
 
 }
 

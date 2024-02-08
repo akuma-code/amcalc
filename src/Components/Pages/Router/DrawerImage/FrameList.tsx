@@ -45,23 +45,4 @@ export const FrameList = observer((props: FrameListProps) => {
 })
 
 
-
-const nodeInfo = (frame: _FrameStateWithNodes) => {
-    const { type, size: { width, height }, pos, id, nodes } = frame;
-
-
-
-    return <div className='flex flex-col gap-2 m-2 border-2 w-fit flex-wrap mt-4 justify-items-stretch' key={ id }>
-        <b>ID: { id }</b>
-        <div>
-
-            <b>TYPE: </b> <span>{ type }</span>
-        </div>
-        <div>
-
-            <b>SIZE: </b> <span>{ width }x{ height }</span>
-        </div>
-    </div>
-}
-
 FrameList.displayName = '*** ___Frame List Page'

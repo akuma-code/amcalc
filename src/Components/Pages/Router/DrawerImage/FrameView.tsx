@@ -11,7 +11,7 @@ import { _DRAWPATH } from '../../../../Models/Drower/DrawPaths';
 import { TSidesArray } from '../../../../Interfaces/Enums';
 import { toJS } from 'mobx';
 import { _SizeF, _isArr, _ss } from '../../../../Helpers/HelpersFns';
-import { JsxElement } from 'typescript';
+
 import { IconButton } from '../../../UI/IconButton';
 import Icons from '../../../Icons/SvgIcons';
 import { MasterFrame } from '../../../../Models/FrameComponent/FrameFactory/FrameCreator';

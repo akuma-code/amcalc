@@ -1,27 +1,22 @@
-import { FiAlertTriangle } from "react-icons/fi";
-import { Avatar, Box, Button, ButtonGroup, Container, Divider, Paper, Stack } from '@mui/material'
-import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
-import { NavLink, useLoaderData, useParams } from 'react-router-dom'
-import { Text } from '../../../UI/Text'
 import ReplyIcon from '@mui/icons-material/Reply';
+import { Box, Button, ButtonGroup, Container, Divider, Paper, Stack } from '@mui/material';
+import React, { PropsWithChildren, useMemo, useState } from 'react';
+import { NavLink, useParams } from 'react-router-dom';
 import { pageRoutes } from '../../../../HTTP/PATHS';
+import { _SizeF, _ss } from '../../../../Helpers/HelpersFns';
 import { useStoresContext } from '../../../../Hooks/useStoresContext';
-import { _FrameNodeData, _FrameStateWithNodes } from '../DrawerPage';
-import { drawframe } from '../../../../Models/Drower/DrawerFns';
-import { _DRAWPATH } from '../../../../Models/Drower/DrawPaths';
 import { TSidesArray } from '../../../../Interfaces/Enums';
-import { toJS } from 'mobx';
-import { _SizeF, _isArr, _p, _ss } from '../../../../Helpers/HelpersFns';
+import { _DRAWPATH } from '../../../../Models/Drower/DrawPaths';
+import { drawframe } from '../../../../Models/Drower/DrawerFns';
+import { Text } from '../../../UI/Text';
+import { _FrameNodeData } from '../DrawerPage';
 
-import { IconButton } from '../../../UI/IconButton';
-import Icons from '../../../Icons/SvgIcons';
-import { MasterFrame } from '../../../../Models/FrameComponent/FrameFactory/FrameCreator';
-import { FrameNodeWithSides } from '../../../../Models/FrameComponent/FrameFactory/FrameNodeWithSides';
 import { observer } from 'mobx-react-lite';
-import { useQuery } from 'react-query';
-import MemoFrameFFsvg from '../../../../Assets/FrameFFsvg';
+import { FrameNodeWithSides } from '../../../../Models/FrameComponent/FrameFactory/FrameNodeWithSides';
+import Icons from '../../../Icons/SvgIcons';
+import { IconButton } from '../../../UI/IconButton';
+import { NotFoundPage } from "./NotFoundPage";
 import { Rulers } from './Rulers';
-import { useFrameData } from "../../../../Hooks/useFrameData";
 type FrameViewProps = {}
 
 
@@ -63,10 +58,10 @@ export const FrameView = observer((props: FrameViewProps) => {
             const { x, y } = anc
             const [_w, _h] = [Math.abs(x - e.x), Math.abs(y - e.y),]
             return <rect
-                x={ i >= 1 ? x + 20 : x }
+                x={ i === 0 ? x : x + 20 }
                 y={ y }
                 key={ id }
-                width={ _w }
+                width={ i === 0 ? _w : _w - 20 }
                 height={ _h }
                 fill={ isSelected(id) ? '#da6e6e' : '#5baac2' }
                 stroke='black'
@@ -78,7 +73,7 @@ export const FrameView = observer((props: FrameViewProps) => {
 
         const { width, height } = currentFrame.size
         const { x, y } = currentFrame.pos
-        const vb = `0 0 ${width + x} ${height + y}`
+        const vb = `0 0 ${width + x + rects.length * 20} ${height + y}`
         return <svg viewBox={ vb } preserveAspectRatio='xMinYMin meet' width={ width } height={ height }>{ rects }</svg>
     }, [selected?._id, nodes, currentFrame, handleClickOnNode])
 
@@ -167,19 +162,7 @@ export const FrameView = observer((props: FrameViewProps) => {
         </Container>
 
         :
-        <Box
-            component={ Paper }
-            sx={ { bgcolor: '#c73f09', p: 4, mx: 'auto', textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 5, mt: 2 } }
-        >
-            <Avatar>
-                <FiAlertTriangle size={ 38 } color="red" />
-            </Avatar>
-            <NavLink to={ pageRoutes.frames } >
-
-                <strong >  Node with id: { id } not found! </strong>
-                <ReplyIcon sx={ { fontSize: 42, bgcolor: 'red', borderRadius: '45%', color: '#fff', mx: 2 } } />
-            </NavLink>
-        </Box>
+        <NotFoundPage id={ id } message='Something gone wrong!' />
 })
 
 FrameView.displayName = `_____Frame View Page`
@@ -228,6 +211,7 @@ const NodeInfo = ({ node }: { node: _FrameNodeData }) => {
             ) }
         </Stack>)
 }
+
 
 
 

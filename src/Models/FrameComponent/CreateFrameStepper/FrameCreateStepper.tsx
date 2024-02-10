@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -7,89 +7,152 @@ import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useSteps } from '../../../Hooks/useSteps';
+import { useFrameData } from '../../../Hooks/useFrameData';
+import { observer } from 'mobx-react-lite';
+import { _ID, _Point, _SizeF, _p, _ss } from '../../../Helpers/HelpersFns';
+import { FilledInputProps, Icon, InputAdornment, InputProps, OutlinedInputProps, TextField } from '@mui/material';
+import Icons from '../../../Components/Icons/SvgIcons';
 
-const steps = [
+
+type SizeStepFormData = {
+    step_type: 'size',
+    fields: [
+        {
+            label: 'width',
+            description: string,
+            inputProps: Partial<FilledInputProps> | Partial<OutlinedInputProps> | Partial<InputProps>,
+            _id: string
+            value: number
+        },
+        {
+            label: 'height',
+            description: string,
+            inputProps: Partial<FilledInputProps> | Partial<OutlinedInputProps> | Partial<InputProps>,
+            _id: string
+            value: number
+        },
+    ]
+}
+type PosStepFormData = {
+    step_type: 'pos',
+    fields: [
+        {
+            label: 'x',
+            description: string,
+            inputProps: Partial<FilledInputProps> | Partial<OutlinedInputProps> | Partial<InputProps>,
+            _id: string
+            value: number
+        },
+        {
+            label: 'y',
+            description: string,
+            inputProps: Partial<FilledInputProps> | Partial<OutlinedInputProps> | Partial<InputProps>,
+            _id: string
+            value: number
+        },
+    ]
+}
+
+const createSteps = [
     {
-        label: 'Select campaign settings',
-        description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
+        label: "Set Frame Size",
+        description: "Setup frame size ",
+
     },
     {
-        label: 'Create an ad group',
-        description:
-            'An ad group contains one or more ads which target a shared set of keywords.',
+        label: "Set Frame Pos",
+        description: "Setup frame  start position",
+        init_formdata: { pos: _p(0, 0) }
     },
     {
-        label: 'Create an ad',
-        description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
+        label: "Set Imposts",
+        description: "Setup frame imposts",
+        init_formdata: { count: 0, dir: 'vertical' }
+
     },
-];
+    {
+        label: "Finish Setup",
+        description: "Setup frame nodes and stvs",
 
-export default function VerticalLinearStepper() {
-    const [activeStep, setActiveStep] = React.useState(0);
+    },
+]
+export const DrawerStepCreator: React.FC<{}> = observer(() => {
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
+    const [activeStep, { handleBack, handleNext, handleReset }] = useSteps()
+    const [form_data, setform_data] = useState<SizeStepFormData | PosStepFormData | null>(null)
+    const [[rama, controlRama]] = useFrameData({ rama: { size: { width: 1000, height: 1000 } }, nodes: [] })
+    const handleSubmit = () => {
 
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
+        handleNext()
+    }
     return (
-        <Box sx={{ maxWidth: 400 }}>
-            <Stepper activeStep={activeStep} orientation="vertical">
-                {steps.map((step, index) => (
-                    <Step key={step.label}>
-                        <StepLabel
-                            optional={
-                                index === 2 ? (
-                                    <Typography variant="caption">Last step</Typography>
-                                ) : null
-                            }
-                        >
-                            {step.label}
-                        </StepLabel>
-                        <StepContent>
-                            <Typography>{step.description}</Typography>
-                            <Box sx={{ mb: 2 }}>
-                                <div>
-                                    <Button
-                                        variant="contained"
-                                        onClick={handleNext}
-                                        sx={{ mt: 1, mr: 1 }}
-                                    >
-                                        {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                                    </Button>
-                                    <Button
-                                        disabled={index === 0}
-                                        onClick={handleBack}
-                                        sx={{ mt: 1, mr: 1 }}
-                                    >
-                                        Back
-                                    </Button>
-                                </div>
-                            </Box>
-                        </StepContent>
-                    </Step>
-                ))}
+        <Box sx={ { maxWidth: 400, m: 4 } }>
+            <Stepper activeStep={ activeStep } orientation="vertical">
+
+                {
+                    createSteps.map((step, index) => (
+                        <Step key={ _ID() }>
+                            <StepLabel
+                                optional={
+                                    index === createSteps.length - 1 ? (
+                                        <Typography variant="caption">Last step</Typography>
+                                    ) : null
+                                }
+                            >
+                                { step.label }
+                            </StepLabel>
+                            <StepContent>
+                                <Typography>{ step.description }</Typography>
+                                <Box sx={ { display: 'flex', flexDirection: 'row' } }>
+                                    {/* { form_data.map(({ s, data }) =>
+                                        s === index
+                                            ? data.map(fd =>
+                                                <TextField key={ fd._id }
+                                                    label={ fd.label }
+                                                    id={ fd._id }
+                                                    sx={ { m: 1, width: '13ch' } }
+                                                    InputProps={ fd.inputProps }
+                                                    defaultValue={ 0 }
+                                                />)
+
+                                            : null
+                                    )
+                                    } */}
+                                </Box>
+                                <Box sx={ { mb: 2 } }>
+                                    <div>
+                                        <Button
+                                            variant="contained"
+                                            onClick={ handleNext }
+                                            sx={ { mt: 1, mr: 1 } }
+                                        >
+                                            { index === createSteps.length - 1 ? 'Finish' : 'Continue' }
+                                        </Button>
+                                        <Button
+                                            disabled={ index === 0 }
+                                            onClick={ handleBack }
+                                            sx={ { mt: 1, mr: 1 } }
+                                        >
+                                            Back
+                                        </Button>
+                                    </div>
+                                </Box>
+                            </StepContent>
+                        </Step>
+                    ))
+                }
             </Stepper>
-            {activeStep === steps.length && (
-                <Paper square elevation={0} sx={{ p: 3 }}>
+            { activeStep === createSteps.length && (
+                <Paper elevation={ 3 } sx={ { mx: 3, p: 3, bgcolor: '#9c7676' } }>
                     <Typography>All steps completed - you&apos;re finished</Typography>
-                    <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+                    <Button onClick={ handleReset } sx={ { mt: 1, mr: 1 } }>
                         Reset
                     </Button>
                 </Paper>
-            )}
+            ) }
         </Box>
     );
-}
+})
+
+DrawerStepCreator.displayName = '*** Steps Creator____'

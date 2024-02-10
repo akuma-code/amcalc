@@ -5,13 +5,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import React, { useState } from 'react';
-import { _Point, _SizeF, _log, _p, _ss } from '../../../Helpers/HelpersFns';
+import { _Point, _SizeF, _p, _ss } from '../../../Helpers/HelpersFns';
 import { IFrameVariants, TSide, TSidesArray } from '../../../Interfaces/Enums';
 import { _DRAWPATH } from '../../../Models/Drower/DrawPaths';
 import { drawframe } from '../../../Models/Drower/DrawerFns';
 import { FrameMainProps, _FrameNodeData } from './DrawerPage';
-import { useFrameData } from '../../../Hooks/useFrameData';
-import { FrameNodeWithSides } from '../../../Models/FrameComponent/FrameFactory/FrameNodeWithSides';
 
 type CreatePopupProps = {
     isOpen: boolean;
@@ -22,15 +20,15 @@ export const CreatePopup: React.FC<CreatePopupProps> = ({ isOpen, toggleOpen, on
 
     const [data, setData] = useState({ width: 500, height: 800, x: 0, y: 0, type: 'f' as const });
 
-    const [frame_rama, nodes] = useFrameData(
-        {
-            size: _ss(data.width, data.height),
-            pos: _p(data.x, data.y),
-        },
-        new FrameNodeWithSides({ right: 'imp' }),
-        new FrameNodeWithSides({ left: 'imp' }),
-    )
-    _log(nodes)
+    // const [frame_rama, nodes] = useFrameData(
+    //     {
+    //         size: _ss(data.width, data.height),
+    //         pos: _p(data.x, data.y),
+    //     },
+    //     new FrameNodeWithSides({ right: 'imp' }),
+    //     new FrameNodeWithSides({ left: 'imp' }),
+    // )
+    // _log(nodes)
     const isSelected = (type: FrameMainProps['type']) => data.type === type
     const handleClickOpen = () => {
         toggleOpen();

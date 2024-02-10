@@ -33,7 +33,8 @@ const _toMinp = (p: _Point) => _scalePoint(p, { sx: -1, sy: -1 })
 
 export const _aspectR = (a: number, b: number) => +(a / b).toFixed(2)
 
-export function Logger<This, Args extends number[], Return>(target: (this: This, ...args: Args) => Return,
+export function Logger<This, Args extends number[], Return>(
+    target: (this: This, ...args: Args) => Return,
     context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
 ) {
     return function (this: This, ...args: Args) {

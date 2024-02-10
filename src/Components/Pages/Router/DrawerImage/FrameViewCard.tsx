@@ -8,15 +8,16 @@ import { _FrameStateWithNodes } from '../DrawerPage';
 import { DrawCanvas } from '../DrawCanvas';
 import { drawframe } from '../../../../Models/Drower/DrawerFns';
 import { _DRAWPATH } from '../../../../Models/Drower/DrawPaths';
-import { Link as LinkR, NavLink, redirect } from 'react-router-dom';
+import { Link as LinkR, NavLink, redirect, useNavigate } from 'react-router-dom';
 import { pageRoutes } from '../../../../HTTP/PATHS';
 import { IFrameVariants } from '../../../../Interfaces/Enums';
+import { _log } from '../../../../Helpers/HelpersFns';
 
 export default function FrameViewCard({ frame }: { frame: _FrameStateWithNodes }) {
 
     const { id, nodes, type, pos, size } = frame
     const currentFrameRoute = `${pageRoutes.frames}/${id}` as const
-
+    const nav = useNavigate()
 
     const dataView = () => {
 
@@ -32,24 +33,20 @@ export default function FrameViewCard({ frame }: { frame: _FrameStateWithNodes }
         } } component={ Paper }>
             <CardHeader
                 title={ <NavLink to={ currentFrameRoute }
-                    style={ ({ isActive, isPending }) => {
-                        return {
-                            color: isActive ? 'red' : 'inherit',
-                        };
-                    } }
-                    className={ ({ isActive, isPending }) => {
-                        return isActive
-                            ? 'active'
-                            : isPending
-                                ? 'pending'
-                                : ''
-                    }
 
-                    }
-                >Saved frame (id:{ id })</NavLink> }
+                    className={ ({ isActive, isPending }) => `bg-${isActive
+                        ? 'red-500'
+                        : isPending
+                            ? 'green-500'
+                            : 'yellow'}` }
+                >
+                    Saved frame (id:{ id })
+
+                </NavLink> }
                 titleTypographyProps={ {
                     sx: {
                         textTransform: 'capitalize',
+                        fontSize: 19
 
                     }
                 } }
@@ -57,7 +54,9 @@ export default function FrameViewCard({ frame }: { frame: _FrameStateWithNodes }
             />
 
 
-            <CardActionArea sx={ { display: 'flex', bgcolor: '#cccaca' } } >
+            <CardActionArea sx={ { display: 'flex', bgcolor: '#cccaca' } }
+                onClick={ () => nav(currentFrameRoute) }
+            >
                 <Preview type={ type } />
             </CardActionArea>
             <Divider flexItem sx={ { my: 1, lineHeight: 5, border: '1px solid' } } variant='middle' />
@@ -73,6 +72,9 @@ export default function FrameViewCard({ frame }: { frame: _FrameStateWithNodes }
                 <div className='flex flex-row justify-between'>
                     Height:<b>  { size.height } mm</b>
                 </div>
+                <div className='flex flex-row justify-between'>
+                    Coords:<b>  { pos.x }, { pos.y } </b>
+                </div>
 
             </CardContent>
         </Card>
@@ -81,7 +83,7 @@ export default function FrameViewCard({ frame }: { frame: _FrameStateWithNodes }
 
 
 const Preview = ({ type }: { type: IFrameVariants }) => (
-    <svg viewBox='0 0 100 100' width={ 150 } height={ 150 } transform='scale(0.8)'>
+    <svg viewBox='0 0 100 100' height={ 150 } >
         { drawframe(_DRAWPATH.f, { strokeWidth: 4 }) }
         { drawframe(_DRAWPATH[type]) }
     </svg>

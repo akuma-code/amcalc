@@ -1,21 +1,18 @@
 import { Params, RouteObject, createBrowserRouter, redirect } from 'react-router-dom';
 import BentoLayoutPage from './Components/Pages/BentoLayoutPage';
-import { BlankDataPage } from './Components/Pages/BlankDataPage';
 import ErrorPage from './Components/Pages/ErrorPage';
 import { AppPaths } from './Components/Pages/Router/AppPaths';
+import { FrameList } from './Components/Pages/Router/DrawerImage/FrameList';
+import { FrameView } from './Components/Pages/Router/DrawerImage/FrameView';
+import { DrawerPage } from './Components/Pages/Router/DrawerPage';
 import { PrintPage } from './Components/Pages/Router/PrintPage';
 import Root from './Components/Pages/Router/Root';
+import { TestPage } from './Components/Pages/Router/TestPage';
 import SillPage from './Components/Pages/SillPage';
 import { GroupIdCard } from './Components/UI/SillGroupView';
 import { ROOTSTORE } from './Context/RootStore';
 import { pageRoutes } from './HTTP/PATHS';
-import { TestPage } from './Components/Pages/Router/TestPage';
-import { DrawerPage } from './Components/Pages/Router/DrawerPage';
-import { DrawerImage } from './Components/Pages/Router/DrawerImage/DrawerImage';
-import { _log } from './Helpers/HelpersFns';
-import { DrawCanvas } from './Components/Pages/Router/DrawCanvas';
-import { FrameList } from './Components/Pages/Router/DrawerImage/FrameList';
-import { FrameView } from './Components/Pages/Router/DrawerImage/FrameView';
+import { DrawerStepCreator } from './Models/FrameComponent/CreateFrameStepper/FrameCreateStepper';
 
 
 
@@ -91,7 +88,8 @@ export const CommonRoutes: RouteObject[] = [
                             const { id } = params as { id?: string }
                             return { id }
                         }
-                    }
+                    },
+
 
 
                 ],
@@ -101,7 +99,10 @@ export const CommonRoutes: RouteObject[] = [
                     return res
                 },
             },
-
+            {
+                path: pageRoutes.drawerCreate,
+                element: <DrawerStepCreator />
+            },
             {
                 path: pageRoutes.sill,
                 element: <SillPage />,

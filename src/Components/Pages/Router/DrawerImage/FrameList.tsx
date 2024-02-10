@@ -1,13 +1,9 @@
+import { Container, Divider, Stack } from '@mui/material'
 import { observer } from 'mobx-react-lite'
-import React, { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useStoresContext } from '../../../../Hooks/useStoresContext'
-import { Box, Container, Divider, Paper, Stack } from '@mui/material'
-import { _FrameStateWithNodes } from '../DrawerPage'
 import FrameViewCard from './FrameViewCard'
-import { Text } from '../../../UI/Text'
-import { NavLink } from 'react-router-dom'
-import { pageRoutes } from '../../../../HTTP/PATHS'
-import ReplyIcon from '@mui/icons-material/Reply';
+import { NotFoundPage } from './NotFoundPage'
 type FrameListProps = {}
 
 export const FrameList = observer((props: FrameListProps) => {
@@ -20,15 +16,9 @@ export const FrameList = observer((props: FrameListProps) => {
 
 
     if (NodeStore.nodes.length < 1) return (
-        <Box
-            component={ Paper }
-            sx={ { bgcolor: '#fc6af4', py: 2, m: 5, textTransform: 'full-width', textAlign: 'center', } }
-        >
-            <NavLink to={ '/' + pageRoutes.drawer } >
-                <Text >Saved frames not found! Try to create new frame... </Text>
-                <ReplyIcon />
-            </NavLink>
-        </Box>)
+
+        <NotFoundPage message='Nodes list is empty! You have to create frame...' />
+    )
     return (
         <Container disableGutters sx={ { mt: 4 } } maxWidth='xl'>
             <Divider sx={ { mb: 1 } }>

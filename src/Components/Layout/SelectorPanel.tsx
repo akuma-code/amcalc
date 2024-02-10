@@ -10,7 +10,7 @@ import { SettingsDialog } from '../UI/SettingsPanel';
 import { pageRoutes } from '../../HTTP/PATHS';
 import { useStoresContext } from '../../Hooks/useStoresContext';
 import BugReportIcon from '@mui/icons-material/BugReport';
-
+import { BiBorderNone } from "react-icons/bi";
 
 
 type Props = {}
@@ -56,6 +56,12 @@ export const SelectorPanel = observer((props: Props) => {
                         <RouterLink to={ pageRoutes.frames }>
 
                             <strong>FramesList</strong>
+                        </RouterLink>
+                        <RouterLink to={ pageRoutes.drawerCreate }>
+                            <div className="flex justify-between flex-row gap-2">
+                                <BiBorderNone fontSize={ 25 } />
+                                <strong>Creator</strong>
+                            </div>
                         </RouterLink>
 
                     </Breadcrumbs>

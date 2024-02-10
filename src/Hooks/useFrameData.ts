@@ -15,59 +15,55 @@ type InitArgsType<T> = T extends [infer F, _Point]
     : never
 
 type IUseFrameData = {
-    rama: { size: _SizeF, pos: _Point }
+    rama: { size: _SizeF, pos?: _Point }
     nodes: FrameNodeWithSides[]
 
 }
+const init: IUseFrameData = {
+    rama: { size: _ss(1000, 1000), pos: _p(0, 0) },
+    nodes: [new FrameNodeWithSides()]
+}
+export function useFrameData(initFrameData: IUseFrameData = init) {
+    const { rama, nodes } = initFrameData
+    const { size, pos } = rama
 
-export function useFrameData(data_rama: IUseFrameData['rama'], ...data_nodes: FrameNodeWithSides[]) {
-    const { size, pos } = data_rama
-
-    const frame_rama_control = useFrameRama(size, pos)
-    const nodes = useFrameNodes(frame_rama_control[0],
-        ...data_nodes,
-    )
+    const frame_rama_control = _useFrameRama(size, pos)
 
 
-    return [frame_rama_control, nodes] as const
+
+    return [frame_rama_control] as const
 
 }
 
-function useFrameRama(size: _SizeF = { width: 1000, height: 1000 }, pos: _Point = { x: 0, y: 0 }) {
+function _useFrameRama(size: _SizeF = { width: 1000, height: 1000 }, pos: _Point = { x: 0, y: 0 }) {
     const { width, height } = size
     const { x, y } = pos
     const [frame_rama, setRama] = useState({ size, pos })
 
     useEffect(() => {
-
         setRama(prev => ({ ...prev, size: _ss(width, height), pos: _p(x, y) }))
-
-
-
     }, [height, x, y, width])
 
     return [frame_rama, setRama] as const
 }
 
-const useFrameNodes = (rama: { size: _SizeF, pos: _Point }, ...rest: (FrameNodeWithSides | undefined)[]) => {
+const _useFrameNodes = (rama: { size: _SizeF, pos: _Point }, ...rest: (FrameNodeWithSides)[]) => {
     const { size, pos } = rama
-    const nc = _getcoords(size, pos)
-    let node = rest[0]
-    if (node === undefined) {
-        node = new FrameNodeWithSides()
-        node
-            .setNodeSize(size)
-            .setNodeCoords([...nc])
+    const ramaCoords = _getcoords(size, pos)
+    const [nodes, setNodes] = useState<FrameNodeWithSides[]>([])
 
-        _log(node)
-        return [node] as const
-    } else {
-        const nodes = rest.map(n => n?.setNodeSize(_ss(size.width / 2, size.height))
+    useEffect(() => {
+        const readynodes = rest.filter(n => n.isReady())
+        setNodes(readynodes)
+    }, [rest.length])
+}
 
-        )
-        // console.log('nodes', nodes)
-        return [...nodes] as const
-    }
+const _useFrameImpost = (rama: { size: _SizeF, pos: _Point }, ...args: { xy: _Point, direction: 'horisontal' | 'vertical' }[]) => {
+
+
+
+
+
 }
 
 
@@ -77,24 +73,3 @@ const useFrameNodes = (rama: { size: _SizeF, pos: _Point }, ...rest: (FrameNodeW
 
 
 
-
-
-
-type FrameNodeArgs = [_SizeF, _Point] | [_Point, _Point]
-function useFrameNodes_Bad(...args: [_SizeF, _Point][]) {
-    const nodes = args.map((arg) => {
-        arg.map(n => {
-            if ('width' in n) {
-                return { ...n }
-            } else return { ...n }
-        })
-        return [...arg]
-    }
-    )
-
-}
-
-function _isSizeOrPoint<T extends _SizeF | _Point>(arg: T): arg is T {
-    if ('x' in arg) return arg.x !== undefined
-    else return arg.width !== undefined
-}

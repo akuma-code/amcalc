@@ -40,7 +40,7 @@ export interface _FrameStateWithNodes {
 export const DrawerPage = observer(() => {
     const submit = useSubmit()
     const { NodeStore } = useStoresContext()
-    const [frame, setFrame] = useState<_FrameStateWithNodes | null>(null)
+    // const [frame, setFrame] = useState<_FrameStateWithNodes | null>(null)
     const [isOpen, setIsOpen] = useState(false)
     const fc = new MasterFrame()
 
@@ -54,19 +54,19 @@ export const DrawerPage = observer(() => {
         fc.create(dataSize, dataPos)
             .setType(data.type)
             .setNodes()
-        const _nodes = createNodes(dataSize, dataPos)
-
-        setFrame(prev => ({ ...prev, nodes: _nodes, type: data.type, size: dataSize, pos: { x: data.x, y: data.y }, id: _ID() }))
-        // NodeStore.add(frame)
 
         fc.isready() && NodeStore.add(fc.frame as _FrameStateWithNodes)
-        // const af = new ActionFrame(fc)
-        // .setNodes()
         submit(JSON.stringify(fc.frame), {
             method: 'post',
             action: pageRoutes.frames,
             encType: 'application/json'
         })
+        // const _nodes = createNodes(dataSize, dataPos)
+
+        // setFrame(prev => ({ ...prev, nodes: _nodes, type: data.type, size: dataSize, pos: { x: data.x, y: data.y }, id: _ID() }))
+        // .setNodes()
+        // NodeStore.add(frame)
+        // const af = new ActionFrame(fc)
         // console.log('fc', fc.frame)
     }
     const deleteHandler = () => {

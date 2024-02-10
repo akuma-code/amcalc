@@ -1,6 +1,7 @@
 import { _ID, _Point, _SizeF, _log, _p } from "../../Helpers/HelpersFns"
 import { $DrawPosOffset } from "../../Hooks/useOffset";
 import { TSide } from "../../Interfaces/Enums"
+import { Logger } from "../Drower/Actions";
 import { DrawerPointType, getSizeFromCoords } from "../Drower/DrawerFns";
 
 export type _CType = 'rama' | 'imp'
@@ -9,6 +10,7 @@ type BorderSideCoords = {
     coords: [_Point, _Point];
 }
 export type _TCoords = [_Point, _Point]
+
 export type ISideStateOffset = { [Key in TSide]?: _CType }
 type IPosOffsetRecord = { [Key in _CType]: number }
 type ISideOffsetRecord = { [Key in TSide]: number }
@@ -118,11 +120,11 @@ export class StvFrame {
         this.setBorderCoords(nodeCoords)
         this.applyOffset()
     }
-
     watch(nodeCoords: _TCoords) {
 
         this.update(nodeCoords)
         return this
     }
 }
+
 

@@ -1,4 +1,5 @@
-import { Box, Button, ButtonGroup, Container, Divider, Paper, Stack } from '@mui/material'
+import { FiAlertTriangle } from "react-icons/fi";
+import { Avatar, Box, Button, ButtonGroup, Container, Divider, Paper, Stack } from '@mui/material'
 import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import { NavLink, useLoaderData, useParams } from 'react-router-dom'
 import { Text } from '../../../UI/Text'
@@ -10,7 +11,7 @@ import { drawframe } from '../../../../Models/Drower/DrawerFns';
 import { _DRAWPATH } from '../../../../Models/Drower/DrawPaths';
 import { TSidesArray } from '../../../../Interfaces/Enums';
 import { toJS } from 'mobx';
-import { _SizeF, _isArr, _ss } from '../../../../Helpers/HelpersFns';
+import { _SizeF, _isArr, _p, _ss } from '../../../../Helpers/HelpersFns';
 
 import { IconButton } from '../../../UI/IconButton';
 import Icons from '../../../Icons/SvgIcons';
@@ -20,6 +21,7 @@ import { observer } from 'mobx-react-lite';
 import { useQuery } from 'react-query';
 import MemoFrameFFsvg from '../../../../Assets/FrameFFsvg';
 import { Rulers } from './Rulers';
+import { useFrameData } from "../../../../Hooks/useFrameData";
 type FrameViewProps = {}
 
 
@@ -58,13 +60,13 @@ export const FrameView = observer((props: FrameViewProps) => {
         const rects = nodes.map((n, i) => {
             const { coords, _id: id, } = n
             const [anc, e] = coords
-            const [_w, _h] = [Math.abs(anc.x - e.x), Math.abs(anc.y - e.y),]
-            const { x } = anc
+            const { x, y } = anc
+            const [_w, _h] = [Math.abs(x - e.x), Math.abs(y - e.y),]
             return <rect
-                x={ i > 1 ? x + 20 : x }
-                y={ anc.y }
+                x={ i >= 1 ? x + 20 : x }
+                y={ y }
                 key={ id }
-                width={ anc.x + _w }
+                width={ _w }
                 height={ _h }
                 fill={ isSelected(id) ? '#da6e6e' : '#5baac2' }
                 stroke='black'
@@ -72,9 +74,12 @@ export const FrameView = observer((props: FrameViewProps) => {
             />
         }
         )
+
+
         const { width, height } = currentFrame.size
-        const vb = `0 0 ${width} ${height}`
-        return <svg viewBox={ vb } preserveAspectRatio='xMinYMin meet' width={ width }>{ rects }</svg>
+        const { x, y } = currentFrame.pos
+        const vb = `0 0 ${width + x} ${height + y}`
+        return <svg viewBox={ vb } preserveAspectRatio='xMinYMin meet' width={ width } height={ height }>{ rects }</svg>
     }, [selected?._id, nodes, currentFrame, handleClickOnNode])
 
     return currentFrame ?
@@ -164,14 +169,21 @@ export const FrameView = observer((props: FrameViewProps) => {
         :
         <Box
             component={ Paper }
-            sx={ { bgcolor: '#c73f09', py: 2, m: 5, textTransform: 'full-width', textAlign: 'center', } }
+            sx={ { bgcolor: '#c73f09', p: 4, mx: 'auto', textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 5, mt: 2 } }
         >
+            <Avatar>
+                <FiAlertTriangle size={ 38 } color="red" />
+            </Avatar>
             <NavLink to={ pageRoutes.frames } >
-                <Text >Node with id: { id } not found! </Text>
-                <ReplyIcon />
+
+                <strong >  Node with id: { id } not found! </strong>
+                <ReplyIcon sx={ { fontSize: 42, bgcolor: 'red', borderRadius: '45%', color: '#fff', mx: 2 } } />
             </NavLink>
         </Box>
 })
+
+FrameView.displayName = `_____Frame View Page`
+
 type FrameCanvasProps = {
     _viewbox?: string
     _scale?: number | string

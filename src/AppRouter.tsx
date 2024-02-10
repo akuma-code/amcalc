@@ -131,11 +131,11 @@ export const CommonRoutes: RouteObject[] = [
                     },
                 ],
             },
-            {
-                path: pageRoutes.getapp,
-                element: <BlankDataPage />,
-                // loader: scriptAppLoader
-            },
+            // {
+            //     path: pageRoutes.getapp,
+            //     element: <BlankDataPage />,
+            //     // loader: scriptAppLoader
+            // },
             {
                 path: pageRoutes.print,
                 element: <PrintPage />

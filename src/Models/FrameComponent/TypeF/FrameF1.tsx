@@ -40,9 +40,9 @@ const FrameF1: React.FC<FrameRamaProps> = ({ size, pos }) => {
 
 
         <FrameRamaContainer
-            startPos={ pos }
-            w={ w }
-            h={ h }
+            pos={ pos }
+            width={ w }
+            height={ h }
         >
             <GlsRect
                 size={ size }

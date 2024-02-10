@@ -16,7 +16,7 @@ type InitArgsType<T> = T extends [infer F, _Point]
 
 type IUseFrameData = {
     rama: { size: _SizeF, pos?: _Point }
-    nodes: FrameNodeWithSides[]
+    nodes?: FrameNodeWithSides[]
 
 }
 const init: IUseFrameData = {

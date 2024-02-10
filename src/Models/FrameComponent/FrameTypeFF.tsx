@@ -74,9 +74,9 @@ export const FrameTypeFF = (props: FrameRamaProps) => {
     return (
 
         <FrameRamaContainer
-            w={ w }
-            h={ h }
-            startPos={ _p(x, y) }
+            width={ w }
+            height={ h }
+            pos={ _p(x, y) }
         >
 
             <GlsRect

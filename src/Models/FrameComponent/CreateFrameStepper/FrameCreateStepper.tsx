@@ -77,12 +77,21 @@ const createSteps = [
 
     },
 ]
+
+const sizeFields = ['width', 'height'] as const
+const posFields = ['x', 'y'] as const
+const sizeProps = {
+    icon: {
+        width: Icons.WidthIcon,
+        height: Icons.HeightIcon
+    }
+}
 export const DrawerStepCreator: React.FC<{}> = observer(() => {
 
     const [activeStep, { handleBack, handleNext, handleReset }] = useSteps()
-    const [form_data, setform_data] = useState<SizeStepFormData | PosStepFormData | null>(null)
-    const [[rama, controlRama]] = useFrameData({ rama: { size: { width: 1000, height: 1000 } }, nodes: [] })
-    const handleSubmit = () => {
+    const [form_data, setform_data] = useState<_SizeF & _Point>({ width: 1000, height: 1000, x: 0, y: 0 })
+    const [[rama, controlRama]] = useFrameData({ rama: { size: { ...form_data }, pos: { ...form_data } } })
+    const handleSubmitStep = () => {
 
         handleNext()
     }
@@ -105,20 +114,46 @@ export const DrawerStepCreator: React.FC<{}> = observer(() => {
                             <StepContent>
                                 <Typography>{ step.description }</Typography>
                                 <Box sx={ { display: 'flex', flexDirection: 'row' } }>
-                                    {/* { form_data.map(({ s, data }) =>
-                                        s === index
-                                            ? data.map(fd =>
-                                                <TextField key={ fd._id }
-                                                    label={ fd.label }
-                                                    id={ fd._id }
-                                                    sx={ { m: 1, width: '13ch' } }
-                                                    InputProps={ fd.inputProps }
-                                                    defaultValue={ 0 }
-                                                />)
+                                    {
+                                        index === 0 &&
+                                        sizeFields.map(f =>
+                                            <TextField
+                                                label={ f }
+                                                key={ f }
+                                                InputProps={ {
+                                                    endAdornment: <InputAdornment position="end">
+                                                        <Icon>
+                                                            { f === 'width'
+                                                                ? Icons.WidthIcon
+                                                                : Icons.HeightIcon }
+                                                        </Icon>
+                                                    </InputAdornment>,
+                                                } }
+                                                value={ form_data[f] }
+                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setform_data(prev => ({ ...prev, [f]: +e.target.value })) }
 
-                                            : null
-                                    )
-                                    } */}
+                                                sx={ { m: 1, width: '13ch' } }
+                                            />
+                                        )
+
+                                    }
+                                    {
+                                        index === 1 &&
+                                        posFields.map(f =>
+                                            <TextField
+                                                // label={ f }
+                                                key={ f }
+                                                InputProps={ {
+                                                    endAdornment: <InputAdornment position="end">{ f }</InputAdornment>,
+                                                } }
+                                                value={ form_data && form_data[f] }
+                                                onChange={ (e) => setform_data(prev => ({ ...prev, [f]: +e.target.value })) }
+                                                sx={ { m: 1, width: '13ch' } }
+                                            />
+                                        )
+
+                                    }
+
                                 </Box>
                                 <Box sx={ { mb: 2 } }>
                                     <div>

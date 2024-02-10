@@ -7,6 +7,8 @@ import { FrameContextMobx, NodeStore } from '../../../Context/FrameContext/Frame
 import { FrameContext } from '../../../Hooks/useFrameContext'
 import { observer } from 'mobx-react-lite'
 import { DrawCanvas } from './DrawCanvas'
+import { Rulers } from './DrawerImage/Rulers'
+import { FrameViewA } from '../../../Models/FrameComponent/FrameView/FrameViewA'
 
 
 type TestPageProps = {}
@@ -114,11 +116,17 @@ export const TestPage: React.FC<TestPageProps> = (props) => {
                             {
                                 data &&
                                 <FrameFF1
-                                    frame_size={ _ss(data.width, data.height) }
-                                    pos={ _p(params.x, params.y) }
+                                    frame_size={ _ss(500, 800) }
+                                    pos={ _p(1500, 1200) }
                                 />
                             }
-
+                            {
+                                <FrameViewA
+                                    rama_size={ _ss(data.width, data.height) }
+                                    rama_pos={ _p(data.x, data.y) }
+                                />
+                            }
+                            <Rulers c={ 20 } />
                         </FrameContext.Provider>
                     </DrawCanvas>
                 </Stack>

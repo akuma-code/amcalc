@@ -118,9 +118,9 @@ const FrameFF1: React.FC<FrameRamaProps> = observer(({ frame_size, pos }) => {
     return (
 
         <FrameRamaContainer
-            startPos={ pos }
-            w={ w }
-            h={ h }
+            pos={ pos }
+            width={ w }
+            height={ h }
         >
             { /*  //*Glasses **/ }
             {

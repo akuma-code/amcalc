@@ -2,12 +2,12 @@ import React, { PropsWithChildren } from 'react';
 import { _Point } from '../../Helpers/HelpersFns';
 
 type FCRamaProps = {
-    w: number;
-    h: number;
-    startPos: _Point;
+    width: number;
+    height: number;
+    pos: _Point;
 } & PropsWithChildren;
 
-export const FrameRamaContainer: React.FC<FCRamaProps> = ({ w, h, children, startPos }) => {
+export const FrameRamaContainer: React.FC<FCRamaProps> = ({ width: w, height: h, children, pos: startPos }) => {
 
     const { x: sx, y: sy } = startPos;
 

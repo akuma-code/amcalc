@@ -171,7 +171,7 @@ type FrameCanvasProps = {
     _viewbox?: string
     _scale?: number | string
 } & Partial<_SizeF> & PropsWithChildren
-const FrameCanvas: React.FC<FrameCanvasProps> = ({ width, height, children, _viewbox, _scale }) => {
+export const FrameCanvas: React.FC<FrameCanvasProps> = ({ width, height, children, _viewbox, _scale }) => {
     const _rate = typeof _scale === 'string' ? _scale : _scale?.toString()
 
     return (

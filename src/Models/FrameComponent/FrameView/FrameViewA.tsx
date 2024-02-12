@@ -22,8 +22,7 @@ export const FrameViewA: React.FC<FrameViewAProps> = ({ rama_pos, rama_size }) =
         rama: {
             size: rama_size,
             pos: rama_pos
-        },
-
+        }
     })
     function handleClick() {
         toggle.Switch()
@@ -52,7 +51,7 @@ export const FrameViewA: React.FC<FrameViewAProps> = ({ rama_pos, rama_size }) =
 
 
             <OnClickDialog
-                toggleShow={ (s) => toggle.Switch() }
+                toggleShow={ toggle.Switch }
                 show={ show }
             />
         </React.Fragment>
@@ -61,17 +60,17 @@ export const FrameViewA: React.FC<FrameViewAProps> = ({ rama_pos, rama_size }) =
 }
 type OnClickDialogProps = {
     show: boolean
-    toggleShow: (state: boolean) => void
+    toggleShow: () => void
 }
 export const OnClickDialog: React.FC<OnClickDialogProps> = ({ toggleShow, show }) => {
 
     const handleClickOpen = () => {
-        toggleShow(true)
+        toggleShow()
 
     };
 
     const handleClose = () => {
-        toggleShow(false)
+        toggleShow()
     };
     return (
         <React.Fragment>

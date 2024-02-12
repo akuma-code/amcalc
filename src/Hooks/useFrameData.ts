@@ -1,41 +1,37 @@
 import { useEffect, useState } from "react";
-import { _Point, _SizeF, _getcoords, _log, _p, _ss } from "../Helpers/HelpersFns";
+import { _ID, _Point, _SizeF, _getcoords, _log, _p, _psum, _ss } from "../Helpers/HelpersFns";
 
 import { BaseNode, BordersBlock, FrameNodeWithSides } from "../Models/FrameComponent/FrameFactory/FrameNodeWithSides";
-import { _TCoords } from "../Models/FrameComponent/StvState";
+import { ISideStateOffset, _TCoords } from "../Models/FrameComponent/StvState";
 import { toJS } from "mobx";
+import { ActionCoordService } from "../Models/Drower/Actions";
 
 
 
-type InitArgsType<T> = T extends [infer F, _Point]
-    ? F extends _SizeF
-    ? [_SizeF, _Point]
-    : F extends _Point
-    ? [_Point, _Point]
-    : T
-    : never
-
+type RamaCreateProps = { size: _SizeF, pos?: _Point }
+type ImpostCreateProps = {
+    xy: _Point,
+    direction: 'horisontal' | 'vertical',
+    _type: 'main' | 'secondary'
+}
 type IUseFrameData = {
-    rama: { size: _SizeF, pos?: _Point }
-    nodes?: FrameNodeWithSides[]
+    rama: RamaCreateProps
+    // nodes?: FrameNodeWithSides[]
 
 }
 const init: IUseFrameData = {
     rama: { size: _ss(1000, 1000), pos: _p(0, 0) },
-    nodes: [new FrameNodeWithSides()]
+
 }
 export function useFrameData(initFrameData: IUseFrameData = init) {
-    const { rama, nodes } = initFrameData
+    const { rama } = initFrameData
     const { size, pos = { x: 0, y: 0 } } = rama
 
-
-
-
     const [frame_rama, frame_control] = useFrameRama_(size, pos)
+    const [_nodes] = useFrameNodes_(frame_rama)
 
 
-
-    return [frame_rama] as const
+    return [frame_rama, _nodes] as const
 
 }
 
@@ -48,38 +44,89 @@ function useFrameRama_(
     const borders = new BordersBlock()
     const [frame_rama, setRama] = useState({ size, pos, borders })
 
+
     useEffect(() => {
+        const impostData = getInitImpostData_({
+            size: _ss(width, height),
+            pos: _p(x, y),
+        }, 'vertical')
+
         setRama(prev => ({
             ...prev,
             size: _ss(width, height),
             pos: _p(x, y),
-            borders
+            borders,
+            impost: impostData,
+
         }))
     }, [height, x, y, width])
 
     return [frame_rama, setRama] as const
 }
+const New_node = (size: _SizeF, pos: _Point = { x: 0, y: 0 }, next?: ISideStateOffset) => ({ _id: _ID(), coords: _getcoords(size, pos), borders: new BordersBlock(next) })
+type IFrameNode = {
+    _id: string
+    coords: _TCoords
+    borders: BordersBlock
+}
+const useFrameNodes_ = (rama: { size: _SizeF, pos?: _Point }) => {
+    const { size, pos = { x: 0, y: 0 } } = rama
+    const ramaCoords = useCoords_(size, pos)
 
-const useFrameNodes_ = (rama: { size: _SizeF, pos: _Point }, ...rest: FrameNodeWithSides[]) => {
-    const { size, pos } = rama
-    const ramaCoords = _getcoords(size, pos)
-    const [nodes, setNodes] = useState<FrameNodeWithSides[]>(rest)
+    const [nodes, setNodes] = useState<IFrameNode[]>([])
+    const addNode = () => {
+
+
+    }
+
 
     useEffect(() => {
-        const readynodes = rest.filter(n => n.isReady())
-        setNodes(readynodes)
-    }, [rest.length])
+        addNode()
+    }, [])
 
-    return [nodes, setNodes]
+    return [nodes]
+}
+const useCoords_ = (size: _SizeF, pos: _Point = _p(0, 0)) => {
+
+    const [coords, setCoords] = useState(_getcoords(size, pos))
+    const translate = (delta: _Point) => { setCoords([_psum(coords[0], delta), _psum(coords[1], delta)]) }
+    useEffect(() => {
+        setCoords(_getcoords(size, pos))
+    }, [size.width, size.height, pos.x, pos.y])
+
+    return { coords, translate } as const
 }
 
-const useFrameImpost_ = (rama: { size: _SizeF, pos: _Point }, ...args: { xy: _Point, direction: 'horisontal' | 'vertical' }[]) => {
 
 
+const getInitImpostData_ = (node: RamaCreateProps, dir: ImpostCreateProps['direction']) => {
 
-
-
+    const coords = _getcoords(node.size, node.pos)
+    const axis = ActionCoordService.getXY(node.size, node.pos)
+    const imp = { _id: _ID(), direction: dir, }
+    switch (dir) {
+        case "horisontal": {
+            const y = axis.y
+            const x1 = coords[0].x
+            const x2 = coords[1].x
+            const s = _p(x1, y)
+            const e = _p(x2, y)
+            return { coords: [s, e], ...imp }
+        }
+        case "vertical": {
+            const x = axis.x
+            const y1 = coords[0].y
+            const y2 = coords[1].y
+            const s = _p(x, y1)
+            const e = _p(x, y2)
+            return { coords: [s, e], ...imp }
+        }
+    }
 }
+
+
+
+
 
 
 

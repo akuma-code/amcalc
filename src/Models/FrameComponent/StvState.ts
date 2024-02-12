@@ -1,7 +1,7 @@
 import { _ID, _Point, _SizeF, _log, _p } from "../../Helpers/HelpersFns"
 import { $DrawPosOffset } from "../../Hooks/useOffset";
 import { TSide } from "../../Interfaces/Enums"
-import { Logger } from "../Drower/Actions";
+
 import { DrawerPointType, getSizeFromCoords } from "../Drower/DrawerFns";
 
 export type _CType = 'rama' | 'imp'

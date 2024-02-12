@@ -88,7 +88,7 @@ export const _p = (x: number, y: number) => new _Point(x, y) satisfies _CPoint
 export const _psum = (p1: _CPoint, p2: _CPoint) => _p(p1.x + p2.x, p1.y + p2.y)
 export const _strpath = (letter: DrawerPointType, point: _Point = { x: 0, y: 0 }) => `${letter}${point.x} ${point.y}`
 /**(size,pos) => [ {x,y} , {x+w, y+h} ] */
-export const _getcoords = (size: _SizeF, pos: _Point): _TCoords => [{ ...pos }, { ..._p(pos.x + size.width, pos.y + size.height) }] as const
+export const _getcoords = (size: _SizeF, pos: _Point = _p(0, 0)): _TCoords => [{ ...pos }, { ..._p(pos.x + size.width, pos.y + size.height) }] as const
 
 
 export function _isSizeOrPoint<T extends _SizeF | _Point>(arg: T): arg is T {

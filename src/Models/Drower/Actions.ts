@@ -1,7 +1,7 @@
-import { _Point, _TScaleRatio, _p, _psum } from "../../Helpers/HelpersFns";
+import { _Point, _SizeF, _TScaleRatio, _getcoords, _p, _psum } from "../../Helpers/HelpersFns";
 import { _TCoords } from "../FrameComponent/StvState";
 
-class ActionCoordService {
+export class ActionCoordService {
 
     static sumCoords(coords1: _TCoords, coords2: _TCoords): _TCoords {
         const [s1, e1] = coords1
@@ -18,6 +18,23 @@ class ActionCoordService {
         const [s, e] = coords
         return [_scalePoint(s, scale), _scalePoint(e, scale)] as _TCoords
     }
+
+    static getXY(size: _SizeF, pos = _p(0, 0)) {
+        const { x, y } = pos
+        const { width, height } = size
+        const xy = _p(width / 2 + x, height / 2 + y)
+        return xy
+    }
+
+
+    static distance(p1: _Point, p2: _Point): number {
+        const { x: x1, y: y1 } = p1
+        const { x: x2, y: y2 } = p2
+        const len = Math.sqrt(
+            Math.pow(Math.abs(x2 - x1), 2)
+            + Math.pow(Math.abs(y2 - y1), 2))
+        return +len.toExponential(4)
+    }
 }
 
 
@@ -33,15 +50,5 @@ const _toMinp = (p: _Point) => _scalePoint(p, { sx: -1, sy: -1 })
 
 export const _aspectR = (a: number, b: number) => +(a / b).toFixed(2)
 
-export function Logger<This, Args extends number[], Return>(
-    target: (this: This, ...args: Args) => Return,
-    context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
-) {
-    return function (this: This, ...args: Args) {
 
-        console.log("Logger: func start")
-        const result = target.call(this, ...args)
-        console.log("Logger: Func end")
-        return result
-    }
-}
+

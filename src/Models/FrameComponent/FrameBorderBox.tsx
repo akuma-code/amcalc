@@ -12,10 +12,7 @@ type FrameBordersBlockProps = {
 
 const FrameBordersBlock = ({ anchor, size, bh, gProps }: FrameBordersBlockProps) => {
     const { borderCoordPoints } = newBordersCoordMap(size, anchor)
-    // const [border, setBorder] = useState(newBordersCoordMap(size, anchor))
-    // useEffect(() => {
-    //     setBorder(prev => ({ ...prev, ...newBordersCoordMap(size, anchor) }))
-    // }, [anchor, size])
+
     return (
         <g { ...gProps }>
             { borderCoordPoints.map(({ coords, side }) =>

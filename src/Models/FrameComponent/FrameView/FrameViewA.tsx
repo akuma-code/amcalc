@@ -1,36 +1,40 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack } from "@mui/material";
 import { DrawCanvas } from "../../../Components/Pages/Router/DrawCanvas";
 import { FrameCanvas } from "../../../Components/Pages/Router/DrawerImage/FrameView";
 import { _Point, _SizeF, _log, _ss } from "../../../Helpers/HelpersFns";
 import { useFrameData } from "../../../Hooks/useFrameData";
 import FrameBordersBlock from "../FrameBorderBox";
-import { FrameRamaContainer } from "../FrameRamaContainer";
+import { FrameRamaContainer, FrameRamaContainerA } from "../FrameRamaContainer";
 import { GlsRect } from "../GlsRect";
 import React, { useState } from "react";
 import { IconButton } from "../../../Components/UI/IconButton";
 import { TbFileSettings } from "react-icons/tb";
+import { useToggle } from "../../../Hooks/useToggle";
+import { FrameNodeWithSides } from "../FrameFactory/FrameNodeWithSides";
 
 type FrameViewAProps = {
     rama_size: _SizeF
     rama_pos: _Point
 }
 export const FrameViewA: React.FC<FrameViewAProps> = ({ rama_pos, rama_size }) => {
-    const [show, setShow] = useState(false)
-    const [[rama],] = useFrameData({
+    const [show, toggle] = useToggle(false)
+    const [rama] = useFrameData({
         rama: {
             size: rama_size,
             pos: rama_pos
-        }
+        },
+
     })
     function handleClick() {
-        setShow(prev => !prev)
+        toggle.Switch()
         console.log('rama', rama)
     }
     return (
         <React.Fragment>
-            <FrameRamaContainer
+            <FrameRamaContainerA
+                type="preview"
                 { ...rama.size }
-                pos={ rama.pos }
+                { ...rama.pos }
             >
                 <GlsRect
                     size={ rama.size }
@@ -43,13 +47,14 @@ export const FrameViewA: React.FC<FrameViewAProps> = ({ rama_pos, rama_size }) =
                     anchor={ rama.pos }
                 />
 
-            </FrameRamaContainer>
-            <OnClickDialog
-                toggleShow={ (s) => setShow(prev => s) }
-                show={ show }
-            >
+            </FrameRamaContainerA>
 
-            </OnClickDialog>
+
+
+            <OnClickDialog
+                toggleShow={ (s) => toggle.Switch() }
+                show={ show }
+            />
         </React.Fragment>
     )
 
@@ -81,7 +86,19 @@ export const OnClickDialog: React.FC<OnClickDialogProps> = ({ toggleShow, show }
 
                 </DialogTitle>
                 <DialogContent>
+                    <Stack sx={ { [`& .MuiButton-root`]: { my: 1 } } }>
 
+                        <Button variant="contained" color="success"
+                            onClick={ handleClose }
+                        >Add Vert Impost
+
+                        </Button>
+                        <Button variant="contained" color="success"
+                            onClick={ handleClose }
+                        >Add Hor  Impost
+
+                        </Button>
+                    </Stack>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={ handleClose }>Disagree</Button>

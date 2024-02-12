@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { _Point, _SizeF, _getcoords, _log, _p, _ss } from "../Helpers/HelpersFns";
 
-import { FrameNodeWithSides } from "../Models/FrameComponent/FrameFactory/FrameNodeWithSides";
+import { BaseNode, BordersBlock, FrameNodeWithSides } from "../Models/FrameComponent/FrameFactory/FrameNodeWithSides";
 import { _TCoords } from "../Models/FrameComponent/StvState";
+import { toJS } from "mobx";
 
 
 
@@ -25,40 +26,54 @@ const init: IUseFrameData = {
 }
 export function useFrameData(initFrameData: IUseFrameData = init) {
     const { rama, nodes } = initFrameData
-    const { size, pos } = rama
-
-    const frame_rama_control = _useFrameRama(size, pos)
+    const { size, pos = { x: 0, y: 0 } } = rama
 
 
 
-    return [frame_rama_control] as const
+
+    const [frame_rama, frame_control] = useFrameRama_(size, pos)
+
+
+
+    return [frame_rama] as const
 
 }
 
-function _useFrameRama(size: _SizeF = { width: 1000, height: 1000 }, pos: _Point = { x: 0, y: 0 }) {
+function useFrameRama_(
+    size: _SizeF = { width: 1000, height: 1000 },
+    pos: _Point = { x: 0, y: 0 }
+) {
     const { width, height } = size
     const { x, y } = pos
-    const [frame_rama, setRama] = useState({ size, pos })
+    const borders = new BordersBlock()
+    const [frame_rama, setRama] = useState({ size, pos, borders })
 
     useEffect(() => {
-        setRama(prev => ({ ...prev, size: _ss(width, height), pos: _p(x, y) }))
+        setRama(prev => ({
+            ...prev,
+            size: _ss(width, height),
+            pos: _p(x, y),
+            borders
+        }))
     }, [height, x, y, width])
 
     return [frame_rama, setRama] as const
 }
 
-const _useFrameNodes = (rama: { size: _SizeF, pos: _Point }, ...rest: (FrameNodeWithSides)[]) => {
+const useFrameNodes_ = (rama: { size: _SizeF, pos: _Point }, ...rest: FrameNodeWithSides[]) => {
     const { size, pos } = rama
     const ramaCoords = _getcoords(size, pos)
-    const [nodes, setNodes] = useState<FrameNodeWithSides[]>([])
+    const [nodes, setNodes] = useState<FrameNodeWithSides[]>(rest)
 
     useEffect(() => {
         const readynodes = rest.filter(n => n.isReady())
         setNodes(readynodes)
     }, [rest.length])
+
+    return [nodes, setNodes]
 }
 
-const _useFrameImpost = (rama: { size: _SizeF, pos: _Point }, ...args: { xy: _Point, direction: 'horisontal' | 'vertical' }[]) => {
+const useFrameImpost_ = (rama: { size: _SizeF, pos: _Point }, ...args: { xy: _Point, direction: 'horisontal' | 'vertical' }[]) => {
 
 
 

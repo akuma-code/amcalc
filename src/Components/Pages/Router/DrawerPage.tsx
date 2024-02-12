@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { Outlet, useSubmit } from 'react-router-dom';
 import { _ID, _Point, _SizeF, _getcoords, _p, _ss } from '../../../Helpers/HelpersFns';
 import { IFrameVariants } from '../../../Interfaces/Enums';
-import { _TCoords } from '../../../Interfaces/FrameState';
+
 import { _TSideBaseState } from '../../Templates/Systems';
 import { CreatePopup } from './CreatePopup';
-import { StvFrame } from '../../../Models/FrameComponent/StvState';
+import { StvFrame, _TCoords } from '../../../Models/FrameComponent/StvState';
 import { FrameContext } from '../../../Hooks/useFrameContext';
 import { FrameContextMobx, NodeStore } from '../../../Context/FrameContext/FrameContext';
 import { ImpostFrame } from '../../../Models/FrameComponent/ImpostFrame';

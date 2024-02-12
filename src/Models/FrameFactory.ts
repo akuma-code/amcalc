@@ -2,7 +2,7 @@ import { IBorders, IFrameOffset, OFFSET, SystemProfile, _TSideBorderState } from
 import { _CPoint, _Point, _SizeF, _TPoint, _p, _psum } from "../Helpers/HelpersFns"
 import { ISizeShort, SizeShort } from "../Interfaces/CommonTypes"
 import { IFrameVariants, TSide, TSidesArray } from "../Interfaces/Enums"
-import { IFrameState, _OffsetCoordsRecord, _TCoords } from "../Interfaces/FrameState"
+import { IFrameState, _OffsetCoordsRecord } from "../Interfaces/FrameState"
 
 export const OffsetBorder: Record<_TSideBorderState, number> = {
     rama: 20,

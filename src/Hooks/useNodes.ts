@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { TSide } from "../Interfaces/Enums"
-import { _TCoords } from "../Interfaces/FrameState"
-import { ISideStateOffset, _CType } from "../Models/FrameComponent/StvState"
+
+import { ISideStateOffset, _CType, _TCoords } from "../Models/FrameComponent/StvState"
 import { WithIdProp } from "../Interfaces/CommonTypes"
 import { _SizeF, _ss } from "../Helpers/HelpersFns"
 import { getSizeFromCoords } from "../Models/Drower/DrawerFns"
@@ -25,7 +25,7 @@ export const useNodes = <T extends _NodeType>() => {
     const search = (id: string) => nodes.find(n => n.id === id)
     const edit = (id: string, new_data: object) => setNodes(prev => prev.map(n => n.id === id ? { ...n, ...new_data } : n))
 
-   
+
     useEffect(() => {
         setNodes(prev => prev.map(n => ({ ...n, size: getSizeFromCoords(...n.coords) })))
     }, [])

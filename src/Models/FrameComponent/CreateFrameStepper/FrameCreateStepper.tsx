@@ -90,7 +90,7 @@ export const DrawerStepCreator: React.FC<{}> = observer(() => {
 
     const [activeStep, { handleBack, handleNext, handleReset }] = useSteps()
     const [form_data, setform_data] = useState<_SizeF & _Point>({ width: 1000, height: 1000, x: 0, y: 0 })
-    const [[rama, controlRama]] = useFrameData({ rama: { size: { ...form_data }, pos: { ...form_data } } })
+    const [rama] = useFrameData({ rama: { size: { ...form_data }, pos: { ...form_data } } })
     const handleSubmitStep = () => {
 
         handleNext()

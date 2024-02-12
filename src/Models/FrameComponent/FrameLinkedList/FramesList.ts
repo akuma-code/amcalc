@@ -1,5 +1,5 @@
 import { _Point, _SizeF } from "../../../Helpers/HelpersFns";
-import { _TCoords } from "../../../Interfaces/FrameState";
+import { _TCoords } from "../../FrameComponent/StvState";
 import { DataNode, LinkedList } from "../../LinkedList";
 
 interface ChainFrameData {

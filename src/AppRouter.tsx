@@ -13,6 +13,7 @@ import { GroupIdCard } from './Components/UI/SillGroupView';
 import { ROOTSTORE } from './Context/RootStore';
 import { pageRoutes } from './HTTP/PATHS';
 import { DrawerStepCreator } from './Models/FrameComponent/CreateFrameStepper/FrameCreateStepper';
+import { BlankDataPage } from './Components/Pages/BlankDataPage';
 
 
 
@@ -132,11 +133,11 @@ export const CommonRoutes: RouteObject[] = [
                     },
                 ],
             },
-            // {
-            //     path: pageRoutes.getapp,
-            //     element: <BlankDataPage />,
-            //     // loader: scriptAppLoader
-            // },
+            {
+                path: pageRoutes.getapp,
+                element: <BlankDataPage />,
+                // loader: scriptAppLoader
+            },
             {
                 path: pageRoutes.print,
                 element: <PrintPage />

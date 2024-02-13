@@ -13,6 +13,7 @@ import { observer } from 'mobx-react-lite';
 import { _ID, _Point, _SizeF, _p, _ss } from '../../../Helpers/HelpersFns';
 import { FilledInputProps, Icon, InputAdornment, InputProps, OutlinedInputProps, TextField } from '@mui/material';
 import Icons from '../../../Components/Icons/SvgIcons';
+import { useInputObject } from '../../../Hooks/useInput';
 
 
 type SizeStepFormData = {
@@ -90,6 +91,7 @@ export const DrawerStepCreator: React.FC<{}> = observer(() => {
 
     const [activeStep, { handleBack, handleNext, handleReset }] = useSteps()
     const [form_data, setform_data] = useState<_SizeF & _Point>({ width: 1000, height: 1000, x: 0, y: 0 })
+    const [i, si] = useInputObject({ width: 1000, height: 1000, x: 0, y: 0 })
     const [rama] = useFrameData({ rama: { size: { ...form_data }, pos: { ...form_data } } })
     const handleSubmitStep = () => {
 
@@ -144,9 +146,9 @@ export const DrawerStepCreator: React.FC<{}> = observer(() => {
                                                 // label={ f }
                                                 key={ f }
                                                 InputProps={ {
-                                                    endAdornment: <InputAdornment position="end">{ f }</InputAdornment>,
+                                                    startAdornment: <InputAdornment position="start">{ f }</InputAdornment>,
                                                 } }
-                                                value={ form_data && form_data[f] }
+                                                value={ form_data[f] || 0 }
                                                 onChange={ (e) => setform_data(prev => ({ ...prev, [f]: +e.target.value })) }
                                                 sx={ { m: 1, width: '13ch' } }
                                             />

@@ -18,6 +18,7 @@ type FrameViewAProps = {
 }
 export const FrameViewA: React.FC<FrameViewAProps> = ({ rama_pos, rama_size }) => {
     const [show, toggle] = useToggle(false)
+    const [showType, setShowType] = useState<'full' | 'preview'>('full')
     const [rama] = useFrameData({
         rama: {
             size: rama_size,
@@ -31,7 +32,7 @@ export const FrameViewA: React.FC<FrameViewAProps> = ({ rama_pos, rama_size }) =
     return (
         <React.Fragment>
             <FrameRamaContainerA
-                type="preview"
+                type={ showType }
                 { ...rama.size }
                 { ...rama.pos }
             >
@@ -94,7 +95,7 @@ export const OnClickDialog: React.FC<OnClickDialogProps> = ({ toggleShow, show }
                         </Button>
                         <Button variant="contained" color="success"
                             onClick={ handleClose }
-                        >Add Hor  Impost
+                        >toggle view
 
                         </Button>
                     </Stack>
